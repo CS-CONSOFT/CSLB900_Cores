@@ -1,0 +1,78 @@
+# Build
+bin/
+obj/
+
+# Visual Studio
+.vs/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# Dotnet watch
+**/node_modules/
+**/.sass-cache/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Backup & logs
+*.bak
+*.log
+
+# NUGET
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# VS Code history
+.history/
+
+# Other
+*.dbmdl
+*.db
+*.sdf
+*.pdb
+
+# OS generated
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+desktop.ini
+
+# JetBrains Rider
+.idea/
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Auto-generated logs & indexes
+*.vsp
+*.vspscc
+*.vssscc
+*.cache
+
+# Rider plugin cache
+.idea/
+
+# Copilot generated cache
+**/.copilot/
+
+# Optional: ignore test results
+TestResults/
+
+# Optional: ignore coverage reports
+coverage/
+*.lcov
