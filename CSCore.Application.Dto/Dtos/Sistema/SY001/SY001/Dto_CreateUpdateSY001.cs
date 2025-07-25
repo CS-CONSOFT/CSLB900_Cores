@@ -42,6 +42,8 @@ namespace CSSY103.C82Application.Dto.SY001.SY001
 
         public string? Sy001Celular { get; set; }
 
+        //liha sfdfsdf
+
         //public Csicp_Sy809Idioma? Sy001Idioma { get; set; }
     }
 }

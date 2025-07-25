@@ -503,13 +503,13 @@ namespace CSCore.Ifs.Repository.BB.Conta
             .ThenInclude(e => e.BB027_MotivoDesoneracao)
 
 
-            .Include(e => e.OsusrE9aCsicpBb01206)
+            .Include(e => e.NavBB01206)
             .ThenInclude(e => e.AA025_Pais)
 
-            .Include(e => e.OsusrE9aCsicpBb01206)
+            .Include(e => e.NavBB01206)
             .ThenInclude(e => e.AA028_Cidade)
 
-            .Include(e => e.OsusrE9aCsicpBb01206)
+            .Include(e => e.NavBB01206)
             .ThenInclude(e => e.AA027_UF);
 
         }

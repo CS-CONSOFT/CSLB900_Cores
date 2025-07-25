@@ -6,6 +6,7 @@ namespace CSCore.Ifs.Eventos.Repository
 {
     public class GerarTreeImpl(AppDbContext appDbContext, ICS_GenerateId cS_GenerateId) : IGerarTree
     {
+        //teste
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly ICS_GenerateId _cS_GenerateId = cS_GenerateId;
         public async Task<string?> CriarDocTree(
