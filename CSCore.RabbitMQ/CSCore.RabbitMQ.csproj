@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MassTransit" Version="8.4.0" />
+		<PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
+		<PackageReference Include="MassTransit.RabbitMQ" Version="8.4.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\CSCompartilhado.CSLB900_MSTools\CSLB900.MSTools.csproj" />
+	  <ProjectReference Include="..\CSCore.Application.Dto\CSCore.Application.Dto.csproj" />
+	  <ProjectReference Include="..\CSCore.Domain\CSCore.Domain.csproj" />
+	  <ProjectReference Include="..\CSCore.Ifs.AnaliseDeCredito\CSCore.Ifs.AnaliseDeCredito.csproj" />
+	  <ProjectReference Include="..\CSCore.Ifs.Eventos\CSCore.Ifs.Eventos.csproj" />
+	  <ProjectReference Include="..\CSCore.Ifs.GG\CSCore.Ifs.GG.csproj" />
+	</ItemGroup>
+
+</Project>

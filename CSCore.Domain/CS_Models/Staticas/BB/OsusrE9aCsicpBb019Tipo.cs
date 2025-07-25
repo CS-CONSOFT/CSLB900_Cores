@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace CSCore.Domain;
+
+public partial class CSICP_Bb019Tipo
+{
+    public int Id { get; set; }
+
+    public string? Label { get; set; }
+
+    public int? Order { get; set; }
+
+    public bool? IsActive { get; set; }
+
+    public string? Tband { get; set; }
+
+    public string? CodgbandeiraSitef { get; set; }
+
+    public int? Codgautorizadora { get; set; }
+}

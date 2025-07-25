@@ -1,0 +1,31 @@
+
+# Ignorar diretórios e arquivos específicos
+.vs/
+
+# Ignorar arquivos JSON
+
+/CSS_BS101Basico/CSBS101_51CrossCutting/bin/
+/CSS_BS101Basico/CSBS101_51CrossCutting/obj/
+
+/CSS_ST102Statica/CSS_ST102Statica/bin
+/CSS_ST102Statica/CSS_ST102Statica/obj
+
+# Ignorar arquivos de cache
+*.cache
+# Ignorar diretórios de build do .NET em todos os níveis
+**/bin/
+**/obj/
+
+*.dll
+
+# Ignore .NET build directories
+[Bb]in/
+[Oo]bj/
+
+
+
+
+/CSS_ST102Statica/CSS_ST102Statica/obj
+CSCore.Domain/Properties/Resources.Designer.cs
+CSCore.Ifs.GGTests/appsettings.Test.json
+CSCore.Ifs.CompartilhadoTests/appsettings.Test.json

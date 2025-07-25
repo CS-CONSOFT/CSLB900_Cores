@@ -1,0 +1,249 @@
+﻿using CSBS101._82Application.Dto.BB00X.BB026;
+using CSBS101._82Application.Mapper.BB00X;
+using CSBS101.C82Application.Dto.BB00X.BB00X.BB008;
+using CSCore.Domain;
+using CSLB900.MSTools.Extensao;
+
+namespace CSBS101._82Application.ExtensionsMethods.BB00X
+{
+    public static class BB026ExtensionMethods
+    {
+        public static CSICP_Bb026 ToEntity(this Dto_CreateUpdateBB026 dto)
+        {
+            var entity = new CSICP_Bb026
+            {
+                Bb026Filial = dto.Bb026Filial,
+                Bb026Codigo = dto.Bb026Codigo,
+                Bb026Formapagamento = dto.Bb026Formapagamento,
+                Bb026Dadoschequesn = dto.Bb026Dadoschequesn,
+                Bb026Dadoscartaosn = dto.Bb026Dadoscartaosn,
+                Bb026Vinccupomfiscal = dto.Bb026Vinccupomfiscal,
+                Bb026Classificacao = dto.Bb026Classificacao,
+                Bb026Crplanocontaid = dto.Bb026Crplanocontaid,
+                Bb026Dbplanocontaid2 = dto.Bb026Dbplanocontaid2,
+                Bb026NroAutenticacoes = dto.Bb026NroAutenticacoes,
+                Bb026ValorMinimo = dto.Bb026ValorMinimo,
+                Bb026ValorMaximo = dto.Bb026ValorMaximo,
+                Bb026TrocoMaximo = dto.Bb026TrocoMaximo,
+                Bb026Pontosangria = dto.Bb026Pontosangria,
+                Bb026Tipo = dto.Bb026Tipo,
+                Bb026Parcelapordepto = dto.Bb026Parcelapordepto,
+                Bb026Condpagtofixoid = dto.Bb026Condpagtofixoid,
+                Bb026Administradoraid = dto.Bb026Administradoraid,
+                Bb026UtilizaPinpad = dto.Bb026UtilizaPinpad,
+                Bb026Consultacheque = dto.Bb026Consultacheque,
+                Bb026Impressaocheque = dto.Bb026Impressaocheque,
+                Bb026Chequebompara = dto.Bb026Chequebompara,
+                Bb026Solicitaemitente = dto.Bb026Solicitaemitente,
+                Bb026Solicitaqtd = dto.Bb026Solicitaqtd,
+                Bb026Solicitacondpagto = dto.Bb026Solicitacondpagto,
+                Bb026Aceitapagto = dto.Bb026Aceitapagto,
+                Bb026Aceitarecebimento = dto.Bb026Aceitarecebimento,
+                Bb026Permitetroco = dto.Bb026Permitetroco,
+                Bb026Sangriaautomatica = dto.Bb026Sangriaautomatica,
+                Bb026Naoabregaveta = dto.Bb026Naoabregaveta,
+                Bb026TipovinculoId = dto.Bb026TipovinculoId,
+                Bb026Isactive = true,
+                Bb026ClasseId = dto.Bb026ClasseId,
+                Bb026EspecieId = dto.Bb026EspecieId,
+                Bb026Meiopagtoimpfiscal = dto.Bb026Meiopagtoimpfiscal,
+                Bb026Tipoespecie = dto.Bb026Tipoespecie,
+                Bb026Pcomissaovend = dto.Bb026Pcomissaovend,
+                Bb026Aceitavpresente = dto.Bb026Aceitavpresente,
+                Bb026Capturarecebpvpdv = dto.Bb026Capturarecebpvpdv,
+                Bb026Islibentregaliq = dto.Bb026Islibentregaliq,
+                Bb026Isaplicaaprovcond = dto.Bb026Isaplicaaprovcond,
+                Bb026Isagrupa = dto.Bb026Isagrupa
+            };
+            entity.ConverteValoresPadraoParaNulo();
+            return entity;
+        }
+
+        public static Dto_GetBB026 ToDtoGet(this CSICP_Bb026 entity)
+        {
+            return new Dto_GetBB026
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Empresaid = entity.Empresaid,
+                Bb026Filial = entity.Bb026Filial,
+                Bb026Codigo = entity.Bb026Codigo,
+                Bb026Formapagamento = entity.Bb026Formapagamento,
+                Bb026Dadoschequesn = entity.Bb026Dadoschequesn,
+                Bb026Dadoscartaosn = entity.Bb026Dadoscartaosn,
+                Bb026Vinccupomfiscal = entity.Bb026Vinccupomfiscal,
+                Bb026Classificacao = entity.Bb026Classificacao,
+                Bb026Crplanocontaid = entity.Bb026Crplanocontaid,
+                Bb026Dbplanocontaid2 = entity.Bb026Dbplanocontaid2,
+                Bb026NroAutenticacoes = entity.Bb026NroAutenticacoes,
+                Bb026ValorMinimo = entity.Bb026ValorMinimo,
+                Bb026ValorMaximo = entity.Bb026ValorMaximo,
+                Bb026TrocoMaximo = entity.Bb026TrocoMaximo,
+                Bb026Pontosangria = entity.Bb026Pontosangria,
+                Bb026Tipo = entity.Bb026Tipo,
+                Bb026Parcelapordepto = entity.Bb026Parcelapordepto,
+                Bb026Condpagtofixoid = entity.Bb026Condpagtofixoid,
+                Bb026Administradoraid = entity.Bb026Administradoraid,
+                Bb026UtilizaPinpad = entity.Bb026UtilizaPinpad,
+                Bb026Consultacheque = entity.Bb026Consultacheque,
+                Bb026Impressaocheque = entity.Bb026Impressaocheque,
+                Bb026Chequebompara = entity.Bb026Chequebompara,
+                Bb026Solicitaemitente = entity.Bb026Solicitaemitente,
+                Bb026Solicitaqtd = entity.Bb026Solicitaqtd,
+                Bb026Solicitacondpagto = entity.Bb026Solicitacondpagto,
+                Bb026Aceitapagto = entity.Bb026Aceitapagto,
+                Bb026Aceitarecebimento = entity.Bb026Aceitarecebimento,
+                Bb026Permitetroco = entity.Bb026Permitetroco,
+                Bb026Sangriaautomatica = entity.Bb026Sangriaautomatica,
+                Bb026Naoabregaveta = entity.Bb026Naoabregaveta,
+                Bb026TipovinculoId = entity.Bb026TipovinculoId,
+                Bb026Isactive = entity.Bb026Isactive,
+                Bb026ClasseId = entity.Bb026ClasseId,
+                Bb026EspecieId = entity.Bb026EspecieId,
+                Bb026Meiopagtoimpfiscal = entity.Bb026Meiopagtoimpfiscal,
+                Bb026Tipoespecie = entity.Bb026Tipoespecie,
+                Bb026Pcomissaovend = entity.Bb026Pcomissaovend,
+                Bb026Aceitavpresente = entity.Bb026Aceitavpresente,
+                Bb026Capturarecebpvpdv = entity.Bb026Capturarecebpvpdv,
+                Bb026Islibentregaliq = entity.Bb026Islibentregaliq,
+                Bb026Isaplicaaprovcond = entity.Bb026Isaplicaaprovcond,
+                Bb026Isagrupa = entity.Bb026Isagrupa,
+                NavBb019Administradora = entity.Bb026Administradora?.ToDtoGet(),
+                NavBb008Condpagtofixo = entity.Bb026Condpagtofixo?.ToDtoGet(),
+                NavBb026Classe = entity.NavBb026Classe,
+                NavBb026Tipo = entity.NavBb026Tipo,
+                NavBb026Vin = entity.NavBb026Vin,
+                NavBB026_DadosCartaoSN = entity.NavBB026_DadosCartaoSN,
+                NavBB026_DadosChequeSN = entity.NavBB026_DadosChequeSN,
+                NavBB026_VincCupomFiscal = entity.NavBB026_VincCupomFiscal,
+                //Nav_CSICP_FF003Tpesp = entity.NavCSICP_FF003Tpesp,
+            };
+        }
+
+        public static Dto_GetBB026SemList ToDtoGetSemList(this CSICP_Bb026 entity)
+        {
+            return new Dto_GetBB026SemList
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Empresaid = entity.Empresaid,
+                Bb026Filial = entity.Bb026Filial,
+                Bb026Codigo = entity.Bb026Codigo,
+                Bb026Formapagamento = entity.Bb026Formapagamento,
+                Bb026Dadoschequesn = entity.Bb026Dadoschequesn,
+                Bb026Dadoscartaosn = entity.Bb026Dadoscartaosn,
+                Bb026Vinccupomfiscal = entity.Bb026Vinccupomfiscal,
+                Bb026Classificacao = entity.Bb026Classificacao,
+                Bb026Crplanocontaid = entity.Bb026Crplanocontaid,
+                Bb026Dbplanocontaid2 = entity.Bb026Dbplanocontaid2,
+                Bb026NroAutenticacoes = entity.Bb026NroAutenticacoes,
+                Bb026ValorMinimo = entity.Bb026ValorMinimo,
+                Bb026ValorMaximo = entity.Bb026ValorMaximo,
+                Bb026TrocoMaximo = entity.Bb026TrocoMaximo,
+                Bb026Pontosangria = entity.Bb026Pontosangria,
+                Bb026Tipo = entity.Bb026Tipo,
+                Bb026Parcelapordepto = entity.Bb026Parcelapordepto,
+                Bb026Condpagtofixoid = entity.Bb026Condpagtofixoid,
+                Bb026Administradoraid = entity.Bb026Administradoraid,
+                Bb026UtilizaPinpad = entity.Bb026UtilizaPinpad,
+                Bb026Consultacheque = entity.Bb026Consultacheque,
+                Bb026Impressaocheque = entity.Bb026Impressaocheque,
+                Bb026Chequebompara = entity.Bb026Chequebompara,
+                Bb026Solicitaemitente = entity.Bb026Solicitaemitente,
+                Bb026Solicitaqtd = entity.Bb026Solicitaqtd,
+                Bb026Solicitacondpagto = entity.Bb026Solicitacondpagto,
+                Bb026Aceitapagto = entity.Bb026Aceitapagto,
+                Bb026Aceitarecebimento = entity.Bb026Aceitarecebimento,
+                Bb026Permitetroco = entity.Bb026Permitetroco,
+                Bb026Sangriaautomatica = entity.Bb026Sangriaautomatica,
+                Bb026Naoabregaveta = entity.Bb026Naoabregaveta,
+                Bb026TipovinculoId = entity.Bb026TipovinculoId,
+                Bb026Isactive = entity.Bb026Isactive,
+                Bb026ClasseId = entity.Bb026ClasseId,
+                Bb026EspecieId = entity.Bb026EspecieId,
+                Bb026Meiopagtoimpfiscal = entity.Bb026Meiopagtoimpfiscal,
+                Bb026Tipoespecie = entity.Bb026Tipoespecie,
+                Bb026Pcomissaovend = entity.Bb026Pcomissaovend,
+                Bb026Aceitavpresente = entity.Bb026Aceitavpresente,
+                Bb026Capturarecebpvpdv = entity.Bb026Capturarecebpvpdv,
+                Bb026Islibentregaliq = entity.Bb026Islibentregaliq,
+                Bb026Isaplicaaprovcond = entity.Bb026Isaplicaaprovcond,
+                Bb026Isagrupa = entity.Bb026Isagrupa,
+                NavBb019Administradora = entity.Bb026Administradora?.ToDtoGet(),
+                NavBb008Condpagtofixo = entity.Bb026Condpagtofixo?.ToDtoGet(),
+                NavBb026Classe = entity.NavBb026Classe,
+                NavBb026Tipo = entity.NavBb026Tipo,
+                NavBb026Vin = entity.NavBb026Vin,
+                NavBB026_DadosCartaoSN = entity.NavBB026_DadosCartaoSN,
+                NavBB026_DadosChequeSN = entity.NavBB026_DadosChequeSN,
+                NavBB026_VincCupomFiscal = entity.NavBB026_VincCupomFiscal,
+                //Nav_CSICP_FF003Tpesp = entity.NavCSICP_FF003Tpesp,
+            };
+        }
+
+        public static Dto_GetBB026_Exibicao ToDtoGetExibicao(this CSICP_Bb026 entity)
+        {
+            return new Dto_GetBB026_Exibicao
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Bb026Codigo = entity.Bb026Codigo,
+                Bb026Formapagamento = entity.Bb026Formapagamento,
+
+            };
+        }
+
+            public static Dto_GetBB026_ComBB026Classe ToDtoGetBB026ComBB026Classe(this CSICP_Bb026 entity)
+            {
+                return new Dto_GetBB026_ComBB026Classe
+                {
+                    TenantId = entity.TenantId,
+                    Id = entity.Id,
+                    Empresaid = entity.Empresaid,
+                    Bb026Filial = entity.Bb026Filial,
+                    Bb026Codigo = entity.Bb026Codigo,
+                    Bb026Formapagamento = entity.Bb026Formapagamento,
+                    Bb026Dadoschequesn = entity.Bb026Dadoschequesn,
+                    Bb026Dadoscartaosn = entity.Bb026Dadoscartaosn,
+                    Bb026Vinccupomfiscal = entity.Bb026Vinccupomfiscal,
+                    Bb026Classificacao = entity.Bb026Classificacao,
+                    Bb026Crplanocontaid = entity.Bb026Crplanocontaid,
+                    Bb026Dbplanocontaid2 = entity.Bb026Dbplanocontaid2,
+                    Bb026NroAutenticacoes = entity.Bb026NroAutenticacoes,
+                    Bb026ValorMinimo = entity.Bb026ValorMinimo,
+                    Bb026ValorMaximo = entity.Bb026ValorMaximo,
+                    Bb026TrocoMaximo = entity.Bb026TrocoMaximo,
+                    Bb026Pontosangria = entity.Bb026Pontosangria,
+                    Bb026Tipo = entity.Bb026Tipo,
+                    Bb026Parcelapordepto = entity.Bb026Parcelapordepto,
+                    Bb026Condpagtofixoid = entity.Bb026Condpagtofixoid,
+                    Bb026Administradoraid = entity.Bb026Administradoraid,
+                    Bb026UtilizaPinpad = entity.Bb026UtilizaPinpad,
+                    Bb026Consultacheque = entity.Bb026Consultacheque,
+                    Bb026Impressaocheque = entity.Bb026Impressaocheque,
+                    Bb026Chequebompara = entity.Bb026Chequebompara,
+                    Bb026Solicitaemitente = entity.Bb026Solicitaemitente,
+                    Bb026Solicitaqtd = entity.Bb026Solicitaqtd,
+                    Bb026Solicitacondpagto = entity.Bb026Solicitacondpagto,
+                    Bb026Aceitapagto = entity.Bb026Aceitapagto,
+                    Bb026Aceitarecebimento = entity.Bb026Aceitarecebimento,
+                    Bb026Permitetroco = entity.Bb026Permitetroco,
+                    Bb026Sangriaautomatica = entity.Bb026Sangriaautomatica,
+                    Bb026Naoabregaveta = entity.Bb026Naoabregaveta,
+                    Bb026TipovinculoId = entity.Bb026TipovinculoId,
+                    Bb026Isactive = entity.Bb026Isactive,
+                    Bb026ClasseId = entity.Bb026ClasseId,
+                    Bb026EspecieId = entity.Bb026EspecieId,
+                    Bb026Meiopagtoimpfiscal = entity.Bb026Meiopagtoimpfiscal,
+                    Bb026Tipoespecie = entity.Bb026Tipoespecie,
+                    Bb026Pcomissaovend = entity.Bb026Pcomissaovend,
+                    Bb026Aceitavpresente = entity.Bb026Aceitavpresente,
+                    Bb026Capturarecebpvpdv = entity.Bb026Capturarecebpvpdv,
+                    Bb026Islibentregaliq = entity.Bb026Islibentregaliq,
+                    Bb026Isaplicaaprovcond = entity.Bb026Isaplicaaprovcond,
+                    Bb026Isagrupa = entity.Bb026Isagrupa,
+                    NavBb026Classe = entity.NavBb026Classe,
+                };
+        }
+    }
+}

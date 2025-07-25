@@ -1,0 +1,277 @@
+﻿using CSBS101._82Application.ExtensionsMethods.BB00X;
+using CSBS101._82Application.Mapper.BB00X;
+using CSBS101._82Application.Mapper.BB00X.BB009;
+using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSBS101._82Application.Mapper.BB00X.BB012;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX;
+using CSCore.Domain;
+using CSCore.Domain.CS_Models.CSICP_FF;
+using CSCore.Domain.CS_Models.Staticas.FF;
+using CSSY103.C82Application.Mapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSCore.Application.Dto.Mapper.FF00x
+{
+    public static class FF102Mapper
+    {
+        public static DtoGetFF102 ToDtoGet(this RepoDtoCSICP_FF102 entity)
+        {
+            return new DtoGetFF102
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Ff102Tiporegistro = entity.Ff102Tiporegistro,
+                Ff102Filialid = entity.Ff102Filialid,
+                Ff102Filial = entity.Ff102Filial,
+                Ff102Pfx = entity.Ff102Pfx,
+                Ff102NoTitulo = entity.Ff102NoTitulo,
+                Ff102Sfx = entity.Ff102Sfx,
+                Ff102NoTitulonobanco = entity.Ff102NoTitulonobanco,
+                Ff102Especieid = entity.Ff102Especieid,
+                Ff102Tipoparcelaid = entity.Ff102Tipoparcelaid,
+                Ff102TipoParcela = entity.Ff102TipoParcela,
+                Ff102ParcelaX = entity.Ff102ParcelaX,
+                Ff102ParcelaY = entity.Ff102ParcelaY,
+                Ff102Contaid = entity.Ff102Contaid,
+                Ff102Contarealid = entity.Ff102Contarealid,
+                Ff102AvalistaId = entity.Ff102AvalistaId,
+                Ff102Ccustoid = entity.Ff102Ccustoid,
+                Ff102Usuarioproprieid = entity.Ff102Usuarioproprieid,
+                Ff102Agcobradorid = entity.Ff102Agcobradorid,
+                Ff102Responsavelid = entity.Ff102Responsavelid,
+                Ff102Condicaoid = entity.Ff102Condicaoid,
+                Ff102Administradoraid = entity.Ff102Administradoraid,
+                Ff102Tipocobrancaid = entity.Ff102Tipocobrancaid,
+                Ff102Moedaid = entity.Ff102Moedaid,
+                Ff102CodgCliente = entity.Ff102CodgCliente,
+                Ff102Codclientereal = entity.Ff102Codclientereal,
+                Ff102CliFavorecido = entity.Ff102CliFavorecido,
+                Ff102CodgCcusto = entity.Ff102CodgCcusto,
+                Ff102CodgAcobrador = entity.Ff102CodgAcobrador,
+                Ff102CodgResponsavel = entity.Ff102CodgResponsavel,
+                Ff102CodgCondicao = entity.Ff102CodgCondicao,
+                Ff102Codadministrad = entity.Ff102Codadministrad,
+                Ff102CodgTcobranca = entity.Ff102CodgTcobranca,
+                Ff102CodgMoeda = entity.Ff102CodgMoeda,
+                Ff102DataEmissao = entity.Ff102DataEmissao,
+                Ff102DataVencimento = entity.Ff102DataVencimento,
+                Ff102DataVencReal = entity.Ff102DataVencReal,
+                Ff102ValorTitulo = entity.Ff102ValorTitulo,
+                Ff102VlAcrescimos = entity.Ff102VlAcrescimos,
+                Ff102VlDecrescimos = entity.Ff102VlDecrescimos,
+                Ff102ValorDesagio = entity.Ff102ValorDesagio,
+                Ff102TotalPagamentos = entity.Ff102TotalPagamentos,
+                Ff102TotalMultaPaga = entity.Ff102TotalMultaPaga,
+                Ff102TotalJuros = entity.Ff102TotalJuros,
+                Ff102TotalDescontos = entity.Ff102TotalDescontos,
+                Ff102TotalDevolucao = entity.Ff102TotalDevolucao,
+                Ff102TotalDoacao = entity.Ff102TotalDoacao,
+                Ff102TotalTarifas = entity.Ff102TotalTarifas,
+                Ff102TotalImpostosmais = entity.Ff102TotalImpostosmais,
+                Ff102TotalImpostosmenos = entity.Ff102TotalImpostosmenos,
+                Ff102VlLiqTitulo = entity.Ff102VlLiqTitulo,
+                Ff102Nodiasliberacao = entity.Ff102Nodiasliberacao,
+                Ff102TipoDesconto = entity.Ff102TipoDesconto,
+                Ff102Percdescfinan = entity.Ff102Percdescfinan,
+                Ff102Diasparadesconto = entity.Ff102Diasparadesconto,
+                Ff102CnabCodDesconto = entity.Ff102CnabCodDesconto,
+                Ff102NoPagamentos = entity.Ff102NoPagamentos,
+                Ff102DataUltPagto = entity.Ff102DataUltPagto,
+                Ff102Observacao = entity.Ff102Observacao,
+                Ff102InstCobranca1 = entity.Ff102InstCobranca1,
+                Ff102InstCobranca2 = entity.Ff102InstCobranca2,
+                Ff102NoBordero = entity.Ff102NoBordero,
+                Ff102FluxoCaixa = entity.Ff102FluxoCaixa,
+                Ff102Origem = entity.Ff102Origem,
+                Ff102Vendaid = entity.Ff102Vendaid,
+                Ff102Compraid = entity.Ff102Compraid,
+                Ff102NPdv = entity.Ff102NPdv,
+                Ff102NumeroNf = entity.Ff102NumeroNf,
+                Ff102SerieNf = entity.Ff102SerieNf,
+                Ff102CiNfNfCupom = entity.Ff102CiNfNfCupom,
+                Ff102TotalNotas = entity.Ff102TotalNotas,
+                Ff102Empenho = entity.Ff102Empenho,
+                Ff102Processo = entity.Ff102Processo,
+                Ff102NContrato = entity.Ff102NContrato,
+                Ff102Situacao = entity.Ff102Situacao,
+                Ff102Situacaoid = entity.Ff102Situacaoid,
+                Ff102SequenciaLog = entity.Ff102SequenciaLog,
+                Ff102NossoNumero = entity.Ff102NossoNumero,
+                Ff102DvNossoNumero = entity.Ff102DvNossoNumero,
+                Ff102DvCodgBeneficiario = entity.Ff102DvCodgBeneficiario,
+                Ff1021ocampodigitavel = entity.Ff1021ocampodigitavel,
+                Ff1022ocampodigitavel = entity.Ff1022ocampodigitavel,
+                Ff1023ocampodigitavel = entity.Ff1023ocampodigitavel,
+                Ff102DvCampoLivre = entity.Ff102DvCampoLivre,
+                Ff102DvCodigoBarras = entity.Ff102DvCodigoBarras,
+                Ff102FatorVencimento = entity.Ff102FatorVencimento,
+                Ff102Vlrnominaltitulo = entity.Ff102Vlrnominaltitulo,
+                Ff102CodigoBarras = entity.Ff102CodigoBarras,
+                Ff102Modalidcbarras = entity.Ff102Modalidcbarras,
+                Ff102Linhadigital = entity.Ff102Linhadigital,
+                Ff102Codcobrador = entity.Ff102Codcobrador,
+                Ff102Lanctocontabil = entity.Ff102Lanctocontabil,
+                Ff102cpNoDuplicata = entity.Ff102cpNoDuplicata,
+                Ff102cpValorMulta = entity.Ff102cpValorMulta,
+                Ff102cpValorJurosDia = entity.Ff102cpValorJurosDia,
+                Ff102cpAprovador = entity.Ff102cpAprovador,
+                Ff102cpAprovadorid = entity.Ff102cpAprovadorid,
+                Ff102cpDataAprovacao = entity.Ff102cpDataAprovacao,
+                Ff102cpHoraAprovacao = entity.Ff102cpHoraAprovacao,
+                Ff102cpRegistroMarcado = entity.Ff102cpRegistroMarcado,
+                Ff102cpTituloOriginal = entity.Ff102cpTituloOriginal,
+                Ff102Dataapresentacao = entity.Ff102Dataapresentacao,
+                Ff102cpLiberado = entity.Ff102cpLiberado,
+                Ff102cpConfirmado = entity.Ff102cpConfirmado,
+                Ff102TaxaCartao = entity.Ff102TaxaCartao,
+                Ff102ValorTaxaCartao = entity.Ff102ValorTaxaCartao,
+                Ff102CnabCodJurosMora = entity.Ff102CnabCodJurosMora,
+                Ff102PercJurosAtr = entity.Ff102PercJurosAtr,
+                Ff102CnabCodMulta = entity.Ff102CnabCodMulta,
+                Ff102PercMulta = entity.Ff102PercMulta,
+                Ff102Tpcobranca = entity.Ff102Tpcobranca,
+                Ff102cpPagtoautorizadoId = entity.Ff102cpPagtoautorizadoId,
+                Ff102cpConfirmadoId = entity.Ff102cpConfirmadoId,
+                Ff102Cnsu = entity.Ff102Cnsu,
+                Ff102Cdatamovimento = entity.Ff102Cdatamovimento,
+                Ff102Cpv = entity.Ff102Cpv,
+                Ff102Cautorizacao = entity.Ff102Cautorizacao,
+                Ff102Cdoc = entity.Ff102Cdoc,
+                Ff102Isconcvenda = entity.Ff102Isconcvenda,
+                Ff102Isconcfinanc = entity.Ff102Isconcfinanc,
+                Ff10FpagtoId = entity.Ff10FpagtoId,
+                Ff102CtbIscontabilizadoid = entity.Ff102CtbIscontabilizadoid,
+                Ff102CtbUsuarioid = entity.Ff102CtbUsuarioid,
+                Ff102CtbDtregistro = entity.Ff102CtbDtregistro,
+                Ff102CtbIsestornadoid = entity.Ff102CtbIsestornadoid,
+                Ff102CtbEstusuarioid = entity.Ff102CtbEstusuarioid,
+                Ff102CtbEstdtreg = entity.Ff102CtbEstdtreg,
+                Ff102CtbIdlancto = entity.Ff102CtbIdlancto,
+                Ff102CtbMsg = entity.Ff102CtbMsg,
+                Ff102SitespecialId = entity.Ff102SitespecialId,
+                Ff102Dtimestamp = entity.Ff102Dtimestamp,
+                Ff102DtvencSimulado = entity.Ff102DtvencSimulado,
+                Ff102PercCorrmonetaria = entity.Ff102PercCorrmonetaria,
+                Ff102PercHonorarios = entity.Ff102PercHonorarios,
+                Ff102VlCorrmonetaria = entity.Ff102VlCorrmonetaria,
+                Ff102VlHonorarios = entity.Ff102VlHonorarios,
+                Ff102CtlIscontabilizadoid = entity.Ff102CtlIscontabilizadoid,
+                Ff102CtlUsuarioid = entity.Ff102CtlUsuarioid,
+                Ff102CtlDtregistro = entity.Ff102CtlDtregistro,
+                Ff102CtlIsestornadoid = entity.Ff102CtlIsestornadoid,
+                Ff102CtlEstusuarioid = entity.Ff102CtlEstusuarioid,
+                Ff102CtlEstdtreg = entity.Ff102CtlEstdtreg,
+                Ff102CtlIdlancto = entity.Ff102CtlIdlancto,
+                Ff102CtlMsg = entity.Ff102CtlMsg,
+                Ff102ApiId = entity.Ff102ApiId,
+                Ff102NoTitulocliente = entity.Ff102NoTitulocliente,
+                Ff102HashId = entity.Ff102HashId,
+                Ff102PixQrcode = entity.Ff102PixQrcode,
+                Ff102Txid = entity.Ff102Txid,
+                Ff102CodgOcorrencia = entity.Ff102CodgOcorrencia,
+                Ff102Ocorrencia = entity.Ff102Ocorrencia,
+                Ff102Jurosrecebido = entity.Ff102Jurosrecebido,
+                Ff102Multarecebida = entity.Ff102Multarecebida,
+                Ff102Outrovlrrecebido = entity.Ff102Outrovlrrecebido,
+                Ff102Descconcedido = entity.Ff102Descconcedido,
+                Ff102Valorpago = entity.Ff102Valorpago,
+                Ff102DataRecto = entity.Ff102DataRecto,
+                Ff102DataCredito = entity.Ff102DataCredito,
+                Ff102DataBxaut = entity.Ff102DataBxaut,
+                Ff102HoraBxaut = entity.Ff102HoraBxaut,
+                Ff102DataProtesto = entity.Ff102DataProtesto,
+                Ff102Diasprotesto = entity.Ff102Diasprotesto,
+                Ff102Prazorecto = entity.Ff102Prazorecto,
+                Ff102DataLimrecto = entity.Ff102DataLimrecto,
+                Ff102CodigoErroApi = entity.Ff102CodigoErroApi,
+                Ff102VersaoErroApi = entity.Ff102VersaoErroApi,
+                Ff102MsgErroApi = entity.Ff102MsgErroApi,
+                Ff102OcorErroApi = entity.Ff102OcorErroApi,
+                Ff102OcorrenciaApi = entity.Ff102OcorrenciaApi,
+                Ff102LiqApi = entity.Ff102LiqApi,
+                Ff102BaixaApi = entity.Ff102BaixaApi,
+                Ff102DataAtualizacao = entity.Ff102DataAtualizacao,
+                Ff102HoraAtualizacao = entity.Ff102HoraAtualizacao,
+                Ff102Flagbxtes = entity.Ff102Flagbxtes,
+                Ff102Isaprovacao = entity.Ff102Isaprovacao,
+                Ff102AdtoId = entity.Ff102AdtoId,
+                Ff102Vdeduzidoadto = entity.Ff102Vdeduzidoadto,
+                Ff102Hashcnab = entity.Ff102Hashcnab,
+                Ff102Cpcodgrfederalid = entity.Ff102Cpcodgrfederalid,
+                Ff102Cptppagtoid = entity.Ff102Cptppagtoid,
+                Ff102Cptpprodutobbid = entity.Ff102Cptpprodutobbid,
+                Ff102PixcobTransactionid = entity.Ff102PixcobTransactionid,
+                Ff102PixcobQrcode = entity.Ff102PixcobQrcode,
+                Ff102PixcobStatus = entity.Ff102PixcobStatus,
+                Ff102TrilhaApiid = entity.Ff102TrilhaApiid,
+                NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
+                NavBB005 = entity.NavBB005?.ToDtoGetBB005_Exibicao(),
+                NavBB006 = entity.NavBB006?.ToDtoGetSimples(),
+                NavBB007 = entity.NavBB007?.ToDtoGetSimples(),
+                NavBB008 = entity.NavBB008?.ToDtoGetSimples(),
+                NavBB009 = entity.NavBB009?.ToDtoGetBB009_Exibicao(),
+                NavBB012 = entity.NavBB012?.ToDtoBB012_Exibicao(),
+                NavBB019 = entity.NavBB019?.ToDtoGetBB019Exibicao(),
+                NavBB012ContaID = entity.NavBB012ContaID?.ToDtoBB012_Exibicao(),
+                NavBB012ContaRealID = entity.NavBB012ContaRealID?.ToDtoBB012_Exibicao(),
+                NavBB012AvalistaID = entity.NavBB012AvalistaID?.ToDtoBB012_Exibicao(),
+                NavBB01201Jur = entity.NavBB01201Jur,
+                NavBB026 = entity.NavBB026?.ToDtoGetExibicao(),
+                NavFF003 = entity.NavFF003?.ToDtoGetExibicao(),
+                NavFF102C021 = entity.NavFF102C021,
+                NavFF102Des = entity.NavFF102Des,
+                NavFF102Ent = entity.NavFF102Ent,
+                NavFF102Sit = entity.NavFF102Sit,
+                NavFF102C018 = entity.NavFF102C018,
+                NavFF102G073 = entity.NavFF102G073,
+                NavFF102Cob = entity.NavFF102Cob,
+                NavFF102Aut = entity.NavFF102Aut,
+                NavFF102ApiBanco = entity.NavFF102ApiBanco,
+                NavFF102Adt = entity.NavFF102Adt,
+                NavFF112ApiOcorrencium = entity.NavFF112ApiOcorrencium,
+                NavFF112ApiLiquidacao = entity.NavFF112ApiLiquidacao,
+                NavFF112ApiBaixa = entity.NavFF112ApiBaixa,
+                NavFF120Trackapi = entity.NavFF120Trackapi,
+                NavSy001Usuario = entity.NavSy001Usuario?.ToDtoGetSimples(),
+                NavSy001CodCobrador = entity.NavSy001CodCobrador?.ToDtoGetSimples(),
+                NavSy001Aprovador = entity.NavSy001Aprovador?.ToDtoGetSimples(),
+                NavSy001CTBUsuarioID = entity.NavSy001CTBUsuarioID?.ToDtoGetSimples(),
+                NavSy001CTBEstUsuarioID = entity.NavSy001CTBEstUsuarioID?.ToDtoGetSimples(),
+                NavSy001CTLUsuarioID = entity.NavSy001CTLUsuarioID?.ToDtoGetSimples(),
+                NavSy001CTLEstUsuarioID = entity.NavSy001CTLEstUsuarioID?.ToDtoGetSimples(),
+                NavStaticaFluxoCaixa = entity.NavStaticaFluxoCaixa,
+                NavStaticaConfirmadoID = entity.NavStaticaConfirmadoID
+            };
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

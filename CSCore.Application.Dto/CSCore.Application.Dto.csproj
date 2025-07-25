@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Dtos\Materiais_GG\GG00X\GG156\**" />
+    <EmbeddedResource Remove="Dtos\Materiais_GG\GG00X\GG156\**" />
+    <None Remove="Dtos\Materiais_GG\GG00X\GG156\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CSCompartilhado.CSLB900_MSTools\CSLB900.MSTools.csproj" />
+    <ProjectReference Include="..\CSCore.Domain\CSCore.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CSCore.Domain;Interfaces
+{
+    public interface IAA001Repository : IBaseCrud<CSICP_AA001>
+    {
+        Task<CSICP_AA001> GetByIdAsync(string id, int tenant);
+        Task<IEnumerable<CSICP_AA001>> GetListAsync(int tenant, string? search);
+    }
+}
