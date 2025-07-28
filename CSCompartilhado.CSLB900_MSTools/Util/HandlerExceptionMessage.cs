@@ -12,7 +12,7 @@ namespace CSLB900.MSTools.Util
                 msg = ex.InnerException.Message;
             }
             // Loga o erro usando Serilog
-            Log.Error(ex, "Exceção capturada: {Mensagem}", msg);
+            Log.Error(ex, "ERROR: Exceção capturada: {Mensagem}", msg);
             return msg;
         }
     }
