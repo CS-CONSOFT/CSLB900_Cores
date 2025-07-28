@@ -210,7 +210,7 @@ namespace CSCore.Application.Dto.Mapper.FF00x
                 Ff102TrilhaApiid = entity.Ff102TrilhaApiid,
                 NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
                 NavBB005 = entity.NavBB005?.ToDtoGetBB005_Exibicao(),
-                NavBB006 = entity.NavBB006?.ToDtoGetSimples(),
+                NavBB006 = entity.NavBB006?.ToDtoGetExibicao(),
                 NavBB007 = entity.NavBB007?.ToDtoGetSimples(),
                 NavBB008 = entity.NavBB008?.ToDtoGetSimples(),
                 NavBB009 = entity.NavBB009?.ToDtoGetBB009_Exibicao(),
