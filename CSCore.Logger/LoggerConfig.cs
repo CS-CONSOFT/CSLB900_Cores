@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using Serilog.Events;
 
 namespace CS_Logs;
 

@@ -21,8 +21,8 @@ namespace CSCore.Ifs.AnaliseDeCredito.AnaliseCredito
             (bool in_CalcularScoreClearsale, int in_tenantID, string in_contaID)
         {
             Serilog.Log.Information(
-        "Executando análise de crédito | CalcularScoreClearsale: {CalcularScoreClearsale}, TenantID: {TenantID}, ContaID: {ContaID}, Data: {Data}",
-        in_CalcularScoreClearsale, in_tenantID, in_contaID, DateTime.Now);
+                "Executando análise de crédito | CalcularScoreClearsale: {CalcularScoreClearsale}, TenantID: {TenantID}, ContaID: {ContaID}, Data: {Data}",
+                in_CalcularScoreClearsale, in_tenantID, in_contaID, DateTime.Now);
 
             var in_variaveisCalculo = new AnaliseCreditoParametros();
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();

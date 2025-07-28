@@ -21,6 +21,7 @@
 	  <ProjectReference Include="..\CSCore.Ifs.AnaliseDeCredito\CSCore.Ifs.AnaliseDeCredito.csproj" />
 	  <ProjectReference Include="..\CSCore.Ifs.Eventos\CSCore.Ifs.Eventos.csproj" />
 	  <ProjectReference Include="..\CSCore.Ifs.GG\CSCore.Ifs.GG.csproj" />
+	  <ProjectReference Include="..\CSCore.Logger\CS_Logs.csproj" />
 	</ItemGroup>
 
 </Project>
