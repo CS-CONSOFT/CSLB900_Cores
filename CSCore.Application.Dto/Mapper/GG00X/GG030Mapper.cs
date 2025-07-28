@@ -1,6 +1,7 @@
 ﻿using CSBS101._82Application.Mapper.BB00X;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG030;
+using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSSY103.C82Application.Mapper;
 
