@@ -6,6 +6,7 @@ using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.GG.Repository.BaixaSaldo;
 using CSLB900.MSTools.Util;
 using MassTransit;
+using Serilog;
 
 namespace CSCore.Ifs.GG
 {
@@ -21,6 +22,10 @@ namespace CSCore.Ifs.GG
         private readonly IGenerateProtocolo _generateProtocolo = generateProtocolo;
         public async Task Consume(ConsumeContext<Rbt_CS_BaixaMvto_EntSaida> context)
         {
+            Log.Information("Rbt_CS_BaixaMvto_EntSaida recebido em {Data}", DateTime.Now);
+            Log.Information("Parametros recebidos: {@Message}", context.Message);
+
+
             using (var transaction = await _appDbContext.Database.BeginTransactionAsync())
             {
                 try

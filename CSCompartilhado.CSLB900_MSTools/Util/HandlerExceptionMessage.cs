@@ -1,4 +1,6 @@
-﻿namespace CSLB900.MSTools.Util
+﻿using Serilog;
+
+namespace CSLB900.MSTools.Util
 {
     public static class HandlerExceptionMessage
     {
@@ -9,6 +11,8 @@
             {
                 msg = ex.InnerException.Message;
             }
+            // Loga o erro usando Serilog
+            Log.Error(ex, "Exceção capturada: {Mensagem}", msg);
             return msg;
         }
     }

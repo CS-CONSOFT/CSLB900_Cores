@@ -1,11 +1,7 @@
-﻿using CSCore.Ifs.AnaliseDeCredito.NovaPasta;
+﻿using CSCore.Ifs.AnaliseDeCredito.AnaliseCredito;
 using CSCore.RabbitMQ.PublishObjetos;
 using MassTransit;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Serilog;
 
 namespace CSCore.RabbitMQ.Bus
 {
@@ -14,6 +10,7 @@ namespace CSCore.RabbitMQ.Bus
         private CreditoSemScore _creditoSemScore = creditoSemScore;
         public async Task Consume(ConsumeContext<Rbt_CS_AnaliseCredito> context)
         {
+            Log.Information("Rbt_CS_AnaliseCredito recebido em {Data}", DateTime.Now);
             await _creditoSemScore.ExecutarAnaliseCredito(
                 context.Message.in_CalcularScoreClearsale,
                 context.Message.in_tenantID,
