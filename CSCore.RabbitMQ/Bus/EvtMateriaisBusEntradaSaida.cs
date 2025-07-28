@@ -22,8 +22,8 @@ namespace CSCore.Ifs.GG
         private readonly IGenerateProtocolo _generateProtocolo = generateProtocolo;
         public async Task Consume(ConsumeContext<Rbt_CS_BaixaMvto_EntSaida> context)
         {
-            Log.Information("Rbt_CS_BaixaMvto_EntSaida recebido em {Data}", DateTime.Now);
-            Log.Information("Parametros recebidos: {@Message}", context.Message);
+            Log.Information("LOGGER_Rbt_CS_BaixaMvto_EntSaida recebido em {Data}", DateTime.UtcNow.ToLocalTime());
+            Log.Information("LOGGER_Parametros recebidos: {@Message}", context.Message);
 
 
             using (var transaction = await _appDbContext.Database.BeginTransactionAsync())
