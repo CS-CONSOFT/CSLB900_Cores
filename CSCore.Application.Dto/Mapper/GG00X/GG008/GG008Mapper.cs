@@ -2,6 +2,7 @@
 using CSCore.Application.Dto.Dtos;
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008;
 using CSCore.Application.Dto.Mapper.GG00X;
+using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSSY103.C82Application.Mapper;
 using GG104Materiais.C82Application.Dto.GG00X.GG008;
