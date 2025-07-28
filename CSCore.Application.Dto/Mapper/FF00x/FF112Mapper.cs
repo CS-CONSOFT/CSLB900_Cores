@@ -1,16 +1,19 @@
-﻿using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF112;
+﻿using CSBS101._82Application.Mapper.BB00X;
+using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF112;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF112;
 
 namespace CSCore.Application.Dto.Mapper.FF00x
 {
     public static class FF112Mapper
     {
-        public static DtoGetFF112 ToDtoGetFF112(this CSICP_FF112 entity)
+        public static DtoGetFF112 ToDtoGetFF112(this RepoDtoCSICP_FF112 entity)
         {
             return new DtoGetFF112
             {
@@ -64,6 +67,15 @@ namespace CSCore.Application.Dto.Mapper.FF00x
                 Ff112Prazonegativacao = entity.Ff112Prazonegativacao,
                 Ff112OrgaoNeg = entity.Ff112OrgaoNeg,
                 //Navs
+                NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
+                NavBB006 = entity.NavBB006?.ToDtoGetExibicao(),
+                NavFF112C006 = entity.NavFF112C006,
+                NavFF112C026 = entity.NavFF112C026,
+                NavFF112C028 = entity.NavFF112C028,
+                NavFF112Cnab = entity.NavFF112Cnab,
+                NavFF112G005 = entity.NavFF112G005,
+                NavFF112G025 = entity.NavFF112G025,
+                NavFF112G028 = entity.NavFF112G028
             };
         }
     }

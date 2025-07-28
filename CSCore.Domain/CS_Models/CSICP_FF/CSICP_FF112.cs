@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Domain.CS_Models.Staticas.FF;
+using System;
 using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
@@ -103,6 +104,17 @@ public partial class CSICP_FF112
 
     public int? Ff112OrgaoNeg { get; set; }
 
-    //Tabelas Navs
-    public CSICP_BB001? NavBB001 { get; set; }
+    public class RepoDtoCSICP_FF112 : CSICP_FF112
+    {
+        public CSICP_BB001? NavBB001 { get; set; }
+        public CSICP_Bb006? NavBB006 { get; set; }
+        public OsusrE9aCsicpFf112C006? NavFF112C006 { get; set; }
+        public OsusrE9aCsicpFf112C026? NavFF112C026 { get; set; }
+        public OsusrE9aCsicpFf112C028? NavFF112C028 { get; set; }
+        public OsusrE9aCsicpFf112G005? NavFF112G005 { get; set; }
+        public OsusrE9aCsicpFf112G025? NavFF112G025 { get; set; }
+        public OsusrE9aCsicpFf112G028? NavFF112G028 { get; set; }
+        public OsusrE9aCsicpFf112Cnab? NavFF112Cnab { get; set; }
+    }
+
 }

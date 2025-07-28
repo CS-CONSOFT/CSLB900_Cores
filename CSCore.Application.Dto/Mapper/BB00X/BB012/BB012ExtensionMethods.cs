@@ -725,7 +725,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
 
                 NavBB010_Zona = entity.BB010_Zona?.ToDtoGetSimples(),
                 NavBB011_Atividade = entity.BB011_Atividade?.ToDtoGet(),
-                NavBB006_BancoPadrao = entity.BB006_BancoPadrao?.ToDtoGetSimples(),
+                NavBB006_BancoPadrao = entity.BB006_BancoPadrao?.ToDtoGetExibicao(),
                 NavRevenda = entity.Revenda,
                 NavRequisicao = entity.Requisicao,
                 NavBB025_NatOperacao = entity.BB025_NatOperacao?.ToDtoGetSimples(),

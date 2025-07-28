@@ -21,7 +21,7 @@ namespace GG104Materiais.C82Application.Mapper
                 Gg016Descricao = entity.Gg016Descricao,
                 Gg016Lincolid = entity.Gg016Lincolid,
                 Gg016Ismarcado = entity.Gg016Ismarcado,
-                //NavBB001 = entity.NavFilialBB001?.ToDtoGetSimples(),
+                //NavBB001 = entity.NavFilialBB001?.ToDtoGetExibicao(),
                 NavCSICP_GG016b = entity.NavCSICP_GG016b
             };
         }
