@@ -18,12 +18,11 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF108
 
         public string? Ff108UsuarioId { get; set; }
 
-        public CSICP_FF108 ToEntity(int tenant, string id)
+        public CSICP_FF108 ToEntity(int tenant, string? _)
         {
             return new CSICP_FF108
             {
                 TenantId = tenant,
-                Ff108Id = long.Parse(id),
                 Ff105Borderoid = Ff105Borderoid,
                 Ff108Datahora = Ff108Datahora,
                 Ff108Mensagem = Ff108Mensagem,

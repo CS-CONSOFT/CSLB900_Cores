@@ -13,6 +13,6 @@ namespace CSCore.Domain.Interfaces.FF._1XX
     {
         Task<RepoDtoCSICP_FF112?> GetByIdAsync(int in_tenant, string id);
         Task<(List<RepoDtoCSICP_FF112>, int)> GetListAsync(
-            int in_tenant, int in_page, int in_pageSize, string? in_estabID, string? in_descCnab, string? in_bancoID, bool? in_isActive);
+            int in_tenant, int in_page, int in_pageSize, string? in_estabID, string? in_descCnab, string? in_bancoID, bool? in_isActive, int? in_tipoOperacao);
     }
 }

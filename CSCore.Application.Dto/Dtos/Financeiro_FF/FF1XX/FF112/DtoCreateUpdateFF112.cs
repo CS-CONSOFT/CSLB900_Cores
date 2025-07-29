@@ -104,12 +104,12 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF112
 
         public int? Ff112OrgaoNeg { get; set; }
 
-        public CSICP_FF112 ToEntity(int tenant, string id)
+        public CSICP_FF112 ToEntity(int tenant, string? id)
         {
             return new CSICP_FF112
             {
                 TenantId = tenant,
-                Id = id,
+                Id = id!,
                 Ff112Filialid = Ff112Filialid,
                 Ff112Bancoid = Ff112Bancoid,
                 Ff112Descregistro = Ff112Descregistro,
