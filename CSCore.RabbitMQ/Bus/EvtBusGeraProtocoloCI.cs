@@ -1,6 +1,7 @@
 ﻿using CSCore.Application.Dto.Dtos.EvtRabbitMQ;
 using CSCore.Ifs.Eventos.Repository;
 using MassTransit;
+using Serilog;
 
 namespace CSCore.RabbitMQ.Bus
 {

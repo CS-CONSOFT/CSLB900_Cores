@@ -3,7 +3,7 @@ using CSCore.Domain.Interfaces.Estatica;
 using CSCore.Domain.Interfaces.GG._03X;
 using CSCore.RabbitMQ.PublishObjetos;
 using MassTransit;
-
+using Serilog;
 namespace CSCore.RabbitMQ.Bus
 {
     public class EvtBusProcessarInventario_GG032 : IConsumer<Rbt_CS_ProcessarInventario_GG032>

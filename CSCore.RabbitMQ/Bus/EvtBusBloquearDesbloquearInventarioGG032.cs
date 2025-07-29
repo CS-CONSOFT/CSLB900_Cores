@@ -2,7 +2,7 @@
 using CSCore.Domain.Interfaces.GG._03X;
 using CSCore.RabbitMQ.PublishObjetos;
 using MassTransit;
-
+using Serilog;
 namespace CSCore.RabbitMQ.Bus
 {
     public class EvtBusBloquearDesbloquearInventarioGG032 : IConsumer<Rbt_CS_BloquearDesbloquearInventario_GG032>

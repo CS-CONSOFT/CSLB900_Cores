@@ -1,7 +1,7 @@
 ﻿using CSCore.Domain.Interfaces.GG._07X;
 using CSCore.Ifs.Eventos.PublishObjetos;
 using MassTransit;
-
+using Serilog;
 namespace CSCore.RabbitMQ.Bus
 {
     public class EvtBusRbtProcessa_Baixa_GG071 : IConsumer<Rbt_CS_RI_Processa_Baixa_GG071_Prm>

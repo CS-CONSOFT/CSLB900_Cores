@@ -28,6 +28,8 @@ namespace CSCore.Ifs.Repository.GG._07X
             CSICP_GG073? csicpGg030Entity = await query.FirstOrDefaultAsync();
             if (csicpGg030Entity is null) throw new KeyNotFoundException(HandlerReturnMessages.ENTITY_NOT_FOUND);
 
+
+
             return csicpGg030Entity;
         }
 
@@ -37,7 +39,7 @@ namespace CSCore.Ifs.Repository.GG._07X
             _appDbContext.Attach(entidadeParaAtualizar);
             entidadeParaAtualizar.Gg073Statusid = gg073Status_id_fechado;
             _appDbContext.Entry(entidadeParaAtualizar).Property(e => e.Gg073Statusid).IsModified = true;
-            await _appDbContext.SaveChangesAsync();
+
 
         }
 

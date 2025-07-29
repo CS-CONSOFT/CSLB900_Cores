@@ -1,7 +1,7 @@
 ﻿using CSCore.Domain.Interfaces.GG._03X;
 using CSCore.RabbitMQ.PublishObjetos;
 using MassTransit;
-
+using Serilog;
 namespace CSCore.RabbitMQ.Bus
 {
     public class EvtBusProcessaAjustePrecoGG031 : IConsumer<Rbt_CS_ProcessaAjustePreco_GG031_Prm>
