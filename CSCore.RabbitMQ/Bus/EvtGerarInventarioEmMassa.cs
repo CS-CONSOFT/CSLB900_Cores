@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain.Interfaces.GG._03X;
 using CSCore.RabbitMQ.PublishObjetos;
 using MassTransit;
+using Serilog;
 
 namespace CSCore.RabbitMQ.Bus
 {
