@@ -15,6 +15,11 @@ namespace CSCore.RabbitMQ.Bus
 
         public async Task Consume(ConsumeContext<Rbt_CS_ProcessaAjustePreco_GG031_Prm> context)
         {
+            Log.Information("RabbitMQ: Mensagem recebida no consumer {Consumer} às {Data}. Tipo da mensagem: {MessageType}. Conteúdo: {@Message}",
+             this.GetType().Name,
+             DateTime.UtcNow.ToLocalTime(),
+             context.Message.GetType().Name,
+             context.Message);
             await _gg031Repository.ProcessaAjustePreco(
                 context.Message.movimentoId,
                 context.Message.tenantId,

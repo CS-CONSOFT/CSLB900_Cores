@@ -19,7 +19,11 @@ namespace CSCore.RabbitMQ.Bus
         public async Task Consume(ConsumeContext<Rbt_CS_BloquearDesbloquearInventario_GG032> context)
         {
 
-
+            Log.Information("RabbitMQ: Mensagem recebida no consumer {Consumer} às {Data}. Tipo da mensagem: {MessageType}. Conteúdo: {@Message}",
+             this.GetType().Name,
+             DateTime.UtcNow.ToLocalTime(),
+             context.Message.GetType().Name,
+             context.Message);
             int idGG032StaBloqueado = await _staticaLabelRepository.GetIDStaticasByTypeGG032StaPorCodCS("Bloqueado");
             int idGG032StaSolicitado = await _staticaLabelRepository.GetIDStaticasByTypeGG032StaPorCodCS("Solicitado");
 

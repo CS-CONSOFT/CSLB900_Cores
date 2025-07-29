@@ -22,8 +22,11 @@ namespace CSCore.Ifs.GG
         private readonly IGenerateProtocolo _generateProtocolo = generateProtocolo;
         public async Task Consume(ConsumeContext<Rbt_CS_BaixaMvto_EntSaida> context)
         {
-            Log.Information("LOGGER_Rbt_CS_BaixaMvto_EntSaida recebido em {Data}", DateTime.UtcNow.ToLocalTime());
-            Log.Information("LOGGER_Parametros recebidos: {@Message}", context.Message);
+            Log.Information("RabbitMQ: Mensagem recebida no consumer {Consumer} às {Data}. Tipo da mensagem: {MessageType}. Conteúdo: {@Message}",
+                this.GetType().Name,
+                DateTime.UtcNow.ToLocalTime(),
+                context.Message.GetType().Name,
+                context.Message);
 
 
             using (var transaction = await _appDbContext.Database.BeginTransactionAsync())
@@ -34,6 +37,8 @@ namespace CSCore.Ifs.GG
                     int contadorErro = 0;
                     CSICP_GG073? gg073Encontrada =
                             await _gg073Repo.GetByIdAsync(context.Message.ParametrosBaixaSaldo.GG073_ID, context.Message.Tenant_ID);
+
+
 
                     if (gg073Encontrada is null) throw new KeyNotFoundException("Movimento não encontrado");
 
@@ -110,6 +115,7 @@ namespace CSCore.Ifs.GG
                     await _gg073Repo
                         .UpdateGG073StatusId(gg073Encontrada, context.Message.ParametrosBaixaSaldo.StID_IdGG073Status_Fechado);
 
+                    await _appDbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
                 catch (Exception ex)

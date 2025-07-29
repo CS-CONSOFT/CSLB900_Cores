@@ -9,6 +9,11 @@ namespace CSCore.RabbitMQ.Bus
         private readonly IGG032Repository _GG032Repository = gG032Repository;
         public async Task Consume(ConsumeContext<Rbt_CS_GerarInventarioEmMassa_GG032> context)
         {
+            Log.Information("RabbitMQ: Mensagem recebida no consumer {Consumer} às {Data}. Tipo da mensagem: {MessageType}. Conteúdo: {@Message}",
+             this.GetType().Name,
+             DateTime.UtcNow.ToLocalTime(),
+             context.Message.GetType().Name,
+             context.Message);
             string result = await _GG032Repository
                  .CS_GeradorInventarioEmMassa(
                 context.Message.in_tenantId,
