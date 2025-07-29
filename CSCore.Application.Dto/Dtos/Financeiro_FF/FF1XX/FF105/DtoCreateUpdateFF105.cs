@@ -72,12 +72,12 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF105
 
         public DateTime? Ff105DataCriacao { get; set; }
 
-        public CSICP_FF105 ToEntity(int tenant, string id) //verificar o ID com o Valter
+        public CSICP_FF105 ToEntity(int tenant, string? id)
         {
             return new CSICP_FF105
             {
                 TenantId = tenant,
-                Id = id,
+                Id = id!,
                 Ff105Filialid = Ff105Filialid,
                 Ff105Descricaobordero = Ff105Descricaobordero,
                 Ff105ClienteInicial = Ff105ClienteInicial,
