@@ -62,5 +62,10 @@ namespace CSCore.RabbitMQ
         public static string FilaProcessaGeraInventarioGG054 => "Queue_ProcessaGeraInventarioGG054";
         public static string ExProcessaGeraInventarioGG054 => "Exchange_ProcessaGeraInventarioGG054";
         public static string ProcessaGeraInventarioGG054 => "Action_ProcessaGeraInventarioGG054";
+
+        public static string FilaProcessaAnaliseDeCredito => "Queue_ProcessaAnaliseDeCredito";
+        public static string ExProcessaAnaliseDeCredito => "Exchange_ProcessaAnaliseDeCredito";
+        public static string ProcessaAnaliseDeCredito => "Action_ProcessaAnaliseDeCredito";
     }
 }
+
