@@ -1,15 +1,8 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_DD;
-using EnviaNFeHercules.C82Application.Dto.DD.DD040;
 using EnviaNFeHercules.C82Application.Dto.DD.DD060;
 using EnviaNFeHercules.C82Application.Mapper.DD00X.DD060;
 using GG104Materiais.C82Application.Mapper;
 using GG104Materiais.C82Application.Mapper.GG008;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static CSCore.Domain.CS_Models.CSICP_DD.CSICP_DD060;
 
 namespace EnviaNFeHercules.C82Application.Mapper.DD00X
 {

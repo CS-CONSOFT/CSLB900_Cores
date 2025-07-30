@@ -19,10 +19,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         : RepositorioBaseImpl<CSICP_FF119>(appDbContext, "Ff119Id"), IFF119Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task<RepoDtoCSICP_FF119?> GetByIdAsync(int in_tenant, long id)
+        public async Task<RepoDtoCSICP_FF119?> GetByIdAsync(int in_tenant, long in_ff119Id)
         {
             IQueryable<RepoDtoCSICP_FF119> query = GetQueryBase(in_tenant);
-            RepoDtoCSICP_FF119? cSICP_FF119 = await query.FirstOrDefaultAsync(e => e.Ff119Id == id);
+            RepoDtoCSICP_FF119? cSICP_FF119 = await query.FirstOrDefaultAsync(e => e.Ff119Id == in_ff119Id);
             return cSICP_FF119;
         }
 
