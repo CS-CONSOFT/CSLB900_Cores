@@ -1,4 +1,5 @@
 ﻿using CSCore.Application.Dto;
+using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.Interfaces.GG._07X;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
@@ -28,99 +29,99 @@ namespace CSCore.Ifs.GG
                 context.Message);
 
 
-            //using (var transaction = await _appDbContext.Database.BeginTransactionAsync())
-            //{
-            //    try
-            //    {
-            //        List<CSICP_GG074> listaGG074 = context.Message.ListaGG074;
-            //        int contadorErro = 0;
-            //        CSICP_GG073? gg073Encontrada =
-            //                await _gg073Repo.GetByIdAsync(context.Message.ParametrosBaixaSaldo.GG073_ID, context.Message.Tenant_ID);
+            using (var transaction = await _appDbContext.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    List<CSICP_GG074> listaGG074 = context.Message.ListaGG074;
+                    int contadorErro = 0;
+                    CSICP_GG073? gg073Encontrada =
+                            await _gg073Repo.GetByIdAsync(context.Message.ParametrosBaixaSaldo.GG073_ID, context.Message.Tenant_ID);
 
-            //        if (gg073Encontrada is null) throw new KeyNotFoundException("Movimento não encontrado");
+                    if (gg073Encontrada is null) throw new KeyNotFoundException("Movimento não encontrado");
 
-            //        if (gg073Encontrada.Gg073Statusid != context.Message.ParametrosBaixaSaldo.StID_IdGG073Status_Aberto)
-            //            throw new Exception("Movimento precisa estar aberto");
+                    if (gg073Encontrada.Gg073Statusid != context.Message.ParametrosBaixaSaldo.StID_IdGG073Status_Aberto)
+                        throw new Exception("Movimento precisa estar aberto");
 
-            //        foreach (var currentMovimentoGG074 in listaGG074)
-            //        {
-            //            decimal protocolo = await _generateProtocolo
-            //               .Fcn_ProtocoloGeral(context.Message.ParametrosBaixaSaldo.BB001_ID!);
+                    foreach (var currentMovimentoGG074 in listaGG074)
+                    {
+                        decimal protocolo = await _generateProtocolo
+                           .Fcn_ProtocoloGeral(context.Message.ParametrosBaixaSaldo.BB001_ID!);
 
-            //            context.Message.ParametrosBaixaSaldo.GG520_ID = currentMovimentoGG074.Gg074Saldoid;
-            //            context.Message.ParametrosBaixaSaldo.QuantidadeASerBaixada = currentMovimentoGG074.Gg074Qtd;
-            //            context.Message.ParametrosBaixaSaldo.Detalhe_Movimento_ID = currentMovimentoGG074.Gg074Id.ToString();
-            //            context.Message.ParametrosBaixaSaldo.ValorUnitario = currentMovimentoGG074.Gg074Vunitario;
-            //            context.Message.ParametrosBaixaSaldo.NavCurrentGG074 = currentMovimentoGG074;
-            //            context.Message.ParametrosBaixaSaldo.ProtocoloGG028 = protocolo;
-
-
-            //            STATUS_SALDO statusSaldo = await _baixaSaldo
-            //                .CS_BaixarSaldo(
-            //                context.Message.Tenant_ID,
-            //                context.Message.ParametrosBaixaSaldo.GG520_ID,
-            //                protocolo.ToString(),
-            //                context.Message.ParametrosBaixaSaldo.ProgramaOrigem,
-            //                context.Message.ParametrosBaixaSaldo.UsuarioID,
-            //                context.Message.ParametrosBaixaSaldo.NavCurrentGG074.Gg074Id.ToString(),
-            //                context.Message.ParametrosBaixaSaldo.Header_Movimento_ID,
-            //                context.Message.ParametrosBaixaSaldo.Movimento_DataMovimento,
-            //                context.Message.ParametrosBaixaSaldo.QuantidadeASerBaixada,
-            //                context.Message.ParametrosBaixaSaldo.NavCurrentGG074.Gg074Tmovid ?? 0,
-            //                context.Message.ParametrosBaixaSaldo.StID_GG073_EntSaida_Saida_ID,
-            //                context.Message.ParametrosBaixaSaldo.StID_GG028_EntSaida_Saida_ID,
-            //                context.Message.ParametrosBaixaSaldo.StID_GG028_EntSaida_Entrada_ID,
-            //                context.Message.ParametrosBaixaSaldo.StID_GG028_Nat_ID,
-            //                context.Message.ParametrosBaixaSaldo.StID_Estatica_SIM_Id);
-
-            //            if (statusSaldo == STATUS_SALDO.EM_CONTAGEM)
-            //            {
-            //                contadorErro += 1;
-            //                await _baixaSaldo.AtualizaStatusDaGG074(currentMovimentoGG074, (int)ESTADO_SALDO.INVENTARIO);
-            //            }
+                        context.Message.ParametrosBaixaSaldo.GG520_ID = currentMovimentoGG074.Gg074Saldoid;
+                        context.Message.ParametrosBaixaSaldo.QuantidadeASerBaixada = currentMovimentoGG074.Gg074Qtd;
+                        context.Message.ParametrosBaixaSaldo.Detalhe_Movimento_ID = currentMovimentoGG074.Gg074Id.ToString();
+                        context.Message.ParametrosBaixaSaldo.ValorUnitario = currentMovimentoGG074.Gg074Vunitario;
+                        context.Message.ParametrosBaixaSaldo.NavCurrentGG074 = currentMovimentoGG074;
+                        context.Message.ParametrosBaixaSaldo.ProtocoloGG028 = protocolo;
 
 
-            //            if (statusSaldo == STATUS_SALDO.SALDO_ZERO || statusSaldo == STATUS_SALDO.SALDO_NEGATIVO)
-            //            {
-            //                contadorErro += 1;
-            //                await _baixaSaldo.AtualizaStatusDaGG074(currentMovimentoGG074, (int)ESTADO_SALDO.SALDO_ZERO);
-            //            }
+                        STATUS_SALDO statusSaldo = await _baixaSaldo
+                            .CS_BaixarSaldo(
+                            context.Message.Tenant_ID,
+                            context.Message.ParametrosBaixaSaldo.GG520_ID,
+                            protocolo.ToString(),
+                            context.Message.ParametrosBaixaSaldo.ProgramaOrigem,
+                            context.Message.ParametrosBaixaSaldo.UsuarioID,
+                            context.Message.ParametrosBaixaSaldo.NavCurrentGG074.Gg074Id.ToString(),
+                            context.Message.ParametrosBaixaSaldo.Header_Movimento_ID,
+                            context.Message.ParametrosBaixaSaldo.Movimento_DataMovimento,
+                            context.Message.ParametrosBaixaSaldo.QuantidadeASerBaixada,
+                            context.Message.ParametrosBaixaSaldo.NavCurrentGG074.Gg074Tmovid ?? 0,
+                            context.Message.ParametrosBaixaSaldo.StID_GG073_EntSaida_Saida_ID,
+                            context.Message.ParametrosBaixaSaldo.StID_GG028_EntSaida_Saida_ID,
+                            context.Message.ParametrosBaixaSaldo.StID_GG028_EntSaida_Entrada_ID,
+                            context.Message.ParametrosBaixaSaldo.StID_GG028_Nat_ID,
+                            context.Message.ParametrosBaixaSaldo.StID_Estatica_SIM_Id);
 
-            //            if (statusSaldo == STATUS_SALDO.ERRO)
-            //            {
-            //                contadorErro += 1;
-            //                continue;
-            //            }
-
-
-            //            if (statusSaldo == STATUS_SALDO.OK)
-            //                await _baixaSaldo.AtualizaStatusDaGG074(currentMovimentoGG074, (int)ESTADO_SALDO.BAIXADO);
-            //        }
-
-
-            //        if (contadorErro == 0)
-            //            gg073Encontrada!.Gg073Statusid = context.Message.ParametrosBaixaSaldo.StID_IdGG073Status_Fechado;
-
-
-            //        gg073Encontrada!.NavBB005 = null;
-            //        gg073Encontrada!.NavSY001 = null;
-            //        gg073Encontrada!.Gg073AlmoxmovdNavigation = null;
-            //        gg073Encontrada!.Gg073AlmoxmovsaidaNavigation = null;
+                        if (statusSaldo == STATUS_SALDO.EM_CONTAGEM)
+                        {
+                            contadorErro += 1;
+                            await _baixaSaldo.AtualizaStatusDaGG074(currentMovimentoGG074, (int)ESTADO_SALDO.INVENTARIO);
+                        }
 
 
+                        if (statusSaldo == STATUS_SALDO.SALDO_ZERO || statusSaldo == STATUS_SALDO.SALDO_NEGATIVO)
+                        {
+                            contadorErro += 1;
+                            await _baixaSaldo.AtualizaStatusDaGG074(currentMovimentoGG074, (int)ESTADO_SALDO.SALDO_ZERO);
+                        }
 
-            //        await _gg073Repo
-            //            .UpdateGG073StatusId(gg073Encontrada, context.Message.ParametrosBaixaSaldo.StID_IdGG073Status_Fechado);
+                        if (statusSaldo == STATUS_SALDO.ERRO)
+                        {
+                            contadorErro += 1;
+                            continue;
+                        }
 
-            //        await _appDbContext.SaveChangesAsync();
-            //        await transaction.CommitAsync();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        await transaction.RollbackAsync();
-            //        throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
-            //    }
-            //}
+
+                        if (statusSaldo == STATUS_SALDO.OK)
+                            await _baixaSaldo.AtualizaStatusDaGG074(currentMovimentoGG074, (int)ESTADO_SALDO.BAIXADO);
+                    }
+
+
+                    if (contadorErro == 0)
+                        gg073Encontrada!.Gg073Statusid = context.Message.ParametrosBaixaSaldo.StID_IdGG073Status_Fechado;
+
+
+                    gg073Encontrada!.NavBB005 = null;
+                    gg073Encontrada!.NavSY001 = null;
+                    gg073Encontrada!.Gg073AlmoxmovdNavigation = null;
+                    gg073Encontrada!.Gg073AlmoxmovsaidaNavigation = null;
+
+
+
+                    await _gg073Repo
+                        .UpdateGG073StatusId(gg073Encontrada, context.Message.ParametrosBaixaSaldo.StID_IdGG073Status_Fechado);
+
+                    await _appDbContext.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
+                }
+            }
         }
 
 
