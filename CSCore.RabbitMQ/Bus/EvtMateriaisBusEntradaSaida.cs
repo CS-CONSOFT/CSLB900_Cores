@@ -4,6 +4,7 @@ using CSCore.Domain.Interfaces.GG._07X;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.GG.Repository.BaixaSaldo;
+using CSLB900.MSTools.Util;
 using MassTransit;
 using Serilog;
 
