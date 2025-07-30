@@ -22,6 +22,7 @@ namespace CSCore.Ifs.GG
         private readonly IGenerateProtocolo _generateProtocolo = generateProtocolo;
         public async Task Consume(ConsumeContext<Rbt_CS_BaixaMvto_EntSaida> context)
         {
+
             Log.Information("RabbitMQ: Mensagem recebida no consumer {Consumer} às {Data}. Tipo da mensagem: {MessageType}. Conteúdo: {@Message}",
                 this.GetType().Name,
                 DateTime.UtcNow.ToLocalTime(),
