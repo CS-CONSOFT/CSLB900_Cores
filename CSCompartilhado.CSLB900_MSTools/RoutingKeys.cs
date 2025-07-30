@@ -16,5 +16,11 @@
         }
 
         public static string MovimentoEntradaSaida => "CS_Entrada_Saida_Mvto";
+        public static string ExMovimentoEntradaSaida => "Exchange_EvtMateriaisMvtoEntradaSaida_";
+
+
+        public static string ExGeraInventarioEmMassa => "Exchange_Evt_GerarInvetarioEmMassa_";
+        public static string FilaGeraInventarioEmMassa => "Fila_GerarInvetarioEmMassa_GG032_";
+        public static string GeraInventarioEmMassa => "CS_GERAR_INVENTARIO_MASSA";
     }
 }

@@ -6,6 +6,7 @@ using CSCore.Ifs.GG.Repository.Baixa;
 using CSCore.RabbitMQ;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
 {
@@ -30,6 +31,9 @@ namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
 
             string? urlParaRoutingKey = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:9607";
             var routingKey = RoutingKeys.GetRoutingKey(urlParaRoutingKey, RoutingKeys.MovimentoEntradaSaida);
+
+            Log.Debug("RabbitMQ: Enviando movimento entrada saída para Routing Key: " + routingKey);
+
             await _bus.Publish(dtoRabbitMensagem, ctx =>
             {
                 ctx.SetRoutingKey(routingKey);
