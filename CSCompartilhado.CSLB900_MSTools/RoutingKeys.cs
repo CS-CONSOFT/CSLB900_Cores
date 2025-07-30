@@ -17,6 +17,7 @@
 
         public static string MovimentoEntradaSaida => "CS_Entrada_Saida_Mvto";
         public static string ExMovimentoEntradaSaida => "Exchange_EvtMateriaisMvtoEntradaSaida_";
+        public static string FilaMovimentoEntradaSaida => "Fila_EvtMateriaisMvtoEntradaSaida_GG073_";
 
 
         public static string ExGeraInventarioEmMassa => "Exchange_Evt_GerarInvetarioEmMassa_";

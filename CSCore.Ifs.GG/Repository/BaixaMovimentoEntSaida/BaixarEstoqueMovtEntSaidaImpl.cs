@@ -32,7 +32,7 @@ namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
             string? urlParaRoutingKey = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:9607";
             var routingKey = RoutingKeys.GetRoutingKey(urlParaRoutingKey, RoutingKeys.MovimentoEntradaSaida);
 
-            Log.Debug("RabbitMQ: Enviando movimento entrada saída para Routing Key: " + routingKey);
+            Log.Debug("RabbitMQ - Enviando movimento entrada saída para Routing Key: " + routingKey);
 
             await _bus.Publish(dtoRabbitMensagem, ctx =>
             {
