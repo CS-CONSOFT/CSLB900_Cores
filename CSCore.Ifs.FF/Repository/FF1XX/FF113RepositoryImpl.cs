@@ -42,7 +42,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
                    join sy001 in _appDbContext.OsusrE9aCsicpSy001s
                    on ff113cnab.Ff113Usuariopropr equals sy001.Id into sy001_ff113cnab_Join
-                     from sy001 in sy001_ff113cnab_Join.DefaultIfEmpty()
+                   from sy001 in sy001_ff113cnab_Join.DefaultIfEmpty()
 
                    where ff113cnab.TenantId == in_tenant
                    select new RepoDtoCSICP_FF113
@@ -69,7 +69,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Bb001Codigoempresa = bb001.Bb001Codigoempresa,
                            Bb001Razaosocial = bb001.Bb001Razaosocial,
                        } : null,
-                       NavFF112 = ff112 != null ? new RepoDtoCSICP_FF112
+
+                       NavFF112 = ff112 != null ? new CSICP_FF112
                        {
                            TenantId = ff112.TenantId,
                            Id = ff112.Id,
@@ -159,16 +160,19 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             if (in_estabId != null)
                 query = query.Where(e => e.Ff113Filialid == in_estabId);
 
-            //if (in_dataRegistroInicio.HasValue)
-            //{
-            //    query = query.Where(e => e.Ff113Dataregistro >= in_dataRegistroInicio.Value);
-            //}
-            //if (in_dataRegistroFim.HasValue)
-            //{
-            //    query = query.Where(e => e.Ff113Dataregistro <= in_dataRegistroFim.Value);
-            //}
+            if (in_dataRegistroInicio.HasValue || in_dataRegistroFim.HasValue)
+            {
+                query = query.Where(e =>
+                    (!in_dataRegistroInicio.HasValue || e.Ff113Dataregistro >= in_dataRegistroInicio.Value) &&
+                    (!in_dataRegistroFim.HasValue || e.Ff113Dataregistro <= in_dataRegistroFim.Value)
+                );
+            }
+
             if (in_tipo != null)
+            {
                 query = query.Where(e => e.Ff113Tipo == in_tipo);
+            }
+
             return query;
         }
     }

@@ -1,5 +1,4 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_DD;
-using CSCore.Domain.CS_Models.CSICP_DD.DD_40_60;
 using CSCore.Domain.CS_Models.CSICP_GG;
 
 namespace CSCore.Domain.Interfaces.Consumidor

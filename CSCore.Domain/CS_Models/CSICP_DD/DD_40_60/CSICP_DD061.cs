@@ -1,4 +1,4 @@
-﻿using CSCore.Domain.CS_Models.CSICP_DD.DD_40_60;
+﻿using CSCore.Domain.CS_Models.CSICP_DD;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

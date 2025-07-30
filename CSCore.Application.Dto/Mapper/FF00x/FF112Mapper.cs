@@ -81,7 +81,7 @@ namespace CSCore.Application.Dto.Mapper.FF00x
             };
         }
 
-        public static DtoGetFF112 ToDtoGetFF112Simples(this RepoDtoCSICP_FF112 entity)
+        public static DtoGetFF112 ToDtoGetFF112Simples(this CSICP_FF112 entity)
         {
             return new DtoGetFF112
             {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using CSCore.Domain.CS_Models.Staticas.GG;
 
-namespace CSCore.Domain.CS_Models.CSICP_DD.DD_40_60;
+namespace CSCore.Domain.CS_Models.CSICP_DD;
 
 public partial class CSICP_DD060
 {
