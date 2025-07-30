@@ -10,10 +10,11 @@ using Serilog;
 
 namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
 {
-    public class BaixarEstoqueMovtEntSaidaImpl(AppDbContext appDbContext, IBus bus) : IBaixarEstoqueMovtEntSaida
+    public class BaixarEstoqueMovtEntSaidaImpl(AppDbContext appDbContext, ISendEndpointProvider sendEndpointProvider)
+        : IBaixarEstoqueMovtEntSaida
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        private readonly IBus _bus = bus;
+        private readonly ISendEndpointProvider _sendEndpointProvider = sendEndpointProvider;
         public async Task CS001_Baixa_Movto_ENTSAI(ParametrosBaixaSaldo parametrosBaixaEstoque, int tenant)
         {
             //se tiver fechado nao faz nada pra baixo, gg073Stat so pode ser aberto ou erro
@@ -30,11 +31,15 @@ namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
             };
 
             string? urlParaRoutingKey = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:9607";
-            var routingKey = RoutingKeys.GetRoutingKey(urlParaRoutingKey, RoutingKeys.MovimentoEntradaSaida);
+            (string routingKey, string dominio) = RoutingKeys.GetRoutingKeyComDominio(urlParaRoutingKey, RoutingKeys.MovimentoEntradaSaida);
 
             Log.Debug("RabbitMQ - Enviando movimento entrada saída para Routing Key: " + routingKey);
 
-            await _bus.Publish(dtoRabbitMensagem, ctx =>
+            var exchangeName = RoutingKeys.ExMovimentoEntradaSaida + dominio;
+
+            var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri($"exchange:{exchangeName}"));
+
+            await endpoint.Send(dtoRabbitMensagem, ctx =>
             {
                 ctx.SetRoutingKey(routingKey);
             });
