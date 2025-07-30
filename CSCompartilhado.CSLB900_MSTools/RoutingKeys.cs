@@ -28,9 +28,9 @@
             return ($"{nomeDominio}_{urlParaRoutingKey}_{action}", nomeDominio);
         }
 
-        public static string MovimentoEntradaSaida => "CS_Entrada_Saida_Mvto";
-        public static string ExMovimentoEntradaSaida => "Exchange_EvtMateriaisMvtoEntradaSaida_";
-        public static string FilaMovimentoEntradaSaida => "Fila_EvtMateriaisMvtoEntradaSaida_GG073_";
+        public static string MovimentoEntradaSaida => "Act_Rabbit_CS_Entrada_Saida_Mvto";
+        public static string ExMovimentoEntradaSaida => "Exc_MateriaisMvtoEntradaSaida_GG073";
+        public static string FilaMovimentoEntradaSaida => "Que_MateriaisMvtoEntradaSaida_GG073";
 
 
         public static string ExGeraInventarioEmMassa => "Exchange_Evt_GerarInvetarioEmMassa_";

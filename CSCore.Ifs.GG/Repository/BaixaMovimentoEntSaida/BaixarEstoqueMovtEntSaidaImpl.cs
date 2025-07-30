@@ -10,15 +10,14 @@ using Serilog;
 
 namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
 {
-    public class BaixarEstoqueMovtEntSaidaImpl(AppDbContext appDbContext, ISendEndpointProvider sendEndpointProvider)
-        : IBaixarEstoqueMovtEntSaida
+    public class BaixarEstoqueMovtEntSaidaImpl(AppDbContext appDbContext, IBus bus, ISendEndpointProvider sendEndpointProvider) : IBaixarEstoqueMovtEntSaida
     {
         private readonly AppDbContext _appDbContext = appDbContext;
+        private readonly IBus _bus = bus;
         private readonly ISendEndpointProvider _sendEndpointProvider = sendEndpointProvider;
+
         public async Task CS001_Baixa_Movto_ENTSAI(ParametrosBaixaSaldo parametrosBaixaEstoque, int tenant)
         {
-            //se tiver fechado nao faz nada pra baixo, gg073Stat so pode ser aberto ou erro
-
             IQueryable<CSICP_GG074> queryGG074 = GeraQueryGG074(parametrosBaixaEstoque.GG073_ID);
 
             List<CSICP_GG074> listaGG074_Produtos_Movimento = await queryGG074.ToListAsync();
@@ -37,10 +36,12 @@ namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
 
             var exchangeName = RoutingKeys.ExMovimentoEntradaSaida + dominio;
 
+            // Envia para o exchange específico
             var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri($"exchange:{exchangeName}"));
 
             await endpoint.Send(dtoRabbitMensagem, ctx =>
             {
+
                 ctx.SetRoutingKey(routingKey);
             });
         }
@@ -54,7 +55,6 @@ namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
                    on _GG074.Gg074Statusestqid equals _GG072Stq.Id into _GG072_join
                    from _GG072Stq in _GG072_join.DefaultIfEmpty()
 
-                       //1 = aberto || 4 = erro || 5 = inventario || 6 = sem saldo
                    where _GG072Stq.Codgcs == 1 || _GG072Stq.Codgcs == 4 || _GG072Stq.Codgcs == 5 || _GG072Stq.Codgcs == 6
 
                    join _gg008Kdx in _appDbContext.OsusrE9aCsicpGg008Kdxes
@@ -85,4 +85,3 @@ namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
         }
     }
 }
-

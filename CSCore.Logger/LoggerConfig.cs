@@ -5,7 +5,7 @@ namespace CS_Logs;
 
 public class LoggerConfig
 {
-    public static void ConfigurarLogger(LogEventLevel minLevel = LogEventLevel.Debug)
+    public static void ConfigurarLogger(LogEventLevel minLevel = LogEventLevel.Information)
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Is(minLevel)
