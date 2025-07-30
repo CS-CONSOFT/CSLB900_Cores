@@ -1,4 +1,5 @@
-﻿namespace CSCore.RabbitMQ
+﻿
+namespace CSCore.RabbitMQ
 {
     public static class RoutingKeys
     {
@@ -28,13 +29,38 @@
             return ($"{nomeDominio}_{urlParaRoutingKey}_{action}", nomeDominio);
         }
 
-        public static string MovimentoEntradaSaida => "Act_Rabbit_CS_Entrada_Saida_Mvto";
-        public static string ExMovimentoEntradaSaida => "Exc_MateriaisMvtoEntradaSaida_GG073";
-        public static string FilaMovimentoEntradaSaida => "Que_MateriaisMvtoEntradaSaida_GG073";
+        public static string GetRoutingKey(string urlParaRoutingKey, object action)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static string MovimentoEntradaSaida => "Action_Rabbit_CS_Entrada_Saida_Mvto_GG073";
+        public static string ExMovimentoEntradaSaida => "Exchange_MateriaisMvtoEntradaSaida_GG073";
+        public static string FilaMovimentoEntradaSaida => "Queue_MateriaisMvtoEntradaSaida_GG073";
 
 
-        public static string ExGeraInventarioEmMassa => "Exchange_Evt_GerarInvetarioEmMassa_";
-        public static string FilaGeraInventarioEmMassa => "Fila_GerarInvetarioEmMassa_GG032_";
-        public static string GeraInventarioEmMassa => "CS_GERAR_INVENTARIO_MASSA";
+        public static string ExProcessaAjusteDePreco => "Exchange_ProcessaAjusteDePreco_GG031";
+        public static string FilaAjusteDePreco => "Queue_ProcessaAjusteDePreco_GG031";
+        public static string ProcessaAjusteDePreco => "Action_ProcessaAjusteDePreco_GG031";
+
+        public static string FilaProcessaBaixaGG071 => "Queue_ProcessaBaixaGG071";
+        public static string ExProcessaBaixaGG071 => "Exchange_ProcessaBaixaGG071";
+        public static string ProcessaBaixaGG071 => "Action_ProcessaBaixaGG071";
+
+        public static string FilaBloquearDesbloquearInventarioGG032 => "Queue_BloquearDesbloquearInventarioGG032";
+        public static string ExBloquearDesbloquearInventarioGG032 => "Exchange_BloquearDesbloquearInventarioGG032";
+        public static string BloquearDesbloquearInventarioGG032 => "Action_BloquearDesbloquearInventarioGG032";
+
+        public static string FilaProcessarInventarioGG032 => "Queue_ProcessarInventarioGG032";
+        public static string ExProcessarInventarioGG032 => "Exchange_ProcessarInventarioGG032";
+        public static string ProcessarInventarioGG032 => "Action_ProcessarInventarioGG032";
+
+        public static string FilaProcessaGerarInventarioEmMassaGG032 => "Queue_ProcessaGerarInventarioEmMassaGG032";
+        public static string ExProcessaGerarInventarioEmMassaGG032 => "Exchange_ProcessaGerarInventarioEmMassaGG032";
+        public static string ProcessaGerarInventarioEmMassaGG032 => "Action_ProcessaGerarInventarioEmMassaGG032";
+
+        public static string FilaProcessaGeraInventarioGG054 => "Queue_ProcessaGeraInventarioGG054";
+        public static string ExProcessaGeraInventarioGG054 => "Exchange_ProcessaGeraInventarioGG054";
+        public static string ProcessaGeraInventarioGG054 => "Action_ProcessaGeraInventarioGG054";
     }
 }

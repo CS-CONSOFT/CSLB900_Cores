@@ -10,10 +10,9 @@ using Serilog;
 
 namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
 {
-    public class BaixarEstoqueMovtEntSaidaImpl(AppDbContext appDbContext, IBus bus, ISendEndpointProvider sendEndpointProvider) : IBaixarEstoqueMovtEntSaida
+    public class BaixarEstoqueMovtEntSaidaImpl(AppDbContext appDbContext, ISendEndpointProvider sendEndpointProvider) : IBaixarEstoqueMovtEntSaida
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        private readonly IBus _bus = bus;
         private readonly ISendEndpointProvider _sendEndpointProvider = sendEndpointProvider;
 
         public async Task CS001_Baixa_Movto_ENTSAI(ParametrosBaixaSaldo parametrosBaixaEstoque, int tenant)
@@ -34,14 +33,11 @@ namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
 
             Log.Debug("RabbitMQ - Enviando movimento entrada saída para Routing Key: " + routingKey);
 
-            var exchangeName = RoutingKeys.ExMovimentoEntradaSaida + dominio;
-
+            var exchangeName = RoutingKeys.ExMovimentoEntradaSaida;
             // Envia para o exchange específico
-            var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri($"exchange:{exchangeName}"));
-
+            var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri($"exchange:{exchangeName}?type=direct"));
             await endpoint.Send(dtoRabbitMensagem, ctx =>
             {
-
                 ctx.SetRoutingKey(routingKey);
             });
         }
