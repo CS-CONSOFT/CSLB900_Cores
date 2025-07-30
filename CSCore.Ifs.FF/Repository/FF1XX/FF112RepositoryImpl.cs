@@ -22,10 +22,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         }
 
         public async Task<(List<RepoDtoCSICP_FF112>, int)> GetListAsync(
-            int in_tenant, int in_page, int in_pageSize, string? in_estabID, string? in_descCnab, string? in_bancoID, bool? in_isActive)
+            int in_tenant, int in_page, int in_pageSize, string? in_estabID, string? in_descCnab, string? in_bancoID, bool? in_isActive, int? in_tipoOperacao)
         {
             IQueryable<RepoDtoCSICP_FF112> query = GetQueryBase(in_tenant);
-            query = FiltraQuandoExisteFiltro(in_estabID, in_descCnab, in_bancoID, in_isActive, query);
+            query = FiltraQuandoExisteFiltro(in_estabID, in_descCnab, in_bancoID, in_isActive, in_tipoOperacao, query);
 
             var queryCount = query;
             var count = queryCount.Count();
@@ -35,7 +35,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         }
 
         private IQueryable<RepoDtoCSICP_FF112> FiltraQuandoExisteFiltro(
-            string? in_estabID, string? in_descCnab, string? in_bancoID, bool? in_isActive, IQueryable<RepoDtoCSICP_FF112> query)
+            string? in_estabID, string? in_descCnab, string? in_bancoID, bool? in_isActive, int? in_tipoOperacao, IQueryable<RepoDtoCSICP_FF112> query)
         {
             if (in_estabID != null)
                 query = query.Where(e => e.Ff112Filialid!.Equals(in_estabID));
@@ -43,8 +43,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 query = query.Where(e => e.Ff112Descregistro!.Contains(in_descCnab));
             if (in_bancoID != null)
                 query = query.Where(e => e.Ff112Bancoid!.Contains(in_bancoID));
-            //fazer o filtro isActive.
-            //perguntar se é para fazer o filtro por "tipo operação" que está no outsystems mas não na issue.
+            if (in_tipoOperacao != null)
+                query = query.Where(e => e.Ff112Tipooperacao == in_tipoOperacao);
 
             return query;
         }
@@ -65,6 +65,18 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    join ff112_C006 in _appDbContext.OsusrE9aCsicpFf112C006s
                    on ff112.Ff112Carteira equals ff112_C006.Id into ff112_C006_ff112_join
                    from ff112_C006 in ff112_C006_ff112_join.DefaultIfEmpty()
+
+                   join ff112_C007 in _appDbContext.OsusrE9aCsicpFf112C007s
+                   on ff112.Ff112Cadastramento equals ff112_C007.Id into ff112_C007_ff112_join
+                   from ff112_C007 in ff112_C007_ff112_join.DefaultIfEmpty()
+
+                   join ff112_C008 in _appDbContext.OsusrE9aCsicpFf112C008s
+                   on ff112.Ff112Documento equals ff112_C008.Id into ff112_C008_ff112_join
+                   from ff112_C008 in ff112_C008_ff112_join.DefaultIfEmpty()
+
+                   join ff112_C009 in _appDbContext.OsusrE9aCsicpFf112C009s
+                   on ff112.Ff112Emissaobloqueto equals ff112_C009.Id into ff112_C009_ff112_join
+                   from ff112_C009 in ff112_C009_ff112_join.DefaultIfEmpty()
 
                    join ff112_C026 in _appDbContext.OsusrE9aCsicpFf112C026s
                    on ff112.Ff112Codgprotesto equals ff112_C026.Id into ff112_C026_ff112_join
@@ -167,6 +179,33 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            IsActive = ff112_C006.IsActive,
                            Conteudo = ff112_C006.Conteudo,
                            ContBb = ff112_C006.ContBb,
+                       } : null,
+
+                       NavFF112C007 = ff112_C007 != null ? new OsusrE9aCsicpFf112C007
+                       {
+                       Id = ff112_C007.Id,
+                       Label = ff112_C007.Label,
+                       Order = ff112_C007.Order,
+                       IsActive = ff112_C007.IsActive,
+                       Conteudo = ff112_C007.Conteudo,
+                       } : null,
+
+                       NavFF112C008 = ff112_C008 != null ? new OsusrE9aCsicpFf112C008
+                       {
+                           Id = ff112_C008.Id,
+                           Label = ff112_C008.Label,
+                           Order = ff112_C008.Order,
+                           IsActive = ff112_C008.IsActive,
+                           Conteudo = ff112_C008.Conteudo,
+                       } : null,
+
+                       NavFF112C009 = ff112_C009 != null ? new OsusrE9aCsicpFf112C009
+                       {
+                           Id = ff112_C009.Id,
+                           Label = ff112_C009.Label,
+                           Order = ff112_C009.Order,
+                           IsActive = ff112_C009.IsActive,
+                           Conteudo = ff112_C009.Conteudo,
                        } : null,
 
                        NavFF112C026 = ff112_C026 != null ? new OsusrE9aCsicpFf112C026

@@ -37,4 +37,8 @@ public partial class CSICP_FF113
 
 
     public virtual CSICP_FF113? Ff113Retorno { get; set; }
+    public class RepoDtoCSICP_FF113 : CSICP_FF113
+    {
+        public CSICP_BB001? NavBB001 { get; set; }
+    }
 }
