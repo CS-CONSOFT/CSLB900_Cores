@@ -2,10 +2,12 @@
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.GG.Repository.Baixa;
+using CSCore.RabbitMQ;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
-namespace CSCore.Ifs.GG.Repository.Baixa
+namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
 {
     public class BaixarEstoqueMovtEntSaidaImpl(AppDbContext appDbContext, IBus bus) : IBaixarEstoqueMovtEntSaida
     {
@@ -26,10 +28,11 @@ namespace CSCore.Ifs.GG.Repository.Baixa
                 Tenant_ID = tenant
             };
 
-            string? currentURL = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:9607";
+            string? urlParaRoutingKey = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:9607";
+            var routingKey = RoutingKeys.GetRoutingKey(urlParaRoutingKey, RoutingKeys.MovimentoEntradaSaida);
             await _bus.Publish(dtoRabbitMensagem, ctx =>
             {
-                ctx.SetRoutingKey(currentURL + "_Entrada_Saida_Mvto");
+                ctx.SetRoutingKey(routingKey);
             });
         }
 
