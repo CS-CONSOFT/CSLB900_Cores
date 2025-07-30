@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF113;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF119;
 
 namespace CSCore.Domain.Interfaces.FF._1XX
 {

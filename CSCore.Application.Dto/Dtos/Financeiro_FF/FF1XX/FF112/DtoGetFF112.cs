@@ -122,7 +122,5 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF112
         public OsusrE9aCsicpFf112G025? NavFF112G025 { get; set; }
         public OsusrE9aCsicpFf112G028? NavFF112G028 { get; set; }
         public OsusrE9aCsicpFf112Cnab? NavFF112Cnab { get; set; }
-
-
     }
 }

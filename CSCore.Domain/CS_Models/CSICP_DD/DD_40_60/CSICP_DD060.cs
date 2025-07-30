@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using CSCore.Domain.CS_Models.Staticas.GG;
 
-namespace CSCore.Domain.CS_Models.CSICP_DD;
+namespace CSCore.Domain.CS_Models.CSICP_DD.DD_40_60;
 
 public partial class CSICP_DD060
 {
@@ -283,11 +283,6 @@ public partial class CSICP_DD060
     [Column("DD080_RFTRANSACAO_ID", TypeName = "nvarchar(72)")]
     public string? DD080_RFTRANSACAO_ID { get; set; }
 
-    public CSICP_GG008? NavGG008Produto { get; set; }
-    public CSICP_GG007? NavGG007Unidade { get; set; }
-
-    public CSICP_DD040? NavDD040NF { get; set; }
-
     //-------------------------------------------------------//
 }
 
@@ -301,7 +296,6 @@ public class RepoDtoCSICP_DD060 : CSICP_DD060
     public CSICP_GG008Kdx? NavGG008Kdx { get; set; }
     public CSICP_GG021? NavGG021 { get; set; }
     public CSICP_DD040? NavDD040NF { get; set; }
-
     public CSICP_AA031Cstori? NavAA031Cstori { get; set; }
     public CSICP_AA032Csticm? NavAA032Csticm { get; set; }
     public CSICP_AA033Cstipi? NavAA033Cstipi { get; set; }

@@ -45,6 +45,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 query = query.Where(e => e.Ff112Bancoid!.Contains(in_bancoID));
             if (in_tipoOperacao != null)
                 query = query.Where(e => e.Ff112Tipooperacao == in_tipoOperacao);
+            //isActiveFiltro
 
             return query;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Domain.CS_Models.CSICP_DD.DD_40_60;
+using System;
 using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_DD;
