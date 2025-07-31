@@ -52,6 +52,7 @@ namespace CSCore.Ifs.Repository.GG._07X
             query = FiltrosNecessariosEntidade(query, Protocolo, BB001_EstabID, DataInicial, DataFinal, BB005_CentroCustoID,
                 GG001_AlmoxID, GG073_StatusID, GG073_TMov_ID);
 
+            query = query.OrderByDescending(e => e.Gg073DataMovimento).ThenBy(e => e.Gg073Protocolonro);
             query = query.PaginacaoNoBanco(page, pageSize);
 
             int count = query.GetCountTotal();
