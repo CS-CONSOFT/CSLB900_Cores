@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static CSCore.Domain.CS_Models.CSICP_DD.CSICP_DD060;
 
 namespace CSCore.Domain.Interfaces.DD._06X
 {

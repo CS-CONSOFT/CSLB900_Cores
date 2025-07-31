@@ -6,6 +6,7 @@ using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.GG.Repository.BaixaSaldo;
 using CSLB900.MSTools.Util;
 using MassTransit;
+using Serilog;
 
 namespace CSCore.Ifs.GG
 {
@@ -21,19 +22,23 @@ namespace CSCore.Ifs.GG
         private readonly IGenerateProtocolo _generateProtocolo = generateProtocolo;
         public async Task Consume(ConsumeContext<Rbt_CS_BaixaMvto_EntSaida> context)
         {
+
+            Log.Warning("RabbitMQ: Mensagem recebida no consumer {Consumer} às {Data}. Tipo da mensagem: {MessageType}. Conteúdo: {@Message}",
+                this.GetType().Name,
+                DateTime.UtcNow.ToLocalTime(),
+                context.Message.GetType().Name,
+                context.Message);
+
+
             using (var transaction = await _appDbContext.Database.BeginTransactionAsync())
             {
                 try
                 {
                     List<CSICP_GG074> listaGG074 = context.Message.ListaGG074;
                     int contadorErro = 0;
-                    CSICP_GG073? gg073Encontrada =
-                            await _gg073Repo.GetByIdAsync(context.Message.ParametrosBaixaSaldo.GG073_ID, context.Message.Tenant_ID);
+                    CSICP_GG073 gg073Encontrada = context.Message.GG073Corrente;
 
-                    if (gg073Encontrada is null) throw new KeyNotFoundException("Movimento não encontrado");
 
-                    if (gg073Encontrada.Gg073Statusid != context.Message.ParametrosBaixaSaldo.StID_IdGG073Status_Aberto)
-                        throw new Exception("Movimento precisa estar aberto");
 
                     foreach (var currentMovimentoGG074 in listaGG074)
                     {
@@ -105,6 +110,7 @@ namespace CSCore.Ifs.GG
                     await _gg073Repo
                         .UpdateGG073StatusId(gg073Encontrada, context.Message.ParametrosBaixaSaldo.StID_IdGG073Status_Fechado);
 
+                    await _appDbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
                 }
                 catch (Exception ex)

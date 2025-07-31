@@ -296,7 +296,6 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
         public DtoGetGG008Simples? NavGG008Produto { get; set; }
         public DtoGetGG008Kdx_Simples? NavGG008Kdx { get; set; }
         public DtoGetGG021Simples? NavGG021 { get; set; }
-
         public CSICP_AA031Cstori? NavAA031Cstori { get; set; }
         public CSICP_AA032Csticm? NavAA032Csticm { get; set; }
         public CSICP_AA033Cstipi? NavAA033Cstipi { get; set; }
@@ -305,6 +304,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
         public CSICP_AA038Modst? NavAA038Modst { get; set; }
         public CSICP_Bb027Modal? NavBB027Modal { get; set; }
         public CSICP_Bb027Motivo? NavBB027Motivo { get; set; }
+        public CSICP_DD040? NavDD040NF { get; set; }
         public CSICP_DD061Cfgimp? NavDD061Cfgimp { get; set; }
         public OsusrE9aCsicpGg021cest? NavGG021Cest { get; set; }
         public SpedCsicpStrelevancium? NavStRelavancium { get; set; }

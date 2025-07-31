@@ -107,7 +107,7 @@ namespace CSBS101._82Application.Mapper.BB00X
             };
         }
 
-        public static Dto_GetBB006_Exibicao ToDtoGetSimples(this CSICP_Bb006 entity)
+        public static Dto_GetBB006_Exibicao ToDtoGetExibicao(this CSICP_Bb006 entity)
         {
             return new Dto_GetBB006_Exibicao
             {

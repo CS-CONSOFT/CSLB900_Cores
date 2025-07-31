@@ -1,8 +1,9 @@
 ﻿using CSCore.Domain.CS_Models;
 using CSCore.Domain.CS_Models.CSICP_TT;
-using CSCore.Domain.CS_Models.Staticas.PD;
+using CSCore.Ifs.Compartilhado.CS_Context;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Logging;
+using Serilog;
 namespace CSCore.Ifs.CS_Context;
 
 public partial class AppDbContext : DbContext
@@ -14,6 +15,19 @@ public partial class AppDbContext : DbContext
         {
             this.ChangeTracker.LazyLoadingEnabled = false;
         }
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        var loggerFactory = LoggerFactory.Create(builder =>
+        {
+            builder.AddSerilog();
+        });
+
+        optionsBuilder
+        .UseLoggerFactory(loggerFactory)
+        .EnableSensitiveDataLogging()
+        .AddInterceptors(new SerilogDbCommandInterceptor());
     }
 
 
@@ -112,7 +126,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
             entity.Property(e => e.Tt030Id).HasColumnName("TT030_ID");
 
-            
+
         });
         modelBuilder.Entity<OssysTenant>(entity =>
         {

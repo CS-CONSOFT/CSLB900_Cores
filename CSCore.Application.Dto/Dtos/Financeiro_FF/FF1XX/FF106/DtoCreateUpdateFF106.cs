@@ -72,12 +72,12 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF106
 
         public int? Ff106BaixaApi { get; set; }
 
-        public CSICP_FF106 ToEntity(int tenant, string id) //verificar com o Valter
+        public CSICP_FF106 ToEntity(int tenant, string? id)
         {
             return new CSICP_FF106
             {
                 TenantId = tenant,
-                Id = id,
+                Id = id!,
                 Ff106Filialid = Ff106Filialid,
                 Ff105Id = Ff105Id,
                 Ff102Id = Ff102Id,

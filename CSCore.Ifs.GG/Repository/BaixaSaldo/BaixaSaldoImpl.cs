@@ -110,7 +110,7 @@ namespace CSCore.Ifs.GG.Repository.BaixaSaldo
             int idStq = await LerIdDaGG072Stq(estado_saldo);
             navCurrentGG074.Gg074Statusestqid = idStq;
             _appDbContext.Update(navCurrentGG074);
-            await _appDbContext.SaveChangesAsync();
+
         }
 
         private async Task<int> LerIdDaGG072Stq(int estado_saldo)

@@ -1,13 +1,13 @@
 ﻿using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_AA;
+using CSCore.Ifs.AnaliseDeCredito.NovaPasta;
 using CSCore.Ifs.Compartilhado.Utilidade.SiteProperties;
 using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using System.Text.Json;
-
-namespace CSCore.Ifs.AnaliseDeCredito.NovaPasta
+namespace CSCore.Ifs.AnaliseDeCredito.AnaliseCredito
 {
     public class CreditoSemScore(
         AppDbContext appDbContext,
@@ -20,6 +20,10 @@ namespace CSCore.Ifs.AnaliseDeCredito.NovaPasta
         public async Task<DtoOutRetorno> ExecutarAnaliseCredito
             (bool in_CalcularScoreClearsale, int in_tenantID, string in_contaID)
         {
+            Serilog.Log.Information(
+                "Executando análise de crédito | CalcularScoreClearsale: {CalcularScoreClearsale}, TenantID: {TenantID}, ContaID: {ContaID}, Data: {Data}",
+                in_CalcularScoreClearsale, in_tenantID, in_contaID, DateTime.Now);
+
             var in_variaveisCalculo = new AnaliseCreditoParametros();
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
