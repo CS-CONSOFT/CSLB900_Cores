@@ -65,7 +65,15 @@ namespace CSCore.Ifs.Repository.GG._07X
         public async Task BaixaEstoque(string GG073_ID, int tenant)
         {
             CSICP_GG073? gg073_encontrada = await GetByIdAsync(GG073_ID, tenant);
-            if (gg073_encontrada == null) throw new KeyNotFoundException("GG073 não encontrada!");
+
+            if (gg073_encontrada is null) throw new KeyNotFoundException("Movimento não encontrado");
+
+            int idGG073Status_Aberto = await _appDbContext.OsusrE9aCsicpGg073Stats
+             .Where(e => e.Label != null && e.Label.Equals("Aberto"))
+             .Select(e => e.Id).FirstOrDefaultAsync();
+
+            if (gg073_encontrada.Gg073Statusid != idGG073Status_Aberto)
+                throw new Exception("Movimento precisa estar aberto");
 
 
             int idEstaticaSIM = await _appDbContext.E9ACSICP_Statica
@@ -101,9 +109,7 @@ namespace CSCore.Ifs.Repository.GG._07X
                .Where(e => e.Label != null && e.Label.Equals("Fechado"))
                .Select(e => e.Id).FirstOrDefaultAsync();
 
-            int idGG073Status_Aberto = await _appDbContext.OsusrE9aCsicpGg073Stats
-               .Where(e => e.Label != null && e.Label.Equals("Aberto"))
-               .Select(e => e.Id).FirstOrDefaultAsync();
+
 
             int idGG073Status_Erro = await _appDbContext.OsusrE9aCsicpGg073Stats
               .Where(e => e.Label != null && e.Label.Equals("Erro"))
@@ -144,6 +150,7 @@ namespace CSCore.Ifs.Repository.GG._07X
                 StID_IdGG073Status_Fechado = idGG073Status_Fechado,
                 StID_GG073_EntSaida_Saida_ID = idGG073EntSaida_Saida,
                 StID_IdGG073Status_Aberto = idGG073Status_Aberto,
+                GG073Corrente = gg073_encontrada
             };
             await _baixaEstoque.CS001_Baixa_Movto_ENTSAI(parametrosBaixaEstoque, tenant);
 

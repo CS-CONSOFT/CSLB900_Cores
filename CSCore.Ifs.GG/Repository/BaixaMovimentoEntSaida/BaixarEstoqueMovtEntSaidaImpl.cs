@@ -25,7 +25,8 @@ namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
             {
                 ListaGG074 = listaGG074_Produtos_Movimento,
                 ParametrosBaixaSaldo = parametrosBaixaEstoque,
-                Tenant_ID = tenant
+                Tenant_ID = tenant,
+                GG073Corrente = parametrosBaixaEstoque.GG073Corrente
             };
 
             string? urlParaRoutingKey = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:9607";

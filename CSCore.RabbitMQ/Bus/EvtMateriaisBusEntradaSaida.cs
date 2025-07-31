@@ -36,13 +36,9 @@ namespace CSCore.Ifs.GG
                 {
                     List<CSICP_GG074> listaGG074 = context.Message.ListaGG074;
                     int contadorErro = 0;
-                    CSICP_GG073? gg073Encontrada =
-                            await _gg073Repo.GetByIdAsync(context.Message.ParametrosBaixaSaldo.GG073_ID, context.Message.Tenant_ID);
+                    CSICP_GG073 gg073Encontrada = context.Message.GG073Corrente;
 
-                    if (gg073Encontrada is null) throw new KeyNotFoundException("Movimento não encontrado");
 
-                    if (gg073Encontrada.Gg073Statusid != context.Message.ParametrosBaixaSaldo.StID_IdGG073Status_Aberto)
-                        throw new Exception("Movimento precisa estar aberto");
 
                     foreach (var currentMovimentoGG074 in listaGG074)
                     {
