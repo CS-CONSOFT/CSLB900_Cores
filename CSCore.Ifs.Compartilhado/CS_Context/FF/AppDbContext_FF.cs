@@ -1,4 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
+using CSCore.Domain.CS_Models.Staticas.FF;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.CS_Context
@@ -70,6 +71,8 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<CSICP_FF102> OsusrE9aCsicpFf102s { get; set; }
 
         public DbSet<CSICP_FF102b> OsusrE9aCsicpFf102bs { get; set; }
+
+        public DbSet<OsusrE9aCsicpFf102obj> OsusrE9aCsicpFf102objs { get; set; }
 
         public DbSet<CSICP_FF103> OsusrE9aCsicpFf103s { get; set; }
 
@@ -2513,7 +2516,45 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF102B_VALOR_IMPOSTO_ORIGINA");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
+                modelBuilder.Entity<OsusrE9aCsicpFf102obj>(entity =>
+                {
+                    entity.HasKey(e => e.Ff102oId).HasName("OSPRK_OSUSR_E9A_CSICP_FF102OBJ");
 
+                    entity.ToTable("OSUSR_E9A_CSICP_FF102OBJ");
+
+                    entity.HasIndex(e => new { e.Ff102oTipoarq, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_FF102OBJ_14FF102O_TIPOARQ_9TENANT_ID");
+
+                    entity.HasIndex(e => new { e.Ff102oDescricao, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_FF102OBJ_16FF102O_DESCRICAO_9TENANT_ID");
+
+                    entity.HasIndex(e => new { e.Ff102Id, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_FF102OBJ_8FF102_ID_9TENANT_ID");
+
+                    entity.HasIndex(e => new { e.Ff103Id, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_FF102OBJ_8FF103_ID_9TENANT_ID");
+
+                    entity.HasIndex(e => e.TenantId, "OSIDX_OSUSR_E9A_CSICP_FF102OBJ_9TENANT_ID");
+
+                    entity.Property(e => e.Ff102oId)
+                        .HasMaxLength(36)
+                        .HasColumnName("FF102O_ID");
+                    entity.Property(e => e.Ff102Id)
+                        .HasMaxLength(36)
+                        .HasColumnName("FF102_ID");
+                    entity.Property(e => e.Ff102oDescricao)
+                        .HasMaxLength(120)
+                        .HasColumnName("FF102O_DESCRICAO");
+                    entity.Property(e => e.Ff102oFilename)
+                        .HasMaxLength(250)
+                        .HasColumnName("FF102O_FILENAME");
+                    entity.Property(e => e.Ff102oFiletype).HasColumnName("FF102O_FILETYPE");
+                    entity.Property(e => e.Ff102oIsActive).HasColumnName("FF102O_IS_ACTIVE");
+                    entity.Property(e => e.Ff102oPath)
+                        .HasMaxLength(500)
+                        .HasColumnName("FF102O_PATH");
+                    entity.Property(e => e.Ff102oTipoarq).HasColumnName("FF102O_TIPOARQ");
+                    entity.Property(e => e.Ff103Id)
+                        .HasMaxLength(36)
+                        .HasColumnName("FF103_ID");
+                    entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+                });
 
             });
 
