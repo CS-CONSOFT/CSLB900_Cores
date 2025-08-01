@@ -47,17 +47,24 @@ namespace CSCore.Ifs.Repository.BB
 
         public async Task<CSICP_Bb025> UpdateAsync(CSICP_Bb025 bb025)
         {
+            var entity = await _appDbContext.OsusrE9aCsicpBb025s.FindAsync(bb025.Id);
+            if (entity == null)
+                throw new InvalidOperationException("Entidade não encontrada.");
+
             int codigoAtual = string.IsNullOrWhiteSpace(bb025.Bb025Codigo)
                 ? 0 : int.Parse(bb025.Bb025Codigo);
 
             int novoCodigo = IncrementarCodigo
-            .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_Bb025>
-            (_appDbContext, codigoAtual, bb025.Id, "Bb025Codigo", "Id");
+                .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_Bb025>
+                (_appDbContext, codigoAtual, bb025.Id, "Bb025Codigo", "Id");
 
             bb025.Bb025Codigo = novoCodigo.ToString();
-            _appDbContext.Update(bb025);
+
+            // Copia todos os valores da entidade recebida para a rastreada
+            _appDbContext.Entry(entity).CurrentValues.SetValues(bb025);
+
             await _appDbContext.SaveChangesAsync();
-            return bb025;
+            return entity;
         }
 
 

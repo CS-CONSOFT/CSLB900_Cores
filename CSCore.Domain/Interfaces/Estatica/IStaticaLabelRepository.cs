@@ -16,6 +16,7 @@
         Task<int> GetIDStaticasByTypeGG073StatusPorLabel(string label);
         Task<int> GetIDStaticasByTypeGG073TMovPorLabel(string label);
         Task<int> GetIDStaticasByTypeBB012_MRELPorLabel(string label);
+        Task<int> GetIDStaticasByTypeGG046StatusPorLabel(string label);
         Task<int> csicp_bb012_GruCta(string label);
         Task<int> GetIDStaticasByTypeBB01201_con_PorLabel(string label);
         Task<int> GetIDStaticasByTypeBB061_TPPorLabel(string label);

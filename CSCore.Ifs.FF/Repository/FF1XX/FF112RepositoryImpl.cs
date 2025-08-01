@@ -7,6 +7,7 @@ using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF112;
+using static CSCore.Domain.EstaticasLabel.GG.Entities;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX
 {
@@ -44,8 +45,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             if (in_bancoID != null)
                 query = query.Where(e => e.Ff112Bancoid!.Contains(in_bancoID));
             if (in_tipoOperacao != null)
-                query = query.Where(e => e.Ff112Tipooperacao == in_tipoOperacao);
-            //isActiveFiltro
+                query = query.Where(e => e.Ff112Tipooperacao!.Equals(in_tipoOperacao));
+            if (in_isActive != null)
+                query = query.Where(e => e.IsActive ==in_isActive);
 
             return query;
         }
@@ -79,6 +81,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff112.Ff112Emissaobloqueto equals ff112_C009.Id into ff112_C009_ff112_join
                    from ff112_C009 in ff112_C009_ff112_join.DefaultIfEmpty()
 
+                   join ff112_C010 in _appDbContext.OsusrE9aCsicpFf112C010s
+                   on ff112.Ff112Distribuicaobloqueto equals ff112_C010.Id into ff112_C010_ff112_join
+                   from ff112_C010 in ff112_C010_ff112_join.DefaultIfEmpty()
+
                    join ff112_C026 in _appDbContext.OsusrE9aCsicpFf112C026s
                    on ff112.Ff112Codgprotesto equals ff112_C026.Id into ff112_C026_ff112_join
                    from ff112_C026 in ff112_C026_ff112_join.DefaultIfEmpty()
@@ -102,6 +108,18 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    join ff112_G028 in _appDbContext.OsusrE9aCsicpFf112G028s
                    on ff112.Ff112Tipooperacao equals ff112_G028.Id into ff112_G028_ff112_join
                    from ff112_G028 in ff112_G028_ff112_join.DefaultIfEmpty()
+
+                   join ff102_C021 in _appDbContext.OsusrE9aCsicpFf102C021s
+                   on ff112.Ff112CnabCodDesconto equals ff102_C021.Id into ff112_C021_ff112_join
+                   from ff112_C021 in ff112_C021_ff112_join.DefaultIfEmpty()
+
+                   join ff102_C018 in _appDbContext.OsusrE9aCsicpFf102C018s
+                   on ff112.Ff112CnabCodJurosMora equals ff102_C018.Id into ff112_C018_ff112_join
+                   from ff112_C018 in ff112_C018_ff112_join.DefaultIfEmpty()
+
+                   join ff102_G073 in _appDbContext.OsusrE9aCsicpFf102G073s
+                   on ff112.Ff112CnabCodMulta equals ff102_G073.Id into ff112_G073_ff112_join
+                   from ff112_G073 in ff112_G073_ff112_join.DefaultIfEmpty()
 
                    where ff112.TenantId == in_tenant
                    select new RepoDtoCSICP_FF112
@@ -184,11 +202,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
                        NavFF112C007 = ff112_C007 != null ? new OsusrE9aCsicpFf112C007
                        {
-                       Id = ff112_C007.Id,
-                       Label = ff112_C007.Label,
-                       Order = ff112_C007.Order,
-                       IsActive = ff112_C007.IsActive,
-                       Conteudo = ff112_C007.Conteudo,
+                           Id = ff112_C007.Id,
+                           Label = ff112_C007.Label,
+                           Order = ff112_C007.Order,
+                           IsActive = ff112_C007.IsActive,
+                           Conteudo = ff112_C007.Conteudo,
                        } : null,
 
                        NavFF112C008 = ff112_C008 != null ? new OsusrE9aCsicpFf112C008
@@ -208,6 +226,15 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            IsActive = ff112_C009.IsActive,
                            Conteudo = ff112_C009.Conteudo,
                        } : null,
+
+                       NavFF112C010 = ff112_C010 != null ? new OsusrE9aCsicpFf112C010
+                       {
+                           Id = ff112_C010.Id,
+                           Label = ff112_C010.Label,
+                           Order = ff112_C010.Order,
+                           IsActive = ff112_C010.IsActive,
+                           Conteudo = ff112_C010.Conteudo,
+                       } : null, 
 
                        NavFF112C026 = ff112_C026 != null ? new OsusrE9aCsicpFf112C026
                        {
@@ -261,8 +288,34 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Order = ff112_G028.Order,
                            IsActive = ff112_G028.IsActive,
                            Conteudo = ff112_G028.Conteudo
-                       } : null
+                       } : null,
 
+                       NavFF102C021 = ff112_C021 != null ? new CSICP_FF102_C021
+                       {
+                           Id = ff112_C021.Id,
+                           Label = ff112_C021.Label,
+                           Order = ff112_C021.Order,
+                           IsActive = ff112_C021.IsActive,
+                           Conteudo = ff112_C021.Conteudo
+                       } : null,
+
+                       NavFF102C018 = ff112_C018 != null ? new CSICP_FF102_C018
+                       {
+                           Id = ff112_C018.Id,
+                           Label = ff112_C018.Label,
+                           Order = ff112_C018.Order,
+                           IsActive = ff112_C018.IsActive,
+                           Conteudo = ff112_C018.Conteudo
+                       } : null,
+
+                       NavFF102G073 = ff112_G073 != null ? new CSICP_FF102_G073
+                       {
+                           Id = ff112_G073.Id,
+                           Label = ff112_G073.Label,
+                           Order = ff112_G073.Order,
+                           IsActive = ff112_G073.IsActive,
+                           Conteudo = ff112_G073.Conteudo
+                       } : null
                    };
         }
     }

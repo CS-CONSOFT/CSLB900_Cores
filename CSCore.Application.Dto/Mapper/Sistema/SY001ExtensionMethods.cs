@@ -26,7 +26,7 @@ namespace CSCore.Application.Dto.Mapper.Sistema
                 Sy001Imagem = dto.Sy001Imagem,
                 Sy001Dataultimoacesso = dto.Sy001Dataultimoacesso.ConverteStringVaziaParaDataNula(),
                 //Userid = dto.Userid,
-                Sy001IdiomaId = dto.Sy001IdiomaId,
+                //Sy001IdiomaId = dto.Sy001IdiomaId,
                 Sy001Senhacs = dto.Sy001Senhacs,
                 Sy001Celular = dto.Sy001Celular
             };

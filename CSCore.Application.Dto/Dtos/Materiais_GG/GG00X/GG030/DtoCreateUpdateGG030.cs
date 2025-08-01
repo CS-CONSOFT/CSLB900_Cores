@@ -1,5 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Ifs.InterfaceBase;
+using CSLB900.MSTools.Extensao;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG030
 {
@@ -11,7 +12,7 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG030
 
         public string? Gg030Filialid { get; set; }
 
-        public DateTime? Gg030DataMovimento { get; set; }
+        public string? Gg030DataMovimento { get; set; }
 
         public string? Gg030Observacao { get; set; }
 
@@ -44,7 +45,7 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG030
                 Gg030Usuarioid = this.Gg030Usuarioid,
                 Gg030Filial = this.Gg030Filial,
                 Gg030Filialid = this.Gg030Filialid,
-                Gg030DataMovimento = this.Gg030DataMovimento,
+                Gg030DataMovimento = this.Gg030DataMovimento.ConverteStringVaziaParaDataNula(),
                 Gg030Observacao = this.Gg030Observacao,
                 Gg030CodgCCusto = this.Gg030CodgCCusto,
                 Gg030Ccustoid = this.Gg030Ccustoid,
