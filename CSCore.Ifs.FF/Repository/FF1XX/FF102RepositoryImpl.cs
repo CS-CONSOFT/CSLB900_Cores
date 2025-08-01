@@ -31,9 +31,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         private IQueryable<RepoDtoCSICP_FF102> GetQueryBase(int tenant)
         {
             return from ff102 in _appDbContext.OsusrE9aCsicpFf102s
-                   where ff102.TenantId == tenant
                    
-
                    //42 tabelas
                    join bb001 in _appDbContext.E9ACSICP_BB001s 
                    on ff102.Ff102Filialid equals bb001.Id into bb001_ff102_join
@@ -59,7 +57,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                     on bb012conta.Id equals bb01206.Id into bb01206_join
                    from bb01206 in bb01206_join.DefaultIfEmpty()
 
-                 
                    join bb012contareal in _appDbContext.OsusrE9aCsicpBb012s 
                    on ff102.Ff102Contarealid equals bb012contareal.Id into bb012contareal_ff102_join
                    from bb012contareal in bb012contareal_ff102_join.DefaultIfEmpty()
@@ -202,7 +199,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff102.Ff102TrilhaApiid equals ff120track.Id into ff120track_ff102_join
                    from ff120track in ff120track_ff102_join.DefaultIfEmpty()
 
-
+                   where ff102.TenantId == tenant
                    select new RepoDtoCSICP_FF102
                    {
                        TenantId = ff102.TenantId,

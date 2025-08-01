@@ -50,7 +50,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    from ff112Reg in ff112Reg_join.DefaultIfEmpty()
 
                    where ff119.TenantId == in_tenant
-
                    select new RepoDtoCSICP_FF119
                    {
                        Ff119Id = ff119.Ff119Id,

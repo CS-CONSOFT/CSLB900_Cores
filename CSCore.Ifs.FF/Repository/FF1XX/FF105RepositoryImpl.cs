@@ -28,6 +28,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         {
             return from ff105 in _appDbContext.OsusrE9aCsicpFf105s
                    .AsNoTracking()
+
                    where ff105.TenantId == in_tenant
                    select new CSICP_FF105
                    {
