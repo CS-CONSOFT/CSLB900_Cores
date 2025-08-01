@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF007;
 
-namespace CSCore.Ifs.FF.Repository
+namespace CSCore.Ifs.FF.Repository.FF00X
 {
     public class FF007RepositoryImpl(AppDbContext appDbContext)
         : RepositorioBaseImpl<CSICP_FF007>(appDbContext, "Ff007Id"), IFF007Repository
