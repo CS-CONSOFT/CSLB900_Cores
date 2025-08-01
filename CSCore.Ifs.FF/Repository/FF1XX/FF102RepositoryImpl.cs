@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using static CSCore.Domain.ComboTypes;
 
 
-namespace CSCore.Ifs.FF.Repository
+namespace CSCore.Ifs.FF.Repository.FF1XX
 {
     public class FF102RepositoryImpl(AppDbContext appDbContext)
         : RepositorioBaseImpl<CSICP_FF102>(appDbContext, "Id"), IFF102Repository

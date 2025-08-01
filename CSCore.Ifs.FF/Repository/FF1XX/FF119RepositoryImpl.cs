@@ -5,12 +5,6 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF112;
 using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF119;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX
