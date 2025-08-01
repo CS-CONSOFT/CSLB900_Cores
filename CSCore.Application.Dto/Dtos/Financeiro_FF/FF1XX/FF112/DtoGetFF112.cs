@@ -1,4 +1,6 @@
 ﻿using CSBS101._82Application.Dto.BB00X.BB001;
+using CSBS101._82Application.Dto.BB00X.BB006;
+using CSCore.Domain.CS_Models.Staticas.FF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -109,6 +111,20 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF112
 
         //Tabelas Nav
         public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
-
+        public Dto_GetBB006_Exibicao? NavBB006 { get; set; }
+        public OsusrE9aCsicpFf112C006? NavFF112C006 { get; set; }
+        public OsusrE9aCsicpFf112C007? NavFF112C007 { get; set; }
+        public OsusrE9aCsicpFf112C008? NavFF112C008 { get; set; }
+        public OsusrE9aCsicpFf112C009? NavFF112C009 { get; set; }
+        public OsusrE9aCsicpFf112C010? NavFF112C010 { get; set; }
+        public OsusrE9aCsicpFf112C026? NavFF112C026 { get; set; }
+        public OsusrE9aCsicpFf112C028? NavFF112C028 { get; set; }
+        public OsusrE9aCsicpFf112G005? NavFF112G005 { get; set; }
+        public OsusrE9aCsicpFf112G025? NavFF112G025 { get; set; }
+        public OsusrE9aCsicpFf112G028? NavFF112G028 { get; set; }
+        public OsusrE9aCsicpFf112Cnab? NavFF112Cnab { get; set; }
+        public CSICP_FF102_C021? NavFF102C021 { get; set; }
+        public CSICP_FF102_C018? NavFF102C018 { get; set; }
+        public CSICP_FF102_G073? NavFF102G073 { get; set; }
     }
 }

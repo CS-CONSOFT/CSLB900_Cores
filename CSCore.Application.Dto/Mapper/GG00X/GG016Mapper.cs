@@ -1,6 +1,6 @@
 ﻿using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using CSSY103.C82Application.Mapper;
 using GG104Materiais.C82Application.Dto.GG00X.GG016;
 using GG104Materiais.C82Application.Dto.GG00X.GG016.GG016e;
 using GG104Materiais.C82Application.Dto.GG00X.GG016.GG016f;
@@ -21,7 +21,7 @@ namespace GG104Materiais.C82Application.Mapper
                 Gg016Descricao = entity.Gg016Descricao,
                 Gg016Lincolid = entity.Gg016Lincolid,
                 Gg016Ismarcado = entity.Gg016Ismarcado,
-                //NavBB001 = entity.NavFilialBB001?.ToDtoGetSimples(),
+                //NavBB001 = entity.NavFilialBB001?.ToDtoGetExibicao(),
                 NavCSICP_GG016b = entity.NavCSICP_GG016b
             };
         }

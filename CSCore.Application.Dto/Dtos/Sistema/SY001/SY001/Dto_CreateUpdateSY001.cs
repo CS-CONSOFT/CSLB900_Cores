@@ -35,8 +35,6 @@ namespace CSSY103.C82Application.Dto.SY001.SY001
 
         public string? Sy001Dataultimoacesso { get; set; }
 
-        public int? Sy001IdiomaId { get; set; }
-
         [Required(ErrorMessage = "A senha precisa ser informada")]
         public string Sy001Senhacs { get; set; } = null!;
 

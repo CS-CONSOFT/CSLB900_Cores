@@ -2,19 +2,21 @@
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.GG.Repository.Baixa;
+using CSCore.RabbitMQ;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
-namespace CSCore.Ifs.GG.Repository.Baixa
+namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
 {
-    public class BaixarEstoqueMovtEntSaidaImpl(AppDbContext appDbContext, IBus bus) : IBaixarEstoqueMovtEntSaida
+    public class BaixarEstoqueMovtEntSaidaImpl(AppDbContext appDbContext, ISendEndpointProvider sendEndpointProvider) : IBaixarEstoqueMovtEntSaida
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        private readonly IBus _bus = bus;
+        private readonly ISendEndpointProvider _sendEndpointProvider = sendEndpointProvider;
+
         public async Task CS001_Baixa_Movto_ENTSAI(ParametrosBaixaSaldo parametrosBaixaEstoque, int tenant)
         {
-            //se tiver fechado nao faz nada pra baixo, gg073Stat so pode ser aberto ou erro
-
             IQueryable<CSICP_GG074> queryGG074 = GeraQueryGG074(parametrosBaixaEstoque.GG073_ID);
 
             List<CSICP_GG074> listaGG074_Produtos_Movimento = await queryGG074.ToListAsync();
@@ -23,13 +25,21 @@ namespace CSCore.Ifs.GG.Repository.Baixa
             {
                 ListaGG074 = listaGG074_Produtos_Movimento,
                 ParametrosBaixaSaldo = parametrosBaixaEstoque,
-                Tenant_ID = tenant
+                Tenant_ID = tenant,
+                GG073Corrente = parametrosBaixaEstoque.GG073Corrente
             };
 
-            string? currentURL = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:9607";
-            await _bus.Publish(dtoRabbitMensagem, ctx =>
+            string? urlParaRoutingKey = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:9607";
+            (string routingKey, string dominio) = RoutingKeys.GetRoutingKeyComDominio(urlParaRoutingKey, RoutingKeys.MovimentoEntradaSaida);
+
+            Log.Debug("RabbitMQ - Enviando movimento entrada saída para Routing Key: " + routingKey);
+
+            var exchangeName = RoutingKeys.ExMovimentoEntradaSaida;
+            // Envia para o exchange específico
+            var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri($"exchange:{exchangeName}?type=direct"));
+            await endpoint.Send(dtoRabbitMensagem, ctx =>
             {
-                ctx.SetRoutingKey(currentURL + "_Entrada_Saida_Mvto");
+                ctx.SetRoutingKey(routingKey);
             });
         }
 
@@ -42,7 +52,6 @@ namespace CSCore.Ifs.GG.Repository.Baixa
                    on _GG074.Gg074Statusestqid equals _GG072Stq.Id into _GG072_join
                    from _GG072Stq in _GG072_join.DefaultIfEmpty()
 
-                       //1 = aberto || 4 = erro || 5 = inventario || 6 = sem saldo
                    where _GG072Stq.Codgcs == 1 || _GG072Stq.Codgcs == 4 || _GG072Stq.Codgcs == 5 || _GG072Stq.Codgcs == 6
 
                    join _gg008Kdx in _appDbContext.OsusrE9aCsicpGg008Kdxes
@@ -73,4 +82,3 @@ namespace CSCore.Ifs.GG.Repository.Baixa
         }
     }
 }
-

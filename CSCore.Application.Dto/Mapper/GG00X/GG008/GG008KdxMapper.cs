@@ -418,7 +418,7 @@ namespace GG104Materiais.C82Application.Mapper.GG008
                 Gg008PrecoCustoReal = entity.Gg008PrecoCustoReal,
                 NavBB001Simples = entity.NavBB001Filial?.ToDtoGetSimples(),
                 NavGG008PrecosTabela = entity.NavGG008pOutrosPrecos?.ToDtoGet(),
-                //NavListGG520Saldos = entity.CS_NavListaSaldos?.Select(e => e.ToDtoGetSimples()).ToList() ?? [],
+                //NavListGG520Saldos = entity.CS_NavListaSaldos?.Select(e => e.ToDtoGetExibicao()).ToList() ?? [],
             };
         }
 

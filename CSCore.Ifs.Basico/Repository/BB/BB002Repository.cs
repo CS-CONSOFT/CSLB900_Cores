@@ -1,5 +1,6 @@
 ﻿using CSCore.Domain;
 using CSCore.Domain.Interfaces.BB;
+using CSCore.Ifs.Compartilhado.Utilidade;
 using CSCore.Ifs.CS_Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,12 @@ namespace CSCore.Ifs.Repository.BB
 
         public async Task<CSICP_BB002> CreateAsync(CSICP_BB002 entity)
         {
+            int novoCodigo = IncrementarCodigo
+              .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_BB002>
+              (_appDbContext, entity.Bb002Codigo, null, "Bb002Codigo", "Id");
+
+            entity.Bb002Codigo = novoCodigo;
+
             _appDbContext.Add(entity);
             await _appDbContext.SaveChangesAsync();
             return entity;

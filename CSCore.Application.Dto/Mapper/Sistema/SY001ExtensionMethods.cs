@@ -3,7 +3,7 @@ using CSCore.Domain;
 using CSLB900.MSTools.Extensao;
 using CSSY103.C82Application.Dto.SY001.SY001;
 
-namespace CSSY103.C82Application.Mapper
+namespace CSCore.Application.Dto.Mapper.Sistema
 {
     public static class SY001ExtensionMethods
     {
@@ -25,8 +25,8 @@ namespace CSSY103.C82Application.Mapper
                 Sy001Email = dto.Sy001Email,
                 Sy001Imagem = dto.Sy001Imagem,
                 Sy001Dataultimoacesso = dto.Sy001Dataultimoacesso.ConverteStringVaziaParaDataNula(),
-                Userid = dto.Userid,
-                Sy001IdiomaId = dto.Sy001IdiomaId,
+                //Userid = dto.Userid,
+                //Sy001IdiomaId = dto.Sy001IdiomaId,
                 Sy001Senhacs = dto.Sy001Senhacs,
                 Sy001Celular = dto.Sy001Celular
             };

@@ -4,10 +4,10 @@ using CSBS101._82Application.Mapper.BB00X.BB009;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSBS101._82Application.Mapper.BB00X.BB012;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX;
+using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.CS_Models.Staticas.FF;
-using CSSY103.C82Application.Mapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -210,7 +210,7 @@ namespace CSCore.Application.Dto.Mapper.FF00x
                 Ff102TrilhaApiid = entity.Ff102TrilhaApiid,
                 NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
                 NavBB005 = entity.NavBB005?.ToDtoGetBB005_Exibicao(),
-                NavBB006 = entity.NavBB006?.ToDtoGetSimples(),
+                NavBB006 = entity.NavBB006?.ToDtoGetExibicao(),
                 NavBB007 = entity.NavBB007?.ToDtoGetSimples(),
                 NavBB008 = entity.NavBB008?.ToDtoGetSimples(),
                 NavBB009 = entity.NavBB009?.ToDtoGetBB009_Exibicao(),

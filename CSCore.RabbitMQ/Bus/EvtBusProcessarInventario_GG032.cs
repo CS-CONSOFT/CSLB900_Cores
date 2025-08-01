@@ -3,7 +3,7 @@ using CSCore.Domain.Interfaces.Estatica;
 using CSCore.Domain.Interfaces.GG._03X;
 using CSCore.RabbitMQ.PublishObjetos;
 using MassTransit;
-
+using Serilog;
 namespace CSCore.RabbitMQ.Bus
 {
     public class EvtBusProcessarInventario_GG032 : IConsumer<Rbt_CS_ProcessarInventario_GG032>
@@ -19,6 +19,11 @@ namespace CSCore.RabbitMQ.Bus
 
         public async Task Consume(ConsumeContext<Rbt_CS_ProcessarInventario_GG032> context)
         {
+            Log.Information("RabbitMQ: Mensagem recebida no consumer {Consumer} às {Data}. Tipo da mensagem: {MessageType}. Conteúdo: {@Message}",
+             this.GetType().Name,
+             DateTime.UtcNow.ToLocalTime(),
+             context.Message.GetType().Name,
+             context.Message);
             int idGG032StaBloqueado = await _staticaLabelRepository.GetIDStaticasByTypeGG032StaPorCodCS("Bloqueado");
             int idGG028EntSai_Entrada = await _staticaLabelRepository.GetIDStaticasByTypeGG028EntSaidaLabel(Entities.GG028EntSaida.Entrada);
             int idGG028EntSai_Saida = await _staticaLabelRepository.GetIDStaticasByTypeGG028EntSaidaLabel(Entities.GG028EntSaida.Saida);

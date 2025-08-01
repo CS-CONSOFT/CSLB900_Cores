@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Domain.CS_Models.Staticas.FF;
+using System;
 using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
@@ -22,4 +23,9 @@ public partial class CSICP_FF119
     public string? Ff119Descricao { get; set; }
 
     public virtual CSICP_FF112? Ff112 { get; set; }
+
+    public class RepoDtoCSICP_FF119 : CSICP_FF119
+    {
+        public OsusrE9aCsicpFf112Reg? NavFF112Reg { get; set; }
+    }
 }

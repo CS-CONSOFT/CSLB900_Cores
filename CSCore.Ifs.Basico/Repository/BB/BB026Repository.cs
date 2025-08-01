@@ -15,6 +15,7 @@ namespace CSCore.Ifs.Repository.BB
             int novoCodigo = IncrementarCodigo
             .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_Bb026>
             (_appDbContext, bb026.Bb026Codigo, null, "Bb026Codigo", "Id");
+
             bb026.Bb026Codigo = novoCodigo;
             _appDbContext.Add(bb026);
             await _appDbContext.SaveChangesAsync();

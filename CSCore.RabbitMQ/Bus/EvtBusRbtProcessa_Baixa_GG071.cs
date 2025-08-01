@@ -1,7 +1,7 @@
 ﻿using CSCore.Domain.Interfaces.GG._07X;
 using CSCore.Ifs.Eventos.PublishObjetos;
 using MassTransit;
-
+using Serilog;
 namespace CSCore.RabbitMQ.Bus
 {
     public class EvtBusRbtProcessa_Baixa_GG071 : IConsumer<Rbt_CS_RI_Processa_Baixa_GG071_Prm>
@@ -15,6 +15,11 @@ namespace CSCore.RabbitMQ.Bus
 
         public async Task Consume(ConsumeContext<Rbt_CS_RI_Processa_Baixa_GG071_Prm> context)
         {
+            Log.Information("RabbitMQ: Mensagem recebida no consumer {Consumer} às {Data}. Tipo da mensagem: {MessageType}. Conteúdo: {@Message}",
+             this.GetType().Name,
+             DateTime.UtcNow.ToLocalTime(),
+             context.Message.GetType().Name,
+             context.Message);
             await _gg071Repository.CS_RI_Processa_Baixa(
             context.Message.in_tenant ?? 0,
             context.Message.in_usuarioID ?? "",
