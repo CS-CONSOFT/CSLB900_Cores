@@ -43,7 +43,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF113
         public int? Ff113Codgmovtoremessa { get; set; }
 
         public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
-        public DtoGetFF112? NavFF112 { get; set; }
+        public DtoGetFF112Simples? NavFF112 { get; set; }
         public OsusrE9aCsicpFf113Tipo? NavFF113Tipo { get; set; }
         public Dto_GetSY001Simples? NavSy001 { get; set; }
 

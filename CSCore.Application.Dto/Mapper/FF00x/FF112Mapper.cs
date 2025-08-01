@@ -72,18 +72,22 @@ namespace CSCore.Application.Dto.Mapper.FF00x
                 NavFF112C007 = entity.NavFF112C007,
                 NavFF112C008 = entity.NavFF112C008,
                 NavFF112C009 = entity.NavFF112C009,
+                NavFF112C010 = entity.NavFF112C010,
                 NavFF112C026 = entity.NavFF112C026,
                 NavFF112C028 = entity.NavFF112C028,
                 NavFF112Cnab = entity.NavFF112Cnab,
                 NavFF112G005 = entity.NavFF112G005,
                 NavFF112G025 = entity.NavFF112G025,
-                NavFF112G028 = entity.NavFF112G028
+                NavFF112G028 = entity.NavFF112G028,
+                NavFF102C021 = entity.NavFF102C021,
+                NavFF102C018 = entity.NavFF102C018,
+                NavFF102G073 = entity.NavFF102G073
             };
         }
 
-        public static DtoGetFF112 ToDtoGetFF112Simples(this CSICP_FF112 entity)
+        public static DtoGetFF112Simples ToDtoGetFF112Simples(this CSICP_FF112 entity)
         {
-            return new DtoGetFF112
+            return new DtoGetFF112Simples
             {
                 TenantId = entity.TenantId,
                 Id = entity.Id,
