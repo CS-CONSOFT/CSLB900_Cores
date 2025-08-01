@@ -256,6 +256,15 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
 
         public async Task<int> GetIDStaticasByTypeGG046SaidaPorLabel(string label)
         {
+            int ID = await _appDbContext.OsusrE9aCsicpGg046Es
+                .Where(e => e.Label!.Equals(label))
+                .Select(e => e.Id)
+                .FirstOrDefaultAsync();
+            return ID;
+        }
+
+        public async Task<int> GetIDStaticasByTypeGG046StatusPorLabel(string label)
+        {
             int ID = await _appDbContext.OsusrE9aCsicpGg046Stats
                 .Where(e => e.Label!.Equals(label))
                 .Select(e => e.Id)
@@ -283,28 +292,28 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
 
         public async Task<int> csicp_ff120_trackApi(string label)
         {
-              int ID = await _appDbContext.OsusrE9aCsicpFf120Trackapis
-                          .Where(e => e.Label!.Equals(label))
-                          .Select(e => e.Id)
-                          .FirstOrDefaultAsync();
+            int ID = await _appDbContext.OsusrE9aCsicpFf120Trackapis
+                        .Where(e => e.Label!.Equals(label))
+                        .Select(e => e.Id)
+                        .FirstOrDefaultAsync();
             return ID;
         }
 
         public async Task<int> csicp_ff112_cnab(string label)
         {
-              int ID = await _appDbContext.OsusrE9aCsicpFf112Cnabs
-                          .Where(e => e.Label!.Equals(label))
-                          .Select(e => e.Id)
-                          .FirstOrDefaultAsync();
+            int ID = await _appDbContext.OsusrE9aCsicpFf112Cnabs
+                        .Where(e => e.Label!.Equals(label))
+                        .Select(e => e.Id)
+                        .FirstOrDefaultAsync();
             return ID;
         }
 
         public async Task<int> csicp_ff112_C026(string label)
         {
-              int ID = await _appDbContext.OsusrE9aCsicpFf112C026s
-                          .Where(e => e.Label!.Equals(label))
-                          .Select(e => e.Id)
-                          .FirstOrDefaultAsync();
+            int ID = await _appDbContext.OsusrE9aCsicpFf112C026s
+                        .Where(e => e.Label!.Equals(label))
+                        .Select(e => e.Id)
+                        .FirstOrDefaultAsync();
             return ID;
         }
 
