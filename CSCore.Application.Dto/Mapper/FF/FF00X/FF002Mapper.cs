@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF002;
 using CSCore.Domain.CS_Models.CSICP_FF;
 
-namespace CSCore.Application.Dto.Mapper.FF00x
+namespace CSCore.Application.Dto.Mapper.FF.FF00X
 {
     public static class FF002Mapper
     {

@@ -19,7 +19,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         {
             IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(tenant);
             //1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar
-            if (in_tipoRegistro is not null) 
+            if (in_tipoRegistro != null) 
             {
                 query = query.Where(e => e.Ff102Tiporegistro == in_tipoRegistro);
             }
@@ -50,7 +50,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    from bb012conta in bb012conta_ff102_join.DefaultIfEmpty()
 
                    join bb01202 in _appDbContext.OsusrE9aCsicpBb01202s
-                    on bb012conta.Id equals bb01202.Id into bb01202_join
+                   on bb012conta.Id equals bb01202.Id into bb01202_join
                    from bb01202 in bb01202_join.DefaultIfEmpty()
 
                    join bb01206 in _appDbContext.OsusrE9aCsicpBb01206s
@@ -102,7 +102,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    from sy001CodCobrador in sy001_ff102_join.DefaultIfEmpty()
 
                    join sy001Aprovador in _appDbContext.OsusrE9aCsicpSy001s
-                     on ff102.Ff102cpAprovadorid equals sy001Aprovador.Id into sy001Aprovador_ff102_join
+                   on ff102.Ff102cpAprovadorid equals sy001Aprovador.Id into sy001Aprovador_ff102_join
                    from sy001Aprovador in sy001Aprovador_ff102_join.DefaultIfEmpty()
 
                    join ff102des in _appDbContext.OsusrE9aCsicpFf102Des 

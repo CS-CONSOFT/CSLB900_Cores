@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX
+namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
 {
     public class DtoCreateUpdateFF102 : IConverteParaEntidade<CSICP_FF102>
     {

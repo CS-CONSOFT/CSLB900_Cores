@@ -8,7 +8,7 @@ using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain;
 
-namespace CSCore.Application.Dto.Mapper.FF00x
+namespace CSCore.Application.Dto.Mapper.FF.FF00X
 {
     public static class FF005Mapper
     {

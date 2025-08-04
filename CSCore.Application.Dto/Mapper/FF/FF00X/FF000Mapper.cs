@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF000;
+using CSCore.Application.Dto.Mapper.FF;
 using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.CS_Models.Staticas.FF;
 
-namespace CSCore.Application.Dto.Mapper.FF00x
+namespace CSCore.Application.Dto.Mapper.FF.FF00X
 {
     public static class FF000Mapper
     {

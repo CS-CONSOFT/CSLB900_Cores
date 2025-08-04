@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF007;
 
-namespace CSCore.Application.Dto.Mapper.FF00x
+namespace CSCore.Application.Dto.Mapper.FF.FF00X
 {
     public static class FF007Mapper
     {

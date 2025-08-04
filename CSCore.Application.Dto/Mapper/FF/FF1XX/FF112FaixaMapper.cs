@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF112;
 
-namespace CSCore.Application.Dto.Mapper.FF00x
+namespace CSCore.Application.Dto.Mapper.FF.FF1XX
 {
     public static class FF112FaixaMapper
     {
