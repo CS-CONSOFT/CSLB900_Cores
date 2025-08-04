@@ -1,15 +1,13 @@
 ﻿using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_FF;
-using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.Interfaces.FF;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace CSCore.Ifs.FF.Repository
+namespace CSCore.Ifs.FF.Repository.FF00X
 {
     public class FF000RepositoryImpl(AppDbContext appDbContext) :
         RepositorioBaseImpl<CSICP_FF000>(appDbContext, "Ff000Id"), IFF000Repository

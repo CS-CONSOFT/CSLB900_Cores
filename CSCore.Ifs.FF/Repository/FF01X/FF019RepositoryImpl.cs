@@ -10,7 +10,7 @@ using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 
-namespace CSCore.Ifs.FF.Repository
+namespace CSCore.Ifs.FF.Repository.FF01X
 {
     public class FF019RepositoryImpl(AppDbContext appDbContext)
         : RepositorioBaseImpl<CSICP_FF019>(appDbContext, "Ff019Id"), IFF019Repository
