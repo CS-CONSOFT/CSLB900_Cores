@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSCore.Ifs.FF.Repository
+namespace CSCore.Ifs.FF.Repository.FF00X
 {
     public class FF002RepositoryImpl(AppDbContext appDbContext) :
         RepositorioBaseImpl<CSICP_FF002>(appDbContext, "Id"), IFF002Repository

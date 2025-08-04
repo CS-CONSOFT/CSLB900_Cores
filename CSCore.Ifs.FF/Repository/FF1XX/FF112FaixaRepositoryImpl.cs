@@ -27,8 +27,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         {
             return from ff112Faixa in _appDbContext.OsusrE9aCsicpFf112Faixas
                    .AsNoTracking()
-                   where ff112Faixa.TenantId == in_tenant
 
+                   where ff112Faixa.TenantId == in_tenant
                    select new CSICP_FF112Faixa
                    {
                        TenantId = ff112Faixa.TenantId,
@@ -58,9 +58,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         private IQueryable<CSICP_FF112Faixa> FiltraQuandoExisteFiltro(string in_ff112Id, IQueryable<CSICP_FF112Faixa> query)
         {
             if (in_ff112Id != null)
-            {
                 query = query.Where(e => e.Ff112Id == in_ff112Id);
-            }
 
             return query;
         }
