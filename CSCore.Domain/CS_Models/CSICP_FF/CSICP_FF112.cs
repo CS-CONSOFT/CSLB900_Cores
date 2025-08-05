@@ -108,6 +108,8 @@ public partial class CSICP_FF112
     {
         public CSICP_BB001? NavBB001 { get; set; }
         public CSICP_Bb006? NavBB006 { get; set; }
+        public CSICP_Bb009? NavBB009Ent { get; set; }
+        public CSICP_Bb009? NavBB009Sai { get; set; }
         public OsusrE9aCsicpFf112C006? NavFF112C006 { get; set; }
         public OsusrE9aCsicpFf112C007? NavFF112C007 { get; set; }
         public OsusrE9aCsicpFf112C008? NavFF112C008 { get; set; }
@@ -119,7 +121,9 @@ public partial class CSICP_FF112
         public OsusrE9aCsicpFf112G025? NavFF112G025 { get; set; }
         public OsusrE9aCsicpFf112G028? NavFF112G028 { get; set; }
         public OsusrE9aCsicpFf112Cnab? NavFF112Cnab { get; set; }
+        public OsusrE9aCsicpFf112OrgNeg? NavFF112OrgNeg { get; set; }
         public CSICP_FF102_C021? NavFF102C021 { get; set; }
+        public OsusrE9aCsicpFf112C029? NavFF112C029 { get; set; }
         public CSICP_FF102_C018? NavFF102C018 { get; set; }
         public CSICP_FF102_G073? NavFF102G073 { get; set; }
 

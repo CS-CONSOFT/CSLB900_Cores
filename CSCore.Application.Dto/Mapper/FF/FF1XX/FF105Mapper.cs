@@ -1,16 +1,20 @@
-﻿using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF105;
+﻿using CSBS101._82Application.Mapper.BB00X;
+using CSBS101._82Application.Mapper.BB00X.BB009;
+using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF105;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF105;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF1XX
 {
     public static class FF105Mapper
     {
-        public static DtoGetFF105 ToDtoGetFF105(this CSICP_FF105 entity)
+        public static DtoGetFF105 ToDtoGetFF105(this RepoDtoCSICP_FF105 entity)
         {
             return new DtoGetFF105
             {
@@ -47,6 +51,12 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 Ff105ApiId = entity.Ff105ApiId,
                 Ff105Statusapi = entity.Ff105Statusapi,
                 Ff105DataCriacao = entity.Ff105DataCriacao,
+                NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
+                NavBB006 = entity.NavBB006?.ToDtoGetExibicao(),
+                NavBB009 = entity.NavBB009?.ToDtoGetBB009_Exibicao(),
+                NavFF102ApiBanco = entity.NavFF102ApiBanco,
+                NavFF105Status = entity.NavFF105Status,
+                NavFF105Statusapi = entity.NavFF105Statusapi,
             };
         }
     }
