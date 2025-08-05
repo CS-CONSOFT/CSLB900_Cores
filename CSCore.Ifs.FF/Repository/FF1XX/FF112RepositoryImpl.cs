@@ -65,6 +65,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff112.Ff112Bancoid equals bb006.Id into bb006_ff112_join
                    from bb006 in bb006_ff112_join.DefaultIfEmpty()
 
+                   join bb009ent in _appDbContext.OsusrE9aCsicpBb009s
+                   on ff112.Ff112TpCobrEntrada equals bb009ent.Id into bb009ent_ff112_join
+                   from bb009ent in bb009ent_ff112_join.DefaultIfEmpty()
+
+                   join bb009sai in _appDbContext.OsusrE9aCsicpBb009s
+                   on ff112.Ff112TpCobrSaida equals bb009sai.Id into bb009sai_ff112_join
+                   from bb009sai in bb009sai_ff112_join.DefaultIfEmpty()
+
                    join ff112_C006 in _appDbContext.OsusrE9aCsicpFf112C006s
                    on ff112.Ff112Carteira equals ff112_C006.Id into ff112_C006_ff112_join
                    from ff112_C006 in ff112_C006_ff112_join.DefaultIfEmpty()
@@ -97,6 +105,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff112.Ff112CnabId equals ff112_cnab.Id into ff112_cnab_ff112_join
                    from ff112_cnab in ff112_cnab_ff112_join.DefaultIfEmpty()
 
+                   join ff112_OrgNeg in _appDbContext.OsusrE9aCsicpFf112OrgNegs
+                   on ff112.Ff112OrgaoNeg equals ff112_OrgNeg.Id into ff112_OrgNeg_ff112_join
+                   from ff112_OrgNeg in ff112_OrgNeg_ff112_join.DefaultIfEmpty()
+
                    join ff112_G005 in _appDbContext.OsusrE9aCsicpFf112G005s
                    on ff112.Ff112Tipoinscricao equals ff112_G005.Id into ff112_G005_ff112_join
                    from ff112_G005 in ff112_G005_ff112_join.DefaultIfEmpty()
@@ -112,6 +124,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    join ff102_C021 in _appDbContext.OsusrE9aCsicpFf102C021s
                    on ff112.Ff112CnabCodDesconto equals ff102_C021.Id into ff112_C021_ff112_join
                    from ff112_C021 in ff112_C021_ff112_join.DefaultIfEmpty()
+
+                   join ff112_C029 in _appDbContext.OsusrE9aCsicpFf112C029s
+                   on ff112.Ff112IdentAceite equals ff112_C029.Id into ff112_C029_ff112_join
+                   from ff112_C029 in ff112_C029_ff112_join.DefaultIfEmpty()
 
                    join ff102_C018 in _appDbContext.OsusrE9aCsicpFf102C018s
                    on ff112.Ff112CnabCodJurosMora equals ff102_C018.Id into ff112_C018_ff112_join
@@ -263,6 +279,15 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            IsActive = ff112_cnab.IsActive
                        } : null,
 
+                       NavFF112OrgNeg = ff112_OrgNeg != null ? new OsusrE9aCsicpFf112OrgNeg
+                       {
+                           Id = ff112_OrgNeg.Id,
+                           Label = ff112_OrgNeg.Label,
+                           Order = ff112_OrgNeg.Order,
+                           IsActive = ff112_OrgNeg.IsActive,
+                           CodgBb = ff112_OrgNeg.CodgBb
+                       } : null,
+
                        NavFF112G005 = ff112_G005 != null ? new OsusrE9aCsicpFf112G005
                        {
                            Id = ff112_G005.Id,
@@ -297,6 +322,15 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Order = ff112_C021.Order,
                            IsActive = ff112_C021.IsActive,
                            Conteudo = ff112_C021.Conteudo
+                       } : null,
+
+                       NavFF112C029 = ff112_C029 != null ? new OsusrE9aCsicpFf112C029
+                       {
+                           Id = ff112_C029.Id,
+                           Label = ff112_C029.Label,
+                           Order = ff112_C029.Order,
+                           IsActive = ff112_C029.IsActive,
+                           Conteudo = ff112_C029.Conteudo
                        } : null,
 
                        NavFF102C018 = ff112_C018 != null ? new CSICP_FF102_C018

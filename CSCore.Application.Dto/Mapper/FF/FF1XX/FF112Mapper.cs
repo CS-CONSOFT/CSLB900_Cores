@@ -1,4 +1,5 @@
 ﻿using CSBS101._82Application.Mapper.BB00X;
+using CSBS101._82Application.Mapper.BB00X.BB009;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF112;
 using CSCore.Domain.CS_Models.CSICP_FF;
@@ -68,6 +69,8 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 Ff112OrgaoNeg = entity.Ff112OrgaoNeg,
                 NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
                 NavBB006 = entity.NavBB006?.ToDtoGetExibicao(),
+                NavBB009Ent = entity.NavBB009Ent?.ToDtoGetBB009_Exibicao(),
+                NavBB009Sai = entity.NavBB009Sai?.ToDtoGetBB009_Exibicao(),
                 NavFF112C006 = entity.NavFF112C006,
                 NavFF112C007 = entity.NavFF112C007,
                 NavFF112C008 = entity.NavFF112C008,
@@ -76,10 +79,12 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 NavFF112C026 = entity.NavFF112C026,
                 NavFF112C028 = entity.NavFF112C028,
                 NavFF112Cnab = entity.NavFF112Cnab,
+                NavFF112OrgNeg = entity.NavFF112OrgNeg,
                 NavFF112G005 = entity.NavFF112G005,
                 NavFF112G025 = entity.NavFF112G025,
                 NavFF112G028 = entity.NavFF112G028,
                 NavFF102C021 = entity.NavFF102C021,
+                NavFF112C029 = entity.NavFF112C029,
                 NavFF102C018 = entity.NavFF102C018,
                 NavFF102G073 = entity.NavFF102G073
             };

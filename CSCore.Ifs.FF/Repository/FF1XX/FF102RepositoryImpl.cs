@@ -452,12 +452,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Bb012Codigo = bb012conta.Bb012Codigo,
                            Bb012NomeCliente = bb012conta.Bb012NomeCliente,
                            Bb012GrupocontaId = bb012conta.Bb012GrupocontaId,
+
                            Nav_BB01202 = bb01202 != null ? new CSICP_BB01202
                            {
                                Id = bb01202.Id,
                                Bb012Cpf = bb01202.Bb012Cpf,
                                Bb012Cnpj = bb01202.Bb012Cnpj,
                            } : null,
+
                            NavBB01206 = bb01206 != null ? new CSICP_BB01206
                            {
                                Id = bb01206.Id,
