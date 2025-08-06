@@ -24,10 +24,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         }
 
         public async Task<List<FluxoDeCaixaDiarioDto>> GetFluxoDeCaixaDiarioAsync(
-       int tenant,
-       DateTime? dataVencimentoInicio = null,
-       DateTime? dataVencimentoFim = null,
-       decimal saldoAnterior = 0)
+           int tenant,
+           DateTime? dataVencimentoInicio = null,
+           DateTime? dataVencimentoFim = null,
+           decimal saldoAnterior = 0)
         {
             var query = from ff102 in _appDbContext.OsusrE9aCsicpFf102s
                         join conta in _appDbContext.OsusrE9aCsicpBb012s

@@ -14,12 +14,26 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     public class FF102RepositoryImpl(AppDbContext appDbContext)
         : RepositorioBaseImpl<CSICP_FF102>(appDbContext, "Id"), IFF102Repository
     {
+        public class FaixaAtrasoResumo
+        {
+            public string Faixa { get; set; } = string.Empty;
+            public int Quantidade { get; set; }
+            public decimal ValorTotal { get; set; }
+        }
+
+        private static readonly (int min, int max, string label)[] Faixas = new[]
+        {
+            (0, 30, "000 - 030 dias"),
+            (31, 60, "031 - 060 dias"),
+            (61, 90, "061 - 090 dias"),
+        };
+
         private readonly AppDbContext _appDbContext = appDbContext;
         public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int tenant, string? id, int? in_tipoRegistro)
         {
             IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(tenant);
             //1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar
-            if (in_tipoRegistro != null) 
+            if (in_tipoRegistro != null)
             {
                 query = query.Where(e => e.Ff102Tiporegistro == in_tipoRegistro);
             }
@@ -31,13 +45,13 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         private IQueryable<RepoDtoCSICP_FF102> GetQueryBase(int tenant)
         {
             return from ff102 in _appDbContext.OsusrE9aCsicpFf102s
-                   
-                   //42 tabelas
-                   join bb001 in _appDbContext.E9ACSICP_BB001s 
+
+                       //42 tabelas
+                   join bb001 in _appDbContext.E9ACSICP_BB001s
                    on ff102.Ff102Filialid equals bb001.Id into bb001_ff102_join
                    from bb001 in bb001_ff102_join.DefaultIfEmpty()
 
-                   join ff003 in _appDbContext.OsusrE9aCsicpFf003s 
+                   join ff003 in _appDbContext.OsusrE9aCsicpFf003s
                    on ff102.Ff102Especieid equals ff003.Id into ff003_ff102_join
                    from ff003 in ff003_ff102_join.DefaultIfEmpty()
 
@@ -45,7 +59,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff102.Ff102Tipoparcelaid equals ff102ent.Id into ff102ent_ff102_join
                    from ff102ent in ff102ent_ff102_join.DefaultIfEmpty()
 
-                   join bb012conta in _appDbContext.OsusrE9aCsicpBb012s 
+                   join bb012conta in _appDbContext.OsusrE9aCsicpBb012s
                    on ff102.Ff102Contaid equals bb012conta.Id into bb012conta_ff102_join
                    from bb012conta in bb012conta_ff102_join.DefaultIfEmpty()
 
@@ -57,11 +71,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                     on bb012conta.Id equals bb01206.Id into bb01206_join
                    from bb01206 in bb01206_join.DefaultIfEmpty()
 
-                   join bb012contareal in _appDbContext.OsusrE9aCsicpBb012s 
+                   join bb012contareal in _appDbContext.OsusrE9aCsicpBb012s
                    on ff102.Ff102Contarealid equals bb012contareal.Id into bb012contareal_ff102_join
                    from bb012contareal in bb012contareal_ff102_join.DefaultIfEmpty()
 
-                   join bb012avalista in _appDbContext.OsusrE9aCsicpBb012s 
+                   join bb012avalista in _appDbContext.OsusrE9aCsicpBb012s
                    on ff102.Ff102AvalistaId equals bb012avalista.Id into bb012avalista_ff102_join
                    from bb012avalista in bb012avalista_ff102_join.DefaultIfEmpty()
 
@@ -105,11 +119,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff102.Ff102cpAprovadorid equals sy001Aprovador.Id into sy001Aprovador_ff102_join
                    from sy001Aprovador in sy001Aprovador_ff102_join.DefaultIfEmpty()
 
-                   join ff102des in _appDbContext.OsusrE9aCsicpFf102Des 
+                   join ff102des in _appDbContext.OsusrE9aCsicpFf102Des
                    on ff102.Ff102TipoDesconto equals ff102des.Id into ff102des_ff102_join
                    from ff102des in ff102des_ff102_join.DefaultIfEmpty()
 
-                   join ff102c021 in _appDbContext.OsusrE9aCsicpFf102C021s 
+                   join ff102c021 in _appDbContext.OsusrE9aCsicpFf102C021s
                    on ff102.Ff102CnabCodDesconto equals ff102c021.Id into ff102c021_ff102_join
                    from ff102c021 in ff102c021_ff102_join.DefaultIfEmpty()
 
@@ -117,7 +131,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff102.Ff102FluxoCaixa equals staticaFluxoCaixa.Id into staticaFluxoCaixa_ff102_join
                    from staticaFluxoCaixa in staticaFluxoCaixa_ff102_join.DefaultIfEmpty()
 
-                   join ff102sit in _appDbContext.OsusrE9aCsicpFf102Sits 
+                   join ff102sit in _appDbContext.OsusrE9aCsicpFf102Sits
                    on ff102.Ff102Situacaoid equals ff102sit.Id into ff102sit_ff102_join
                    from ff102sit in ff102sit_ff102_join.DefaultIfEmpty()
 
@@ -713,6 +727,53 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
             return (await query.ToListAsync(), count);
         }
+
+        private async Task<List<FaixaAtrasoResumo>> GerarResumoAtrasoValter(
+                int tenant, DateTime dataEscolhida)
+        {
+            // Obtém a data de hoje (sem hora) para servir de referência no filtro e nos cálculos de faixa
+            var hoje = DateTime.Today;
+
+            // Busca os títulos do tenant informado, filtrando:
+            // - Situação "Aberto" (join já traz NavFF102Sit)
+            // - Data de vencimento entre hoje e a data escolhida (inclusive)
+            var titulos = await GetQueryBase(tenant)
+                .Where(t =>
+                    t.NavFF102Sit != null &&
+                    t.NavFF102Sit.Label == "Aberto" &&
+                    t.Ff102DataVencimento >= hoje &&
+                    t.Ff102DataVencimento <= dataEscolhida
+                )
+                .ToListAsync();
+
+            // Lista que irá armazenar o resumo de cada faixa de dias
+            var resultado = new List<FaixaAtrasoResumo>();
+
+            // Para cada faixa definida (ex: 0-30, 31-60, 61-90 dias)
+            foreach (var faixa in Faixas)
+            {
+                // Filtra os títulos que se encaixam na faixa de dias em relação à data de hoje
+                var titulosFaixa = titulos
+                    .Where(t =>
+                        (t.Ff102DataVencimento - hoje).Days >= faixa.min &&
+                        (t.Ff102DataVencimento - hoje).Days <= faixa.max
+                    );
+
+                // Adiciona o resumo da faixa na lista de resultado
+                resultado.Add(new FaixaAtrasoResumo
+                {
+                    Faixa = faixa.label, // Ex: "000 - 030 dias"
+                    Quantidade = titulosFaixa.Count(), // Quantidade de títulos na faixa
+                    ValorTotal = titulosFaixa.Sum(t => t.Ff102VlLiqTitulo) // Soma dos valores em aberto na faixa
+                });
+            }
+
+            // Retorna a lista com o resumo de todas as faixas
+            return resultado;
+        }
+
+
+
 
         private IQueryable<RepoDtoCSICP_FF102> FiltraQuandoExisteFiltro(string? in_estabelecimentoId,
             IQueryable<RepoDtoCSICP_FF102> query,
