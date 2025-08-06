@@ -7,12 +7,6 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
-using NPOI.SS.UserModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF017;
 
 namespace CSCore.Ifs.FF.Repository.FF01X
@@ -169,7 +163,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                            Bb026Formapagamento = bb026.Bb026Formapagamento,
                        } : null,
 
-                       NavDD125 = dd125 != null ? new CSICP_DD125 
+                       NavDD125 = dd125 != null ? new CSICP_DD125
                        {
                            TenantId = dd125.TenantId,
                            Dd125CartacredId = dd125.Dd125CartacredId,

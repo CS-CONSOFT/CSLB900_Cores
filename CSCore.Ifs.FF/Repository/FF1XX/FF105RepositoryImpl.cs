@@ -139,7 +139,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    };
         }
 
-        public async Task<(List<RepoDtoCSICP_FF105>, int)> GetListAsync(int in_tenant, int in_page, int in_pageSize, 
+        public async Task<(List<RepoDtoCSICP_FF105>, int)> GetListAsync(int in_tenant, int in_page, int in_pageSize,
             string? in_estabID, string? in_descBordero, string? in_agCobradorID, DateTime? in_dataInicio, DateTime? in_dataFinal)
 
         {
@@ -153,7 +153,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF105> FiltraQuandoExisteFiltro(string? in_estabID, string? in_descBordero, string? in_agCobradorID, 
+        private IQueryable<RepoDtoCSICP_FF105> FiltraQuandoExisteFiltro(string? in_estabID, string? in_descBordero, string? in_agCobradorID,
             DateTime? in_dataInicio, DateTime? in_dataFinal, IQueryable<RepoDtoCSICP_FF105> query)
         {
             if (in_estabID != null)
@@ -190,7 +190,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 foreach (var ff106 in ff106List)
                 {
                     //Se o título já estiver com borderô, pular para o próximo
-                    if (ff106.Ff106IdOutroBordero != null) 
+                    if (ff106.Ff106IdOutroBordero != null)
                         continue;
 
                     var ff102 = await _appDbContext.OsusrE9aCsicpFf102s
