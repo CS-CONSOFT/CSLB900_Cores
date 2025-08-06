@@ -34,5 +34,7 @@
         Task<int> GetIDStaticasByTypeGG023ValPorLabel(string Label);
         Task<int> GetIDStaticasByTypeGG045StatusPorLabel(string label);
         Task<int> GetIDStaticasByTypeGG046SaidaPorLabel(string label);
+        Task<int> GetIDStaticasByTypeFF105_TpPorLabel(string label);
+
     }
 }
