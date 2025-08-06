@@ -325,5 +325,14 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                           .FirstOrDefaultAsync();
             return ID;
         }
+
+        public async Task<int> GetIDStaticasByTypeFF105_TpPorLabel(string label)
+        {
+            int ID = await _appDbContext.OsusrE9aCsicpFf105Statuses
+                        .Where(e => e.Label!.Equals(label))
+                        .Select(e => e.Id)
+                        .FirstOrDefaultAsync();
+            return ID;
+        }
     }
 }

@@ -5,12 +5,8 @@ using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
+using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF105;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX
@@ -171,6 +167,151 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             if (in_dataFinal.HasValue)
                 query = query.Where(e => e.Ff105EmissaoFinal <= in_dataFinal.Value);
             return query;
+        }
+
+        public async Task PublicarBorderoAsync(int in_tenantId, string in_ff105_borderoId, int in_idff105_status_publicado)
+        {
+            var transaction = await _appDbContext.Database.BeginTransactionAsync();
+            try
+            {
+                var ff105 = await _appDbContext.OsusrE9aCsicpFf105s
+                    .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == in_ff105_borderoId);
+
+                if (ff105 == null)
+                    throw new Exception("Borderô FF105 não encontrado");
+
+                var ff106List = await _appDbContext.OsusrE9aCsicpFf106s
+                    .Where(e => e.TenantId == in_tenantId && e.Ff105Id == in_ff105_borderoId)
+                    .ToListAsync();
+
+                //Variável para guardar o valor total do borderô
+                decimal? valorBordero = 0;
+
+                foreach (var ff106 in ff106List)
+                {
+                    //Se o título já estiver com borderô, pular para o próximo
+                    if (ff106.Ff106IdOutroBordero != null) 
+                        continue;
+
+                    var ff102 = await _appDbContext.OsusrE9aCsicpFf102s
+                        .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == ff106.Ff102Id);
+
+                    if (ff102 == null)
+                        throw new Exception("Título FF102 não encontrado");
+
+                    //Guardar os valores da tabela ff102 na tabela ff106
+                    ff106.Ff106Agcobradorid = ff102.Ff102Agcobradorid;
+                    ff106.Ff106Tipocobrancaid = ff102.Ff102Tipocobrancaid;
+                    ff106.Ff106InstCobranca1 = ff102.Ff102InstCobranca1;
+                    ff106.Ff106InstCobranca2 = ff102.Ff102InstCobranca2;
+
+                    //Assinar publicação
+                    decimal? protocoloNumberDecimal = null;
+                    if (!string.IsNullOrWhiteSpace(ff105.Ff105Protocolnumber))
+                    {
+                        if (decimal.TryParse(ff105.Ff105Protocolnumber, out var result))
+                            protocoloNumberDecimal = result;
+                    }
+                    ff102.Ff102NoBordero = protocoloNumberDecimal;
+                    ff102.Ff102Agcobradorid = ff105.Ff105Agcobradorid;
+                    ff102.Ff102Tipocobrancaid = ff105.Ff105Tipocobrancaid;
+                    ff102.Ff102Dtimestamp = DateTime.Now;
+
+                    valorBordero += ff102.Ff102ValorTitulo;
+
+                    _appDbContext.OsusrE9aCsicpFf106s.Update(ff106);
+                    _appDbContext.OsusrE9aCsicpFf102s.Update(ff102);
+                }
+
+                ff105.Ff105Status = in_idff105_status_publicado;
+                ff105.Ff105ValorBordero = valorBordero;
+                _appDbContext.OsusrE9aCsicpFf105s.Update(ff105);
+
+                await _appDbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
+            }
+        }
+
+        public async Task DespublicarBorderoAsync(int in_tenantId, string in_ff105_borderoId, int in_idff105_status_carregado)
+        {
+            var transaction = await _appDbContext.Database.BeginTransactionAsync();
+            try
+            {
+                var ff105 = await _appDbContext.OsusrE9aCsicpFf105s
+                    .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == in_ff105_borderoId);
+
+                if (ff105 == null)
+                    throw new Exception("Borderô FF105 não encontrado");
+
+                var ff106List = await _appDbContext.OsusrE9aCsicpFf106s
+                    .Where(e => e.TenantId == in_tenantId && e.Ff105Id == in_ff105_borderoId)
+                    .ToListAsync();
+
+                foreach (var ff106 in ff106List)
+                {
+                    var ff102 = await _appDbContext.OsusrE9aCsicpFf102s
+                        .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == ff106.Ff102Id);
+
+                    if (ff102 == null)
+                        throw new Exception("Título FF102 não encontrado");
+
+                    //Guarda os valores da tabela ff106 na tabela ff102
+                    ff102.Ff102Agcobradorid = ff106.Ff106Agcobradorid;
+                    ff102.Ff102Tipocobrancaid = ff106.Ff106Tipocobrancaid;
+                    ff102.Ff102InstCobranca1 = ff106.Ff106InstCobranca1;
+                    ff102.Ff102InstCobranca2 = ff106.Ff106InstCobranca2;
+
+                    //Assina Publicação
+                    ff102.Ff102NoBordero = 0;
+                    ff102.Ff102Dtimestamp = DateTime.Now;
+
+                    _appDbContext.OsusrE9aCsicpFf102s.Update(ff102);
+                    _appDbContext.OsusrE9aCsicpFf106s.Update(ff106);
+                }
+
+                // Atualiza status do borderô
+                ff105.Ff105Status = in_idff105_status_carregado;
+                ff105.Ff105ValorBordero = 0;
+                _appDbContext.OsusrE9aCsicpFf105s.Update(ff105);
+
+                await _appDbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
+            }
+        }
+
+        public async Task EncerrarBorderoAsync(int in_tenantId, string in_ff105_borderoId, int in_idff105_status_encerrado)
+        {
+            var transaction = await _appDbContext.Database.BeginTransactionAsync();
+            try
+            {
+                var ff105 = await _appDbContext.OsusrE9aCsicpFf105s
+                    .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == in_ff105_borderoId);
+
+                if (ff105 == null)
+                    throw new Exception("Borderô FF105 não encontrado");
+
+                // Atualiza status do borderô
+                ff105.Ff105Status = in_idff105_status_encerrado;
+                _appDbContext.OsusrE9aCsicpFf105s.Update(ff105);
+
+                await _appDbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
+            }
         }
     }
 }

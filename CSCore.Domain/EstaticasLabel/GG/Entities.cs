@@ -213,5 +213,12 @@
             public const string Transferido_Mais = "Transferido (+)";
             public const string Transferido_Menos = "Transferido (-)";
         }
+
+        public static class Csicp_ff105_Status
+        {
+            public const string Publicado = "Publicado";
+            public const string Carregado = "Carregado";
+            public const string Encerrado = "Encerrado";
+        }
     }
 }

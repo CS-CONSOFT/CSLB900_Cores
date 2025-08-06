@@ -18,5 +18,9 @@ namespace CSCore.Domain.Interfaces.FF._1XX
             DateTime? in_dataInicio,
             DateTime? in_dataFinal);
         Task<RepoDtoCSICP_FF105?> GetByIdAsync(int in_tenant, string id);
+
+        Task PublicarBorderoAsync(int tenantId, string borderoId, int in_idff105_status_publicado);
+        Task DespublicarBorderoAsync(int in_tenantId, string in_ff105_borderoId, int in_idff105_status_carregado);
+        Task EncerrarBorderoAsync(int in_tenantId, string in_ff105_borderoId, int in_idff105_status_encerrado);
     }
 }
