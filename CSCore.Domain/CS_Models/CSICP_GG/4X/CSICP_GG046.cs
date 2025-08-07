@@ -2,7 +2,7 @@
 
 namespace CSCore.Domain.CS_Models.CSICP_GG;
 
-public partial class OsusrE9aCsicpGg046
+public partial class CSICP_GG046
 {
     public int TenantId { get; set; }
 
@@ -28,9 +28,9 @@ public partial class OsusrE9aCsicpGg046
 
     public CSICP_GG045? Gg045 { get; set; }
 
-    public OsusrE9aCsicpGg046E? Gg046Entsai { get; set; }
+    public OSUSR_E9A_CSICP_GG046_ES? Gg046Entsai { get; set; }
 
     public CSICP_GG520? Nav_Gg250Saldoent { get; set; }
 
-    public OsusrE9aCsicpGg045Stat? Gg046Stat { get; set; }
+    public OSUSR_E9A_CSICP_GG045_STAT? Gg046Stat { get; set; }
 }

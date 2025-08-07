@@ -33,10 +33,10 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG046
 
         public string? Gg046Codbarrasalfa { get; set; }
 
-        public OsusrE9aCsicpGg046E? Gg046Entsai { get; set; }
+        public OSUSR_E9A_CSICP_GG046_ES? Gg046Entsai { get; set; }
 
         public DtoGetGG520Simples? Gg046Saldoent { get; set; }
 
-        public OsusrE9aCsicpGg045Stat? Gg046Stat { get; set; }
+        public OSUSR_E9A_CSICP_GG045_STAT? Gg046Stat { get; set; }
     }
 }

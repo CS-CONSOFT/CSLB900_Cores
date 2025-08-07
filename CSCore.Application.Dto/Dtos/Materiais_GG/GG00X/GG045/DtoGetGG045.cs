@@ -44,7 +44,7 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG045
         public IEnumerable<DtoGetSaldoGG520ParaGG45>? CS_Gg520SaldosCandidatos { get; set; }
         public IEnumerable<DtoGetGG046>? CS_Gg046ListaPeloGG045 { get; set; }
 
-        public OsusrE9aCsicpGg045Stat? Gg045Stat { get; set; }
+        public OSUSR_E9A_CSICP_GG045_STAT? Gg045Stat { get; set; }
 
     }
 }

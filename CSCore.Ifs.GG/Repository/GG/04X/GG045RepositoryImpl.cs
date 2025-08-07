@@ -66,7 +66,7 @@ namespace CSCore.Ifs.Repository.GG._04X
                         ", o mesmo deve está aberto!"
                         );
 
-                List<OsusrE9aCsicpGg046> listaTransferenciaSaldoEntradas =
+                List<CSICP_GG046> listaTransferenciaSaldoEntradas =
                     await GetListTransferenciaSaldoEntrada(in_tenant, in_gg045_id, in_StID_csicp_gg045_Stat_Aberto);
 
                 for (int i = 0; i < listaTransferenciaSaldoEntradas.Count; i++)
@@ -91,6 +91,7 @@ namespace CSCore.Ifs.Repository.GG._04X
 
                     listaTransferenciaSaldoEntradas[i].Gg046StatId = in_StID_csicp_gg045_Stat_Transferido;
                     listaTransferenciaSaldoEntradas[i].Gg046Isnovo = false;
+                    listaTransferenciaSaldoEntradas[i].Nav_Gg250Saldoent = null; // Limpa a navegação para evitar problemas de carregamento desnecessário
                     _appDbContext.Update(listaTransferenciaSaldoEntradas[i]);
                 }
 
@@ -106,7 +107,7 @@ namespace CSCore.Ifs.Repository.GG._04X
             }
         }
 
-        private async Task<List<OsusrE9aCsicpGg046>> GetListTransferenciaSaldoEntrada(int in_tenant, string in_gg045_id, int in_StID_csicp_gg045_Stat_Aberto)
+        private async Task<List<CSICP_GG046>> GetListTransferenciaSaldoEntrada(int in_tenant, string in_gg045_id, int in_StID_csicp_gg045_Stat_Aberto)
         {
             var query = from CSICP_GG046 in _appDbContext.OsusrE9aCsicpGg046s
                         where CSICP_GG046.TenantId == in_tenant
@@ -117,7 +118,7 @@ namespace CSCore.Ifs.Repository.GG._04X
                         on CSICP_GG046.Gg046SaldoentId equals gg520.Id into gg520Join
                         from gg520 in gg520Join.DefaultIfEmpty()
 
-                        select new OsusrE9aCsicpGg046
+                        select new CSICP_GG046
                         {
                             TenantId = CSICP_GG046.TenantId,
                             Gg046Id = CSICP_GG046.Gg046Id,
@@ -132,6 +133,7 @@ namespace CSCore.Ifs.Repository.GG._04X
                             Gg046Codbarrasalfa = CSICP_GG046.Gg046Codbarrasalfa,
                             Nav_Gg250Saldoent = gg520 != null ? new CSICP_GG520
                             {
+                                Id = gg520.Id,
                                 TenantId = gg520.TenantId,
                                 Gg520KardexId = gg520.Gg520KardexId,
                                 Gg520Almoxid = gg520.Gg520Almoxid,

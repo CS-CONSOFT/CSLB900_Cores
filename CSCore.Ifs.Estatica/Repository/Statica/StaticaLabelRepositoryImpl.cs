@@ -334,8 +334,15 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
         /// <returns>ID da entidade encontrada ou 0 se não encontrada</returns>
         public async Task<int> GetIDStaticaByLabel<T>(string label, string idPropertyName = "Id") where T : class
         {
+            var query = _appDbContext.Set<T>().AsQueryable();
+
+            var entityType = _appDbContext.Model.FindEntityType(typeof(T));
+            var isActiveProperty = entityType?.FindProperty("IsActive");
+
+            if (isActiveProperty != null)
+                query = query.Where(e => EF.Property<bool?>(e, "IsActive") == true);
+
             return await _appDbContext.Set<T>()
-                .Where(e => EF.Property<bool?>(e, "IsActive") == true)
                 .Where(e => EF.Property<string>(e, "Label") == label)
                 .Select(e => EF.Property<int>(e, idPropertyName))
                 .FirstOrDefaultAsync();
