@@ -1,4 +1,4 @@
-name: Deploy e AutoMerge Workflow
+name: AutoMerge Workflow
 
 on:
   push:
@@ -19,6 +19,11 @@ jobs:
       - name: Criar Pull Request para develop
         id: criar_pr
         run: |
+
+          author_name="${{ github.event.head_commit.author.name }}"
+          if [ -z "$author_name" ] || [ "$author_name" = "null" ]; then
+            author_name="${{ github.actor }}"
+          fi
           echo "Repositório: ${{ github.repository }}"
           echo "Branch: ${{ steps.branch_name.outputs.branch_name }}"
           
@@ -27,11 +32,10 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/${{ github.repository }}/pulls \
             -d "{
-                  \"title\": \"Auto merge: ${{ steps.branch_name.outputs.branch_name }} -> develop\",
-                  \"body\": \"Merge automático da branch ${{ steps.branch_name.outputs.branch_name }} para develop\",
+                  \"title\": \"Auto merge: ${{ steps.branch_name.outputs.branch_name }} -> develop - commiot feito por $author_name\",
+                  \"body\": \"Merge automático da branch ${{ steps.branch_name.outputs.branch_name }} para develop - commit feito por $author_name\",
                   \"head\": \"${{ steps.branch_name.outputs.branch_name }}\",
-                  \"base\": \"develop\"
-                }")
+                  \"base\": \"develop\"}")
           
           echo "Response completa:"
           echo "$response"
