@@ -1,27 +1,12 @@
 ﻿using CSCore.Ifs.CS_Context;
+using CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
 using Microsoft.EntityFrameworkCore;
 
-namespace CSCore.Ifs.FF.Repository.FF1XX
+namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
 {
-    public class FluxoDeCaixa(AppDbContext appDbContext)
+    public class FluxoDeCaixa(AppDbContext appDbContext) : IFluxoDeCaixaRepository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-
-        public class FluxoDeCaixaDiarioDto
-        {
-            public DateTime Data { get; set; }
-            public DateTime DataEmissao { get; set; }
-            public string? Prefixo { get; set; }
-            public decimal? Titulo { get; set; }
-            public string? Sufixo { get; set; }
-            public string? NomeConta { get; set; }
-            public decimal ValorTitulo { get; set; }
-            public decimal TotalDia { get; set; }
-            public decimal SaldoAnterior { get; set; }
-            public decimal SaldoAcumulado { get; set; }
-            public string IdentificadorTitulo { get; set; } = string.Empty;
-            public string Label { get; set; } = string.Empty;
-        }
 
         public async Task<List<FluxoDeCaixaDiarioDto>> GetFluxoDeCaixaDiarioAsync(
            int tenant,
@@ -46,10 +31,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                             Sufixo = ff102.Ff102Sfx,
                             NomeConta = conta.Bb012NomeCliente,
                             ValorLiq = ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo * -1 : ff102.Ff102VlLiqTitulo,
-                            IdentificadorTitulo = (ff102.Ff102Tiporegistro == 1 || ff102.Ff102Tiporegistro == 2) ? "A receber" :
-                                                 (ff102.Ff102Tiporegistro == 3 ? "A pagar" : string.Empty),
+                            IdentificadorTitulo = ff102.Ff102Tiporegistro == 1 || ff102.Ff102Tiporegistro == 2 ? "A receber" :
+                                                 ff102.Ff102Tiporegistro == 3 ? "A pagar" : string.Empty,
                             TipoReg = ff102.Ff102Tiporegistro,
-                            Label = ff102sit.Label
+                            ff102sit.Label
                         };
 
             if (dataVencimentoInicio.HasValue)
@@ -75,15 +60,15 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 .Select(g => new
                 {
                     Data = g.Key.Date,
-                    DataEmissao = g.Key.DataEmissao,
-                    Prefixo = g.Key.Prefixo,
-                    Titulo = g.Key.Titulo,
-                    Sufixo = g.Key.Sufixo,
-                    NomeConta = g.Key.NomeConta,
+                    g.Key.DataEmissao,
+                    g.Key.Prefixo,
+                    g.Key.Titulo,
+                    g.Key.Sufixo,
+                    g.Key.NomeConta,
                     ValorTitulo = g.Key.ValorLiq,
-                    TipoReg = g.Key.TipoReg,
-                    IdentificadorTitulo = g.Key.IdentificadorTitulo,
-                    Label = g.Key.Label,
+                    g.Key.TipoReg,
+                    g.Key.IdentificadorTitulo,
+                    g.Key.Label,
                     TotalDia = g.Sum(x => x.ValorLiq)
                 })
                 .OrderBy(x => x.Data)
@@ -117,19 +102,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return resultado;
         }
 
-        public class FluxoDeCaixaMensalDto
-        {
-            public int Ano { get; set; }
-            public int Mes { get; set; }
-            public decimal TotalMes { get; set; }
-            public decimal SaldoAnterior { get; set; }
-            public decimal SaldoAcumulado { get; set; }
-            public decimal AReceber { get; set; }
-            public decimal APagar { get; set; }
-            public decimal ReceitaProvisao { get; set; }
-            public decimal ProvisaoAPagar { get; set; }
-        }
-
         public async Task<List<FluxoDeCaixaMensalDto>> GetFluxoDeCaixaMensalAsync(
             int tenant,
             DateTime? dataVencimentoInicio = null,
@@ -149,26 +121,26 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                             Ano = ff102.Ff102DataVencimento.Year,
                             Mes = ff102.Ff102DataVencimento.Month,
                             ValorLiq = ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo * -1 : ff102.Ff102VlLiqTitulo,
-                            AReceber = (ff102.Ff102Tiporegistro == 1 || ff102.Ff102Tiporegistro == 2) ? ff102.Ff102VlLiqTitulo : 0,
+                            AReceber = ff102.Ff102Tiporegistro == 1 || ff102.Ff102Tiporegistro == 2 ? ff102.Ff102VlLiqTitulo : 0,
                             APagar = ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo : 0,
-                            ReceitaProvisao = (ff102sit.Label == "Provisão" && (ff102.Ff102Tiporegistro == 1 || ff102.Ff102Tiporegistro == 2)) ? ff102.Ff102VlLiqTitulo : 0,
-                            ProvisaoAPagar = (ff102sit.Label == "Provisão" && ff102.Ff102Tiporegistro == 3) ? ff102.Ff102VlLiqTitulo : 0
+                            ReceitaProvisao = ff102sit.Label == "Provisão" && (ff102.Ff102Tiporegistro == 1 || ff102.Ff102Tiporegistro == 2) ? ff102.Ff102VlLiqTitulo : 0,
+                            ProvisaoAPagar = ff102sit.Label == "Provisão" && ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo : 0
                         };
 
             if (dataVencimentoInicio.HasValue)
                 query = query.Where(x => x.Ano > dataVencimentoInicio.Value.Year
-                    || (x.Ano == dataVencimentoInicio.Value.Year && x.Mes >= dataVencimentoInicio.Value.Month));
+                    || x.Ano == dataVencimentoInicio.Value.Year && x.Mes >= dataVencimentoInicio.Value.Month);
 
             if (dataVencimentoFim.HasValue)
                 query = query.Where(x => x.Ano < dataVencimentoFim.Value.Year
-                    || (x.Ano == dataVencimentoFim.Value.Year && x.Mes <= dataVencimentoFim.Value.Month));
+                    || x.Ano == dataVencimentoFim.Value.Year && x.Mes <= dataVencimentoFim.Value.Month);
 
             var agrupado = query
                 .GroupBy(x => new { x.Ano, x.Mes })
                 .Select(g => new
                 {
-                    Ano = g.Key.Ano,
-                    Mes = g.Key.Mes,
+                    g.Key.Ano,
+                    g.Key.Mes,
                     TotalMes = g.Sum(x => x.ValorLiq),
                     AReceber = g.Sum(x => x.AReceber),
                     APagar = g.Sum(x => x.APagar),

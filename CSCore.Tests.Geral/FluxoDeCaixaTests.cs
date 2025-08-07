@@ -1,5 +1,6 @@
 ﻿using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.FF1XX;
+using CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
