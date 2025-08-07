@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageReference Include="xunit" Version="2.9.2" />
@@ -19,8 +20,9 @@
   <ItemGroup>
     <ProjectReference Include="..\CSCompartilhado.CSLB900_MSTools\CSLB900.MSTools.csproj" />
     <ProjectReference Include="..\CSCore.Ifs.FF\CSCore.Ifs.FF.csproj" />
+    <ProjectReference Include="..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />
+    <ProjectReference Include="..\CSCore.Domain\CSCore.Domain.csproj" />
   </ItemGroup>
-
 
   <ItemGroup>
     <Using Include="Xunit" />

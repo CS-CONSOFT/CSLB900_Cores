@@ -6,6 +6,11 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
+using NPOI.HPSF;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using static CSCore.Domain.ComboTypes;
 
 
@@ -14,20 +19,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     public class FF102RepositoryImpl(AppDbContext appDbContext)
         : RepositorioBaseImpl<CSICP_FF102>(appDbContext, "Id"), IFF102Repository
     {
-        public class FaixaAtrasoResumo
-        {
-            public string Faixa { get; set; } = string.Empty;
-            public int Quantidade { get; set; }
-            public decimal ValorTotal { get; set; }
-        }
-
-        private static readonly (int min, int max, string label)[] Faixas = new[]
-        {
-            (0, 30, "000 - 030 dias"),
-            (31, 60, "031 - 060 dias"),
-            (61, 90, "061 - 090 dias"),
-        };
-
         private readonly AppDbContext _appDbContext = appDbContext;
         public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int tenant, string? id, int? in_tipoRegistro)
         {
@@ -39,7 +30,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             }
             RepoDtoCSICP_FF102? cSICP_FF102 = await query.FirstOrDefaultAsync(e => e.Id == id);
             return cSICP_FF102;
-
         }
 
         private IQueryable<RepoDtoCSICP_FF102> GetQueryBase(int tenant)
@@ -727,53 +717,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
             return (await query.ToListAsync(), count);
         }
-
-        private async Task<List<FaixaAtrasoResumo>> GerarResumoAtrasoValter(
-                int tenant, DateTime dataEscolhida)
-        {
-            // Obtém a data de hoje (sem hora) para servir de referência no filtro e nos cálculos de faixa
-            var hoje = DateTime.Today;
-
-            // Busca os títulos do tenant informado, filtrando:
-            // - Situação "Aberto" (join já traz NavFF102Sit)
-            // - Data de vencimento entre hoje e a data escolhida (inclusive)
-            var titulos = await GetQueryBase(tenant)
-                .Where(t =>
-                    t.NavFF102Sit != null &&
-                    t.NavFF102Sit.Label == "Aberto" &&
-                    t.Ff102DataVencimento >= hoje &&
-                    t.Ff102DataVencimento <= dataEscolhida
-                )
-                .ToListAsync();
-
-            // Lista que irá armazenar o resumo de cada faixa de dias
-            var resultado = new List<FaixaAtrasoResumo>();
-
-            // Para cada faixa definida (ex: 0-30, 31-60, 61-90 dias)
-            foreach (var faixa in Faixas)
-            {
-                // Filtra os títulos que se encaixam na faixa de dias em relação à data de hoje
-                var titulosFaixa = titulos
-                    .Where(t =>
-                        (t.Ff102DataVencimento - hoje).Days >= faixa.min &&
-                        (t.Ff102DataVencimento - hoje).Days <= faixa.max
-                    );
-
-                // Adiciona o resumo da faixa na lista de resultado
-                resultado.Add(new FaixaAtrasoResumo
-                {
-                    Faixa = faixa.label, // Ex: "000 - 030 dias"
-                    Quantidade = titulosFaixa.Count(), // Quantidade de títulos na faixa
-                    ValorTotal = titulosFaixa.Sum(t => t.Ff102VlLiqTitulo) // Soma dos valores em aberto na faixa
-                });
-            }
-
-            // Retorna a lista com o resumo de todas as faixas
-            return resultado;
-        }
-
-
-
 
         private IQueryable<RepoDtoCSICP_FF102> FiltraQuandoExisteFiltro(string? in_estabelecimentoId,
             IQueryable<RepoDtoCSICP_FF102> query,
