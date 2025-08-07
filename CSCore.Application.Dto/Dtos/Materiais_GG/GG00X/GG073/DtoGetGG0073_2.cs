@@ -49,7 +49,7 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG073
         public Dto_GetSY001Simples? NavSY001Usuario { get; set; }
         public Dto_GetBB005? NavBB005CentroDeCusto { get; set; }
         public OsusrE9aCsicpGg073Stat? NavGg073Status { get; set; }
-        public OsusrE9aCsicpGg073Tmov? NavGg073Tmov { get; set; }
+        public OSUSR_E9A_CSICP_GG073_TMOV? NavGg073Tmov { get; set; }
         public CSICP_GG023Val? NavGg073Valorizarpor { get; set; }
     }
 }

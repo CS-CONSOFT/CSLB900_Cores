@@ -6,7 +6,7 @@ namespace CSCore.Application.Dto.Mapper.GG00X
     public static class GG045Mapper
     {
         public static DtoGetGG045 ToDtoGet(this CSICP_GG045 entity, IEnumerable<CSICP_GG520> listaSaldoCandidato,
-            IEnumerable<OsusrE9aCsicpGg046> listaPeloGG045)
+            IEnumerable<CSICP_GG046> listaPeloGG045)
         {
             return new DtoGetGG045
             {

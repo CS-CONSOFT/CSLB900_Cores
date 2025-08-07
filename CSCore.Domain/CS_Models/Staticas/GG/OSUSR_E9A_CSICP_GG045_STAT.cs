@@ -1,6 +1,6 @@
 ﻿namespace CSCore.Domain.CS_Models.Staticas.GG;
 
-public partial class OsusrE9aCsicpGg073Tmov
+public partial class OSUSR_E9A_CSICP_GG045_STAT
 {
     public int Id { get; set; }
 
@@ -9,4 +9,5 @@ public partial class OsusrE9aCsicpGg073Tmov
     public int? Order { get; set; }
 
     public bool? IsActive { get; set; }
+
 }

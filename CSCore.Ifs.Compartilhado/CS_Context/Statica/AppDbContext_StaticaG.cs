@@ -54,7 +54,7 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<OsusrE9aCsicpGg039Stat> OsusrE9aCsicpGg039Stats { get; set; }
 
         public DbSet<OsusrE9aCsicpGg041Tpreq> OsusrE9aCsicpGg041Tpreqs { get; set; }
-        public DbSet<OsusrE9aCsicpGg045Stat> OsusrE9aCsicpGg045Stats { get; set; }
+        public DbSet<OSUSR_E9A_CSICP_GG045_STAT> OsusrE9aCsicpGg045Stats { get; set; }
         public DbSet<OsusrE9aCsicpGg046Stat> OsusrE9aCsicpGg046Stats { get; set; }
         public DbSet<OsusrE9aCsicpGg054Stum> OsusrE9aCsicpGg054Sta { get; set; }
 
@@ -65,7 +65,7 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<CSICP_GG072Stq> OsusrE9aCsicpGg072Stqs { get; set; }
         public DbSet<OsusrE9aCsicpGg073Stat> OsusrE9aCsicpGg073Stats { get; set; }
 
-        public DbSet<OsusrE9aCsicpGg073Tmov> OsusrE9aCsicpGg073Tmovs { get; set; }
+        public DbSet<OSUSR_E9A_CSICP_GG073_TMOV> OsusrE9aCsicpGg073Tmovs { get; set; }
         public DbSet<OsusrE9aCsicpGg902St> OsusrE9aCsicpGg902Sts { get; set; }
 
         public DbSet<OsusrE9aCsicpGg903tp> OsusrE9aCsicpGg903tps { get; set; }
@@ -708,7 +708,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasDefaultValue(0)
                     .HasColumnName("ORDER");
             });
-            modelBuilder.Entity<OsusrE9aCsicpGg045Stat>(entity =>
+            modelBuilder.Entity<OSUSR_E9A_CSICP_GG045_STAT>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_GG045_STAT");
 
@@ -878,7 +878,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("ORDER");
             });
 
-            modelBuilder.Entity<OsusrE9aCsicpGg073Tmov>(entity =>
+            modelBuilder.Entity<OSUSR_E9A_CSICP_GG073_TMOV>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_GG073_TMOV");
 

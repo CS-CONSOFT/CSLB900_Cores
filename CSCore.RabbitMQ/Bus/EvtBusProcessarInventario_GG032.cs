@@ -1,4 +1,5 @@
-﻿using CSCore.Domain.EstaticasLabel.GG;
+﻿using CSCore.Domain.CS_Models.Staticas.GG;
+using CSCore.Domain.EstaticasLabel.GG;
 using CSCore.Domain.Interfaces.Estatica;
 using CSCore.Domain.Interfaces.GG._03X;
 using CSCore.RabbitMQ.PublishObjetos;
@@ -27,7 +28,13 @@ namespace CSCore.RabbitMQ.Bus
             int idGG032StaBloqueado = await _staticaLabelRepository.GetIDStaticasByTypeGG032StaPorCodCS("Bloqueado");
             int idGG028EntSai_Entrada = await _staticaLabelRepository.GetIDStaticasByTypeGG028EntSaidaLabel(Entities.GG028EntSaida.Entrada);
             int idGG028EntSai_Saida = await _staticaLabelRepository.GetIDStaticasByTypeGG028EntSaidaLabel(Entities.GG028EntSaida.Saida);
-            int idGG028Nat_Inventario = await _staticaLabelRepository.GetIDStaticasByTypeGG028NatOpLabel(Entities.GG028Nat.Inventario);
+
+            int idGG028Nat_Inventario = await
+                _staticaLabelRepository
+                .GetIDStaticaByLabel<OsusrE9aCsicpGg028Nat>(Entities.GG028Nat.Inventario);
+
+
+
             int idGG032StaConcluido = await _staticaLabelRepository.GetIDStaticasByTypeGG032StaPorCodCS("Concluido");
 
             await _repository.CS_InventarioProcessar(

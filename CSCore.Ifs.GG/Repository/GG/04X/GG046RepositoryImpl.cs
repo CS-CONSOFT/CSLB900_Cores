@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.GG.Repository.GG._04X
 {
-    public class GG046RepositoryImpl(AppDbContext appDbContext) : RepositorioBaseImpl<OsusrE9aCsicpGg046>(appDbContext, "Gg046Id"), 
+    public class GG046RepositoryImpl(AppDbContext appDbContext) : RepositorioBaseImpl<CSICP_GG046>(appDbContext, "Gg046Id"), 
         IGG046Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<OsusrE9aCsicpGg046?> GetByIdAsync(string id, int tenant)
+        public async Task<CSICP_GG046?> GetByIdAsync(string id, int tenant)
         {
             return await _appDbContext.OsusrE9aCsicpGg046s
                     .AsSplitQuery()
@@ -27,10 +27,10 @@ namespace CSCore.Ifs.GG.Repository.GG._04X
                     .FirstOrDefaultAsync();
         }
 
-        public async Task<(IEnumerable<OsusrE9aCsicpGg046>, int)> GetListAsync(int tenant, int pageSize, int page)
+        public async Task<(IEnumerable<CSICP_GG046>, int)> GetListAsync(int tenant, int pageSize, int page)
         {
 
-            IQueryable<OsusrE9aCsicpGg046> q1 = _appDbContext.OsusrE9aCsicpGg046s
+            IQueryable<CSICP_GG046> q1 = _appDbContext.OsusrE9aCsicpGg046s
                 .AsSplitQuery()
                 .Where(e => e.TenantId == tenant).AsNoTracking();
 
@@ -41,12 +41,12 @@ namespace CSCore.Ifs.GG.Repository.GG._04X
 
             return (await q1.ToListAsync(), count);
         }
-        public async Task<IEnumerable<OsusrE9aCsicpGg046>> GetListPeloGG045Async(int tenant, string gg045Id)
+        public async Task<IEnumerable<CSICP_GG046>> GetListPeloGG045Async(int tenant, string gg045Id)
         {
             var query = from gg046 in _appDbContext.OsusrE9aCsicpGg046s
                         where gg046.TenantId == tenant
                             && gg046.Gg045Id == gg045Id
-                        select new OsusrE9aCsicpGg046
+                        select new CSICP_GG046
                         {
                             TenantId = gg046.TenantId,
                             Gg046Id = gg046.Gg046Id,
