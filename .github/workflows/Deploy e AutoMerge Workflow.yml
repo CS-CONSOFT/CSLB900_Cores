@@ -19,34 +19,46 @@ jobs:
       - name: Criar Pull Request para develop
         id: criar_pr
         run: |
+          echo "Repositório: ${{ github.repository }}"
+          echo "Branch: ${{ steps.branch_name.outputs.branch_name }}"
+          
           response=$(curl -s -X POST \
             -H "Authorization: token ${{ secrets.CS_ACCESS_TOKEN_GITHUB }}" \
             -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/CS-CONSOFT/CSLB900_Cores/pulls \
+            https://api.github.com/repos/${{ github.repository }}/pulls \
             -d "{
                   \"title\": \"Auto merge: ${{ steps.branch_name.outputs.branch_name }} -> develop\",
                   \"body\": \"Merge automático da branch ${{ steps.branch_name.outputs.branch_name }} para develop\",
                   \"head\": \"${{ steps.branch_name.outputs.branch_name }}\",
                   \"base\": \"develop\"
                 }")
-          pr_number=$(echo "$response" | jq -r '.number')
+          
+          echo "Response completa:"
+          echo "$response"
+          
+          pr_number=$(echo "$response" | jq -r '.number // empty')
+          pr_url=$(echo "$response" | jq -r '.html_url // empty')
           echo "PR Number: $pr_number"
+          echo "PR URL: $pr_url"
           echo "pr_number=$pr_number" >> $GITHUB_OUTPUT
-
-      - name: Aprovar PR via API
-        if: ${{ steps.criar_pr.outputs.pr_number != '' && steps.criar_pr.outputs.pr_number != 'null' }}
-        run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.CS_ACCESS_TOKEN_GITHUB }}" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/CS-CONSOFT/CSLB900_Cores/pulls/${{ steps.criar_pr.outputs.pr_number }}/reviews \
-            -d '{"event":"APPROVE"}'
+          
+          # Verificar se houve erro na criação do PR
+          if [ "$pr_number" = "null" ] || [ -z "$pr_number" ]; then
+            echo "Erro ao criar PR:"
+            echo "$response"
+            exit 1
+          fi
 
       - name: Merge PR via API
         if: ${{ steps.criar_pr.outputs.pr_number != '' && steps.criar_pr.outputs.pr_number != 'null' }}
         run: |
-          curl -X PUT \
+          echo "Fazendo merge do PR #${{ steps.criar_pr.outputs.pr_number }}"
+          
+          response=$(curl -s -X PUT \
             -H "Authorization: token ${{ secrets.CS_ACCESS_TOKEN_GITHUB }}" \
             -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/CS-CONSOFT/CSLB900_Cores/pulls/${{ steps.criar_pr.outputs.pr_number }}/merge \
-            -d '{"merge_method":"merge"}'
+            https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.criar_pr.outputs.pr_number }}/merge \
+            -d '{"merge_method":"merge"}')
+          
+          echo "Resposta do merge:"
+          echo "$response"
