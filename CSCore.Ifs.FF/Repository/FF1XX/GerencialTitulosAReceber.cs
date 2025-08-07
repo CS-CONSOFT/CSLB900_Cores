@@ -245,8 +245,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 query = query.Where(t => t.IdEstabelecimento != null && filtroEstabelecimentos.Contains(t.IdEstabelecimento));
             }
             var titulos = await query.ToListAsync();
-            
-           
 
             if (agruparPorEstabelecimento)
             {
