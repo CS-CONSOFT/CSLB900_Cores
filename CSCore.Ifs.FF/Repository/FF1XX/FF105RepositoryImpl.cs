@@ -190,10 +190,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                                             select new { Bordero = bordero, Status = statusInfo })
                                             .FirstOrDefaultAsync();
 
-                // Validação do Publicar: 
-                // (BorderoShow.Record.csicp_ff105_Status.Id = Entities.csicp_ff105_Status.Carregado  
-                // or BorderoShow.Record.csicp_ff105_Status.Id = Entities.csicp_ff105_Status.Aberto)
-                // and (not Bordero_TitulodoBorderoTable.List.Current.csicp_ff105.FF105_Fechado)
                 var statusLabel = ff105WithStatus?.Status?.Label;
                 bool statusValido = statusLabel == Csicp_ff105_Status.Carregado || statusLabel == "Aberto";
                 bool naoFechado = ff105.Ff105Fechado != true;
@@ -202,18 +198,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 {
                     throw new Exception("Você só pode 'PUBLICAR' um registro 'CARREGADO' e não 'FECHADO'");
                 }
-
-                /*Validação do Publicar
-
-                (BorderoShow.Record.csicp_ff105_Status.Id = Entities.csicp_ff105_Status.Carregado  
-                or BorderoShow.Record.csicp_ff105_Status.Id = Entities.csicp_ff105_Status.Aberto)
-                and (not Bordero_TitulodoBorderoTable.List.Current.csicp_ff105.FF105_Fechado)
-
-                True siga em frente
-                False retorne mensagem
-
-                Mensagem Retorno
-                "Você só pode 'PUBLICAR' um registro 'CARREGADO' e não 'FECHADO'" */
 
                 var ff106List = await _appDbContext.OsusrE9aCsicpFf106s
                     .Where(e => e.TenantId == in_tenantId && e.Ff105Id == in_ff105_borderoId)

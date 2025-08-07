@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CSS_FF105Financeiro.82Application\FF105Financeiro.C82Application.csproj" />
     <ProjectReference Include="..\CSCompartilhado.CSLB900_MSTools\CSLB900.MSTools.csproj" />
     <ProjectReference Include="..\CSCore.Ifs.FF\CSCore.Ifs.FF.csproj" />
     <ProjectReference Include="..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />
