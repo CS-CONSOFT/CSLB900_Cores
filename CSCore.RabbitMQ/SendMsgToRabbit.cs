@@ -7,6 +7,9 @@ namespace CSCore.RabbitMQ
     {
         private readonly ISendEndpointProvider _sendEndpointProvider = sendEndpointProvider;
 
+
+
+
         public async Task SendMessage<T>(T message, string routingKey, string exchangeName)
         {
             if (message == null) throw new ArgumentNullException(nameof(message));
@@ -15,9 +18,11 @@ namespace CSCore.RabbitMQ
 
             Log.Debug("RabbitMQ - Enviando movimento entrada saída para Routing Key: " + routingKey);
 
-
             var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri($"exchange:{exchangeName}?type=direct"));
-            await endpoint.Send(message, ctx => ctx.SetRoutingKey(routingKey));
+            await endpoint.Send(message, ctx =>
+            {
+                ctx.SetRoutingKey(routingKey);
+            });
         }
     }
 }
