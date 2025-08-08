@@ -348,7 +348,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 if (ff105 == null)
                     throw new Exception("Borderô FF105 não encontrado");
 
-                //B uscar o status do borderô com join
+                //Buscar o status do borderô com join
                 var ff105ComStatus = await (from ff105bordero in _appDbContext.OsusrE9aCsicpFf105s
                                             join ff105status in _appDbContext.OsusrE9aCsicpFf105Statuses
                                             on ff105bordero.Ff105Status equals ff105status.Id into ff105borderoStatusJoin
