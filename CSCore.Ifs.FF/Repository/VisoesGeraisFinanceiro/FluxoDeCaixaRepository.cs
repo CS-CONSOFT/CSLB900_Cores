@@ -1,10 +1,11 @@
-﻿using CSCore.Ifs.CS_Context;
-using CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
+﻿using CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
+using CSCore.Ifs.CS_Context;
 using Microsoft.EntityFrameworkCore;
+using static CSCore.Domain.EstaticasLabel.GG.Entities;
 
 namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
 {
-    public class FluxoDeCaixa(AppDbContext appDbContext) : IFluxoDeCaixaRepository
+    public class FluxoDeCaixaRepository(AppDbContext appDbContext) : IFluxoDeCaixaRepository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
@@ -24,7 +25,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                         on ff102.Ff102Situacaoid equals ff102sit.Id
                         
                         where ff102.TenantId == tenant
-                              && (ff102sit.Label == "Aberto" || ff102sit.Label == "Baixa Parcial" || ff102sit.Label == "Provisão")
+                              && (ff102sit.Label == Csicp_ff102_Situacao.Aberto 
+                              || ff102sit.Label == Csicp_ff102_Situacao.BxParcial 
+                              || ff102sit.Label == Csicp_ff102_Situacao.Provisao)
                         select new
                         {
                             Data = ff102.Ff102DataVencimento,
@@ -34,7 +37,8 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                             Sufixo = ff102.Ff102Sfx,
                             NomeConta = conta.Bb012NomeCliente,
                             ValorLiq = ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo * -1 : ff102.Ff102VlLiqTitulo,
-                            IdentificadorTitulo = ff102.Ff102Tiporegistro == 1 || ff102.Ff102Tiporegistro == 2 ? "A receber" :
+                            IdentificadorTitulo = ff102.Ff102Tiporegistro == 1 
+                                                || ff102.Ff102Tiporegistro == 2 ? "A receber" :
                                                  ff102.Ff102Tiporegistro == 3 ? "A pagar" : string.Empty,
                             TipoReg = ff102.Ff102Tiporegistro,
                             ff102sit.Label
@@ -112,13 +116,18 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             decimal saldoAnterior = 0)
         {
             var query = from ff102 in _appDbContext.OsusrE9aCsicpFf102s
+                        
                         join conta in _appDbContext.OsusrE9aCsicpBb012s
-                            on ff102.Ff102Contaid equals conta.Id into joinConta
+                        on ff102.Ff102Contaid equals conta.Id into joinConta
                         from conta in joinConta.DefaultIfEmpty()
+                        
                         join ff102sit in _appDbContext.OsusrE9aCsicpFf102Sits
-                            on ff102.Ff102Situacaoid equals ff102sit.Id
+                        on ff102.Ff102Situacaoid equals ff102sit.Id
+
                         where ff102.TenantId == tenant
-                              && (ff102sit.Label == "Aberto" || ff102sit.Label == "Baixa Parcial" || ff102sit.Label == "Provisão")
+                            && (ff102sit.Label == Csicp_ff102_Situacao.Aberto 
+                            || ff102sit.Label == Csicp_ff102_Situacao.BxParcial 
+                            || ff102sit.Label == Csicp_ff102_Situacao.Provisao)
                         select new
                         {
                             Ano = ff102.Ff102DataVencimento.Year,
@@ -126,8 +135,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                             ValorLiq = ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo * -1 : ff102.Ff102VlLiqTitulo,
                             AReceber = ff102.Ff102Tiporegistro == 1 || ff102.Ff102Tiporegistro == 2 ? ff102.Ff102VlLiqTitulo : 0,
                             APagar = ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo : 0,
-                            ReceitaProvisao = ff102sit.Label == "Provisão" && (ff102.Ff102Tiporegistro == 1 || ff102.Ff102Tiporegistro == 2) ? ff102.Ff102VlLiqTitulo : 0,
-                            ProvisaoAPagar = ff102sit.Label == "Provisão" && ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo : 0
+                            ReceitaProvisao = ff102sit.Label == Csicp_ff102_Situacao.Provisao && (ff102.Ff102Tiporegistro == 1 
+                                || ff102.Ff102Tiporegistro == 2) ? ff102.Ff102VlLiqTitulo : 0,
+                            ProvisaoAPagar = ff102sit.Label == Csicp_ff102_Situacao.Provisao && ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo : 0
                         };
 
             if (dataVencimentoInicio.HasValue)

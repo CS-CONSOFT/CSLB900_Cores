@@ -30,7 +30,7 @@ namespace CSLB900.MSToolsTestes
                  .Options;
             var context = new AppDbContext(options);
 
-            var repo = new FluxoDeCaixa(context);
+            var repo = new FluxoDeCaixaRepository(context);
 
             // Act
             var result = await repo.GetFluxoDeCaixaDiarioAsync(135, new DateTime(2025, 1, 1), new DateTime(2025, 12, 31), 10000);
