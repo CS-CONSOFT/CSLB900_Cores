@@ -31,7 +31,7 @@ namespace CSLB900.MSToolsTestes
                  .Options;
             var context = new AppDbContext(options);
 
-            var repository = new FluxoDeCaixa(context);
+            var repository = new FluxoDeCaixaRepository(context);
             var service = new FluxoDeCaixaService(repository);
 
             // Act - Teste do fluxo diário

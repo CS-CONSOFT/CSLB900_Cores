@@ -1,9 +1,10 @@
-﻿using CSCore.Ifs.CS_Context;
+﻿using CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
+using CSCore.Ifs.CS_Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
 {
-    public class TitulosAbertoPorFaixaDias(AppDbContext appDbContext)
+    public class TitulosAbertoPorFaixaDiasRepository(AppDbContext appDbContext) //: ITitulosAbertoPorFaixaDiasRepository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
         public class AnaliseIdadeContasReceberDto
