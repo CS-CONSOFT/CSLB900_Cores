@@ -77,8 +77,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
              .FirstOrDefaultAsync();
             return ID;
         }
-
-
         public async Task<int> GetIDStaticasByTypeGG073TMovPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg073Tmovs
@@ -88,7 +86,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
              .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeBB012_MRELPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpBb012Mrels
@@ -98,7 +95,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG054StaPorCodCS(int codCs)
         {
 
@@ -109,7 +105,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG055StaPorCodCS(int codCs)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg055Sta
@@ -163,7 +158,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasSimNao(string label)
         {
             int ID = await _appDbContext.E9ACSICP_Statica
@@ -172,7 +166,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeBB008_TPPorLabel(string label)
         {
 
@@ -182,7 +175,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeBB01201_con_PorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpBb01201Cons
@@ -191,7 +183,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                  .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypebb062_staPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpBb062Sta
@@ -200,7 +191,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                  .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG030Sta(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg030Sta
@@ -217,7 +207,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG030StaPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg030Sta
@@ -226,7 +215,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG019CgBar(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg019Cgbars
@@ -235,7 +223,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG045StatusPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg045Stats
@@ -244,7 +231,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG046SaidaPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg046Es
@@ -253,7 +239,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG046StatusPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg046Stats
@@ -262,7 +247,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG001TAlmox(string label)
         {
             int ID = await _appDbContext.CSICP_GG001Talmoxes
@@ -271,7 +255,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                           .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> csicp_bb012_GruCta(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpBb012Gructa
