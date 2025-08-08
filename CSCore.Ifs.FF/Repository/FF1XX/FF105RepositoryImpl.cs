@@ -182,22 +182,29 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                     throw new Exception("Borderô FF105 não encontrado");
 
                 // Buscar o status do borderô com join
-                var ff105WithStatus = await (from bordero in _appDbContext.OsusrE9aCsicpFf105s
-                                            join status in _appDbContext.OsusrE9aCsicpFf105Statuses
-                                            on bordero.Ff105Status equals status.Id into statusJoin
-                                            from statusInfo in statusJoin.DefaultIfEmpty()
-                                            where bordero.TenantId == in_tenantId && bordero.Id == in_ff105_borderoId
-                                            select new { Bordero = bordero, Status = statusInfo })
+                var ff105ComStatus = await (from ff105bordero in _appDbContext.OsusrE9aCsicpFf105s
+                                            join ff105status in _appDbContext.OsusrE9aCsicpFf105Statuses
+                                            on ff105bordero.Ff105Status equals ff105status.Id into ff105borderoStatusJoin
+                                            from statusInfo in ff105borderoStatusJoin.DefaultIfEmpty()
+
+                                            where ff105bordero.TenantId == in_tenantId && ff105bordero.Id == in_ff105_borderoId
+                                            
+                                            select new 
+                                            { 
+                                                Bordero = ff105bordero,
+                                                Status = statusInfo 
+                                            })
                                             .FirstOrDefaultAsync();
 
-                var statusLabel = ff105WithStatus?.Status?.Label;
-                bool statusValido = statusLabel == Csicp_ff105_Status.Carregado || statusLabel == "Aberto";
-                bool naoFechado = ff105.Ff105Fechado != true;
+                var statusLabel = ff105ComStatus?.Status?.Label;
+                bool statusValido = statusLabel == Csicp_ff105_Status.Carregado || statusLabel == Csicp_ff105_Status.Aberto;
+                bool statusNaoFechado = ff105.Ff105Fechado != true;
 
-                if (!(statusValido && naoFechado))
+                if (!(statusValido && statusNaoFechado))
                 {
-                    throw new Exception("Você só pode 'PUBLICAR' um registro 'CARREGADO' e não 'FECHADO'");
+                    throw new Exception("Você só pode 'PUBLICAR' um registro 'CARREGADO' e não 'FECHADO!!!'");
                 }
+                // Termina aqui o fluxo de validação do status
 
                 var ff106List = await _appDbContext.OsusrE9aCsicpFf106s
                     .Where(e => e.TenantId == in_tenantId && e.Ff105Id == in_ff105_borderoId)
@@ -267,6 +274,28 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 if (ff105 == null)
                     throw new Exception("Borderô FF105 não encontrado");
 
+                var ff105ComStatus = await (from ff105bordero in _appDbContext.OsusrE9aCsicpFf105s
+                                            join ff105status in _appDbContext.OsusrE9aCsicpFf105Statuses
+                                            on ff105bordero.Ff105Status equals ff105status.Id into ff105borderoStatusJoin
+                                            from statusInfo in ff105borderoStatusJoin.DefaultIfEmpty()
+                                            where ff105bordero.TenantId == in_tenantId && ff105bordero.Id == in_ff105_borderoId
+                                            select new
+                                            {
+                                                Bordero = ff105bordero,
+                                                Status = statusInfo
+                                            })
+                                            .FirstOrDefaultAsync();
+
+                var statusLabel = ff105ComStatus?.Status?.Label;
+                bool statusValido = statusLabel == Csicp_ff105_Status.Publicado;
+                bool statusNaoFechado = ff105.Ff105Fechado != true;
+
+                if (!(statusValido && statusNaoFechado))
+                {
+                    throw new Exception("Você só pode 'DESPUBLICAR' um registro 'PUBLICADO' e não 'FECHADO'!!!");
+                }
+                // Termina aqui o fluxo de validação do status
+
                 var ff106List = await _appDbContext.OsusrE9aCsicpFf106s
                     .Where(e => e.TenantId == in_tenantId && e.Ff105Id == in_ff105_borderoId)
                     .ToListAsync();
@@ -318,6 +347,30 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
                 if (ff105 == null)
                     throw new Exception("Borderô FF105 não encontrado");
+
+                //B uscar o status do borderô com join
+                var ff105ComStatus = await (from ff105bordero in _appDbContext.OsusrE9aCsicpFf105s
+                                            join ff105status in _appDbContext.OsusrE9aCsicpFf105Statuses
+                                            on ff105bordero.Ff105Status equals ff105status.Id into ff105borderoStatusJoin
+                                            from statusInfo in ff105borderoStatusJoin.DefaultIfEmpty()
+
+                                            where ff105bordero.TenantId == in_tenantId && ff105bordero.Id == in_ff105_borderoId
+
+                                            select new
+                                            {
+                                                Bordero = ff105bordero,
+                                                Status = statusInfo
+                                            })
+                                            .FirstOrDefaultAsync();
+
+                var statusLabel = ff105ComStatus?.Status?.Label;
+                bool statusValido = statusLabel == Csicp_ff105_Status.Publicado;
+
+                if (!statusValido)
+                {
+                    throw new Exception("Você só pode fechar um registro 'PUBLICADO'!!!");
+                }
+                // Termina aqui o fluxo de validação do status
 
                 // Atualiza status do borderô
                 ff105.Ff105Status = in_idff105_status_encerrado;
