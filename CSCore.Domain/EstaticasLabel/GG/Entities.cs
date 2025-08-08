@@ -216,9 +216,25 @@
 
         public static class Csicp_ff105_Status
         {
-            public const string Publicado = "Publicado";
             public const string Carregado = "Carregado";
+            public const string Selecionado = "Selecionado";
+            public const string Publicado = "Publicado";
             public const string Encerrado = "Encerrado";
+            public const string Aberto = "Aberto";
+        }
+
+        public static class Csicp_ff102_Situacao
+        {
+            public const string Aberto = "Aberto";
+            public const string BxParcial = "Baixa Parcial";
+            public const string Liquidado = "Liquidado";
+            public const string Cancelado = "Cancelado";
+            public const string Renegociado = "Renegociado";
+            public const string Consignado = "Consignado";
+            public const string Provisao = "Provisao";
+            public const string Canc_Sistema = "Cancelado Sistema";
+            public const string Devolvido = "Devolvido";
+            public const string Permutado = "Permutado";
         }
     }
 }
