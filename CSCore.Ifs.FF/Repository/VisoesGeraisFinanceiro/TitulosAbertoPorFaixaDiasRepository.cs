@@ -7,25 +7,6 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
     public class TitulosAbertoPorFaixaDiasRepository(AppDbContext appDbContext) : ITitulosAbertoPorFaixaDiasRepository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public class AnaliseIdadeContasReceberDto
-        {
-            public string FaixaIdade { get; set; } = string.Empty;
-            public int QuantidadeTitulos { get; set; }
-            public decimal TotalEmAberto { get; set; }
-            public string? NomeEmpresa { get; set; }
-            public int? CodigoEmpresa { get; set; }
-            public string? IdEstabelecimento { get; set; }
-        }
-        public class TotalizadorEstabelecimentoDto
-        {
-            public string? IdEstabelecimento { get; set; }
-            public string? NomeEmpresa { get; set; }
-            public int? CodigoEmpresa { get; set; }
-            public int QuantidadeTitulos { get; set; }
-            public decimal TotalValor { get; set; }
-            public List<AnaliseIdadeContasReceberDto> FaixasIdade { get; set; } = new List<AnaliseIdadeContasReceberDto>();
-        }
-
         private class TituloDataInfo
         {
             public DateTime DataVencimento { get; set; }
@@ -35,10 +16,10 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             public string? IdEstabelecimento { get; set; }
         }
 
-        public async Task<List<AnaliseIdadeContasReceberDto>> GetAnaliseIdadeContasReceberAsync(
-            int tenant,
-            bool agruparPorEstabelecimento = false,
-            List<string>? filtroEstabelecimentos = null)
+        public async Task<List<DtoAnaliseIdadeContasReceber>> GetAnaliseIdadeContasReceberAsync(
+            int in_tenant,
+            bool in_agruparPorEstabelecimento = false,
+            List<string>? in_filtroEstabelecimentos = null)
         {
             var dataAtual = DateTime.Now.Date;
 
@@ -50,7 +31,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                         on ff102.Ff102Filialid equals bb001.Id into joinEmpresa
                         from bb001 in joinEmpresa.DefaultIfEmpty()
 
-                        where ff102.TenantId == tenant
+                        where ff102.TenantId == in_tenant
                               && ff102.Ff102Tiporegistro == 1 // Contas a receber
                               && (ff102sit.Label == "Aberto" || ff102sit.Label == "Baixa Parcial")
 
@@ -63,13 +44,13 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                             IdEstabelecimento = ff102.Ff102Filialid
                         };
 
-            if (filtroEstabelecimentos != null && filtroEstabelecimentos.Any())
+            if (in_filtroEstabelecimentos != null && in_filtroEstabelecimentos.Any())
             {
-                query = query.Where(t => t.IdEstabelecimento != null && filtroEstabelecimentos.Contains(t.IdEstabelecimento));
+                query = query.Where(t => t.IdEstabelecimento != null && in_filtroEstabelecimentos.Contains(t.IdEstabelecimento));
             }
             var titulos = await query.ToListAsync();
 
-            if (agruparPorEstabelecimento)
+            if (in_agruparPorEstabelecimento)
             {
                 return ProcessarAnaliseAgrupadaPorEstabelecimento(titulos, dataAtual);
             }
@@ -79,9 +60,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             }
         }
 
-        public async Task<List<TotalizadorEstabelecimentoDto>> GetTotalizadorPorEstabelecimentoAsync(
-            int tenant,
-            List<string>? filtroEstabelecimentos = null)
+        public async Task<List<DtoTotalizadorEstabelecimento>> GetTotalizadorPorEstabelecimentoAsync(
+            int in_tenant,
+            List<string>? in_filtroEstabelecimentos = null)
         {
             var dataAtual = DateTime.Now.Date;
 
@@ -93,7 +74,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                         on ff102.Ff102Filialid equals bb001.Id into joinEmpresa
                         from bb001 in joinEmpresa.DefaultIfEmpty()
 
-                        where ff102.TenantId == tenant
+                        where ff102.TenantId == in_tenant
                               && ff102.Ff102Tiporegistro == 1 // Contas a receber
                               && (ff102sit.Label == "Aberto" || ff102sit.Label == "Baixa Parcial")
 
@@ -109,14 +90,14 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             var titulos = await query.ToListAsync();
 
             // Aplicar filtro de estabelecimentos se fornecido
-            if (filtroEstabelecimentos != null && filtroEstabelecimentos.Any())
+            if (in_filtroEstabelecimentos != null && in_filtroEstabelecimentos.Any())
             {
-                titulos = titulos.Where(t => t.IdEstabelecimento != null && filtroEstabelecimentos.Contains(t.IdEstabelecimento)).ToList();
+                titulos = titulos.Where(t => t.IdEstabelecimento != null && in_filtroEstabelecimentos.Contains(t.IdEstabelecimento)).ToList();
             }
 
             var estabelecimentos = titulos
                 .GroupBy(t => new { t.IdEstabelecimento, t.NomeEmpresa, t.CodigoEmpresa })
-                .Select(g => new TotalizadorEstabelecimentoDto
+                .Select(g => new DtoTotalizadorEstabelecimento
                 {
                     IdEstabelecimento = g.Key.IdEstabelecimento,
                     NomeEmpresa = g.Key.NomeEmpresa,
@@ -131,13 +112,15 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             return estabelecimentos;
         }
 
-        private List<AnaliseIdadeContasReceberDto> ProcessarAnaliseGeral(List<TituloDataInfo> titulos, DateTime dataAtual)
+        private List<DtoAnaliseIdadeContasReceber> ProcessarAnaliseGeral
+            (List<TituloDataInfo> in_titulos, DateTime in_dataAtual)
         {
-            var resultado = new List<AnaliseIdadeContasReceberDto>();
+            var resultado = new List<DtoAnaliseIdadeContasReceber>();
 
             // 000 - 030 Dias
-            var faixa0a30 = titulos.Where(x => x.DataVencimento >= dataAtual.AddDays(-30) && x.DataVencimento <= dataAtual).ToList();
-            resultado.Add(new AnaliseIdadeContasReceberDto
+            var faixa0a30 = in_titulos
+                .Where(x => x.DataVencimento >= in_dataAtual.AddDays(-30) && x.DataVencimento <= in_dataAtual).ToList();
+            resultado.Add(new DtoAnaliseIdadeContasReceber
             {
                 FaixaIdade = "000 - 030 Dias",
                 QuantidadeTitulos = faixa0a30.Count,
@@ -145,8 +128,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             });
 
             // 0031 - 060 Dias
-            var faixa31a60 = titulos.Where(x => x.DataVencimento >= dataAtual.AddDays(-60) && x.DataVencimento < dataAtual.AddDays(-30)).ToList();
-            resultado.Add(new AnaliseIdadeContasReceberDto
+            var faixa31a60 = in_titulos
+                .Where(x => x.DataVencimento >= in_dataAtual.AddDays(-60) && x.DataVencimento < in_dataAtual.AddDays(-30)).ToList();
+            resultado.Add(new DtoAnaliseIdadeContasReceber
             {
                 FaixaIdade = "0031 - 060 Dias",
                 QuantidadeTitulos = faixa31a60.Count,
@@ -154,8 +138,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             });
 
             // 061 - 090 Dias
-            var faixa61a90 = titulos.Where(x => x.DataVencimento >= dataAtual.AddDays(-90) && x.DataVencimento < dataAtual.AddDays(-60)).ToList();
-            resultado.Add(new AnaliseIdadeContasReceberDto
+            var faixa61a90 = in_titulos
+                .Where(x => x.DataVencimento >= in_dataAtual.AddDays(-90) && x.DataVencimento < in_dataAtual.AddDays(-60)).ToList();
+            resultado.Add(new DtoAnaliseIdadeContasReceber
             {
                 FaixaIdade = "061 - 090 Dias",
                 QuantidadeTitulos = faixa61a90.Count,
@@ -163,8 +148,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             });
 
             // Maior que 90 Dias
-            var faixaMaior90 = titulos.Where(x => x.DataVencimento < dataAtual.AddDays(-90)).ToList();
-            resultado.Add(new AnaliseIdadeContasReceberDto
+            var faixaMaior90 = in_titulos
+                .Where(x => x.DataVencimento < in_dataAtual.AddDays(-90)).ToList();
+            resultado.Add(new DtoAnaliseIdadeContasReceber
             {
                 FaixaIdade = "Maior que 90 Dias",
                 QuantidadeTitulos = faixaMaior90.Count,
@@ -174,11 +160,12 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             return resultado;
         }
 
-        private List<AnaliseIdadeContasReceberDto> ProcessarAnaliseAgrupadaPorEstabelecimento(List<TituloDataInfo> titulos, DateTime dataAtual)
+        private List<DtoAnaliseIdadeContasReceber> ProcessarAnaliseAgrupadaPorEstabelecimento
+            (List<TituloDataInfo> in_titulos, DateTime in_dataAtual)
         {
-            var resultado = new List<AnaliseIdadeContasReceberDto>();
+            var resultado = new List<DtoAnaliseIdadeContasReceber>();
 
-            var estabelecimentos = titulos
+            var estabelecimentos = in_titulos
                 .GroupBy(t => new { t.IdEstabelecimento, t.NomeEmpresa, t.CodigoEmpresa })
                 .ToList();
 
@@ -187,8 +174,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                 var titulosEstab = estabelecimento.ToList();
 
                 // 000 - 030 Dias
-                var faixa0a30 = titulosEstab.Where(x => x.DataVencimento >= dataAtual.AddDays(-30) && x.DataVencimento <= dataAtual).ToList();
-                resultado.Add(new AnaliseIdadeContasReceberDto
+                var faixa0a30 = titulosEstab
+                    .Where(x => x.DataVencimento >= in_dataAtual.AddDays(-30) && x.DataVencimento <= in_dataAtual).ToList();
+                resultado.Add(new DtoAnaliseIdadeContasReceber
                 {
                     FaixaIdade = "000 - 030 Dias",
                     QuantidadeTitulos = faixa0a30.Count,
@@ -199,8 +187,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                 });
 
                 // 0031 - 060 Dias
-                var faixa31a60 = titulosEstab.Where(x => x.DataVencimento >= dataAtual.AddDays(-60) && x.DataVencimento < dataAtual.AddDays(-30)).ToList();
-                resultado.Add(new AnaliseIdadeContasReceberDto
+                var faixa31a60 = titulosEstab
+                    .Where(x => x.DataVencimento >= in_dataAtual.AddDays(-60) && x.DataVencimento < in_dataAtual.AddDays(-30)).ToList();
+                resultado.Add(new DtoAnaliseIdadeContasReceber
                 {
                     FaixaIdade = "0031 - 060 Dias",
                     QuantidadeTitulos = faixa31a60.Count,
@@ -211,8 +200,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                 });
 
                 // 061 - 090 Dias
-                var faixa61a90 = titulosEstab.Where(x => x.DataVencimento >= dataAtual.AddDays(-90) && x.DataVencimento < dataAtual.AddDays(-60)).ToList();
-                resultado.Add(new AnaliseIdadeContasReceberDto
+                var faixa61a90 = titulosEstab
+                    .Where(x => x.DataVencimento >= in_dataAtual.AddDays(-90) && x.DataVencimento < in_dataAtual.AddDays(-60)).ToList();
+                resultado.Add(new DtoAnaliseIdadeContasReceber
                 {
                     FaixaIdade = "061 - 090 Dias",
                     QuantidadeTitulos = faixa61a90.Count,
@@ -223,8 +213,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                 });
 
                 // Maior que 90 Dias
-                var faixaMaior90 = titulosEstab.Where(x => x.DataVencimento < dataAtual.AddDays(-90)).ToList();
-                resultado.Add(new AnaliseIdadeContasReceberDto
+                var faixaMaior90 = titulosEstab
+                    .Where(x => x.DataVencimento < in_dataAtual.AddDays(-90)).ToList();
+                resultado.Add(new DtoAnaliseIdadeContasReceber
                 {
                     FaixaIdade = "Maior que 90 Dias",
                     QuantidadeTitulos = faixaMaior90.Count,
@@ -238,13 +229,15 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             return resultado.OrderBy(r => r.CodigoEmpresa).ThenBy(r => r.FaixaIdade).ToList();
         }
 
-        private List<AnaliseIdadeContasReceberDto> ProcessarFaixasIdadeParaEstabelecimento(List<TituloDataInfo> titulos, DateTime dataAtual, string? idEstabelecimento, string? nomeEmpresa, int? codigoEmpresa)
+        private List<DtoAnaliseIdadeContasReceber> ProcessarFaixasIdadeParaEstabelecimento
+            (List<TituloDataInfo> in_titulos, DateTime in_dataAtual, string? idEstabelecimento, string? nomeEmpresa, int? codigoEmpresa)
         {
-            var resultado = new List<AnaliseIdadeContasReceberDto>();
+            var resultado = new List<DtoAnaliseIdadeContasReceber>();
 
             // 000 - 030 Dias
-            var faixa0a30 = titulos.Where(x => x.DataVencimento >= dataAtual.AddDays(-30) && x.DataVencimento <= dataAtual).ToList();
-            resultado.Add(new AnaliseIdadeContasReceberDto
+            var faixa0a30 = in_titulos
+                .Where(x => x.DataVencimento >= in_dataAtual.AddDays(-30) && x.DataVencimento <= in_dataAtual).ToList();
+            resultado.Add(new DtoAnaliseIdadeContasReceber
             {
                 FaixaIdade = "000 - 030 Dias",
                 QuantidadeTitulos = faixa0a30.Count,
@@ -255,8 +248,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             });
 
             // 0031 - 060 Dias
-            var faixa31a60 = titulos.Where(x => x.DataVencimento >= dataAtual.AddDays(-60) && x.DataVencimento < dataAtual.AddDays(-30)).ToList();
-            resultado.Add(new AnaliseIdadeContasReceberDto
+            var faixa31a60 = in_titulos
+                .Where(x => x.DataVencimento >= in_dataAtual.AddDays(-60) && x.DataVencimento < in_dataAtual.AddDays(-30)).ToList();
+            resultado.Add(new DtoAnaliseIdadeContasReceber
             {
                 FaixaIdade = "0031 - 060 Dias",
                 QuantidadeTitulos = faixa31a60.Count,
@@ -267,8 +261,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             });
 
             // 061 - 090 Dias
-            var faixa61a90 = titulos.Where(x => x.DataVencimento >= dataAtual.AddDays(-90) && x.DataVencimento < dataAtual.AddDays(-60)).ToList();
-            resultado.Add(new AnaliseIdadeContasReceberDto
+            var faixa61a90 = in_titulos
+                .Where(x => x.DataVencimento >= in_dataAtual.AddDays(-90) && x.DataVencimento < in_dataAtual.AddDays(-60)).ToList();
+            resultado.Add(new DtoAnaliseIdadeContasReceber
             {
                 FaixaIdade = "061 - 090 Dias",
                 QuantidadeTitulos = faixa61a90.Count,
@@ -279,8 +274,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             });
 
             // Maior que 90 Dias
-            var faixaMaior90 = titulos.Where(x => x.DataVencimento < dataAtual.AddDays(-90)).ToList();
-            resultado.Add(new AnaliseIdadeContasReceberDto
+            var faixaMaior90 = in_titulos
+                .Where(x => x.DataVencimento < in_dataAtual.AddDays(-90)).ToList();
+            resultado.Add(new DtoAnaliseIdadeContasReceber
             {
                 FaixaIdade = "Maior que 90 Dias",
                 QuantidadeTitulos = faixaMaior90.Count,
