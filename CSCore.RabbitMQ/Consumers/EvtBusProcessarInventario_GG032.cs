@@ -2,8 +2,12 @@
 using CSCore.Domain.EstaticasLabel.GG;
 using CSCore.Domain.Interfaces.Estatica;
 using CSCore.Domain.Interfaces.GG._03X;
+using CSCore.RabbitMQ.Hub;
+using CSCore.RabbitMQ.Hub.Ax;
 using CSCore.RabbitMQ.PublishObjetos;
+using CSLB900.MSTools.Util;
 using MassTransit;
+using Microsoft.AspNetCore.SignalR;
 using Serilog;
 namespace CSCore.RabbitMQ.Bus
 {
@@ -11,11 +15,13 @@ namespace CSCore.RabbitMQ.Bus
     {
         private readonly IGG032Repository _repository;
         private readonly IStaticaLabelRepository _staticaLabelRepository;
+        private readonly IHubContext<HubProcessarInventarioGG032> _hubContext;
 
-        public EvtBusProcessarInventario_GG032(IGG032Repository repository, IStaticaLabelRepository staticaLabelRepository)
+        public EvtBusProcessarInventario_GG032(IGG032Repository repository, IStaticaLabelRepository staticaLabelRepository, IHubContext<HubProcessarInventarioGG032> hubContext)
         {
             _repository = repository;
             _staticaLabelRepository = staticaLabelRepository;
+            _hubContext = hubContext;
         }
 
         public async Task Consume(ConsumeContext<Rbt_CS_ProcessarInventario_GG032> context)
@@ -25,26 +31,47 @@ namespace CSCore.RabbitMQ.Bus
              DateTime.UtcNow.ToLocalTime(),
              context.Message.GetType().Name,
              context.Message);
-            int idGG032StaBloqueado = await _staticaLabelRepository.GetIDStaticasByTypeGG032StaPorCodCS("Bloqueado");
-            int idGG028EntSai_Entrada = await _staticaLabelRepository.GetIDStaticasByTypeGG028EntSaidaLabel(Entities.GG028EntSaida.Entrada);
-            int idGG028EntSai_Saida = await _staticaLabelRepository.GetIDStaticasByTypeGG028EntSaidaLabel(Entities.GG028EntSaida.Saida);
 
-            int idGG028Nat_Inventario = await
-                _staticaLabelRepository
-                .GetIDStaticaByLabel<OsusrE9aCsicpGg028Nat>(Entities.GG028Nat.Inventario);
+            try
+            {
+                int idGG032StaBloqueado = await _staticaLabelRepository.GetIDStaticaByLabel<OsusrE9aCsicpGg032Stum>("Bloqueado");
+                int idGG032StaConcluido = await _staticaLabelRepository.GetIDStaticaByLabel<OsusrE9aCsicpGg032Stum>("Concluido");
+                int idGG028EntSai_Entrada = await _staticaLabelRepository.GetIDStaticaByLabel<CSICP_GG028Entsai>(Entities.GG028EntSaida.Entrada);
+                int idGG028EntSai_Saida = await _staticaLabelRepository.GetIDStaticaByLabel<CSICP_GG028Entsai>(Entities.GG028EntSaida.Saida);
 
+                int idGG028Nat_Inventario = await
+                    _staticaLabelRepository
+                    .GetIDStaticaByLabel<OsusrE9aCsicpGg028Nat>(Entities.GG028Nat.Inventario);
 
+              
+                await _repository.CS_InventarioProcessar(
+                    context.Message.tenant,
+                    context.Message.in_InventarioId,
+                    idGG032StaBloqueado,
+                    idGG032StaConcluido,
+                    idGG028EntSai_Saida,
+                    idGG028EntSai_Entrada,
+                    idGG028Nat_Inventario);
 
-            int idGG032StaConcluido = await _staticaLabelRepository.GetIDStaticasByTypeGG032StaPorCodCS("Concluido");
-
-            await _repository.CS_InventarioProcessar(
-                context.Message.tenant,
-                context.Message.in_InventarioId,
-                idGG032StaBloqueado,
-                idGG032StaConcluido,
-                idGG028EntSai_Saida,
-                idGG028EntSai_Entrada,
-                idGG028Nat_Inventario);
+                await _hubContext.Clients.Group(context.Message.in_usuarioID)
+                    .SendAsync(HubMethodNames.PROCESSAR_INVENTARIO_METHOD_GG032, new 
+                    {
+                        Success = true,
+                        Message = "Inventário processado com sucesso!",
+                        Timestamp = DateTime.UtcNow
+                    });
+            }
+            catch (Exception ex)
+            {
+                await _hubContext.Clients.Group(context.Message.in_usuarioID)
+                    .SendAsync(HubMethodNames.PROCESSAR_INVENTARIO_METHOD_GG032, new
+                    {
+                        Success = true,
+                        Message = "Falha ao processar inventário!",
+                        DetailsError = HandlerExceptionMessage.CreateExceptionMessage(ex),
+                        Timestamp = DateTime.UtcNow
+                    });
+            }
         }
     }
 }

@@ -16,7 +16,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\CSS_FF105Financeiro.82Application\FF105Financeiro.C82Application.csproj" />
 		<ProjectReference Include="..\CSCompartilhado.CSLB900_MSTools\CSLB900.MSTools.csproj" />
 		<ProjectReference Include="..\CSCore.Application.Dto\CSCore.Application.Dto.csproj" />
 		<ProjectReference Include="..\CSCore.Domain\CSCore.Domain.csproj" />

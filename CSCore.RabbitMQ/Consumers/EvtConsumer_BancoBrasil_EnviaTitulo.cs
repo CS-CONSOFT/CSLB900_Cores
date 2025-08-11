@@ -1,4 +1,5 @@
 ﻿using CSCore.RabbitMQ.Hub;
+using CSCore.RabbitMQ.Hub.Ax;
 using CSCore.RabbitMQ.PublishObjetos;
 using CSLB900.MSTools.Util;
 using GG104Materiais.C82Application.Service.BancoDoBrasil;
@@ -9,11 +10,11 @@ namespace CSCore.RabbitMQ.Consumers
 {
     public class EvtConsumer_BancoBrasil_EnviaTitulo(IBancoBrasilService bancoBrasilService,
         ISendEndpointProvider sendEndpointProvider,
-        IHubContext<BancoBrasilHub> hubContext) : IConsumer<Rbt_CS_BancoBrasil_EnviaTitulo>
+        IHubContext<HubBancoBrasil> hubContext) : IConsumer<Rbt_CS_BancoBrasil_EnviaTitulo>
     {
         private readonly IBancoBrasilService _bancoBrasilService = bancoBrasilService;
         private readonly ISendEndpointProvider _sendEndpointProvider = sendEndpointProvider;
-        private readonly IHubContext<BancoBrasilHub> _hubContext = hubContext;
+        private readonly IHubContext<HubBancoBrasil> _hubContext = hubContext;
 
 
         public async Task Consume(ConsumeContext<Rbt_CS_BancoBrasil_EnviaTitulo> context)
