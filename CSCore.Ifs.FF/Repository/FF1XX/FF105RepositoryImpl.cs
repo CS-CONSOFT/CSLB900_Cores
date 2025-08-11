@@ -17,6 +17,41 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
+        // DTO para retornar informações do borderô com status
+        private class FF105ComStatusInfo
+        {
+            public CSICP_FF105 Bordero { get; set; } = null!;
+            public OsusrE9aCsicpFf105Status? Status { get; set; }
+        }
+
+        /// Busca o borderô com suas informações de status para validações
+        private async Task<FF105ComStatusInfo> ObterBorderoComStatusAsync(int tenantId, string borderoId)
+        {
+            // Verifica se o borderô existe
+            var ff105 = await _appDbContext.OsusrE9aCsicpFf105s
+                .FirstOrDefaultAsync(e => e.TenantId == tenantId && e.Id == borderoId);
+
+            if (ff105 == null)
+                throw new Exception("Borderô FF105 não encontrado");
+
+            // Busca o status do borderô com join
+            var ff105ComStatus = await (from ff105bordero in _appDbContext.OsusrE9aCsicpFf105s
+                                        join ff105status in _appDbContext.OsusrE9aCsicpFf105Statuses
+                                        on ff105bordero.Ff105Status equals ff105status.Id into ff105borderoStatusJoin
+                                        from statusInfo in ff105borderoStatusJoin.DefaultIfEmpty()
+
+                                        where ff105bordero.TenantId == tenantId && ff105bordero.Id == borderoId
+
+                                        select new FF105ComStatusInfo
+                                        {
+                                            Bordero = ff105bordero,
+                                            Status = statusInfo
+                                        })
+                                        .FirstOrDefaultAsync();
+
+            return ff105ComStatus ?? new FF105ComStatusInfo { Bordero = ff105 };
+        }
+
         public async Task<RepoDtoCSICP_FF105?> GetByIdAsync(int in_tenant, string id)
         {
             IQueryable<RepoDtoCSICP_FF105> query = GetQueryBase(in_tenant);
@@ -175,28 +210,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
             {
-                var ff105 = await _appDbContext.OsusrE9aCsicpFf105s
-                    .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == in_ff105_borderoId);
+                var ff105ComStatus = await ObterBorderoComStatusAsync(in_tenantId, in_ff105_borderoId);
+                var ff105 = ff105ComStatus.Bordero;
 
-                if (ff105 == null)
-                    throw new Exception("Borderô FF105 não encontrado");
-
-                // Buscar o status do borderô com join
-                var ff105ComStatus = await (from ff105bordero in _appDbContext.OsusrE9aCsicpFf105s
-                                            join ff105status in _appDbContext.OsusrE9aCsicpFf105Statuses
-                                            on ff105bordero.Ff105Status equals ff105status.Id into ff105borderoStatusJoin
-                                            from statusInfo in ff105borderoStatusJoin.DefaultIfEmpty()
-
-                                            where ff105bordero.TenantId == in_tenantId && ff105bordero.Id == in_ff105_borderoId
-                                            
-                                            select new 
-                                            { 
-                                                Bordero = ff105bordero,
-                                                Status = statusInfo 
-                                            })
-                                            .FirstOrDefaultAsync();
-
-                var statusLabel = ff105ComStatus?.Status?.Label;
+                var statusLabel = ff105ComStatus.Status?.Label;
                 bool statusValido = statusLabel == Csicp_ff105_Status.Carregado || statusLabel == Csicp_ff105_Status.Aberto;
                 bool statusNaoFechado = ff105.Ff105Fechado != true;
 
@@ -268,25 +285,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
             {
-                var ff105 = await _appDbContext.OsusrE9aCsicpFf105s
-                    .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == in_ff105_borderoId);
+                var ff105ComStatus = await ObterBorderoComStatusAsync(in_tenantId, in_ff105_borderoId);
+                var ff105 = ff105ComStatus.Bordero;
 
-                if (ff105 == null)
-                    throw new Exception("Borderô FF105 não encontrado");
-
-                var ff105ComStatus = await (from ff105bordero in _appDbContext.OsusrE9aCsicpFf105s
-                                            join ff105status in _appDbContext.OsusrE9aCsicpFf105Statuses
-                                            on ff105bordero.Ff105Status equals ff105status.Id into ff105borderoStatusJoin
-                                            from statusInfo in ff105borderoStatusJoin.DefaultIfEmpty()
-                                            where ff105bordero.TenantId == in_tenantId && ff105bordero.Id == in_ff105_borderoId
-                                            select new
-                                            {
-                                                Bordero = ff105bordero,
-                                                Status = statusInfo
-                                            })
-                                            .FirstOrDefaultAsync();
-
-                var statusLabel = ff105ComStatus?.Status?.Label;
+                var statusLabel = ff105ComStatus.Status?.Label;
                 bool statusValido = statusLabel == Csicp_ff105_Status.Publicado;
                 bool statusNaoFechado = ff105.Ff105Fechado != true;
 
@@ -342,28 +344,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
             {
-                var ff105 = await _appDbContext.OsusrE9aCsicpFf105s
-                    .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == in_ff105_borderoId);
+                var ff105ComStatus = await ObterBorderoComStatusAsync(in_tenantId, in_ff105_borderoId);
+                var ff105 = ff105ComStatus.Bordero;
 
-                if (ff105 == null)
-                    throw new Exception("Borderô FF105 não encontrado");
-
-                //Buscar o status do borderô com join
-                var ff105ComStatus = await (from ff105bordero in _appDbContext.OsusrE9aCsicpFf105s
-                                            join ff105status in _appDbContext.OsusrE9aCsicpFf105Statuses
-                                            on ff105bordero.Ff105Status equals ff105status.Id into ff105borderoStatusJoin
-                                            from statusInfo in ff105borderoStatusJoin.DefaultIfEmpty()
-
-                                            where ff105bordero.TenantId == in_tenantId && ff105bordero.Id == in_ff105_borderoId
-
-                                            select new
-                                            {
-                                                Bordero = ff105bordero,
-                                                Status = statusInfo
-                                            })
-                                            .FirstOrDefaultAsync();
-
-                var statusLabel = ff105ComStatus?.Status?.Label;
+                var statusLabel = ff105ComStatus.Status?.Label;
                 bool statusValido = statusLabel == Csicp_ff105_Status.Publicado;
 
                 if (!statusValido)
