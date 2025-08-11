@@ -62,7 +62,7 @@ namespace CSCore.Ifs.Repository.GG._07X
         }
 
 
-        public async Task BaixaEstoque(string GG073_ID, int tenant)
+        public async Task BaixaEstoque(string GG073_ID, int tenant, string in_usuarioID)
         {
             CSICP_GG073? gg073_encontrada = await GetByIdAsync(GG073_ID, tenant);
 
@@ -152,7 +152,7 @@ namespace CSCore.Ifs.Repository.GG._07X
                 StID_IdGG073Status_Aberto = idGG073Status_Aberto,
                 GG073Corrente = gg073_encontrada
             };
-            await _baixaEstoque.CS001_Baixa_Movto_ENTSAI(parametrosBaixaEstoque, tenant);
+            await _baixaEstoque.CS001_Baixa_Movto_ENTSAI(parametrosBaixaEstoque, tenant, in_usuarioID);
 
 
         }

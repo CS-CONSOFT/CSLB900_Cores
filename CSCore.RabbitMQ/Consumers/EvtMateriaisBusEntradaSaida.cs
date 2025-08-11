@@ -4,8 +4,11 @@ using CSCore.Domain.Interfaces.GG._07X;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.GG.Repository.BaixaSaldo;
+using CSCore.RabbitMQ.Hub;
+using CSCore.RabbitMQ.Hub.Ax;
 using CSLB900.MSTools.Util;
 using MassTransit;
+using Microsoft.AspNetCore.SignalR;
 using Serilog;
 
 namespace CSCore.Ifs.GG
@@ -13,6 +16,7 @@ namespace CSCore.Ifs.GG
     public class EvtMateriaisBusEntradaSaida(IBaixaSaldo baixaSaldo,
         IGG073Repository gg073Repo,
         IGenerateProtocolo generateProtocolo,
+        IHubContext<HubBaixarEstoqueGG073> hubContext,
         AppDbContext appDbContext)
         : IConsumer<Rbt_CS_BaixaMvto_EntSaida>
     {
@@ -20,6 +24,7 @@ namespace CSCore.Ifs.GG
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly IGG073Repository _gg073Repo = gg073Repo;
         private readonly IGenerateProtocolo _generateProtocolo = generateProtocolo;
+        private readonly IHubContext<HubBaixarEstoqueGG073> _hubContext = hubContext;
         public async Task Consume(ConsumeContext<Rbt_CS_BaixaMvto_EntSaida> context)
         {
 
@@ -112,11 +117,27 @@ namespace CSCore.Ifs.GG
 
                     await _appDbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
+
+                    await _hubContext.Clients.Group(context.Message.Usuario_ID)
+                    .SendAsync(HubMethodNames.PROCESSAR_BAIXA_ESTOQUE_GG073, new
+                    {
+                        Success = true,
+                        Message = "Sucesso ao baixar estoque!",
+                        Timestamp = DateTime.UtcNow
+                    });
+
                 }
                 catch (Exception ex)
                 {
                     await transaction.RollbackAsync();
-                    throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
+                    await _hubContext.Clients.Group(context.Message.Usuario_ID)
+                     .SendAsync(HubMethodNames.PROCESSAR_BAIXA_ESTOQUE_GG073, new
+                     {
+                         Success = false,
+                         Message = "Falha ao baixar estoque!",
+                         DetailsError = HandlerExceptionMessage.CreateExceptionMessage(ex),
+                         Timestamp = DateTime.UtcNow
+                     });
                 }
             }
         }

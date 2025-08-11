@@ -15,13 +15,12 @@ namespace CSCore.RabbitMQ.Bus
     {
         private readonly IGG032Repository _repository;
         private readonly IStaticaLabelRepository _staticaLabelRepository;
-        private readonly IHubContext<HubProcessarInventarioGG032> _hubContext;
+     
 
-        public EvtBusProcessarInventario_GG032(IGG032Repository repository, IStaticaLabelRepository staticaLabelRepository, IHubContext<HubProcessarInventarioGG032> hubContext)
+        public EvtBusProcessarInventario_GG032(IGG032Repository repository, IStaticaLabelRepository staticaLabelRepository)
         {
             _repository = repository;
             _staticaLabelRepository = staticaLabelRepository;
-            _hubContext = hubContext;
         }
 
         public async Task Consume(ConsumeContext<Rbt_CS_ProcessarInventario_GG032> context)
@@ -53,24 +52,10 @@ namespace CSCore.RabbitMQ.Bus
                     idGG028EntSai_Entrada,
                     idGG028Nat_Inventario);
 
-                await _hubContext.Clients.Group(context.Message.in_usuarioID)
-                    .SendAsync(HubMethodNames.PROCESSAR_INVENTARIO_METHOD_GG032, new 
-                    {
-                        Success = true,
-                        Message = "Inventário processado com sucesso!",
-                        Timestamp = DateTime.UtcNow
-                    });
             }
             catch (Exception ex)
             {
-                await _hubContext.Clients.Group(context.Message.in_usuarioID)
-                    .SendAsync(HubMethodNames.PROCESSAR_INVENTARIO_METHOD_GG032, new
-                    {
-                        Success = true,
-                        Message = "Falha ao processar inventário!",
-                        DetailsError = HandlerExceptionMessage.CreateExceptionMessage(ex),
-                        Timestamp = DateTime.UtcNow
-                    });
+                
             }
         }
     }

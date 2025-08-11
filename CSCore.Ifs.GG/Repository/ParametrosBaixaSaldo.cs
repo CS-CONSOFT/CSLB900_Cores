@@ -5,6 +5,7 @@ namespace CSCore.Application.Dto
     public class Rbt_CS_BaixaMvto_EntSaida
     {
         public int Tenant_ID { get; set; }
+        public string Usuario_ID { get; set; } = string.Empty;
         public CSICP_GG073 GG073Corrente { get; set; } = null!;
         public List<CSICP_GG074> ListaGG074 { get; set; } = [];
         public ParametrosBaixaSaldo ParametrosBaixaSaldo { get; set; } = null!;

@@ -7,6 +7,6 @@
 
     public static class HubMethodNames
     {
-        public static string PROCESSAR_INVENTARIO_METHOD_GG032 = "PROCESSAR_INVENTARIO_METHOD_GG032";
+        public static string PROCESSAR_BAIXA_ESTOQUE_GG073 = "PROCESSAR_BAIXA_ESTOQUE_GG073";
     }
 }
