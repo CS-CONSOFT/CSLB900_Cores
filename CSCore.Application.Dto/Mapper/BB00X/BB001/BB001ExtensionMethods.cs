@@ -107,10 +107,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB00X.BB001
             List<Dto_GetSplsFromBB001> ListaSimples,
             List<Dto_GetCnaeFromBB001> ListaCnaeFromBB001,
             List<Dto_GetImageFromBB001> ListaImageFromBB001,
-            List<Dto_GetXmlFromBB001> ListaXmlFromBB001
-
-
-            )
+            List<Dto_GetXmlFromBB001> ListaXmlFromBB001 )
         {
             if (entity == null)
             {

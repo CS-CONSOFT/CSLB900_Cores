@@ -29,8 +29,6 @@ public partial class CSICP_BB001Cfgfi
 
     public int? Bb001Regimetributarioid { get; set; }
 
-    // public  CSICP_BB001? Bb001Empresa { get; set; }
-
     public CSICP_BB001Natpj? Bb001Naturezapj { get; set; }
 
     public CSICP_AA030Regime? Bb001Regimetributario { get; set; }

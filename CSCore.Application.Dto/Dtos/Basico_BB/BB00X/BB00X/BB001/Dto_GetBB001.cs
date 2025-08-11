@@ -126,9 +126,35 @@ namespace CSBS101._82Application.Dto.BB00X.BB001
         public List<Dto_GetImageFromBB001>? NavListImages { get; set; } = [];
         public List<Dto_GetSplsFromBB001>? NavListSimples { get; set; } = [];
         public List<Dto_GetXmlFromBB001>? NavListAXML { get; set; } = [];
+        public List<Dto_GetBB001Cfgfis>? NavListCfgfis { get; set; } = [];
 
     }
 
+    public class Dto_GetBB001Cfgfis {
+        public int TenantId { get; set; }
+
+        public string Bb001CfgId { get; set; } = null!;
+
+        public string? Bb001EmpresaId { get; set; }
+
+        public int? Bb001TptributacaoId { get; set; }
+
+        public decimal? Bb001PercIcms { get; set; }
+
+        public decimal? Bb001PercCsllBc { get; set; }
+
+        public decimal? Bb001PercCsllBcServico { get; set; }
+
+        public decimal? Bb001PercIrpjBc { get; set; }
+
+        public decimal? Bb001PercIrpjBcServico { get; set; }
+
+        public int? Bb001NaturezapjId { get; set; }
+
+        public int? Bb001TpatividadeId { get; set; }
+
+        public int? Bb001Regimetributarioid { get; set; }
+    }   
     public class Dto_GetBB001_Exibicao
     {
         public int TenantId { get; set; }

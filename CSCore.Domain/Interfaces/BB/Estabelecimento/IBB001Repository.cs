@@ -5,5 +5,6 @@
         Task<CSICP_BB001?> GetByIdAsync(string id, int tenant);
         Task<IEnumerable<CSICP_BB001>> GetListAsync(int tenant, string? search, int? searchCode, bool? isActive);
         Task<CSICP_BB001> ChangeActive(CSICP_BB001 entity);
+        Task<IEnumerable<CSICP_BB001Cfgfi>> GetBB001Cfgfis(int in_tenant, string in_bb001ID);
     }
 }
