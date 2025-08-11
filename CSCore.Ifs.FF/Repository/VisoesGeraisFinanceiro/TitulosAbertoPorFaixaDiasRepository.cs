@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
 {
-    public class TitulosAbertoPorFaixaDiasRepository(AppDbContext appDbContext) //: ITitulosAbertoPorFaixaDiasRepository
+    public class TitulosAbertoPorFaixaDiasRepository(AppDbContext appDbContext) : ITitulosAbertoPorFaixaDiasRepository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
         public class AnaliseIdadeContasReceberDto
