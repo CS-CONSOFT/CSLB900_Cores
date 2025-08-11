@@ -126,7 +126,7 @@ namespace CSBS101._82Application.Dto.BB00X.BB001
         public List<Dto_GetImageFromBB001>? NavListImages { get; set; } = [];
         public List<Dto_GetSplsFromBB001>? NavListSimples { get; set; } = [];
         public List<Dto_GetXmlFromBB001>? NavListAXML { get; set; } = [];
-        public List<Dto_GetBB001Cfgfis>? NavListCfgfis { get; set; } = [];
+        public Dto_GetBB001Cfgfis? NavCfgfis { get; set; } = null;
 
     }
 
