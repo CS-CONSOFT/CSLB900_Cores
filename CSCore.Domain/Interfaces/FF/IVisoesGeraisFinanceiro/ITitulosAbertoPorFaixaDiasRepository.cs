@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Domain.Interfaces.V2;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,17 +9,17 @@ namespace CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro
 {
     public interface ITitulosAbertoPorFaixaDiasRepository
     {
-        Task<List<AnaliseIdadeContasReceberDto>> GetAnaliseIdadeContasReceberAsync(
+        Task<List<DtoAnaliseIdadeContasReceber>> GetAnaliseIdadeContasReceberAsync(
             int tenant,
             bool agruparPorEstabelecimento = false,
             List<string>? filtroEstabelecimentos = null);
 
-        Task<List<TotalizadorEstabelecimentoDto>> GetTotalizadorPorEstabelecimentoAsync(
+        Task<List<DtoTotalizadorEstabelecimento>> GetTotalizadorPorEstabelecimentoAsync(
             int tenant,
             List<string>? filtroEstabelecimentos = null);
     }
 
-    public class AnaliseIdadeContasReceberDto
+    public class DtoAnaliseIdadeContasReceber
     {
         public string FaixaIdade { get; set; } = string.Empty;
         public int QuantidadeTitulos { get; set; }
@@ -28,14 +29,14 @@ namespace CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro
         public string? IdEstabelecimento { get; set; }
     }
 
-    public class TotalizadorEstabelecimentoDto
+    public class DtoTotalizadorEstabelecimento
     {
         public string? IdEstabelecimento { get; set; }
         public string? NomeEmpresa { get; set; }
         public int? CodigoEmpresa { get; set; }
         public int QuantidadeTitulos { get; set; }
         public decimal TotalValor { get; set; }
-        public List<AnaliseIdadeContasReceberDto> FaixasIdade { get; set; } = new List<AnaliseIdadeContasReceberDto>();
+        public List<DtoAnaliseIdadeContasReceber> FaixasIdade { get; set; } = new List<DtoAnaliseIdadeContasReceber>();
     }
     
 }

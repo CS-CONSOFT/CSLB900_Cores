@@ -10,10 +10,10 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
         private readonly AppDbContext _appDbContext = appDbContext;
 
         public async Task<List<FluxoDeCaixaDiarioDto>> GetFluxoDeCaixaDiarioAsync(
-           int tenant,
-           DateTime? dataVencimentoInicio = null,
-           DateTime? dataVencimentoFim = null,
-           decimal saldoAnterior = 0)
+           int in_tenant,
+           DateTime? in_dataVencimentoInicio = null,
+           DateTime? in_dataVencimentoFim = null,
+           decimal in_saldoAnterior = 0)
         {
             var query = from ff102 in _appDbContext.OsusrE9aCsicpFf102s
 
@@ -24,7 +24,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                         join ff102sit in _appDbContext.OsusrE9aCsicpFf102Sits
                         on ff102.Ff102Situacaoid equals ff102sit.Id
                         
-                        where ff102.TenantId == tenant
+                        where ff102.TenantId == in_tenant
                               && (ff102sit.Label == Csicp_ff102_Situacao.Aberto 
                               || ff102sit.Label == Csicp_ff102_Situacao.BxParcial 
                               || ff102sit.Label == Csicp_ff102_Situacao.Provisao)
@@ -44,11 +44,11 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                             ff102sit.Label
                         };
 
-            if (dataVencimentoInicio.HasValue)
-                query = query.Where(x => x.Data >= dataVencimentoInicio.Value);
+            if (in_dataVencimentoInicio.HasValue)
+                query = query.Where(x => x.Data >= in_dataVencimentoInicio.Value);
 
-            if (dataVencimentoFim.HasValue)
-                query = query.Where(x => x.Data <= dataVencimentoFim.Value);
+            if (in_dataVencimentoFim.HasValue)
+                query = query.Where(x => x.Data <= in_dataVencimentoFim.Value);
 
             var agrupado = query
                 .GroupBy(x => new
@@ -83,8 +83,8 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
 
             var totais = await agrupado.ToListAsync();
 
-            decimal saldoAcumulado = saldoAnterior;
-            decimal saldoAnteriorLinha = saldoAnterior;
+            decimal saldoAcumulado = in_saldoAnterior;
+            decimal saldoAnteriorLinha = in_saldoAnterior;
             var resultado = new List<FluxoDeCaixaDiarioDto>();
             foreach (var item in totais)
             {
@@ -110,10 +110,10 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
         }
 
         public async Task<List<FluxoDeCaixaMensalDto>> GetFluxoDeCaixaMensalAsync(
-            int tenant,
-            DateTime? dataVencimentoInicio = null,
-            DateTime? dataVencimentoFim = null,
-            decimal saldoAnterior = 0)
+            int in_tenant,
+            DateTime? in_dataVencimentoInicio = null,
+            DateTime? in_dataVencimentoFim = null,
+            decimal in_saldoAnterior = 0)
         {
             var query = from ff102 in _appDbContext.OsusrE9aCsicpFf102s
                         
@@ -124,7 +124,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                         join ff102sit in _appDbContext.OsusrE9aCsicpFf102Sits
                         on ff102.Ff102Situacaoid equals ff102sit.Id
 
-                        where ff102.TenantId == tenant
+                        where ff102.TenantId == in_tenant
                             && (ff102sit.Label == Csicp_ff102_Situacao.Aberto 
                             || ff102sit.Label == Csicp_ff102_Situacao.BxParcial 
                             || ff102sit.Label == Csicp_ff102_Situacao.Provisao)
@@ -140,13 +140,13 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                             ProvisaoAPagar = ff102sit.Label == Csicp_ff102_Situacao.Provisao && ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo : 0
                         };
 
-            if (dataVencimentoInicio.HasValue)
-                query = query.Where(x => x.Ano > dataVencimentoInicio.Value.Year
-                    || x.Ano == dataVencimentoInicio.Value.Year && x.Mes >= dataVencimentoInicio.Value.Month);
+            if (in_dataVencimentoInicio.HasValue)
+                query = query.Where(x => x.Ano > in_dataVencimentoInicio.Value.Year
+                    || x.Ano == in_dataVencimentoInicio.Value.Year && x.Mes >= in_dataVencimentoInicio.Value.Month);
 
-            if (dataVencimentoFim.HasValue)
-                query = query.Where(x => x.Ano < dataVencimentoFim.Value.Year
-                    || x.Ano == dataVencimentoFim.Value.Year && x.Mes <= dataVencimentoFim.Value.Month);
+            if (in_dataVencimentoFim.HasValue)
+                query = query.Where(x => x.Ano < in_dataVencimentoFim.Value.Year
+                    || x.Ano == in_dataVencimentoFim.Value.Year && x.Mes <= in_dataVencimentoFim.Value.Month);
 
             var agrupado = query
                 .GroupBy(x => new { x.Ano, x.Mes })
@@ -165,8 +165,8 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
 
             var totais = await agrupado.ToListAsync();
 
-            decimal saldoAcumulado = saldoAnterior;
-            decimal saldoAnteriorLinha = saldoAnterior;
+            decimal saldoAcumulado = in_saldoAnterior;
+            decimal saldoAnteriorLinha = in_saldoAnterior;
             var resultado = new List<FluxoDeCaixaMensalDto>();
             foreach (var item in totais)
             {
