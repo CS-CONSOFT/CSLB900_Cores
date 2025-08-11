@@ -33,7 +33,7 @@ namespace CSCore.Ifs.Repository.BB
         }
 
 
-        public async Task<IEnumerable<CSICP_BB001Cfgfi>> GetBB001Cfgfis(int in_tenant, string in_bb001ID)
+        public async Task<CSICP_BB001Cfgfi?> GetBB001Cfgfis(int in_tenant, string in_bb001ID)
         {
             var query = from bb001Cfgfi in _appDbContext.E9ACSICP_BB001Cfgfis
             where bb001Cfgfi.Bb001EmpresaId == in_bb001ID && bb001Cfgfi.TenantId == in_tenant
@@ -54,7 +54,7 @@ namespace CSCore.Ifs.Repository.BB
             };
             return await query
                 .AsNoTracking()
-                .ToListAsync();
+                .FirstOrDefaultAsync();
         }
 
         public async Task<CSICP_BB001> RemoveAsync(CSICP_BB001 entity)
