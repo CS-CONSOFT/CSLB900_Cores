@@ -117,6 +117,7 @@ namespace CSBS101._82Application.Dto.BB00X.BB001
         public string? Bb001AutToken { get; set; } = null!;
 
         public string? Bb001TokenCspix { get; set; } = null!;
+        public bool? BB001_IsRegimeRegular { get; set; }
 
         public CSICP_Statica? NavRamoEmpresa { get; set; } = null!;
 
@@ -154,6 +155,7 @@ namespace CSBS101._82Application.Dto.BB00X.BB001
         public int? Bb001TpatividadeId { get; set; }
 
         public int? Bb001Regimetributarioid { get; set; }
+        public bool? BB001_IsRegimeRegular { get; set; }
     }   
     public class Dto_GetBB001_Exibicao
     {
@@ -164,5 +166,6 @@ namespace CSBS101._82Application.Dto.BB00X.BB001
         public int? Bb001Codigoempresa { get; set; } = null!;
 
         public string? Bb001Razaosocial { get; set; } = null!;
+        public bool? BB001_IsRegimeRegular { get; set; }
     }
 }

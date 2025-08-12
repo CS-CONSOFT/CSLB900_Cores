@@ -59,6 +59,12 @@ public partial class CSICP_BB012
 
     public int? Bb012Oricadastroid { get; set; }
 
+    //csicp_aa043
+    public string? bb012_LCEspecial_ID { get; set; }
+
+    //csicp_aa046_TpGov
+    public int? bb012_TpGovId { get; set; }
+
     public CSICP_BB012? Bb012IdIndicadorNavigation { get; set; }
 
     public CSICP_BB01201? OsusrE9aCsicpBb01201 { get; set; }

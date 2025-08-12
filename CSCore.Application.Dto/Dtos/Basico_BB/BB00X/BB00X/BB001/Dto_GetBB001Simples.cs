@@ -9,5 +9,6 @@
         public string? Bb001Razaosocial { get; set; }
 
         public string? Bb001Nomefantasia { get; set; }
+        public bool? BB001_IsRegimeRegular { get; set; }
     }
 }
