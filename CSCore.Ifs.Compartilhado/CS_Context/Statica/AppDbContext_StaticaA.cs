@@ -33,8 +33,7 @@ namespace CSCore.Ifs.CS_Context
             modelBuilder.Entity<CSICP_AA046_TP_GOV>(entity =>
             {
                 entity
-                    .HasNoKey()
-                    .ToView("csicp_aa046_TpGov");
+                    .HasKey(e => e.Id);
 
                 entity.Property(e => e.Id).HasColumnName("ID");
                 entity.Property(e => e.IsActive).HasColumnName("IS_ACTIVE");

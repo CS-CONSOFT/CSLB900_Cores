@@ -44,9 +44,7 @@ namespace CSCore.Ifs.CS_Context
         {
             modelBuilder.Entity<CSICP_AA043>(entity =>
             {
-                entity
-                    .HasNoKey()
-                    .ToView("csicp_aa043");
+                entity.HasKey(e => e.Id);
 
                 entity.Property(e => e.Aa043Artigo)
                     .HasMaxLength(30)
