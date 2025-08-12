@@ -21,7 +21,7 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
             (string gwdevappkey, string estabAuthToken,string idBoleto, int numeroConvenio, 
             RequisicaoBaixaBoleto? requisicaoCancelarBoleto)
         {
-            var tokenAuth = await ObterTokenAutenticacao(estabAuthToken);
+            var tokenAuth = await ObterTokenAutenticacao(estabAuthToken, ggdevappkey);
             ApiResponse<RespostaBaixaBoleto> apiResponse = await _refitBancoBrasil.CancelarBoleto(gwdevappkey, tokenAuth, idBoleto, requisicaoCancelarBoleto);
             if (!apiResponse.IsSuccessStatusCode)
                 throw new Exception("Erro ao criar boleto no Banco do Brasil: " + apiResponse.Error?.Content);

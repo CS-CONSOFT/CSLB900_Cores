@@ -8,6 +8,6 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil.Interface
 {
     public interface IBancoDoBrasilAuth
     {
-        Task<string> ObterTokenAutenticacao(string estabAuthToken);
+        Task<string> ObterTokenAutenticacao(string estabAuthToken, string ggwdevappkey);
     }
 }
