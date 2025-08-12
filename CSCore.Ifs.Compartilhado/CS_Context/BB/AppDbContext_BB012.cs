@@ -217,6 +217,12 @@ namespace CSCore.Ifs.CS_Context
                 entity.HasOne(d => d.Bb012IdIndicadorNavigation).WithOne()
                    .HasForeignKey<CSICP_BB012>(d => d.Bb012IdIndicador);
 
+                entity.HasOne(d => d.Nav_AA043).WithOne()
+                 .HasForeignKey<CSICP_BB012>(d => d.bb012_LCEspecial_ID);
+
+                entity.HasOne(d => d.Nav_AA046_TP_GOV).WithOne()
+                .HasForeignKey<CSICP_BB012>(d => d.bb012_TpGovId);
+
             });
 
             modelBuilder.Entity<CSICP_BB01201>(entity =>
