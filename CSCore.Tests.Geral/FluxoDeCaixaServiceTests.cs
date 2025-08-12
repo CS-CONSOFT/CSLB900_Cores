@@ -1,3 +1,4 @@
+using CSCore.Domain.Interfaces.Estatica;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.FF1XX;
 using CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro;
@@ -30,9 +31,9 @@ namespace CSLB900.MSToolsTestes
                  .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
                  .Options;
             var context = new AppDbContext(options);
-
+            
             var repository = new FluxoDeCaixaRepository(context);
-            var service = new FluxoDeCaixaService(repository);
+            var service = new FluxoDeCaixaService(repository, null);
 
             // Act - Teste do fluxo diário
             var resultDiario = await service.GetFluxoDeCaixaDiarioAsync(135, new DateTime(2025, 1, 1), new DateTime(2025, 12, 31), 10000);

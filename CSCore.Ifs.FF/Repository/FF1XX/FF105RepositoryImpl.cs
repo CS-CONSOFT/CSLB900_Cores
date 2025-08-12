@@ -17,19 +17,18 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        // DTO para retornar informações do borderô com status
         private class FF105ComStatusInfo
         {
-            public CSICP_FF105 Bordero { get; set; } = null!;
-            public OsusrE9aCsicpFf105Status? Status { get; set; }
+            public CSICP_FF105 FF105Bordero { get; set; } = null!;
+            public OsusrE9aCsicpFf105Status? FF105StatusBordero { get; set; }
         }
 
         /// Busca o borderô com suas informações de status para validações
-        private async Task<FF105ComStatusInfo> ObterBorderoComStatusAsync(int tenantId, string borderoId)
+        private async Task<FF105ComStatusInfo> ObterBorderoComStatusAsync(int in_tenantId, string in_ff105_borderoId)
         {
             // Verifica se o borderô existe
             var ff105 = await _appDbContext.OsusrE9aCsicpFf105s
-                .FirstOrDefaultAsync(e => e.TenantId == tenantId && e.Id == borderoId);
+                .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == in_ff105_borderoId);
 
             if (ff105 == null)
                 throw new Exception("Borderô FF105 não encontrado");
@@ -40,16 +39,19 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                                         on ff105bordero.Ff105Status equals ff105status.Id into ff105borderoStatusJoin
                                         from statusInfo in ff105borderoStatusJoin.DefaultIfEmpty()
 
-                                        where ff105bordero.TenantId == tenantId && ff105bordero.Id == borderoId
+                                        where ff105bordero.TenantId == in_tenantId && ff105bordero.Id == in_ff105_borderoId
 
                                         select new FF105ComStatusInfo
                                         {
-                                            Bordero = ff105bordero,
-                                            Status = statusInfo
+                                            FF105Bordero = ff105bordero,
+                                            FF105StatusBordero = statusInfo
                                         })
                                         .FirstOrDefaultAsync();
 
-            return ff105ComStatus ?? new FF105ComStatusInfo { Bordero = ff105 };
+            return ff105ComStatus ?? new FF105ComStatusInfo
+            {
+                FF105Bordero = ff105
+            };
         }
 
         public async Task<RepoDtoCSICP_FF105?> GetByIdAsync(int in_tenant, string id)
@@ -211,9 +213,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             try
             {
                 var ff105ComStatus = await ObterBorderoComStatusAsync(in_tenantId, in_ff105_borderoId);
-                var ff105 = ff105ComStatus.Bordero;
+                var ff105 = ff105ComStatus.FF105Bordero;
 
-                var statusLabel = ff105ComStatus.Status?.Label;
+                var statusLabel = ff105ComStatus.FF105StatusBordero?.Label;
                 bool statusValido = statusLabel == Csicp_ff105_Status.Carregado || statusLabel == Csicp_ff105_Status.Aberto;
                 bool statusNaoFechado = ff105.Ff105Fechado != true;
 
@@ -266,6 +268,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                     _appDbContext.OsusrE9aCsicpFf102s.Update(ff102);
                 }
 
+                // Atualiza status do borderô
                 ff105.Ff105Status = in_idff105_status_publicado;
                 ff105.Ff105ValorBordero = valorBordero;
                 _appDbContext.OsusrE9aCsicpFf105s.Update(ff105);
@@ -286,9 +289,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             try
             {
                 var ff105ComStatus = await ObterBorderoComStatusAsync(in_tenantId, in_ff105_borderoId);
-                var ff105 = ff105ComStatus.Bordero;
+                var ff105 = ff105ComStatus.FF105Bordero;
 
-                var statusLabel = ff105ComStatus.Status?.Label;
+                var statusLabel = ff105ComStatus.FF105StatusBordero?.Label;
                 bool statusValido = statusLabel == Csicp_ff105_Status.Publicado;
                 bool statusNaoFechado = ff105.Ff105Fechado != true;
 
@@ -345,9 +348,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             try
             {
                 var ff105ComStatus = await ObterBorderoComStatusAsync(in_tenantId, in_ff105_borderoId);
-                var ff105 = ff105ComStatus.Bordero;
+                var ff105 = ff105ComStatus.FF105Bordero;
 
-                var statusLabel = ff105ComStatus.Status?.Label;
+                var statusLabel = ff105ComStatus.FF105StatusBordero?.Label;
                 bool statusValido = statusLabel == Csicp_ff105_Status.Publicado;
 
                 if (!statusValido)
