@@ -11,16 +11,16 @@ namespace CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro
     public interface IFluxoDeCaixaRepository
     {
         Task<List<FluxoDeCaixaDiarioDto>> GetFluxoDeCaixaDiarioAsync(
-           int tenant,
-           DateTime? dataVencimentoInicio = null,
-           DateTime? dataVencimentoFim = null,
-           decimal saldoAnterior = 0);
+           int in_tenant,
+           DateTime? in_dataVencimentoInicio = null,
+           DateTime? in_dataVencimentoFim = null,
+           decimal in_saldoAnterior = 0);
 
         Task<List<FluxoDeCaixaMensalDto>> GetFluxoDeCaixaMensalAsync(
-            int tenant,
-            DateTime? dataVencimentoInicio = null,
-            DateTime? dataVencimentoFim = null,
-            decimal saldoAnterior = 0);
+            int in_tenant,
+            DateTime? in_dataVencimentoInicio = null,
+            DateTime? in_dataVencimentoFim = null,
+            decimal in_saldoAnterior = 0);
     }
 
     public class FluxoDeCaixaDiarioDto

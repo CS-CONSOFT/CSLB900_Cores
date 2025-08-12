@@ -17,10 +17,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         : RepositorioBaseImpl<CSICP_FF112Faixa>(appDbContext, "Ff112FaixaId"), IFF112FaixaRepository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task<CSICP_FF112Faixa?> GetByIdAsync(int in_tenant, string id)
+        public async Task<CSICP_FF112Faixa?> GetByIdAsync(int in_tenant, string in_ff112FaixaId)
         {
             IQueryable<CSICP_FF112Faixa> query = GetQueryBase(in_tenant);
-            CSICP_FF112Faixa? cSICP_FF112 = await query.FirstOrDefaultAsync(e => e.Ff112FaixaId == id);
+            CSICP_FF112Faixa? cSICP_FF112 = await query.FirstOrDefaultAsync(e => e.Ff112FaixaId == in_ff112FaixaId);
             return cSICP_FF112;
         }
         private IQueryable<CSICP_FF112Faixa> GetQueryBase(int in_tenant)
@@ -43,14 +43,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         }
 
         public async Task<(List<CSICP_FF112Faixa>, int)> GetListAsync(
-            int in_tenant, int in_page, int in_pageSize, string in_ff112Id)
+            int in_tenant, int in_pageNumber, int in_pageSize, string in_ff112Id)
         {
             IQueryable<CSICP_FF112Faixa> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_ff112Id, query);
 
             var queryCount = query;
             var count = queryCount.Count();
-            query = query.PaginacaoNoBanco(in_page, in_pageSize);
+            query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
 
             return (await query.ToListAsync(), count);
         }

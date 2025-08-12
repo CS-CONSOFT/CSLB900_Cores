@@ -14,35 +14,35 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         : RepositorioBaseImpl<CSICP_FF112>(appDbContext, "Id"), IFF112Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task<RepoDtoCSICP_FF112?> GetByIdAsync(int in_tenant, string id)
+        public async Task<RepoDtoCSICP_FF112?> GetByIdAsync(int in_tenant, string in_ff112Id)
         {
             IQueryable<RepoDtoCSICP_FF112> query = GetQueryBase(in_tenant);
-            RepoDtoCSICP_FF112? cSICP_FF112 = await query.FirstOrDefaultAsync(e => e.Id == id);
+            RepoDtoCSICP_FF112? cSICP_FF112 = await query.FirstOrDefaultAsync(e => e.Id == in_ff112Id);
             return cSICP_FF112;
         }
 
         public async Task<(List<RepoDtoCSICP_FF112>, int)> GetListAsync(
-            int in_tenant, int in_page, int in_pageSize, string? in_estabID, string? in_descCnab, string? in_bancoID, bool? in_isActive, int? in_tipoOperacao)
+            int in_tenant, int in_pageNumber, int in_pageSize, string? in_estabId, string? in_descCnab, string? in_bancoId, bool? in_isActive, int? in_tipoOperacao)
         {
             IQueryable<RepoDtoCSICP_FF112> query = GetQueryBase(in_tenant);
-            query = FiltraQuandoExisteFiltro(in_estabID, in_descCnab, in_bancoID, in_isActive, in_tipoOperacao, query);
+            query = FiltraQuandoExisteFiltro(in_estabId, in_descCnab, in_bancoId, in_isActive, in_tipoOperacao, query);
 
             var queryCount = query;
             var count = queryCount.Count();
-            query = query.PaginacaoNoBanco(in_page, in_pageSize);
+            query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
 
             return (await query.ToListAsync(), count);
         }
 
         private IQueryable<RepoDtoCSICP_FF112> FiltraQuandoExisteFiltro(
-            string? in_estabID, string? in_descCnab, string? in_bancoID, bool? in_isActive, int? in_tipoOperacao, IQueryable<RepoDtoCSICP_FF112> query)
+            string? in_estabId, string? in_descCnab, string? in_bancoId, bool? in_isActive, int? in_tipoOperacao, IQueryable<RepoDtoCSICP_FF112> query)
         {
-            if (in_estabID != null)
-                query = query.Where(e => e.Ff112Filialid!.Equals(in_estabID));
+            if (in_estabId != null)
+                query = query.Where(e => e.Ff112Filialid!.Equals(in_estabId));
             if (in_descCnab != null)
                 query = query.Where(e => e.Ff112Descregistro!.Contains(in_descCnab));
-            if (in_bancoID != null)
-                query = query.Where(e => e.Ff112Bancoid!.Contains(in_bancoID));
+            if (in_bancoId != null)
+                query = query.Where(e => e.Ff112Bancoid!.Contains(in_bancoId));
             if (in_tipoOperacao != null)
                 query = query.Where(e => e.Ff112Tipooperacao!.Equals(in_tipoOperacao));
             if (in_isActive != null)

@@ -20,19 +20,19 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         : RepositorioBaseImpl<CSICP_FF102>(appDbContext, "Id"), IFF102Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int tenant, string? id, int? in_tipoRegistro)
+        public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string? in_ff102Id, int? in_tipoRegistro)
         {
-            IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(tenant);
+            IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
             //1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar
             if (in_tipoRegistro != null)
             {
                 query = query.Where(e => e.Ff102Tiporegistro == in_tipoRegistro);
             }
-            RepoDtoCSICP_FF102? cSICP_FF102 = await query.FirstOrDefaultAsync(e => e.Id == id);
+            RepoDtoCSICP_FF102? cSICP_FF102 = await query.FirstOrDefaultAsync(e => e.Id == in_ff102Id);
             return cSICP_FF102;
         }
 
-        private IQueryable<RepoDtoCSICP_FF102> GetQueryBase(int tenant)
+        private IQueryable<RepoDtoCSICP_FF102> GetQueryBase(int in_tenant)
         {
             return from ff102 in _appDbContext.OsusrE9aCsicpFf102s
 
@@ -203,7 +203,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff102.Ff102TrilhaApiid equals ff120track.Id into ff120track_ff102_join
                    from ff120track in ff120track_ff102_join.DefaultIfEmpty()
 
-                   where ff102.TenantId == tenant
+                   where ff102.TenantId == in_tenant
                    select new RepoDtoCSICP_FF102
                    {
                        TenantId = ff102.TenantId,
@@ -674,7 +674,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    };
         }
 
-        public async Task<(List<RepoDtoCSICP_FF102>, int)> GetListAsync(int tenant, int page, int pageSize,
+        public async Task<(List<RepoDtoCSICP_FF102>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
             string? in_estabelecimentoId,
             int in_tipoRegistro,
             string? in_prefixo,
@@ -693,7 +693,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             DateTime? in_dataFinal,
             QualDataFiltro? in_tipoDataFiltro)
         {
-            IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(tenant);
+            IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_estabelecimentoId, query,
                 in_prefixo,
                 in_titulo,
@@ -713,7 +713,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
             var queryCount = query;
             var count = queryCount.Count();
-            query = query.PaginacaoNoBanco(page, pageSize);
+            query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
 
             return (await query.ToListAsync(), count);
         }

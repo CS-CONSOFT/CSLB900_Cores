@@ -20,14 +20,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return cSICP_FF119;
         }
 
-        public async Task<(List<RepoDtoCSICP_FF119>, int)> GetListAsync(int in_tenant, string in_ff112Id, int in_page, int in_pageSize)
+        public async Task<(List<RepoDtoCSICP_FF119>, int)> GetListAsync(int in_tenant, string in_ff112Id, int in_pageNumber, int in_pageSize)
         {
             IQueryable<RepoDtoCSICP_FF119> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_ff112Id, query);
 
             var queryCount = query;
             var count = queryCount.Count();
-            query = query.PaginacaoNoBanco(in_page, in_pageSize);
+            query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
 
             return (await query.ToListAsync(), count);
         }

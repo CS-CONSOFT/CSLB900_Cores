@@ -54,10 +54,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             };
         }
 
-        public async Task<RepoDtoCSICP_FF105?> GetByIdAsync(int in_tenant, string id)
+        public async Task<RepoDtoCSICP_FF105?> GetByIdAsync(int in_tenant, string in_ff105Id)
         {
             IQueryable<RepoDtoCSICP_FF105> query = GetQueryBase(in_tenant);
-            RepoDtoCSICP_FF105? cSICP_FF105 = await query.FirstOrDefaultAsync(e => e.Id == id);
+            RepoDtoCSICP_FF105? cSICP_FF105 = await query.FirstOrDefaultAsync(e => e.Id == in_ff105Id);
             return cSICP_FF105;
         }
 
@@ -177,29 +177,29 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    };
         }
 
-        public async Task<(List<RepoDtoCSICP_FF105>, int)> GetListAsync(int in_tenant, int in_page, int in_pageSize,
-            string? in_estabID, string? in_descBordero, string? in_agCobradorID, DateTime? in_dataInicio, DateTime? in_dataFinal)
+        public async Task<(List<RepoDtoCSICP_FF105>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
+            string? in_estabId, string? in_descBordero, string? in_agCobradorId, DateTime? in_dataInicio, DateTime? in_dataFinal)
 
         {
             IQueryable<RepoDtoCSICP_FF105> query = GetQueryBase(in_tenant);
-            query = FiltraQuandoExisteFiltro(in_estabID, in_descBordero, in_agCobradorID, in_dataInicio, in_dataFinal, query);
+            query = FiltraQuandoExisteFiltro(in_estabId, in_descBordero, in_agCobradorId, in_dataInicio, in_dataFinal, query);
 
             var queryCount = query;
             var count = queryCount.Count();
-            query = query.PaginacaoNoBanco(in_page, in_pageSize);
+            query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
 
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF105> FiltraQuandoExisteFiltro(string? in_estabID, string? in_descBordero, string? in_agCobradorID,
+        private IQueryable<RepoDtoCSICP_FF105> FiltraQuandoExisteFiltro(string? in_estabId, string? in_descBordero, string? in_agCobradorId,
             DateTime? in_dataInicio, DateTime? in_dataFinal, IQueryable<RepoDtoCSICP_FF105> query)
         {
-            if (in_estabID != null)
-                query = query.Where(e => e.Ff105Filialid!.Equals(in_estabID));
+            if (in_estabId != null)
+                query = query.Where(e => e.Ff105Filialid!.Equals(in_estabId));
             if (in_descBordero != null)
                 query = query.Where(e => e.Ff105Descricaobordero!.Contains(in_descBordero));
-            if (in_agCobradorID != null)
-                query = query.Where(e => e.Ff105Agcobradorid!.Equals(in_agCobradorID));
+            if (in_agCobradorId != null)
+                query = query.Where(e => e.Ff105Agcobradorid!.Equals(in_agCobradorId));
             if (in_dataInicio.HasValue)
                 query = query.Where(e => e.Ff105EmissaoInicial >= in_dataInicio.Value);
             if (in_dataFinal.HasValue)

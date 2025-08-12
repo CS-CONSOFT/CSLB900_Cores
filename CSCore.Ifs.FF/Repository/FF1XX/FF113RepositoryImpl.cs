@@ -142,14 +142,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         }
 
         public async Task<(List<RepoDtoCSICP_FF113>, int)> GetListAsync(
-            int in_tenant, int in_page, int in_pageSize, string? in_estabId, DateTime? in_dataRegistroInicio, DateTime? in_dataRegistroFim, int? in_tipo)
+            int in_tenant, int in_pageNumber, int in_pageSize, string? in_estabId, DateTime? in_dataRegistroInicio, DateTime? in_dataRegistroFim, int? in_tipo)
         {
             IQueryable<RepoDtoCSICP_FF113> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_estabId, in_dataRegistroInicio, in_dataRegistroFim, in_tipo, query);
 
             var queryCount = query;
             var count = queryCount.Count();
-            query = query.PaginacaoNoBanco(in_page, in_pageSize);
+            query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
 
             return (await query.ToListAsync(), count);
         }
