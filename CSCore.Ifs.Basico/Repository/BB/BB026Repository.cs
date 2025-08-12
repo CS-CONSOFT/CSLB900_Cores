@@ -45,11 +45,21 @@ namespace CSCore.Ifs.Repository.BB
         public async Task<CSICP_Bb026> UpdateAsync(CSICP_Bb026 bb026)
         {
             int novoCodigo = IncrementarCodigo
-            .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_Bb026>
-            (_appDbContext, bb026.Bb026Codigo, bb026.Id, "Bb026Codigo", "Id");
+                .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_Bb026>
+                (_appDbContext, bb026.Bb026Codigo, bb026.Id, "Bb026Codigo", "Id");
 
             bb026.Bb026Codigo = novoCodigo;
-            _appDbContext.Update(bb026);
+
+            // Garante que não há outra instância rastreada
+            var local = _appDbContext.ChangeTracker.Entries<CSICP_Bb026>()
+                .FirstOrDefault(e => e.Entity.Id == bb026.Id);
+
+            if (local != null)
+                local.State = EntityState.Detached;
+
+            _appDbContext.Attach(bb026);
+            _appDbContext.Entry(bb026).State = EntityState.Modified;
+
             await _appDbContext.SaveChangesAsync();
             return bb026;
         }
