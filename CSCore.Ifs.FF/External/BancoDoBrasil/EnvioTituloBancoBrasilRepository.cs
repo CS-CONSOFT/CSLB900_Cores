@@ -5,8 +5,8 @@ using CSCore.Domain.EstaticasLabel.GG;
 using CSCore.Domain.Interfaces.Estatica;
 using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.FF.External;
-using CSCore.Ifs.FF.External.BancoDoBrasil.Auth;
+using CSCore.Ifs.FF.External.BancoDoBrasil.Interface;
+using CSCore.Ifs.FF.External.BancoDoBrasil.Interface.Impl;
 using CSCore.Ifs.FF.External.Parametros;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
@@ -56,21 +56,19 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
 
 
 
-    public class EnvioTituloBancoBrasil(
+    public class EnvioTituloBancoBrasilRepository(
         IRefitBancoBrasil refitBancoBrasil,
         AppDbContext appDbContext,
         IFF102Repository iFF102Repository,
-        IStaticaLabelRepository staticaLabelRepository,
-        IAuthBancoBrasil authBancoBrasil
-        ) : BancoBrasilAbstractClass
+        IStaticaLabelRepository staticaLabelRepository
+        ) : BancoDoBrasilServiceBaseImpl(refitBancoBrasil), IBancoBrasilEnvioTitulos
     {
         private readonly IRefitBancoBrasil _refitBancoBrasil = refitBancoBrasil;
         private readonly IStaticaLabelRepository _staticaLabelRepository = staticaLabelRepository;
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly IFF102Repository _iFF102Repository = iFF102Repository;
-        private readonly IAuthBancoBrasil _authBancoBrasil = authBancoBrasil;
 
-        public override async Task CS01_Envio_Titulos(string in_ff102ID, int in_tenantID)
+        public async Task CS01_Envio_Titulos(string in_ff102ID, int in_tenantID)
         {
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
@@ -102,12 +100,13 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
                 if (estabAuthToken == null || estabChaveAPL == null)
                     throw new KeyNotFoundException();
 
-                ReturnPostLogin retornoPostLogin = await _authBancoBrasil.CS51_Auth_BancoBrasil(in_tokenAutenticacao: estabAuthToken);
+                
 
                 CriaBoletoRequest criaBoletoReq = await MontaParametrosCriaBoletoReq(getTitulo, returnCnab, seqRemessa);
 
                 //cria boleto
-                var in_retornoCriaBoleto = await CS51_Cria_Boleto(retornoPostLogin, criaBoletoReq, estabChaveAPL);
+                string tokenAutenticacaoComBearer = await ObterTokenAutenticacao(in_tokenAutenticacao: estabAuthToken);
+                var in_retornoCriaBoleto = await CS51_Cria_Boleto(tokenAutenticacaoComBearer, criaBoletoReq, estabChaveAPL);
 
                 var in_StID_csicp_ff120_trackApi_FinalizadoEnvio
                     = await _staticaLabelRepository.GetIDStaticaByLabel<CSICP_FF120TrackApi>(Entities.FF120_TRACKAPI.FinalizadoEnvio);
@@ -319,13 +318,13 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
         }
 
         private async Task<RetornoCriaBoleto> CS51_Cria_Boleto(
-            ReturnPostLogin retornoPostLogin,
+            string in_token,
             CriaBoletoRequest criaBoletoReq,
             string in_Chave_Aut_APP)
         {
             var apiCriaBoletoResponse = await _refitBancoBrasil.IncluiBoletoBancario(
                              gwdevappkey: in_Chave_Aut_APP,
-                             authorization: "Bearer " + retornoPostLogin.access_token,
+                             authorization: "Bearer " + in_token,
                              requisicao: criaBoletoReq
                              );
 
