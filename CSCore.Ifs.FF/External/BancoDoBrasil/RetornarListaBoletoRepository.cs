@@ -39,7 +39,7 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
             try
             {
 
-                string tokenAcess = await ObterTokenAutenticacao(in_tokenAutenticacao: estabAuthToken);
+                string tokenAcess = await ObterTokenAutenticacao(in_tokenAutenticacao: estabAuthToken, gwdevappkey);
                 var resultListarBoleto = await _refitBancoBrasil.ListarBoletosBancarios(
                     gwdevappkey,
                     tokenAcess,

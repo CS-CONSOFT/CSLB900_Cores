@@ -105,7 +105,7 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
                 CriaBoletoRequest criaBoletoReq = await MontaParametrosCriaBoletoReq(getTitulo, returnCnab, seqRemessa);
 
                 //cria boleto
-                string tokenAutenticacaoComBearer = await ObterTokenAutenticacao(in_tokenAutenticacao: estabAuthToken);
+                string tokenAutenticacaoComBearer = await ObterTokenAutenticacao(in_tokenAutenticacao: estabAuthToken, null);
                 var in_retornoCriaBoleto = await CS51_Cria_Boleto(tokenAutenticacaoComBearer, criaBoletoReq, estabChaveAPL);
 
                 var in_StID_csicp_ff120_trackApi_FinalizadoEnvio

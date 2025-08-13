@@ -21,7 +21,7 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
         {
             try
             {
-                var tokenAuth = await ObterTokenAutenticacao(authorization);
+                var tokenAuth = await ObterTokenAutenticacao(authorization, appKey);
                 var result = await _refitBancoBrasil.AlterarBoleto(appKey, tokenAuth, id, requisicao);
 
                 if (!result.IsSuccessStatusCode)
