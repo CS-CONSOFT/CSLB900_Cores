@@ -67,7 +67,7 @@ namespace CSCore.RabbitMQ.Bus
             catch (Exception ex)
             {
                 await _hubContext.Clients.Group(context.Message.in_usuarioID)
-                 .SendAsync(HubMethodNames.PROCESSAR_BAIXA_ESTOQUE_GG073, new
+                 .SendAsync(HubMethodNames.BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032, new
                  {
                      Success = false,
                      Message = context.Message.in_tipoAcaoInventario == 1 ? "Falha ao bloquear inventário!" : "Falha ao desbloquear inventário!",

@@ -57,7 +57,7 @@ namespace CSCore.RabbitMQ.Bus
 
 
                 await _hubContext.Clients.Group(context.Message.in_usuarioID)
-                   .SendAsync(HubMethodNames.BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032, new
+                   .SendAsync(HubMethodNames.PROCESSAR_INVENTARIO_GG032, new
                    {
                        Success = true,
                        Message = "Inventário processado com sucesso!",
@@ -69,7 +69,7 @@ namespace CSCore.RabbitMQ.Bus
             catch (Exception ex)
             {
                 await _hubContext.Clients.Group(context.Message.in_usuarioID)
-                 .SendAsync(HubMethodNames.PROCESSAR_BAIXA_ESTOQUE_GG073, new
+                 .SendAsync(HubMethodNames.PROCESSAR_INVENTARIO_GG032, new
                  {
                      Success = false,
                      Message = "Falha ao processar inventário",
