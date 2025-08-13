@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace CSCore.RabbitMQ.Consumers
 {
-    public class EvtConsumer_BancoBrasil_EnviaTitulo(BancoBrasilAbstractClass bancoBrasilService,
+    /*public class EvtConsumer_BancoBrasil_EnviaTitulo(BancoBrasilAbstractClass bancoBrasilService,
         ISendEndpointProvider sendEndpointProvider,
         IHubContext<HubBancoBrasil> hubContext) : IConsumer<Rbt_CS_BancoBrasil_EnviaTitulo>
     {
@@ -48,5 +48,5 @@ namespace CSCore.RabbitMQ.Consumers
                 Console.WriteLine($"Enviando para grupo: {HubGroupNames.BANCO_BRASIL_HUB_GRUPO}");
             }
         }
-    }
+    }*/
 }
