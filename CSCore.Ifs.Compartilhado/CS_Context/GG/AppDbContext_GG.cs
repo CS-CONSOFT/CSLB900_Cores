@@ -732,8 +732,8 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("GG033_SALDOID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                
 
+                entity.HasOne(e => e.NavGG033_Saldo).WithOne().HasForeignKey<CSICP_GG033>(e => e.Gg033Saldoid);
 
             });
 

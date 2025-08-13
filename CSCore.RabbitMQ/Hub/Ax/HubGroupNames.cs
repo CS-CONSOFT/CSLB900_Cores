@@ -8,5 +8,6 @@
     public static class HubMethodNames
     {
         public static string PROCESSAR_BAIXA_ESTOQUE_GG073 = "PROCESSAR_BAIXA_ESTOQUE_GG073";
+        public static string BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032 = "BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032";
     }
 }

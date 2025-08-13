@@ -1,13 +1,19 @@
 ﻿using CSCore.Domain.Interfaces.GG._03X;
+using CSCore.RabbitMQ.Hub;
+using CSCore.RabbitMQ.Hub.Ax;
 using CSCore.RabbitMQ.PublishObjetos;
+using CSLB900.MSTools.Util;
 using MassTransit;
+using Microsoft.AspNetCore.SignalR;
 using Serilog;
 
 namespace CSCore.RabbitMQ.Bus
 {
-    public class EvtGerarInventarioEmMassa(IGG032Repository gG032Repository) : IConsumer<Rbt_CS_GerarInventarioEmMassa_GG032>
+    public class EvtGerarInventarioEmMassa(IGG032Repository gG032Repository,
+        IHubContext<HubGerarInventarioEmMassaG032> hubContext) : IConsumer<Rbt_CS_GerarInventarioEmMassa_GG032>
     {
         private readonly IGG032Repository _GG032Repository = gG032Repository;
+        private readonly IHubContext<HubGerarInventarioEmMassaG032> _hubContext = hubContext;
         public async Task Consume(ConsumeContext<Rbt_CS_GerarInventarioEmMassa_GG032> context)
         {
             Log.Debug("RabbitMQ: Mensagem recebida no consumer {Consumer} às {Data}. Tipo da mensagem: {MessageType}. Conteúdo: {@Message}",
@@ -15,12 +21,37 @@ namespace CSCore.RabbitMQ.Bus
              DateTime.UtcNow.ToLocalTime(),
              context.Message.GetType().Name,
              context.Message);
-            string result = await _GG032Repository
-                 .CS_GeradorInventarioEmMassa(
-                context.Message.in_tenantId,
-                context.Message.idgg001_talmox_virtual,
-                context.Message.isQtdZero,
-                context.Message.request);
+
+            try
+            {
+                string result = await _GG032Repository
+                .CS_GeradorInventarioEmMassa(
+               context.Message.in_tenantId,
+               context.Message.idgg001_talmox_virtual,
+               context.Message.isQtdZero,
+               context.Message.request);
+
+
+                await _hubContext.Clients.Group(context.Message.in_usuarioId)
+                   .SendAsync(HubMethodNames.BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032, new
+                   {
+                       Success = true,
+                       Message = "Inventário processado com sucesso!",
+                       DetailsError = "",
+                       Timestamp = DateTime.UtcNow
+                   });
+            }
+            catch (Exception ex)
+            {
+                await _hubContext.Clients.Group(context.Message.in_usuarioId)
+                .SendAsync(HubMethodNames.PROCESSAR_BAIXA_ESTOQUE_GG073, new
+                {
+                    Success = false,
+                    Message = "Falha ao processar inventário",
+                    DetailsError = HandlerExceptionMessage.CreateExceptionMessage(ex),
+                    Timestamp = DateTime.UtcNow
+                });
+            }
         }
     }
 }

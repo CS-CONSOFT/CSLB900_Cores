@@ -5,5 +5,6 @@
         public int tenant { get; set; }
         public string in_InventarioId { get; set; }
         public int in_tipoAcaoInventario { get; set; }
+        public string in_usuarioID { get; set; }
     }
 }
