@@ -88,9 +88,38 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<CsicpSy904Prg> OsusrI4yCsicpSy904Prgs { get; set; }
 
         public DbSet<CsicpSy905Smprg> OsusrI4yCsicpSy905Smprgs { get; set; }
-
+        public DbSet<CSICP_SY997_LOGS> OsusrE9aCsicpSy997s { get; set; }
         partial void OnModelCreating_CSICP_Systems(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CSICP_SY997_LOGS>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_SY997");
+
+                entity.ToTable("OSUSR_E9A_CSICP_SY997");
+
+                entity.HasIndex(e => new { e.Sy997Datainc, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_SY997_13SY997_DATAINC_9TENANT_ID");
+
+                entity.HasIndex(e => new { e.Sy997ExternalId, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_SY997_17SY997_EXTERNAL_ID_9TENANT_ID");
+
+                entity.HasIndex(e => e.TenantId, "OSIDX_OSUSR_E9A_CSICP_SY997_9TENANT_ID");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.Sy997Datainc)
+                    .HasColumnType("datetime")
+                    .HasColumnName("SY997_DATAINC");
+                entity.Property(e => e.Sy997ExternalId)
+                    .HasMaxLength(36)
+                    .HasColumnName("SY997_EXTERNAL_ID");
+                entity.Property(e => e.Sy997Isexibiu).HasColumnName("SY997_ISEXIBIU");
+                entity.Property(e => e.Sy997Mensagem).HasColumnName("SY997_MENSAGEM");
+                entity.Property(e => e.Sy997Nomeusuario)
+                    .HasMaxLength(100)
+                    .HasColumnName("SY997_NOMEUSUARIO");
+                entity.Property(e => e.Sy997Severidade)
+                    .HasMaxLength(50)
+                    .HasColumnName("SY997_SEVERIDADE");
+                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+            });
             modelBuilder.Entity<Csicp_Sy001>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_SY001");
