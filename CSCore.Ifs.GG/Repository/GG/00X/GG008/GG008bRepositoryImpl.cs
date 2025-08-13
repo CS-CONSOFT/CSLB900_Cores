@@ -55,6 +55,10 @@ namespace CSCore.Ifs.GG.Repository.GG._00X.GG008
                                                  Gg008bRefsimilar = gg008b.Gg008bRefsimilar,
                                                  Gg008bDatavigor = gg008b.Gg008bDatavigor,
                                                  Gg008bMarcaid = gg008b.Gg008bMarcaid,
+                                                 Gg008bFilialid = gg008b.Gg008bFilialid,
+                                                 Gg008bCodgproduto = gg008b.Gg008bCodgproduto,
+                                                 Gg008bCodgmarca = gg008b.Gg008bCodgmarca,
+                                                 Gg008bProdutoid = gg008b.Gg008bProdutoid,
                                                  NavGg006Marca = new CSICP_GG006
                                                  {
                                                      Id = gg006.Id,
