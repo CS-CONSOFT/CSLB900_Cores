@@ -31,7 +31,7 @@ namespace CSCore.Ex
                 {
                     Success = false,
                     Message = "Os dados enviados contêm erros de validação.",
-                    Data = errors // Passa os erros de validação para o campo Data
+                    Data = errors// Passa os erros de validação para o campo Data
                 })
                 {
                     StatusCode = StatusCodes.Status400BadRequest // Configura o código de status para 400 (Bad Request)
@@ -44,8 +44,6 @@ namespace CSCore.Ex
             if (ExisteExcecao(context))
             {
                 var stopwatch = Stopwatch.StartNew();
-
-
                 if (context.Exception is UnauthorizedAccessException)
                 {
                     HandleException(context, stopwatch, StatusCodes.Status401Unauthorized);
@@ -89,9 +87,12 @@ namespace CSCore.Ex
             context.Response.StatusCode = code;
             await context.Response.WriteAsJsonAsync(new DtoApiResponse<object>
             {
+                TraceID = context.TraceIdentifier,
                 Success = false,
                 Message = errorMessage,
-                Data = ex.StackTrace
+                CaminhoEndpoint = context.Request.Path,
+                HeadersRequisicao = context.Request.Headers,
+
             }, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = null // Mantém a capitalização original
