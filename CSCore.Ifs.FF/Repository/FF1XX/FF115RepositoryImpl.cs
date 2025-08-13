@@ -16,13 +16,13 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         : RepositorioBaseImpl<CSICP_FF115>(appDbContext, "Id"), IFF115Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task<(List<CSICP_FF115>, int)> GetListAsync(int in_tenant, string in_ff113Id, int in_page, int in_pageSize)
+        public async Task<(List<CSICP_FF115>, int)> GetListAsync(int in_tenant, string in_ff113Id, int in_pageNumber, int in_pageSize)
         {
             IQueryable<CSICP_FF115> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_ff113Id, query);
             var queryCount = query;
             var count = queryCount.Count();
-            query = query.PaginacaoNoBanco(in_page, in_pageSize);
+            query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
             return (await query.ToListAsync(), count);
         }
         private IQueryable<CSICP_FF115> FiltraQuandoExisteFiltro(string in_ff113Id, IQueryable<CSICP_FF115> query)

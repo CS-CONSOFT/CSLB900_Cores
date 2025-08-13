@@ -13,7 +13,7 @@ namespace CSCore.Domain.Interfaces.FF._1XX
     {
         Task<RepoDtoCSICP_FF113?> GetByIdAsync(int in_tenant, string in_ff113Id);
         Task<(List<RepoDtoCSICP_FF113>, int)> GetListAsync(
-            int in_tenant, int in_page, int in_pageSize, string? in_filialId, DateTime? in_dataRegistroInicio, DateTime? in_dataRegistroFim, int? in_tipo);
+            int in_tenant, int in_pageNumber, int in_pageSize, string? in_filialId, DateTime? in_dataRegistroInicio, DateTime? in_dataRegistroFim, int? in_tipo);
 
     }
 }

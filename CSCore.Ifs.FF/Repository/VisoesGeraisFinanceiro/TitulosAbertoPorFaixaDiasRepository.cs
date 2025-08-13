@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
 using CSCore.Ifs.CS_Context;
 using Microsoft.EntityFrameworkCore;
+using static CSCore.Domain.EstaticasLabel.GG.Entities;
 
 namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
 {
@@ -33,7 +34,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
 
                         where ff102.TenantId == in_tenant
                               && ff102.Ff102Tiporegistro == 1 // Contas a receber
-                              && (ff102sit.Label == "Aberto" || ff102sit.Label == "Baixa Parcial")
+                              && (ff102sit.Label == Csicp_ff102_Situacao.Aberto || ff102sit.Label == Csicp_ff102_Situacao.BxParcial)
 
                         select new TituloDataInfo
                         {
@@ -76,7 +77,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
 
                         where ff102.TenantId == in_tenant
                               && ff102.Ff102Tiporegistro == 1 // Contas a receber
-                              && (ff102sit.Label == "Aberto" || ff102sit.Label == "Baixa Parcial")
+                              && (ff102sit.Label == Csicp_ff102_Situacao.Aberto || ff102sit.Label == Csicp_ff102_Situacao.BxParcial)
 
                         select new TituloDataInfo
                         {
@@ -288,16 +289,6 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
 
             return resultado;
         }
-
-        //Task<List<Domain.Interfaces.FF.IVisoesGeraisFinanceiro.AnaliseIdadeContasReceberDto>> ITitulosAbertoPorFaixaDiasRepository.GetAnaliseIdadeContasReceberAsync(int tenant, bool agruparPorEstabelecimento, List<string>? filtroEstabelecimentos)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //Task<List<Domain.Interfaces.FF.IVisoesGeraisFinanceiro.TotalizadorEstabelecimentoDto>> ITitulosAbertoPorFaixaDiasRepository.GetTotalizadorPorEstabelecimentoAsync(int tenant, List<string>? filtroEstabelecimentos)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }
 

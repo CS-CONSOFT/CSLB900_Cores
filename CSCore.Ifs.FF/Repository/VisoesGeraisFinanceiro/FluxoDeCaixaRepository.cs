@@ -38,8 +38,8 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                             NomeConta = conta.Bb012NomeCliente,
                             ValorLiq = ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo * -1 : ff102.Ff102VlLiqTitulo,
                             IdentificadorTitulo = ff102.Ff102Tiporegistro == 1 
-                                                || ff102.Ff102Tiporegistro == 2 ? "A receber" :
-                                                 ff102.Ff102Tiporegistro == 3 ? "A pagar" : string.Empty,
+                                               || ff102.Ff102Tiporegistro == 2 ? "A receber" :
+                                                  ff102.Ff102Tiporegistro == 3 ? "A pagar" : string.Empty,
                             TipoReg = ff102.Ff102Tiporegistro,
                             ff102sit.Label
                         };
