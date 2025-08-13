@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF131;
 
 namespace CSCore.Domain.Interfaces.FF._1XX
 {
     public interface IFF131Repository : IRepositorioBase<CSICP_FF131>
     {
-        Task<(List<CSICP_FF131>, int)> GetListAsync(
+        Task<(List<RepoDtoCSICP_FF131>, int)> GetListAsync(
             int in_tenant,
             int in_pageNumber,
             int in_pageSize,
@@ -20,6 +21,6 @@ namespace CSCore.Domain.Interfaces.FF._1XX
             string? in_protocolo,
             string? in_nomeContaCliente);
 
-        Task<CSICP_FF131?> GetByIdAsync(int in_tenant, long in_ff131Id);
+        Task<RepoDtoCSICP_FF131?> GetByIdAsync(int in_tenant, long in_ff131Id);
     }
 }
