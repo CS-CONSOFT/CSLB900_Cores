@@ -15,6 +15,7 @@ namespace CSCore.Ifs.GG.Repository.GG._00X.GG008
         public async Task<CSICP_GG008b> GetByIdAsync(string gg008KdxID, string produtoGG008_ID, int tenant)
         {
             IQueryable<CSICP_GG008b> query = CriaQueryBaseParaGG008b(produtoGG008_ID, tenant);
+            query = query.Where(e => e.Id == gg008KdxID);
             CSICP_GG008b? csicpGg008bEntity = await query.FirstOrDefaultAsync();
 
             if (csicpGg008bEntity is null) throw new KeyNotFoundException(HandlerReturnMessages.ENTITY_NOT_FOUND);
