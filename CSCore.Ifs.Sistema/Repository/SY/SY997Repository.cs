@@ -15,16 +15,15 @@ namespace CSCore.Ifs.Repository.SY
             _context = appDbContext;
         }
 
-        public async Task<CSICP_SY997_LOGS?> GetByIdAsync(long id, int tenant)
+        public async Task<CSICP_SY997_LOGS?> GetByIdAsync(long id)
         {
             return await _context.OsusrE9aCsicpSy997s
-                .FirstOrDefaultAsync(x => x.Id == id && x.TenantId == tenant);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<CSICP_SY997_LOGS>> GetListAsync(int tenant, string? search = null, int pageSize = 50, int page = 1)
+        public async Task<IEnumerable<CSICP_SY997_LOGS>> GetListAsync(string? search = null, int pageSize = 50, int page = 1)
         {
-            var query = _context.OsusrE9aCsicpSy997s
-                .Where(x => x.TenantId == tenant);
+            var query = _context.OsusrE9aCsicpSy997s.AsQueryable();
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -41,33 +40,33 @@ namespace CSCore.Ifs.Repository.SY
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<CSICP_SY997_LOGS>> GetByUsuarioAsync(int tenant, string nomeUsuario)
+        public async Task<IEnumerable<CSICP_SY997_LOGS>> GetByUsuarioAsync(string nomeUsuario)
         {
             return await _context.OsusrE9aCsicpSy997s
-                .Where(x => x.TenantId == tenant && x.Sy997Nomeusuario == nomeUsuario)
+                .Where(x => x.Sy997Nomeusuario == nomeUsuario)
                 .OrderByDescending(x => x.Sy997Datainc)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<CSICP_SY997_LOGS>> GetBySeveridadeAsync(int tenant, string severidade)
+        public async Task<IEnumerable<CSICP_SY997_LOGS>> GetBySeveridadeAsync(string severidade)
         {
             return await _context.OsusrE9aCsicpSy997s
-                .Where(x => x.TenantId == tenant && x.Sy997Severidade == severidade)
+                .Where(x =>  x.Sy997Severidade == severidade)
                 .OrderByDescending(x => x.Sy997Datainc)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<CSICP_SY997_LOGS>> GetNaoExibidosAsync(int tenant)
+        public async Task<IEnumerable<CSICP_SY997_LOGS>> GetNaoExibidosAsync()
         {
             return await _context.OsusrE9aCsicpSy997s
-                .Where(x => x.TenantId == tenant && x.Sy997Isexibiu == false)
+                .Where(x =>  x.Sy997Isexibiu == false)
                 .OrderByDescending(x => x.Sy997Datainc)
                 .ToListAsync();
         }
 
-        public async Task<CSICP_SY997_LOGS> MarcarComoExibidoAsync(long id, int tenant)
+        public async Task<CSICP_SY997_LOGS> MarcarComoExibidoAsync(long id)
         {
-            var log = await GetByIdAsync(id, tenant);
+            var log = await GetByIdAsync(id);
             if (log != null)
             {
                 log.Sy997Isexibiu = true;
