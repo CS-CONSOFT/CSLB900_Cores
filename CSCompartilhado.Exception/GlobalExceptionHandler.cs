@@ -222,7 +222,7 @@ namespace CSCore.Ex
                 Sy997ExternalId = context.TraceIdentifier,
                 Sy997Datainc = DateTime.UtcNow.ToLocalTime(),
                 Sy997Nomeusuario = context.User.Identity?.Name ?? "Unknown",
-                Sy997Mensagem = errorMessage,
+                Sy997Mensagem = errorMessage + " || Caminho: " + context.Request.Path,
                 Sy997Isexibiu = false,
                 Sy997Severidade = CalcularSeveridade(code),
                 TenantId = int.Parse(tenant ?? "-1")
