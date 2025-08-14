@@ -350,6 +350,8 @@ namespace CSCore.Ex
                     jsonBody = body;
                 }
             }
+
+            var numeroLinhasAfetadas = -1;
             try
             {
                 string userName = context.User.Identity?.Name ?? "Localhost";
@@ -445,7 +447,7 @@ namespace CSCore.Ex
                 jsonBodyParam.Value = jsonBody ?? (object)DBNull.Value;
                 command.Parameters.Add(jsonBodyParam);
 
-                await command.ExecuteNonQueryAsync();
+                numeroLinhasAfetadas = await command.ExecuteNonQueryAsync();
             }
             catch (Exception exx)
             {
@@ -458,7 +460,7 @@ namespace CSCore.Ex
             {
                 TraceID = "",
                 Success = false,
-                Message = errorMessage,
+                Message = "Linhas afetadas: " + numeroLinhasAfetadas + " - Mensagens: " + errorMessage,
                 CaminhoEndpoint = context.Request.Path,
                 HeadersRequisicao = context.Request.Headers,
 
