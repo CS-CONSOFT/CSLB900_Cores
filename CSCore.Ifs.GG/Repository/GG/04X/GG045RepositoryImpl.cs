@@ -190,6 +190,9 @@ namespace CSCore.Ifs.Repository.GG._04X
                                             on GG520.Gg520Almoxid equals GG001.Id into GG001Join
                                             from GG001 in GG001Join.DefaultIfEmpty()
 
+                                            join gg045Stat in _appDbContext.OsusrE9aCsicpGg045Stats
+                                             on _CSICP_GG045.Gg045Statid equals gg045Stat.Id into gg045StatJoin
+                                            from gg045Stat in gg045StatJoin.DefaultIfEmpty()
 
                                             join GG008KDX in _appDbContext.OsusrE9aCsicpGg008Kdxes
                                             on GG520.Gg520KardexId equals GG008KDX.Gg008Kardexid into GG008KDXJoin
@@ -212,6 +215,13 @@ namespace CSCore.Ifs.Repository.GG._04X
                                                 Gg045Descricao = _CSICP_GG045.Gg045Descricao,
                                                 Cc040Id = _CSICP_GG045.Cc040Id,
                                                 Gg045Statid = _CSICP_GG045.Gg045Statid,
+                                                Gg045Stat = gg045Stat != null ? new OSUSR_E9A_CSICP_GG045_STAT
+                                                {
+                                                    Id = gg045Stat.Id,
+                                                    Label = gg045Stat.Label,
+                                                    Order = gg045Stat.Order,
+                                                    IsActive = gg045Stat.IsActive
+                                                } : null,
                                                 Cc060Id = _CSICP_GG045.Cc060Id,
                                                 Gg045Saldo = GG520 != null ? new CSICP_GG520
                                                 {

@@ -34,7 +34,8 @@ namespace CSCore.Application.Dto.Mapper.GG00X
                 CS_Gg008Codgproduto = entity.Gg045Saldo?.Nav_GG008Kardex?.NavGG008Produto?.Gg008Codgproduto,
                 CS_Gg008Descreduzida = entity.Gg045Saldo?.Nav_GG008Kardex?.NavGG008Produto?.Gg008Descreduzida,
                 CS_Gg520SaldosCandidatos = listaSaldoCandidato.Select(x => x.ToDtoGetGG520ParaGG45()),
-                CS_Gg046ListaPeloGG045 = listaPeloGG045.Select(x => x.ToDtoGet())
+                CS_Gg046ListaPeloGG045 = listaPeloGG045.Select(x => x.ToDtoGet()),
+                
             };
         }
         public static DtoGetGG045 ToDtoGet(this CSICP_GG045 entity)
