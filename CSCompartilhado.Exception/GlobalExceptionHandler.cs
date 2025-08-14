@@ -208,18 +208,22 @@ namespace CSCore.Ex
             };
         }
 
-        private async Task GenerateExceptionResponseToClient(HttpContext context, int code, System.Exception ex)
+        private async Task GenerateExceptionResponseToClient(
+            HttpContext context,
+            int code,
+            Exception ex)
         {
             string errorMessage = !string.IsNullOrEmpty(ex.InnerException?.Message)
                 ? ex.InnerException.Message
                 : ex.Message;
+
             context.Response.StatusCode = code;
 
             string? tenant = context.Request.Headers["Tenant_ID"][0];
 
             CSICP_SY997_LOGS log = new CSICP_SY997_LOGS
             {
-                Sy997ExternalId = context.TraceIdentifier,
+                Sy997ExternalId = null,
                 Sy997Datainc = DateTime.UtcNow.ToLocalTime(),
                 Sy997Nomeusuario = context.User.Identity?.Name ?? "Unknown",
                 Sy997Mensagem = errorMessage + " || Caminho: " + context.Request.Path,
@@ -232,12 +236,12 @@ namespace CSCore.Ex
 
             await context.Response.WriteAsJsonAsync(new DtoApiResponse<object>
             {
-                TraceID = id.ToString(),
+                TraceID = "",
                 Success = false,
                 Message = errorMessage,
                 CaminhoEndpoint = context.Request.Path,
                 HeadersRequisicao = context.Request.Headers,
-
+                
             }, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = null // Mantém a capitalização original
