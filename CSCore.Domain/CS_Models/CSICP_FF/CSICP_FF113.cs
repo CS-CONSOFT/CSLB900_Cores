@@ -44,5 +44,9 @@ public partial class CSICP_FF113
         public CSICP_FF112? NavFF112 { get; set; }
         public OsusrE9aCsicpFf113Tipo? NavFF113Tipo { get; set; }
         public Csicp_Sy001? NavSy001 { get; set; }
+        public CSICP_FF105? NavFF105 { get; set; }
+        public OsusrE9aCsicpFf112C004? NavFF112C004 { get; set; }
+        //public CSICP_FF113? NavFF113Retorno { get; set; }
+
     }
 }

@@ -35,6 +35,8 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 NavFF112 = entity.NavFF112?.ToDtoGetFF112Simples(),
                 NavFF113Tipo = entity.NavFF113Tipo,
                 NavSy001 = entity.NavSy001?.ToDtoGetSimples(),
+                NavFF105 = entity.NavFF105?.ToDtoGet_SemNavs(),
+                NavFF112C004 = entity.NavFF112C004,
 
             };
         }
