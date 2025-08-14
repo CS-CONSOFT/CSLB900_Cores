@@ -10,5 +10,10 @@ namespace CSSY103.C82Application.Dto.SY997
         public string? Sy997Mensagem { get; set; }
         public bool? Sy997Isexibiu { get; set; }
         public string? Sy997Severidade { get; set; }
+        public string? JsonHeader { get; set; } = string.Empty;
+
+        public string? JsonQuery { get; set; } = string.Empty;
+
+        public string? JsonBody { get; set; } = string.Empty;
     }
 }
