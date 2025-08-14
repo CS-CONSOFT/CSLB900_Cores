@@ -4,6 +4,7 @@ using CSLB900.MSTools.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
 using NPOI.OpenXmlFormats.Shared;
 using System.Diagnostics;
 using System.Text;
@@ -16,10 +17,16 @@ namespace CSCore.Ex
         private readonly AppDbContext _appDbContext = appDbContext;
         private const string REQUEST_BODY_KEY = "RequestBody";
 
+
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            ReadRequestBody(context.HttpContext);
+            // Habilita buffering para permitir múltiplas leituras do body
+            context.HttpContext.Request.EnableBuffering();
+
+            // PRIORIDADE 1: Capturar dos ActionArguments (DTOs já deserializados)
+            CaptureFromActionArguments(context);
         }
+
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
@@ -42,7 +49,6 @@ namespace CSCore.Ex
                 };
                 return; // Evita que o processo continue e sobrescreva a resposta
             }
-
 
             //TRATAR ERROS DE EXCECOES LANÇADAS
             if (ExisteExcecao(context))
@@ -77,6 +83,64 @@ namespace CSCore.Ex
                 context.ExceptionHandled = true;
             }
         }
+
+        private void CaptureFromActionArguments(ActionExecutingContext context)
+        {
+            try
+            {
+                 if (context.ActionArguments?.Any() == true)
+                {
+                    // Filtra apenas os argumentos que não são primitivos ou headers
+                    var relevantArguments = new Dictionary<string, object>();
+
+                    foreach (var arg in context.ActionArguments)
+                    {
+                        // Ignora tipos primitivos, strings simples e headers
+                        if (!IsPrimitiveType(arg.Value?.GetType()) &&
+                            !arg.Key.ToLowerInvariant().Contains("tenant") &&
+                            !arg.Key.ToLowerInvariant().Contains("id") &&
+                            arg.Value != null)
+                        {
+                            relevantArguments[arg.Key] = arg.Value;
+                        }
+                    }
+
+                    if (relevantArguments.Any())
+                    {
+                        var jsonBody = JsonSerializer.Serialize(relevantArguments, new JsonSerializerOptions
+                        {
+                            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                            WriteIndented = false
+                        });
+
+                        context.HttpContext.Items[REQUEST_BODY_KEY] = jsonBody;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erro ao capturar dos ActionArguments: {ex.Message}");
+            }
+        }
+
+        private static bool IsPrimitiveType(Type? type)
+        {
+            if (type == null) return true;
+
+            return type.IsPrimitive ||
+                   type == typeof(string) ||
+                   type == typeof(DateTime) ||
+                   type == typeof(decimal) ||
+                   type == typeof(Guid) ||
+                   type == typeof(int?) ||
+                   type == typeof(long?) ||
+                   type == typeof(bool?) ||
+                   type == typeof(DateTime?) ||
+                   type == typeof(decimal?) ||
+                   type == typeof(Guid?);
+        }
+
+     
 
         private static int DetermineStatusCodeFromMessage(string message)
         {
@@ -210,33 +274,174 @@ namespace CSCore.Ex
         }
 
         private async Task GenerateExceptionResponseToClient(
-            HttpContext context,
-            int code,
-            Exception ex)
+         HttpContext context,
+         int code,
+         Exception ex)
         {
             string errorMessage = !string.IsNullOrEmpty(ex.InnerException?.Message)
                 ? ex.InnerException.Message
                 : ex.Message;
 
             context.Response.StatusCode = code;
- 
+
             string? tenant = context.Request.Headers["Tenant_ID"][0];
 
-            // Recupera o corpo da requisição armazenado nos Items
-            string? requestBody = GetRequestBodyFromContext(context);
-
-            CSICP_SY997_LOGS log = new CSICP_SY997_LOGS
+            // Capturar e serializar headers (limitado a 10000 caracteres)
+            string jsonHeader = "";
+            try
             {
-                Sy997ExternalId = null,
-                Sy997Datainc = DateTime.UtcNow.ToLocalTime(),
-                Sy997Nomeusuario = context.User.Identity?.Name ?? "Unknown",
-                Sy997Mensagem = errorMessage + " || Caminho: " + context.Request.Path,
-                Sy997Isexibiu = false,
-                Sy997Severidade = CalcularSeveridade(code),
-                TenantId = int.Parse(tenant ?? "-1")
-            };
-            _appDbContext.Add(log);
-            var id = await _appDbContext.SaveChangesAsync();
+                var headersDict = context.Request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString());
+                jsonHeader = JsonSerializer.Serialize(headersDict);
+                if (jsonHeader.Length > 10000)
+                {
+                    jsonHeader = jsonHeader.Substring(0, 10000);
+                }
+            }
+            catch
+            {
+                jsonHeader = ""; // Em caso de erro na serialização, deixa vazio
+            }
+
+            // Capturar e serializar query parameters (limitado a 10000 caracteres)
+            string? jsonQuery = null;
+            try
+            {
+                if (context.Request.Query.Any())
+                {
+                    var queryDict = context.Request.Query.ToDictionary(q => q.Key, q => q.Value.ToString());
+                    string serializedQuery = JsonSerializer.Serialize(queryDict);
+                    if (serializedQuery.Length > 10000)
+                    {
+                        jsonQuery = serializedQuery.Substring(0, 10000);
+                    }
+                    else
+                    {
+                        jsonQuery = serializedQuery;
+                    }
+                }
+                // Se não há query parameters, jsonQuery permanece null
+            }
+            catch
+            {
+                jsonQuery = null; // Em caso de erro na serialização, deixa null
+            }
+
+            // Capturar o body da requisição (limitado a 10000 caracteres)
+            string? jsonBody = null;
+            if (context.Items.TryGetValue(REQUEST_BODY_KEY, out var bodyObj) && bodyObj is string body && !string.IsNullOrEmpty(body))
+            {
+                if (body.Length > 10000)
+                {
+                    jsonBody = body.Substring(0, 10000);
+                }
+                else
+                {
+                    jsonBody = body;
+                }
+            }
+            try
+            {
+                string userName = context.User.Identity?.Name ?? "Localhost";
+                string severidade = code.ToString();
+                string mensagemErro = !string.IsNullOrEmpty(ex.InnerException?.Message)
+                    ? ex.InnerException.Message
+                    : ex.Message;
+
+                // Usar SQL direto ao invés do Entity Framework
+                using var connection = _appDbContext.Database.GetDbConnection();
+                if (connection.State != System.Data.ConnectionState.Open)
+                {
+                    await connection.OpenAsync();
+                }
+
+                using var command = connection.CreateCommand();
+                command.CommandText = @"
+                    INSERT INTO OSUSR_E9A_CSICP_SY997 
+                    (
+                        TENANT_ID, 
+                        SY997_DATAINC, 
+                        SY997_NOMEUSUARIO, 
+                        SY997_ISEXIBIU, 
+                        SY997_SEVERIDADE, 
+                        SY997_MENSAGEM, 
+                        SY997_EXTERNAL_ID, 
+                        JSON_HEADER, 
+                        JSON_QUERY, 
+                        JSON_BODY
+                    )
+                    VALUES 
+                    (
+                        @TenantId, 
+                        @DataInc, 
+                        @NomeUsuario, 
+                        @IsExibiu, 
+                        @Severidade, 
+                        @Mensagem, 
+                        @ExternalId, 
+                        @JsonHeader, 
+                        @JsonQuery, 
+                        @JsonBody
+                    )";
+
+                // Adicionar parâmetros
+                var tenantParam = command.CreateParameter();
+                tenantParam.ParameterName = "@TenantId";
+                tenantParam.Value = int.Parse(tenant ?? "-1");
+                command.Parameters.Add(tenantParam);
+
+                var dataIncParam = command.CreateParameter();
+                dataIncParam.ParameterName = "@DataInc";
+                dataIncParam.Value = DateTime.UtcNow.ToLocalTime();
+                command.Parameters.Add(dataIncParam);
+
+                var nomeUsuarioParam = command.CreateParameter();
+                nomeUsuarioParam.ParameterName = "@NomeUsuario";
+                nomeUsuarioParam.Value = userName.Length > 100 ? userName.Substring(0, 100) : userName;
+                command.Parameters.Add(nomeUsuarioParam);
+
+                var isExibiuParam = command.CreateParameter();
+                isExibiuParam.ParameterName = "@IsExibiu";
+                isExibiuParam.Value = false;
+                command.Parameters.Add(isExibiuParam);
+
+                var severidadeParam = command.CreateParameter();
+                severidadeParam.ParameterName = "@Severidade";
+                severidadeParam.Value = severidade.Length > 50 ? severidade.Substring(0, 50) : severidade;
+                command.Parameters.Add(severidadeParam);
+
+                var mensagemParam = command.CreateParameter();
+                mensagemParam.ParameterName = "@Mensagem";
+                mensagemParam.Value = mensagemErro ?? (object)DBNull.Value;
+                command.Parameters.Add(mensagemParam);
+
+                var externalIdParam = command.CreateParameter();
+                externalIdParam.ParameterName = "@ExternalId";
+                externalIdParam.Value = Guid.NewGuid().ToString();
+                command.Parameters.Add(externalIdParam);
+
+                var jsonHeaderParam = command.CreateParameter();
+                jsonHeaderParam.ParameterName = "@JsonHeader";
+                jsonHeaderParam.Value = jsonHeader ?? (object)DBNull.Value;
+                command.Parameters.Add(jsonHeaderParam);
+
+                var jsonQueryParam = command.CreateParameter();
+                jsonQueryParam.ParameterName = "@JsonQuery";
+                jsonQueryParam.Value = jsonQuery ?? (object)DBNull.Value;
+                command.Parameters.Add(jsonQueryParam);
+
+                var jsonBodyParam = command.CreateParameter();
+                jsonBodyParam.ParameterName = "@JsonBody";
+                jsonBodyParam.Value = jsonBody ?? (object)DBNull.Value;
+                command.Parameters.Add(jsonBodyParam);
+
+                await command.ExecuteNonQueryAsync();
+            }
+            catch (Exception exx)
+            {
+                errorMessage = "Ao Salvar Log: " + (!string.IsNullOrEmpty(exx.InnerException?.Message)
+                   ? exx.InnerException.Message
+                   : exx.Message);
+            }
 
             await context.Response.WriteAsJsonAsync(new DtoApiResponse<object>
             {
@@ -245,44 +450,11 @@ namespace CSCore.Ex
                 Message = errorMessage,
                 CaminhoEndpoint = context.Request.Path,
                 HeadersRequisicao = context.Request.Headers,
-                
+
             }, new JsonSerializerOptions
             {
                 PropertyNamingPolicy = null // Mantém a capitalização original
             });
-        }
-
-
-        private void ReadRequestBody(HttpContext context)
-        {
-            var request = context.Request;
-
-            // Só lê o corpo para métodos que enviam dados
-            if (HasRequestBody(request.Method))
-            {
-                request.EnableBuffering();
-
-                using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: true);
-                var body = reader.ReadToEndAsync().Result;
-
-                // Armazena o corpo da requisição no Items para uso posterior
-                context.Items[REQUEST_BODY_KEY] = body;
-
-                Console.WriteLine($"Corpo da requisição: {body}");
-
-                request.Body.Position = 0;
-            }
-        }
-
-        private static bool HasRequestBody(string method)
-        {
-            return method.Equals("POST", StringComparison.OrdinalIgnoreCase) ||
-                   method.Equals("PUT", StringComparison.OrdinalIgnoreCase);
-        }
-
-        private static string? GetRequestBodyFromContext(HttpContext context)
-        {
-            return context.Items.TryGetValue(REQUEST_BODY_KEY, out var body) ? body?.ToString() : null;
         }
     }
 }
