@@ -32,6 +32,6 @@ namespace CSCore.Domain.Interfaces.FF._1XX
             QualDataFiltro? in_tipoDataFiltro
             );
 
-        Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string? in_ff102Id, int? in_tipoRegistro);
+        Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int? in_tipoRegistro);
     }
 }
