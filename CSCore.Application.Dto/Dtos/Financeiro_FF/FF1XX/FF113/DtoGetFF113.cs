@@ -1,4 +1,5 @@
 ﻿using CSBS101._82Application.Dto.BB00X.BB001;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF105;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF112;
 using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
 using CSCore.Domain;
@@ -46,7 +47,8 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF113
         public DtoGetFF112Simples? NavFF112 { get; set; }
         public OsusrE9aCsicpFf113Tipo? NavFF113Tipo { get; set; }
         public Dto_GetSY001Simples? NavSy001 { get; set; }
-
-
+        public DtoGetFF105_SemNavs? NavFF105 { get; set; }
+        public OsusrE9aCsicpFf112C004? NavFF112C004 { get; set; }
+        //public DtoGetFF113? NavFF113Retorno { get; set; }
     }
 }
