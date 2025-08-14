@@ -186,6 +186,11 @@ namespace CSCore.Ifs.Repository.GG._04X
                                             on _CSICP_GG045.Gg045Saldoid equals GG520.Id into GG520Join
                                             from GG520 in GG520Join.DefaultIfEmpty()
 
+                                            join GG001 in _appDbContext.CSICP_GG001s
+                                            on GG520.Gg520Almoxid equals GG001.Id into GG001Join
+                                            from GG001 in GG001Join.DefaultIfEmpty()
+
+
                                             join GG008KDX in _appDbContext.OsusrE9aCsicpGg008Kdxes
                                             on GG520.Gg520KardexId equals GG008KDX.Gg008Kardexid into GG008KDXJoin
                                             from GG008KDX in GG008KDXJoin.DefaultIfEmpty()
@@ -216,7 +221,14 @@ namespace CSCore.Ifs.Repository.GG._04X
                                                     Gg520NsNumerosaldo = GG520.Gg520NsNumerosaldo,
                                                     Gg520Saldo = GG520.Gg520Saldo,
                                                     Gg520DescricaoLote = GG520.Gg520DescricaoLote,
+                                                    
                                                     Gg520Descricaosaldo = GG520.Gg520Descricaosaldo,
+                                                    NavGG001Almox = GG001 != null ? new CSICP_GG001
+                                                    {
+                                                        TenantId = GG001.TenantId,
+                                                        Gg001Codigoalmox = GG001.Gg001Codigoalmox,
+                                                        Gg001Descalmox = GG001.Gg001Descalmox,
+                                                    } : null,
                                                     Nav_GG008Kardex = GG008KDX != null ? new CSICP_GG008Kdx
                                                     {
                                                         NavGG008Produto = GG008 != null ? new CSICP_GG008

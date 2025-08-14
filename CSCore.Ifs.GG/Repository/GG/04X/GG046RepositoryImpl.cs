@@ -56,6 +56,13 @@ namespace CSCore.Ifs.GG.Repository.GG._04X
                         on gg046.Gg046EntsaiId equals gg046Entsai.Id into gg046EntsaiJoin
                         from gg046Entsai in gg046EntsaiJoin.DefaultIfEmpty()
 
+                        join gg520 in _appDbContext.OsusrE9aCsicpGg520s
+                        on gg046.Gg046SaldoentId equals gg520.Id into gg520Join
+                        from gg520 in gg520Join.DefaultIfEmpty()
+
+                        join gg001 in _appDbContext.CSICP_GG001s
+                        on gg520.Gg520Almoxid equals gg001.Id into gg001Join
+                        from gg001 in gg001Join.DefaultIfEmpty()
 
                         select new CSICP_GG046
                         {
@@ -83,6 +90,23 @@ namespace CSCore.Ifs.GG.Repository.GG._04X
                                 Label = gg046Stat.Label,
                                 Order = gg046Stat.Order,
                                 IsActive = gg046Stat.IsActive
+                            } : null,
+                            Nav_Gg250Saldoent = gg520 != null ? new CSICP_GG520
+                            {
+                                Id = gg520.Id,
+                                TenantId = gg520.TenantId,
+                                Gg520KardexId = gg520.Gg520KardexId,
+                                Gg520Almoxid = gg520.Gg520Almoxid,
+                                Gg520NsNumerosaldo = gg520.Gg520NsNumerosaldo,
+                                Gg520Saldo = gg520.Gg520Saldo,
+                                Gg520DescricaoLote = gg520.Gg520DescricaoLote,
+                                Gg520Descricaosaldo = gg520.Gg520Descricaosaldo,
+                                NavGG001Almox = gg001 != null ? new CSICP_GG001
+                                {
+                                    Id = gg001.Id,
+                                    Gg001Codigoalmox = gg001.Gg001Codigoalmox,
+                                    Gg001Descalmox = gg001.Gg001Descalmox,
+                                } : null
                             } : null
                         };
             return await query.ToListAsync();

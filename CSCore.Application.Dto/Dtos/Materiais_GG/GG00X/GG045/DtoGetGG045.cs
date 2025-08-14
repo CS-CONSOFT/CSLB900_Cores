@@ -33,10 +33,13 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG045
         public string? CS_Gg520KardexId { get; set; }
 
         public string? CS_Gg520Almoxid { get; set; }
+        public string? CS_Gg520AlmoxCodigo { get; set; }
+        public string? CS_Gg520AlmoxDesc { get; set; }
         public string? CS_Gg520DescLote { get; set; }
         public string? CS_Gg520DescSaldo { get; set; }
 
         public decimal CS_Gg520Saldo { get; set; } = -1;
+        public decimal CS_Gg520NS { get; set; } = -1;
 
         public int? CS_Gg008Codgproduto { get; set; }
 
