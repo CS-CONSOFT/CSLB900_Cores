@@ -14,11 +14,12 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<(List<RepoDtoCSICP_FF132>, int)> GetListAsync(int in_tenant, long in_ff131Id, int in_pageNumber, int in_pageSize)
+        public async Task<(List<RepoDtoCSICP_FF132>, int)> GetListAsync
+            (int in_tenant, long in_ff131Id, int in_pageNumber, int in_pageSize)
         {
             IQueryable<RepoDtoCSICP_FF132> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_ff131Id, query);
-            
+
             var queryCount = query;
             var count = queryCount.Count();
             query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
@@ -26,11 +27,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF132> FiltraQuandoExisteFiltro(long in_ff131Id, IQueryable<RepoDtoCSICP_FF132> query)
+        private IQueryable<RepoDtoCSICP_FF132> FiltraQuandoExisteFiltro
+            (long in_ff131Id, IQueryable<RepoDtoCSICP_FF132> query)
         {
             if (in_ff131Id != null)
                 query = query.Where(e => e.Ff131Id == in_ff131Id);
-
             return query;
         }
 
@@ -38,7 +39,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         {
             return from ff132 in _appDbContext.OsusrE9aCsicpFf132s
                    .AsNoTracking()
-                   
+
                    join ff131 in _appDbContext.OsusrE9aCsicpFf131s
                    on ff132.Ff131Id equals ff131.Ff131Id into ff131_ff132_join
                    from ff131 in ff131_ff132_join.DefaultIfEmpty()
@@ -58,16 +59,16 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
                        NavFF131 = ff131 != null ? new CSICP_FF131
                        {
-                            TenantId = ff131.TenantId,
-                            Ff131Id = ff131.Ff131Id,
-                            Ff131Filialid = ff131.Ff131Filialid,
-                            Ff131Dregistro = ff131.Ff131Dregistro,
-                            Ff131Contaid = ff131.Ff131Contaid,
-                            Ff131TomadorContaid = ff131.Ff131TomadorContaid,
-                            Ff131Usuarioid = ff131.Ff131Usuarioid,
-                            Ff131Observacao = ff131.Ff131Observacao,
-                            Ff131Isefetivado = ff131.Ff131Isefetivado,
-                            Ff131Protocolo = ff131.Ff131Protocolo
+                           TenantId = ff131.TenantId,
+                           Ff131Id = ff131.Ff131Id,
+                           Ff131Filialid = ff131.Ff131Filialid,
+                           Ff131Dregistro = ff131.Ff131Dregistro,
+                           Ff131Contaid = ff131.Ff131Contaid,
+                           Ff131TomadorContaid = ff131.Ff131TomadorContaid,
+                           Ff131Usuarioid = ff131.Ff131Usuarioid,
+                           Ff131Observacao = ff131.Ff131Observacao,
+                           Ff131Isefetivado = ff131.Ff131Isefetivado,
+                           Ff131Protocolo = ff131.Ff131Protocolo
                        } : null,
 
                        NavFF102 = ff102 != null ? new CSICP_FF102
@@ -76,30 +77,42 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Id = ff102.Id,
                            Ff102Tiporegistro = ff102.Ff102Tiporegistro,
                            Ff102Filialid = ff102.Ff102Filialid,
-                           Ff102Filial = ff102.Ff102Filial,
                            Ff102Pfx = ff102.Ff102Pfx,
                            Ff102NoTitulo = ff102.Ff102NoTitulo,
                            Ff102Sfx = ff102.Ff102Sfx,
-                           Ff102NoTitulonobanco = ff102.Ff102NoTitulonobanco,
-                           Ff102Especieid = ff102.Ff102Especieid,
-                           Ff102Tipoparcelaid = ff102.Ff102Tipoparcelaid,
-                           Ff102TipoParcela = ff102.Ff102TipoParcela,
-                           Ff102ParcelaX = ff102.Ff102ParcelaX,
-                           Ff102ParcelaY = ff102.Ff102ParcelaY,
                            Ff102Contaid = ff102.Ff102Contaid,
                            Ff102Contarealid = ff102.Ff102Contarealid,
-                           Ff102AvalistaId = ff102.Ff102AvalistaId,
-                           Ff102Ccustoid = ff102.Ff102Ccustoid,
-                           Ff102Usuarioproprieid = ff102.Ff102Usuarioproprieid,
-                           Ff102Agcobradorid = ff102.Ff102Agcobradorid,
-                           Ff102Responsavelid = ff102.Ff102Responsavelid,
-                           Ff102Condicaoid = ff102.Ff102Condicaoid,
-                           Ff102Administradoraid = ff102.Ff102Administradoraid,
-                           Ff102Tipocobrancaid = ff102.Ff102Tipocobrancaid,
-                           Ff102Moedaid = ff102.Ff102Moedaid,
                            //Verificar se é necessário mapear todos os campos
                        } : null
                    };
+        }
+
+        public async Task ProcessarTomadorDeDivida(int in_tenant, long in_ff131Id)
+        {
+            // Busca os dados do repositório FF132 com as informações necessárias
+            var (listaDados, _) = await GetListAsync(in_tenant, in_ff131Id, 1, int.MaxValue);
+
+            foreach (var item in listaDados)
+            {
+                // Verifica se existem os dados necessários para o processamento
+                if (item.NavFF131 != null && item.NavFF102 != null &&
+                    !string.IsNullOrEmpty(item.Ff102Id))
+                {
+                    // Busca a entidade FF102 para atualização
+                    var ff102Entity = await _appDbContext.OsusrE9aCsicpFf102s
+                        .FirstOrDefaultAsync(x => x.Id == item.Ff102Id && x.TenantId == in_tenant);
+
+                    if (ff102Entity != null)
+                    {
+                        // Atualiza os campos conforme especificado
+                        ff102Entity.Ff102Contaid = item.NavFF131.Ff131TomadorContaid;
+                        ff102Entity.Ff102Contarealid = item.NavFF131.Ff131Contaid;
+
+                        // Salva as alterações no banco de dados
+                        await _appDbContext.SaveChangesAsync();
+                    }
+                }
+            }
         }
     }
 }
