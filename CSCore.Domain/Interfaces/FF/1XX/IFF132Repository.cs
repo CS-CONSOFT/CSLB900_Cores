@@ -12,5 +12,6 @@ namespace CSCore.Domain.Interfaces.FF._1XX
     public interface IFF132Repository : IRepositorioBase<CSICP_FF132>
     {
         Task<(List<RepoDtoCSICP_FF132>, int)> GetListAsync(int in_tenant, long in_ff131Id, int in_pageNumber, int in_pageSize);
+        Task ProcessarTomadorDeDivida(int in_tenant, long in_ff131Id);
     }
 }
