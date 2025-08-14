@@ -14,6 +14,7 @@ namespace CSCore.Ex
     public class GlobalExceptionHandler(AppDbContext appDbContext) : IActionFilter
     {
         private readonly AppDbContext _appDbContext = appDbContext;
+        private const string REQUEST_BODY_KEY = "RequestBody";
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
@@ -218,8 +219,11 @@ namespace CSCore.Ex
                 : ex.Message;
 
             context.Response.StatusCode = code;
-
+ 
             string? tenant = context.Request.Headers["Tenant_ID"][0];
+
+            // Recupera o corpo da requisição armazenado nos Items
+            string? requestBody = GetRequestBodyFromContext(context);
 
             CSICP_SY997_LOGS log = new CSICP_SY997_LOGS
             {
@@ -248,18 +252,37 @@ namespace CSCore.Ex
             });
         }
 
-  
+
         private void ReadRequestBody(HttpContext context)
         {
             var request = context.Request;
-            request.EnableBuffering();
 
-            using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: true);
-            var body = reader.ReadToEndAsync().Result;
+            // Só lê o corpo para métodos que enviam dados
+            if (HasRequestBody(request.Method))
+            {
+                request.EnableBuffering();
 
-            Console.WriteLine($"Corpo da requisição: {body}");
+                using var reader = new StreamReader(request.Body, Encoding.UTF8, leaveOpen: true);
+                var body = reader.ReadToEndAsync().Result;
 
-            request.Body.Position = 0;
+                // Armazena o corpo da requisição no Items para uso posterior
+                context.Items[REQUEST_BODY_KEY] = body;
+
+                Console.WriteLine($"Corpo da requisição: {body}");
+
+                request.Body.Position = 0;
+            }
+        }
+
+        private static bool HasRequestBody(string method)
+        {
+            return method.Equals("POST", StringComparison.OrdinalIgnoreCase) ||
+                   method.Equals("PUT", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static string? GetRequestBodyFromContext(HttpContext context)
+        {
+            return context.Items.TryGetValue(REQUEST_BODY_KEY, out var body) ? body?.ToString() : null;
         }
     }
 }

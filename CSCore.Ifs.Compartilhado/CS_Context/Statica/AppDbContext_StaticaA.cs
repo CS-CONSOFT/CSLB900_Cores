@@ -35,6 +35,8 @@ namespace CSCore.Ifs.CS_Context
                 entity
                     .HasKey(e => e.Id);
 
+                entity.ToTable("OSUSR_E9A_CSICP_AA046_TPGOV");
+
                 entity.Property(e => e.Id).HasColumnName("ID");
                 entity.Property(e => e.IsActive).HasColumnName("IS_ACTIVE");
                 entity.Property(e => e.Label)
