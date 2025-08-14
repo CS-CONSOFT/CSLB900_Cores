@@ -417,7 +417,7 @@ namespace CSCore.Ex
 
                 var severidadeParam = command.CreateParameter();
                 severidadeParam.ParameterName = "@Severidade";
-                severidadeParam.Value = severidade.Length > 50 ? severidade.Substring(0, 50) : severidade;
+                severidadeParam.Value = CalcularSeveridade(code);
                 command.Parameters.Add(severidadeParam);
 
                 var mensagemParam = command.CreateParameter();
