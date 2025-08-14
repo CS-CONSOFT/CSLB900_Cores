@@ -291,6 +291,17 @@ namespace CSCore.Ex
             try
             {
                 var headersDict = context.Request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString());
+
+                // Adicionar informações extras do context.Request
+                headersDict["RequestPath"] = context.Request.Path.ToString();
+                headersDict["RequestHost"] = context.Request.Host.ToString();
+                headersDict["RequestMethod"] = context.Request.Method;
+                headersDict["RequestScheme"] = context.Request.Scheme;
+                headersDict["RequestQueryString"] = context.Request.QueryString.ToString();
+                headersDict["RequestContentType"] = context.Request.ContentType ?? "";
+                headersDict["RequestContentLength"] = context.Request.ContentLength?.ToString() ?? "";
+                headersDict["StackTrace"] = ex.StackTrace?.ToString() ?? "";
+
                 jsonHeader = JsonSerializer.Serialize(headersDict);
                 if (jsonHeader.Length > 10000)
                 {
