@@ -10,10 +10,10 @@ using Serilog;
 namespace CSCore.RabbitMQ.Bus
 {
     public class EvtGerarInventarioEmMassa(IGG032Repository gG032Repository,
-        IHubContext<HubGerarInventarioEmMassaG032> hubContext) : IConsumer<Rbt_CS_GerarInventarioEmMassa_GG032>
+        IHubContext<HubNotification> hubContext) : IConsumer<Rbt_CS_GerarInventarioEmMassa_GG032>
     {
         private readonly IGG032Repository _GG032Repository = gG032Repository;
-        private readonly IHubContext<HubGerarInventarioEmMassaG032> _hubContext = hubContext;
+        private readonly IHubContext<HubNotification> _hubContext = hubContext;
         public async Task Consume(ConsumeContext<Rbt_CS_GerarInventarioEmMassa_GG032> context)
         {
             Log.Debug("RabbitMQ: Mensagem recebida no consumer {Consumer} às {Data}. Tipo da mensagem: {MessageType}. Conteúdo: {@Message}",
@@ -32,7 +32,7 @@ namespace CSCore.RabbitMQ.Bus
                context.Message.request);
 
 
-                await _hubContext.Clients.Group(context.Message.in_usuarioId)
+                await _hubContext.Clients.Group("gerar-inventario-em-massa-" + context.Message.in_usuarioId)
                    .SendAsync(HubMethodNames.GERAR_INVENTARIO_EM_MASSA_GG032, new
                    {
                        Success = true,
@@ -43,7 +43,7 @@ namespace CSCore.RabbitMQ.Bus
             }
             catch (Exception ex)
             {
-                await _hubContext.Clients.Group(context.Message.in_usuarioId)
+                await _hubContext.Clients.Group("gerar-inventario-em-massa-" + context.Message.in_usuarioId)
                 .SendAsync(HubMethodNames.GERAR_INVENTARIO_EM_MASSA_GG032, new
                 {
                     Success = false,

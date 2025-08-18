@@ -15,11 +15,11 @@ namespace CSCore.RabbitMQ.Bus
     {
         private readonly IGG032Repository _repository;
         private readonly IStaticaLabelRepository _staticaLabelRepository;
-        private readonly IHubContext<HubProcessarInventarioGG032> _hubContext;
+        private readonly IHubContext<HubNotification> _hubContext;
 
         public EvtBusProcessarInventario_GG032(IGG032Repository repository,
             IStaticaLabelRepository staticaLabelRepository,
-            IHubContext<HubProcessarInventarioGG032> hubContext )
+            IHubContext<HubNotification> hubContext )
         {
             _repository = repository;
             _staticaLabelRepository = staticaLabelRepository;
@@ -56,7 +56,7 @@ namespace CSCore.RabbitMQ.Bus
                     idGG028Nat_Inventario);
 
 
-                await _hubContext.Clients.Group(context.Message.in_usuarioID)
+                await _hubContext.Clients.Group("grupo-processar-inventario-" + context.Message.in_usuarioID)
                    .SendAsync(HubMethodNames.PROCESSAR_INVENTARIO_GG032, new
                    {
                        Success = true,
@@ -68,7 +68,7 @@ namespace CSCore.RabbitMQ.Bus
             }
             catch (Exception ex)
             {
-                await _hubContext.Clients.Group(context.Message.in_usuarioID)
+                await _hubContext.Clients.Group("grupo-processar-inventario-" + context.Message.in_usuarioID)
                  .SendAsync(HubMethodNames.PROCESSAR_INVENTARIO_GG032, new
                  {
                      Success = false,

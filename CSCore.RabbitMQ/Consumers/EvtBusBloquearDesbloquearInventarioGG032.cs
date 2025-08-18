@@ -16,19 +16,17 @@ namespace CSCore.RabbitMQ.Bus
     {
         private readonly IGG032Repository _repository;
         private readonly IStaticaLabelRepository _staticaLabelRepository;
-        private readonly IHubContext<HubBloquearDesbloquearInventarioGG032> _hubContext;
-        private readonly AppDbContext _appDbContext;
+        private readonly IHubContext<HubNotification> _hubContext;
 
         public EvtBusBloquearDesbloquearInventarioGG032(
             IGG032Repository repository,
             IStaticaLabelRepository staticaLabelRepository,
-            IHubContext<HubBloquearDesbloquearInventarioGG032> hubContext,
+            IHubContext<HubNotification> hubContext,
             AppDbContext context)
         {
             _repository = repository;
             _staticaLabelRepository = staticaLabelRepository;
             _hubContext = hubContext;
-            _appDbContext = context;
         }
 
         public async Task Consume(ConsumeContext<Rbt_CS_BloquearDesbloquearInventario_GG032> context)
@@ -56,7 +54,7 @@ namespace CSCore.RabbitMQ.Bus
 
    
 
-                await _hubContext.Clients.Group(context.Message.in_usuarioID)
+                await _hubContext.Clients.Group("bloquear-desbloquear-inventario-"+ context.Message.in_usuarioID)
                    .SendAsync(HubMethodNames.BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032, new
                    {
                        Success = true,
@@ -66,7 +64,7 @@ namespace CSCore.RabbitMQ.Bus
             }
             catch (Exception ex)
             {
-                await _hubContext.Clients.Group(context.Message.in_usuarioID)
+                await _hubContext.Clients.Group("bloquear-desbloquear-inventario-" + context.Message.in_usuarioID)
                  .SendAsync(HubMethodNames.BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032, new
                  {
                      Success = false,

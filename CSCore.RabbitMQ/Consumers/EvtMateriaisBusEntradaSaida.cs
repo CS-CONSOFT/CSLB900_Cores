@@ -16,7 +16,7 @@ namespace CSCore.Ifs.GG
     public class EvtMateriaisBusEntradaSaida(IBaixaSaldo baixaSaldo,
         IGG073Repository gg073Repo,
         IGenerateProtocolo generateProtocolo,
-        IHubContext<HubBaixarEstoqueGG073> hubContext,
+        IHubContext<HubNotification> hubContext,
         AppDbContext appDbContext)
         : IConsumer<Rbt_CS_BaixaMvto_EntSaida>
     {
@@ -24,7 +24,7 @@ namespace CSCore.Ifs.GG
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly IGG073Repository _gg073Repo = gg073Repo;
         private readonly IGenerateProtocolo _generateProtocolo = generateProtocolo;
-        private readonly IHubContext<HubBaixarEstoqueGG073> _hubContext = hubContext;
+        private readonly IHubContext<HubNotification> _hubContext = hubContext;
         public async Task Consume(ConsumeContext<Rbt_CS_BaixaMvto_EntSaida> context)
         {
 
@@ -118,7 +118,7 @@ namespace CSCore.Ifs.GG
                     await _appDbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
 
-                    await _hubContext.Clients.Group(context.Message.Usuario_ID)
+                    await _hubContext.Clients.Group("entrada-saida-"+context.Message.Usuario_ID)
                     .SendAsync(HubMethodNames.PROCESSAR_BAIXA_ESTOQUE_GG073, new
                     {
                         Success = true,
@@ -130,7 +130,7 @@ namespace CSCore.Ifs.GG
                 catch (Exception ex)
                 {
                     await transaction.RollbackAsync();
-                    await _hubContext.Clients.Group(context.Message.Usuario_ID)
+                    await _hubContext.Clients.Group("entrada-saida-" + context.Message.Usuario_ID)
                      .SendAsync(HubMethodNames.PROCESSAR_BAIXA_ESTOQUE_GG073, new
                      {
                          Success = false,

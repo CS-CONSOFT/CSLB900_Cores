@@ -2,9 +2,7 @@
 
 namespace CSCore.RabbitMQ.Hub
 {
-    [Obsolete]
-    public class HubBancoBrasil : BaseHub
+    public class HubNotification : BaseHub
     {
-      
     }
 }

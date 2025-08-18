@@ -2,6 +2,7 @@
 
 namespace CSCore.RabbitMQ.Hub
 {
+    [Obsolete]
     public class HubBaixarEstoqueGG073 : BaseHub
     {
       

@@ -13,6 +13,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF132
         public long? Ff131Id { get; set; }
 
         public IEnumerable<string> ListFF102Id { get; set; }
+
         public CSICP_FF132 ToEntity(int tenant, string? _)
         {
             return new CSICP_FF132

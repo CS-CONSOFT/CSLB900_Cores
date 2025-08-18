@@ -1,12 +1,8 @@
 ﻿using CSCore.RabbitMQ.Hub.Ax;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSCore.RabbitMQ.Hub
 {
+    [Obsolete]
     public class HubProcessarInventarioGG032 : BaseHub
     {
     }
