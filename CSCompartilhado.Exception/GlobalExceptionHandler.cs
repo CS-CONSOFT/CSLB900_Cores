@@ -419,7 +419,7 @@ namespace CSCore.Ex
 
                 var severidadeParam = command.CreateParameter();
                 severidadeParam.ParameterName = "@Severidade";
-                severidadeParam.Value = CalcularSeveridade(code);
+                severidadeParam.Value = severidade.Length > 50 ? severidade.Substring(0, 50) : severidade;
                 command.Parameters.Add(severidadeParam);
 
                 var mensagemParam = command.CreateParameter();
@@ -457,18 +457,7 @@ namespace CSCore.Ex
             }
 
             return errorMessage;
-            await context.Response.WriteAsJsonAsync(new DtoApiResponse<object>
-            {
-                TraceID = "",
-                Success = false,
-                Message = "Linhas afetadas: " + numeroLinhasAfetadas + " - Mensagens: " + errorMessage,
-                CaminhoEndpoint = context.Request.Path,
-                HeadersRequisicao = context.Request.Headers,
-
-            }, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = null // Mantém a capitalização original
-            });
+           
         }
     }
 }
