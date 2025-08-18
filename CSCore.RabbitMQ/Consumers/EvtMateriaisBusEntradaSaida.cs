@@ -118,7 +118,7 @@ namespace CSCore.Ifs.GG
                     await _appDbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
 
-                    await _hubContext.Clients.Group("entrada-saida-"+context.Message.Usuario_ID)
+                    await _hubContext.Clients.Group("baixa-estoque-"+context.Message.Usuario_ID)
                     .SendAsync(HubMethodNames.PROCESSAR_BAIXA_ESTOQUE_GG073, new
                     {
                         Success = true,
@@ -130,7 +130,7 @@ namespace CSCore.Ifs.GG
                 catch (Exception ex)
                 {
                     await transaction.RollbackAsync();
-                    await _hubContext.Clients.Group("entrada-saida-" + context.Message.Usuario_ID)
+                    await _hubContext.Clients.Group("baixa-estoque-" + context.Message.Usuario_ID)
                      .SendAsync(HubMethodNames.PROCESSAR_BAIXA_ESTOQUE_GG073, new
                      {
                          Success = false,

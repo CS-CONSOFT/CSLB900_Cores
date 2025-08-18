@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.RabbitMQ.Hub
 {
+    [Obsolete]
     public class HubGerarInventarioEmMassaG032 : BaseHub
     {
     }

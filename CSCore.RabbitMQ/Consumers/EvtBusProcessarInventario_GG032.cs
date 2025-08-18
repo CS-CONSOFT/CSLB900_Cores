@@ -56,7 +56,7 @@ namespace CSCore.RabbitMQ.Bus
                     idGG028Nat_Inventario);
 
 
-                await _hubContext.Clients.Group("grupo-processar-inventario-" + context.Message.in_usuarioID)
+                await _hubContext.Clients.Group("processar-inventario-" + context.Message.in_usuarioID)
                    .SendAsync(HubMethodNames.PROCESSAR_INVENTARIO_GG032, new
                    {
                        Success = true,
@@ -68,7 +68,7 @@ namespace CSCore.RabbitMQ.Bus
             }
             catch (Exception ex)
             {
-                await _hubContext.Clients.Group("grupo-processar-inventario-" + context.Message.in_usuarioID)
+                await _hubContext.Clients.Group("processar-inventario-" + context.Message.in_usuarioID)
                  .SendAsync(HubMethodNames.PROCESSAR_INVENTARIO_GG032, new
                  {
                      Success = false,
