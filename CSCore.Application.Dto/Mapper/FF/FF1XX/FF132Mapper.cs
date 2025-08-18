@@ -14,7 +14,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 Ff131Id = entity.Ff131Id,
                 Ff102Id = entity.Ff102Id,
                 NavFF131 = entity.NavFF131?.ToDtoGet_SemNavs(),
-                NavFF102 = entity.NavFF102?.ToDtoGet_SemNavs()
+                NavFF102 = entity.NavFF102?.ToDtoGet_Exibicao()
             };
         }
     }
