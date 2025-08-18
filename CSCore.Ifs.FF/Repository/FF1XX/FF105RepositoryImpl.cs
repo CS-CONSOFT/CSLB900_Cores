@@ -221,7 +221,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
                 if (!(statusValido && statusNaoFechado))
                 {
-                    throw new Exception("Você só pode 'PUBLICAR' um registro 'CARREGADO' e não 'FECHADO!!!'");
+                    throw new Exception("Você só pode 'PUBLICAR' um registro 'CARREGADO' e não 'ENCERRADO'!!!");
                 }
                 // Termina aqui o fluxo de validação do status
 
@@ -297,7 +297,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
                 if (!(statusValido && statusNaoFechado))
                 {
-                    throw new Exception("Você só pode 'DESPUBLICAR' um registro 'PUBLICADO' e não 'FECHADO'!!!");
+                    throw new Exception("Você só pode 'DESPUBLICAR' um registro 'PUBLICADO' e não 'ENCERRADO'!!!");
                 }
                 // Termina aqui o fluxo de validação do status
 
@@ -355,7 +355,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
                 if (!statusValido)
                 {
-                    throw new Exception("Você só pode fechar um registro 'PUBLICADO'!!!");
+                    throw new Exception("Você só pode encerrar um registro 'PUBLICADO'!!!");
                 }
                 // Termina aqui o fluxo de validação do status
 

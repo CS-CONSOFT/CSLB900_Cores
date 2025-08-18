@@ -21,6 +21,6 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF132
 
         public DtoGetFF131_SemNavs? NavFF131 { get; set; }
 
-        public DtoGetFF102_SemNavs? NavFF102 { get; set; }
+        public DtoGetFF102_Exibicao? NavFF102 { get; set; }
     }
 }

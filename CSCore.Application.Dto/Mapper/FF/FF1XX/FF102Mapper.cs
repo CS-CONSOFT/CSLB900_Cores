@@ -441,7 +441,25 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 Ff102TrilhaApiid = entity.Ff102TrilhaApiid
             };
         }
-    }
+    
+
+
+    public static DtoGetFF102_Exibicao ToDtoGet_Exibicao(this CSICP_FF102 entity)
+        {
+            return new DtoGetFF102_Exibicao
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Ff102Tiporegistro = entity.Ff102Tiporegistro,
+                Ff102Filialid = entity.Ff102Filialid,
+                Ff102Pfx = entity.Ff102Pfx,
+                Ff102NoTitulo = entity.Ff102NoTitulo,
+                Ff102Sfx = entity.Ff102Sfx,
+                Ff102Contaid = entity.Ff102Contaid,
+                Ff102Contarealid = entity.Ff102Contarealid,
+            };
+        }
+    } 
 }
 
 

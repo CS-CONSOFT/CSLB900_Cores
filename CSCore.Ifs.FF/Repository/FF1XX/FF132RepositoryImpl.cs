@@ -28,7 +28,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         }
 
         private IQueryable<RepoDtoCSICP_FF132> FiltraQuandoExisteFiltro
-            (long in_ff131Id, IQueryable<RepoDtoCSICP_FF132> query)
+            (long? in_ff131Id, IQueryable<RepoDtoCSICP_FF132> query)
         {
             if (in_ff131Id != null)
                 query = query.Where(e => e.Ff131Id == in_ff131Id);
@@ -82,7 +82,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Ff102Sfx = ff102.Ff102Sfx,
                            Ff102Contaid = ff102.Ff102Contaid,
                            Ff102Contarealid = ff102.Ff102Contarealid,
-                           //Verificar se é necessário mapear todos os campos
                        } : null
                    };
         }
