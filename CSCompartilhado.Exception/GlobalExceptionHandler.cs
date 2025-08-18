@@ -1,4 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_SYS;
+using CSCore.Ex.Personalizada;
 using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.Util;
 using Microsoft.AspNetCore.Http;
@@ -69,6 +70,11 @@ namespace CSCore.Ex
                 else if (context.Exception is ArgumentOutOfRangeException)
                 {
                     HandleException(context, stopwatch, StatusCodes.Status400BadRequest);
+                }
+                else if(context.Exception is ExceptionSemAuditoria _ex)
+                {
+                    int statusCode = DetermineStatusCodeFromMessage(_ex.Message);
+                    HandleException(context, stopwatch, statusCode, hasToSave: false);
                 }
                 // Para Exception genéricas, analisa a mensagem
                 else if (context.Exception is Exception ex)
@@ -244,39 +250,17 @@ namespace CSCore.Ex
             return context.Exception != null;
         }
 
-        private void HandleException(ActionExecutedContext context, Stopwatch stopwatch, int statusCode)
+        private void HandleException(ActionExecutedContext context, Stopwatch stopwatch, int statusCode, bool? hasToSave = true)
         {
-            GenerateExceptionResponseToClient(context.HttpContext, statusCode, context.Exception!).Wait();
+            GenerateExceptionResponseToClient(context.HttpContext, statusCode, context.Exception!, hasToSave: hasToSave).Wait();
         }
 
-        private static string CalcularSeveridade(int statusCode)
-        {
-            return statusCode switch
-            {
-                // Nível 1 - Informacional (não são erros realmente)
-                >= 200 and <= 299 => "1",
-
-                // Nível 2 - Erro do cliente - problemas menores
-                400 or 401 or 403 or 404 or 405 or 409 or 422 => "2",
-
-                // Nível 3 - Erro do cliente - problemas moderados
-                >= 400 and <= 499 => "3",
-
-                // Nível 4 - Erro do servidor - problemas graves
-                500 or 502 or 503 => "4",
-
-                // Nível 5 - Erro crítico do servidor
-                >= 500 and <= 599 => "5",
-
-                // Default para casos não mapeados
-                _ => "-"
-            };
-        }
-
+  
         private async Task GenerateExceptionResponseToClient(
          HttpContext context,
          int code,
-         Exception ex)
+         Exception ex,
+         bool? hasToSave = true)
         {
             string errorMessage = !string.IsNullOrEmpty(ex.InnerException?.Message)
                 ? ex.InnerException.Message
@@ -286,6 +270,22 @@ namespace CSCore.Ex
 
             string? tenant = context.Request.Headers["Tenant_ID"][0];
 
+            if(hasToSave == true)
+                errorMessage = await SaveExceptionLogAsync(context, code, ex, errorMessage, tenant);
+
+
+            await context.Response.WriteAsJsonAsync(new DtoApiResponse<object>
+            {
+                Success = false,
+                Message = errorMessage
+            }, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = null // Mantém a capitalização original
+            });
+        }
+
+        private async Task<string> SaveExceptionLogAsync(HttpContext context, int code, Exception ex, string errorMessage, string? tenant)
+        {
             // Capturar e serializar headers (limitado a 10000 caracteres)
             string jsonHeader = "";
             try
@@ -443,18 +443,7 @@ namespace CSCore.Ex
                    : exx.Message);
             }
 
-            await context.Response.WriteAsJsonAsync(new DtoApiResponse<object>
-            {
-                TraceID = "",
-                Success = false,
-                Message = errorMessage,
-                CaminhoEndpoint = context.Request.Path,
-                HeadersRequisicao = context.Request.Headers,
-
-            }, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = null // Mantém a capitalização original
-            });
+            return errorMessage;
         }
     }
 }

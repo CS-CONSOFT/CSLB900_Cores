@@ -10,7 +10,7 @@ public class ParametrosBaseFiltro
     /// </summary>
     [Required]
     public int PageNumber { get; set; } = 1;
-    private int _pageSize;
+    private int _pageSize = 50;
 
     [Required]
     public int PageSize

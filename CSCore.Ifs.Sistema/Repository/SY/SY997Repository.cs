@@ -27,11 +27,16 @@ namespace CSCore.Ifs.Repository.SY
 
             if (!string.IsNullOrEmpty(search))
             {
-                query = query.Where(x => 
-                    x.Sy997Nomeusuario!.Contains(search) || 
-                    x.Sy997Mensagem!.Contains(search) ||
-                    x.Sy997Severidade!.Contains(search));
+                // Divide o termo de busca em palavras individuais
+                var searchTerms = search.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+                query = query.Where(x =>
+                    searchTerms.Any(term =>
+                        (x.Sy997Nomeusuario ?? "").Contains(term) ||
+                        (x.Sy997Mensagem ?? "").Contains(term) ||
+                        (x.Sy997Severidade ?? "").Contains(term)));
             }
+
 
             return await query
                 .OrderByDescending(x => x.Sy997Datainc)
