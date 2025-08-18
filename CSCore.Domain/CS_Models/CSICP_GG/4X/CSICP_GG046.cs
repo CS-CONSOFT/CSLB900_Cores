@@ -31,6 +31,7 @@ public partial class CSICP_GG046
     public OSUSR_E9A_CSICP_GG046_ES? Gg046Entsai { get; set; }
 
     public CSICP_GG520? Nav_Gg250Saldoent { get; set; }
+    
 
     public OSUSR_E9A_CSICP_GG045_STAT? Gg046Stat { get; set; }
 }

@@ -34,5 +34,22 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 NavSy001Usuario = entity.NavSy001Usuario!.ToDtoGetSimples()
             };
         }
+
+        public static DtoGetFF131_SemNavs ToDtoGet_SemNavs(this CSICP_FF131 entity)
+        {
+            return new DtoGetFF131_SemNavs
+            {
+                TenantId = entity.TenantId,
+                Ff131Id = entity.Ff131Id,
+                Ff131Filialid = entity.Ff131Filialid,
+                Ff131Dregistro = entity.Ff131Dregistro,
+                Ff131Contaid = entity.Ff131Contaid,
+                Ff131TomadorContaid = entity.Ff131TomadorContaid,
+                Ff131Usuarioid = entity.Ff131Usuarioid,
+                Ff131Observacao = entity.Ff131Observacao,
+                Ff131Isefetivado = entity.Ff131Isefetivado,
+                Ff131Protocolo = entity.Ff131Protocolo
+            };
+        }
     }
 }

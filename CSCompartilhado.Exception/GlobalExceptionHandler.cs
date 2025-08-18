@@ -291,6 +291,17 @@ namespace CSCore.Ex
             try
             {
                 var headersDict = context.Request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString());
+
+                // Adicionar informações extras do context.Request
+                headersDict["RequestPath"] = context.Request.Path.ToString();
+                headersDict["RequestHost"] = context.Request.Host.ToString();
+                headersDict["RequestMethod"] = context.Request.Method;
+                headersDict["RequestScheme"] = context.Request.Scheme;
+                headersDict["RequestQueryString"] = context.Request.QueryString.ToString();
+                headersDict["RequestContentType"] = context.Request.ContentType ?? "";
+                headersDict["RequestContentLength"] = context.Request.ContentLength?.ToString() ?? "";
+                headersDict["StackTrace"] = ex.StackTrace?.ToString() ?? "";
+
                 jsonHeader = JsonSerializer.Serialize(headersDict);
                 if (jsonHeader.Length > 10000)
                 {
@@ -339,6 +350,8 @@ namespace CSCore.Ex
                     jsonBody = body;
                 }
             }
+
+            var numeroLinhasAfetadas = -1;
             try
             {
                 string userName = context.User.Identity?.Name ?? "Localhost";
@@ -406,7 +419,7 @@ namespace CSCore.Ex
 
                 var severidadeParam = command.CreateParameter();
                 severidadeParam.ParameterName = "@Severidade";
-                severidadeParam.Value = severidade.Length > 50 ? severidade.Substring(0, 50) : severidade;
+                severidadeParam.Value = CalcularSeveridade(code);
                 command.Parameters.Add(severidadeParam);
 
                 var mensagemParam = command.CreateParameter();
@@ -434,7 +447,7 @@ namespace CSCore.Ex
                 jsonBodyParam.Value = jsonBody ?? (object)DBNull.Value;
                 command.Parameters.Add(jsonBodyParam);
 
-                await command.ExecuteNonQueryAsync();
+                numeroLinhasAfetadas = await command.ExecuteNonQueryAsync();
             }
             catch (Exception exx)
             {
@@ -444,6 +457,18 @@ namespace CSCore.Ex
             }
 
             return errorMessage;
+            await context.Response.WriteAsJsonAsync(new DtoApiResponse<object>
+            {
+                TraceID = "",
+                Success = false,
+                Message = "Linhas afetadas: " + numeroLinhasAfetadas + " - Mensagens: " + errorMessage,
+                CaminhoEndpoint = context.Request.Path,
+                HeadersRequisicao = context.Request.Headers,
+
+            }, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = null // Mantém a capitalização original
+            });
         }
     }
 }

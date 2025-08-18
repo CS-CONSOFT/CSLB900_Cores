@@ -20,7 +20,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         : RepositorioBaseImpl<CSICP_FF102>(appDbContext, "Id"), IFF102Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string? in_ff102Id, int? in_tipoRegistro)
+        public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int? in_tipoRegistro)
         {
             IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
             //1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar

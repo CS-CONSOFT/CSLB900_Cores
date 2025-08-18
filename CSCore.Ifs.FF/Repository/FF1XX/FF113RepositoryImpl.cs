@@ -44,6 +44,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff113cnab.Ff113Usuariopropr equals sy001.Id into sy001_ff113cnab_Join
                    from sy001 in sy001_ff113cnab_Join.DefaultIfEmpty()
 
+                   join ff105bordero in _appDbContext.OsusrE9aCsicpFf105s
+                   on ff113cnab.Ff113Borderoid equals ff105bordero.Id into ff105bordero_ff113cnab_Join
+                   from ff105bordero in ff105bordero_ff113cnab_Join.DefaultIfEmpty()
+
+                   join ff112_C004 in _appDbContext.OsusrE9aCsicpFf112C004s
+                   on ff113cnab.Ff113Codgmovtoremessa equals ff112_C004.Id into ff112_C004_ff113cnab_Join
+                   from ff112_C004 in ff112_C004_ff113cnab_Join.DefaultIfEmpty()
+
                    where ff113cnab.TenantId == in_tenant
                    select new RepoDtoCSICP_FF113
                    {
@@ -137,7 +145,53 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Id = sy001.Id,
                            Sy001Usuario = sy001.Sy001Usuario,
                            Sy001Nome = sy001.Sy001Nome
-                       } : null
+                       } : null,
+
+                          NavFF105 = ff105bordero != null ? new CSICP_FF105
+                          {
+                            TenantId = ff105bordero.TenantId,
+                            Id = ff105bordero.Id,
+                            Ff105Filialid = ff105bordero.Ff105Filialid,
+                            Ff105Descricaobordero = ff105bordero.Ff105Descricaobordero,
+                            Ff105ClienteInicial = ff105bordero.Ff105ClienteInicial,
+                            Ff105ClienteFinal = ff105bordero.Ff105ClienteFinal,
+                            Ff105EmissaoInicial = ff105bordero.Ff105EmissaoInicial,
+                            Ff105EmissaoFinal = ff105bordero.Ff105EmissaoFinal,
+                            Ff105VenctoInicial = ff105bordero.Ff105VenctoInicial,
+                            Ff105VenctoFinal = ff105bordero.Ff105VenctoFinal,
+                            Ff105CodgcategIni = ff105bordero.Ff105CodgcategIni,
+                            Ff105CodgcategFim = ff105bordero.Ff105CodgcategFim,
+                            Ff105CodgrotaIni = ff105bordero.Ff105CodgrotaIni,
+                            Ff105CodgrotaFim = ff105bordero.Ff105CodgrotaFim,
+                            Ff105ValorMinimo = ff105bordero.Ff105ValorMinimo,
+                            Ff105Agcobradorid = ff105bordero.Ff105Agcobradorid,
+                            Ff105Tipocobrancaid = ff105bordero.Ff105Tipocobrancaid,
+                            Ff105InstCobranca1 = ff105bordero.Ff105InstCobranca1,
+                            Ff105InstCobranca2 = ff105bordero.Ff105InstCobranca2,
+                            Ff105Agencia = ff105bordero.Ff105Agencia,
+                            Ff105AgenciaDv = ff105bordero.Ff105AgenciaDv,
+                            Ff105ContaCorrente = ff105bordero.Ff105ContaCorrente,
+                            Ff105ContaDv = ff105bordero.Ff105ContaDv,
+                            Ff105DataEnvio = ff105bordero.Ff105DataEnvio,
+                            Ff105ValorBordero = ff105bordero.Ff105ValorBordero,
+                            Ff105QtdTitulos = ff105bordero.Ff105QtdTitulos,
+                            Ff105Fechado = ff105bordero.Ff105Fechado,
+                            Ff105IsActive = ff105bordero.Ff105IsActive,
+                            Ff105Status = ff105bordero.Ff105Status,
+                            Ff105Protocolnumber = ff105bordero.Ff105Protocolnumber,
+                            Ff105ApiId = ff105bordero.Ff105ApiId,
+                            Ff105Statusapi = ff105bordero.Ff105Statusapi,
+                            Ff105DataCriacao = ff105bordero.Ff105DataCriacao,
+                          } : null,
+
+                          NavFF112C004 = ff112_C004 != null ? new OsusrE9aCsicpFf112C004
+                            {
+                                Id = ff112_C004.Id,
+                                Label = ff112_C004.Label,
+                                Order = ff112_C004.Order,
+                                IsActive = ff112_C004.IsActive,
+                                Codgcnab = ff112_C004.Codgcnab,
+                          } : null
                    };
         }
 

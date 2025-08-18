@@ -16,7 +16,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
         private readonly AppDbContext _appDbContext = appDbContext;
 
         public async Task<(List<RepoDtoCSICP_DD060>, int)> GetListAsync(
-            int in_tenant, string in_estabID,string in_dd040id, int in_page, int in_pageSize)
+            int in_tenant,string in_dd040id, int in_page, int in_pageSize)
         {
             var query = from dd060 in _appDbContext.OsusrTeiCsicpDd060s
 
@@ -24,8 +24,8 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                         && dd060.Dd040Id == in_dd040id
 
                         join gg008Kdx in _appDbContext.OsusrE9aCsicpGg008Kdxes
-                        on new { ProdutoId = dd060.Dd060Produtoid, EstabId = in_estabID }
-                        equals new { ProdutoId = gg008Kdx.Gg008Produtoid, EstabId = gg008Kdx.Gg008Filialid } 
+                        on new { ProdutoId = dd060.Dd060Produtoid }
+                        equals new { ProdutoId = gg008Kdx.Gg008Produtoid } 
                         into gg008Kdx_dd060_join
                         from gg008Kdx in gg008Kdx_dd060_join.DefaultIfEmpty()
 

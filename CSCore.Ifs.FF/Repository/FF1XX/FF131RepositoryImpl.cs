@@ -10,8 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF119;
 using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF131;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX
