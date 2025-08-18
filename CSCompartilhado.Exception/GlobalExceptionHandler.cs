@@ -456,6 +456,8 @@ namespace CSCore.Ex
                    : exx.Message);
             }
 
+            return errorMessage;
+
         }
     }
 }
