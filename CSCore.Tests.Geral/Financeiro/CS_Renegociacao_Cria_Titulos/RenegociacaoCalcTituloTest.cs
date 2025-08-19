@@ -5,9 +5,9 @@ namespace CSCore.Tests.Geral.Financeiro.RenegociacaoCalcTitulo
     using CSLB900.MSTools.GenerateId;
     using CSLB900.MSToolsTestes;
     using global::CSCore.Ifs.CS_Context;
-    using global::CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos;
-    using global::CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Interface;
-    using global::CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parametro;
+    using global::CSCore.Ifs.Eventos.Repository;
+    using global::CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos;
+    using global::CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos.Parametro;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Moq;
@@ -17,14 +17,15 @@ namespace CSCore.Tests.Geral.Financeiro.RenegociacaoCalcTitulo
 
     namespace CSCore.Ifs.FF.Tests.Repository.Processos.CS_Renegociacao_Calc_Titulos
     {
-        public class Renegociacao_Calc_TitulosTests : IDisposable
+        public class RenegociacaoCalcTituloTest : IDisposable
         {
             private readonly AppDbContext _context;
             private readonly Mock<ICS_GenerateId> _mockGenerateId;
-            private readonly IRenegociacao_Calc_Titulos _service;
+            private readonly Mock<IGenerateProtocolo> _generateProtocolo;
+            private readonly IRenegociacaoCriaTitulo _service;
             private readonly string _connectionString;
 
-            public Renegociacao_Calc_TitulosTests()
+            public RenegociacaoCalcTituloTest()
             {
                 var config = new ConfigurationBuilder()
                 .AddUserSecrets<InadimplenciaServiceTests>()
@@ -36,12 +37,13 @@ namespace CSCore.Tests.Geral.Financeiro.RenegociacaoCalcTitulo
                 .UseSqlServer(_connectionString)
                 .LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information)
                 .Options;
+
+
                 SetupMockGenerateId();
                 _context = new AppDbContext(options);
                 _mockGenerateId = new Mock<ICS_GenerateId>();
-                _service = new Renegociacao_Calc_Titulos(_context, _mockGenerateId.Object);
+                _service = new Renegociacao_Cria_Titulos(_context, _mockGenerateId.Object, new GenerateProtocoloServiceImpl(_context, _mockGenerateId.Object));
 
-             
             }
 
             private void SetupMockGenerateId()
@@ -65,21 +67,26 @@ namespace CSCore.Tests.Geral.Financeiro.RenegociacaoCalcTitulo
                 Assert.Null(exception);
             }
 
-            private Prm_Renegociacao_Calc_Titulos CriarParametroTeste()
+            private Prm_Renegociacao_Cria_Titulo CriarParametroTeste()
             {
-                return new Prm_Renegociacao_Calc_Titulos
+                return new Prm_Renegociacao_Cria_Titulo
                 {
-                    in_tenantID = 135,
-                    in_renegociacaoID = Guid.NewGuid().ToString(),
-                    in_condicaoPagamento = "TESTE01",
-                    in_StID_bb008_tp_Dias = 1,
-                    in_StID_bb008_tp_ParcelaDias = 2,
-                    in_StID_bb008_tp_ParcelaMes = 3,
-                    in_StID_bb008_tp_A_vista = 4,
-                    in_faturaTotal = 1000,
-                    in_ChaveControle_ID = Guid.NewGuid().ToString(),
-                    in_valorEntrada = 0,
-                    in_data = DateTime.Now
+                    InTenantID = 135,
+                    InFF017ID = "",
+                    InFF999ControleID = "",
+                    InSy001ID = "",
+                    InBB001FilialID = "",
+                    InStIDFF102EntEntrada = 0,
+                    InStIDFF102EntParcela = 0,
+                    InStIDFF102SitAberto = 0,
+                    InSTIDFF102SitRenegociado = 0,
+                    InSTIDFF102SitLiquidado = 0,
+                    InSTIDStaticaSim = 0,
+                    InSTIDStaticaNao = 0,
+                    InSTIDFF102AutPgtoAutorizado = 0,
+                    InSTIDFF102AutPgtoNaoAutorizado = 0,
+                    InSTIDFf103TpBaiAutPgtoNaoAutorizado = 0,
+                    InEntLiquidada = false,
                 };
             }
 
