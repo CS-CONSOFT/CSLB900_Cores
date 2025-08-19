@@ -134,7 +134,7 @@ namespace CSCore.Ifs.GG
                      .SendAsync(HubMethodNames.PROCESSAR_BAIXA_ESTOQUE_GG073, new
                      {
                          Success = false,
-                         Message = "Falha ao baixar estoque!",
+                         Message = "#" + context.Message.GG073Corrente.Gg073Protocolonro + " - Entrada/Saída - Falha ao baixar estoque!",
                          DetailsError = HandlerExceptionMessage.CreateExceptionMessage(ex),
                          Timestamp = DateTime.UtcNow
                      });

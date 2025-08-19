@@ -36,7 +36,7 @@ namespace CSCore.RabbitMQ.Bus
                    .SendAsync(HubMethodNames.GERAR_INVENTARIO_EM_MASSA_GG032, new
                    {
                        Success = true,
-                       Message = "Inventário processado com sucesso!",
+                       Message =  "Inventário processado com sucesso!",
                        DetailsError = "",
                        Timestamp = DateTime.UtcNow
                    });
