@@ -33,7 +33,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             var dataFim = request.DataFim ?? dataAtual;
 
             var query = from ff102 in _appDbContext.OsusrE9aCsicpFf102s
+                        .AsNoTracking()
                         join ff102sit in _appDbContext.OsusrE9aCsicpFf102Sits
+                        .AsNoTracking()
                         on ff102.Ff102Situacaoid equals ff102sit.Id
 
                         where ff102.TenantId == request.TenantId
@@ -48,7 +50,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                         {
                             DataEmissao = ff102.Ff102DataEmissao,
                             DataVencimento = ff102.Ff102DataVencimento,
-                            ValorTitulo = (ff102.Ff102ValorTitulo ?? 0) + (ff102.Ff102VlAcrescimos ?? 0),
+                            ValorTitulo = (ff102.Ff102ValorTitulo ?? 0) + (ff102.Ff102VlAcrescimos ?? 0) - (ff102.Ff102VlDecrescimos ?? 0),
                             TotalPagamentos = ff102.Ff102TotalPagamentos,
                             VlLiqTitulo = ff102.Ff102VlLiqTitulo,
                             SituacaoLabel = ff102sit.Label,
