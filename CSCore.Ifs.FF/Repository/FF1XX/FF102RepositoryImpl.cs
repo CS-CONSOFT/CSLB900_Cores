@@ -4,6 +4,7 @@ using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
+using CSLB900.MSTools.Calculos;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
@@ -29,6 +30,47 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 query = query.Where(e => e.Ff102Tiporegistro == in_tipoRegistro);
             }
             RepoDtoCSICP_FF102? cSICP_FF102 = await query.FirstOrDefaultAsync(e => e.Id == in_ff102Id);
+
+            (var resultadoCalcJuros, var resultadoCalcDiasAtrasoJuros) = CalculoTitulos.CalcularTituloPercentualJuros(
+                cSICP_FF102.Ff102DataVencimento,
+                cSICP_FF102.Ff102VlLiqTitulo,
+                cSICP_FF102.Ff102PercJurosAtr,
+                cSICP_FF102.Ff102Nodiasliberacao);
+
+                cSICP_FF102.CSDiasAtraso = resultadoCalcDiasAtrasoJuros;
+                cSICP_FF102.CSValorJuros = resultadoCalcJuros;
+
+            (var resultadoCalcMulta, var resultadoCalcDiasAtrasoMulta) = CalculoTitulos.CalcularTituloPercentualMulta(
+                cSICP_FF102.Ff102DataVencimento,
+                cSICP_FF102.Ff102VlLiqTitulo,
+                cSICP_FF102.Ff102PercMulta,
+                cSICP_FF102.Ff102Nodiasliberacao);
+
+                cSICP_FF102.CSValorMulta = resultadoCalcMulta;
+
+            (var resultadoCalcHonorarios, var resultadoCalcDiasAtrasoHonorarios) = CalculoTitulos.CalcularTituloPercentualHonorarios(
+                cSICP_FF102.Ff102DataVencimento,
+                cSICP_FF102.Ff102VlLiqTitulo,
+                cSICP_FF102.Ff102PercHonorarios,
+                cSICP_FF102.Ff102Nodiasliberacao);
+
+                cSICP_FF102.CSValorHonorarios = resultadoCalcHonorarios;
+
+            (var resultadoCalcCorrecaoMonetaria, var resultadoCalcDiasAtrasoCorrecaoMonetaria) = CalculoTitulos.CalcularTituloPercentualCorrecaoMonetaria(
+                cSICP_FF102.Ff102DataVencimento,
+                cSICP_FF102.Ff102VlLiqTitulo,
+                cSICP_FF102.Ff102PercCorrmonetaria,
+                cSICP_FF102.Ff102Nodiasliberacao);
+
+                cSICP_FF102.CSValorCorrecaoMonetaria = resultadoCalcCorrecaoMonetaria;
+
+                cSICP_FF102.CSValorAPagar = 
+                cSICP_FF102.Ff102VlLiqTitulo +
+                cSICP_FF102.CSValorJuros +
+                cSICP_FF102.CSValorMulta +
+                cSICP_FF102.CSValorHonorarios +
+                cSICP_FF102.CSValorCorrecaoMonetaria;
+
             return cSICP_FF102;
         }
 
@@ -430,7 +472,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            TenantId = bb008.TenantId,
                            Id = bb008.Id,
                            Bb008Codigo = bb008.Bb008Codigo,
-                           Bb008Condicao = bb008.Bb008Condicao,
+                           Bb008CondicaoPagto = bb008.Bb008CondicaoPagto,
                        } : null,
 
                        NavBB009 = bb009 != null ? new CSICP_Bb009

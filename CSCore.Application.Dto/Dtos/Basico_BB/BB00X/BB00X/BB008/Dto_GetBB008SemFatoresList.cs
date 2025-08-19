@@ -120,11 +120,11 @@ namespace CSBS101.C82Application.Dto.BB00X.BB00X.BB008
 
         public int? Bb008Codigo { get; set; }
 
-        //public string? Bb008CondicaoPagto { get; set; }
+        public string? Bb008CondicaoPagto { get; set; }
 
         //public int? Bb008Tipo { get; set; }
 
-        public string? Bb008Condicao { get; set; }
+        //public string? Bb008Condicao { get; set; }
 
         //public int? Bb008Codformapagto { get; set; }
     }
