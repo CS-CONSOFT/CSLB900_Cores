@@ -19,7 +19,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
         public async Task<RepoDtoCSICP_FF017?> GetByIdAsync(int in_tenant, string in_ff017Id)
         {
             IQueryable<RepoDtoCSICP_FF017> query = GetQueryBase(in_tenant);
-            RepoDtoCSICP_FF017? cSICP_FF017 = await query.FirstOrDefaultAsync(e => e.Id == in_ff017Id);
+            RepoDtoCSICP_FF017? cSICP_FF017 = await query.AsNoTrackingWithIdentityResolution().FirstOrDefaultAsync(e => e.Id == in_ff017Id);
             return cSICP_FF017;
         }
 

@@ -9,7 +9,6 @@ using CSBS101.C82Application.Dto.BB00X.BB00X.BB008;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF003;
 using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
 using CSCore.Domain;
-using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.CS_Models.Staticas.FF;
 
 namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
@@ -388,6 +387,18 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
 
         public int? Ff102TrilhaApiid { get; set; }
 
+        public int? CSDiasAtraso { get; set; } = default;
+
+        public decimal? CSValorCorrecaoMonetaria { get; set; } = default;
+
+        public decimal? CSValorMulta { get; set; } = default;
+
+        public decimal? CSValorHonorarios { get; set; } = default;
+
+        public decimal? CSValorJuros { get; set; } = default;
+
+        public decimal? CSValorAPagar { get; set; } = default;
+
         public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
         public Dto_GetBB005_Exibicao? NavBB005 { get; set; } 
         public Dto_GetBB006_Exibicao? NavBB006 { get; set; }
@@ -425,6 +436,5 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
         public Dto_GetSY001Simples? NavSy001CTLEstUsuarioID { get; set; }
         public CSICP_Statica? NavStaticaFluxoCaixa { get; set; }
         public CSICP_Statica? NavStaticaConfirmadoID { get; set; }
-
     }
 }
