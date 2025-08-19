@@ -777,7 +777,6 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 Bb012Vendarotaid = entity.Bb012Vendarotaid,
                 Bb012Diavenctoid = entity.Bb012Diavenctoid,
                 Bb012Codgbcodebconta = entity.Bb012Codgbcodebconta,
-
                 NavBB010_Zona = entity.BB010_Zona?.ToDtoGetSimples(),
                 NavBB011_Atividade = entity.BB011_Atividade?.ToDtoGet(),
                 NavBB006_BancoPadrao = entity.BB006_BancoPadrao?.ToDtoGetExibicao(),
@@ -792,9 +791,6 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 NavBB010_EntregaMontagem = entity.BB010_EntregaMontagem?.ToDtoGetSimples(),
                 NavBB010_VendaRota = entity.BB010_VendaRota?.ToDtoGetSimples(),
                 NavBB037_DiaVencimento = entity.BB037_DiaVencimento?.ToDtoGet()
-
-
-
             };
         }
 
