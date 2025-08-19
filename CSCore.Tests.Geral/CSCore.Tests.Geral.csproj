@@ -13,12 +13,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="xunit" Version="2.9.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CSS_FF105Financeiro.82Application\FF105Financeiro.C82Application.csproj" />
     <ProjectReference Include="..\CSCompartilhado.CSLB900_MSTools\CSLB900.MSTools.csproj" />
     <ProjectReference Include="..\CSCore.Ifs.FF\CSCore.Ifs.FF.csproj" />
     <ProjectReference Include="..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />

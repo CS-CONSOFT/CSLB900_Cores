@@ -2,7 +2,7 @@
 {
     public static class CalculoTitulos
     {
-        public static (decimal, int) CalcularTituloPercentual(
+        private static (decimal, int) CalcularTituloPercentual(
             DateTime DataVencimento,
             decimal ValorTitulo,
             decimal? Percentual,

@@ -2,19 +2,18 @@
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ex.Personalizada;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Interface;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parametro;
-using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar.Fabrica;
 using CSLB900.MSTools.GenerateId;
 using CSLB900.MSTools.Util;
 using MathNet.Numerics;
 using Microsoft.EntityFrameworkCore;
-using NPOI.POIFS.Crypt.Dsig;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
 {
    
-    public class Renegociacao_Calc_Titulos
+    public class Renegociacao_Calc_Titulos : IRenegociacao_Calc_Titulos
     {
         private readonly AppDbContext _appDbContext;
         private readonly ICS_GenerateId _generateId;

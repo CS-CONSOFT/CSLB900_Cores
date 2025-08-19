@@ -1,5 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Interface;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parametro;
 using CSLB900.MSTools.GenerateId;
 using System;
@@ -30,6 +31,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) in_calculoFinanciamento)
         {
             int aux_parcela_atual = 0;
+            var entidadesParaInserir = new List<CSICP_FF999>();
             foreach (var current in _aux_condicaoPagtoDividida)
             {
                 CSICP_FF999 work_ff999 = new CSICP_FF999
@@ -48,8 +50,10 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
                     in_calculoFinanciamento.ValorRestoParcela = 0;
                 }
                 aux_parcela_atual += 1;
-                _appDbContext.Add(work_ff999);
+                entidadesParaInserir.Add(work_ff999);
+                //_appDbContext.Add(work_ff999);
             }
+            _appDbContext.AddRange(entidadesParaInserir);
             await _appDbContext.SaveChangesAsync();
         }
         private static bool EhSemEntrada(decimal work_valor_entrada, int aux_parcela_atual)

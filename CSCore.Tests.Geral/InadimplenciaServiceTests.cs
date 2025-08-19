@@ -1,7 +1,6 @@
 ﻿using CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro;
-using GG104Materiais.C82Application.Service.VisoesGeraisFinanceiroService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
@@ -30,8 +29,8 @@ namespace CSLB900.MSToolsTestes
                  .Options;
             var context = new AppDbContext(options);
             
-            var repository = new InadimplenciaRepository(context);
-            var service = new InadimplenciaService(repository);
+            var service = new InadimplenciaRepository(context);
+    
 
             // Arrange - Configurar período de teste (últimos 2 anos)
             var dataAtual = DateTime.Now.Date;
@@ -127,8 +126,8 @@ namespace CSLB900.MSToolsTestes
                  .Options;
             var context = new AppDbContext(options);
             
-            var repository = new InadimplenciaRepository(context);
-            var service = new InadimplenciaService(repository);
+            var service = new InadimplenciaRepository(context);
+
 
             // Arrange - Teste com filtro específico de estabelecimentos
             var dataAtual = DateTime.Now.Date;
@@ -182,8 +181,8 @@ namespace CSLB900.MSToolsTestes
                  .Options;
             var context = new AppDbContext(options);
             
-            var repository = new InadimplenciaRepository(context);
-            var service = new InadimplenciaService(repository);
+            var service = new InadimplenciaRepository(context);
+
 
             // Arrange - Teste com período específico
             var request = new DtoInadimplenciaRequest
@@ -241,8 +240,8 @@ namespace CSLB900.MSToolsTestes
                  .Options;
             var context = new AppDbContext(options);
             
-            var repository = new InadimplenciaRepository(context);
-            var service = new InadimplenciaService(repository);
+
+            var service = new InadimplenciaRepository(context);
 
             // Arrange
             var request = new DtoInadimplenciaRequest
