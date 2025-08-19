@@ -382,6 +382,18 @@ public partial class CSICP_FF102
 
 public class RepoDtoCSICP_FF102 : CSICP_FF102
 {
+    public int? CSDiasAtraso { get; set; } = default;
+
+    public decimal? CSValorCorrecaoMonetaria { get; set; } = default;
+
+    public decimal? CSValorMulta { get; set; } = default;
+
+    public decimal? CSValorHonorarios { get; set; } = default;
+
+    public decimal? CSValorJuros { get; set; } = default;
+
+    public decimal? CSValorAPagar { get; set; } = default;
+
     public CSICP_BB001? NavBB001 { get; set; }
     public CSICP_Bb005? NavBB005 { get; set; }
     public CSICP_Bb006? NavBB006 { get; set; }
