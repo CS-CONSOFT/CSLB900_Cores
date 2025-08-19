@@ -122,7 +122,7 @@ namespace CSCore.Ifs.GG
                     .SendAsync(HubMethodNames.PROCESSAR_BAIXA_ESTOQUE_GG073, new
                     {
                         Success = true,
-                        Message = "Sucesso ao baixar estoque!",
+                        Message = '#' + gg073Encontrada.Gg073Protocolonro +" - Entrada/Saída - Sucesso ao baixar estoque!",
                         Timestamp = DateTime.UtcNow
                     });
 
