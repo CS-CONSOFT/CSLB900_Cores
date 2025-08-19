@@ -25,7 +25,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             var dataAtual = DateTime.Now.Date;
 
             var query = from ff102 in _appDbContext.OsusrE9aCsicpFf102s
+                        .AsNoTracking()
                         join ff102sit in _appDbContext.OsusrE9aCsicpFf102Sits
+                        .AsNoTracking()
                         on ff102.Ff102Situacaoid equals ff102sit.Id
 
                         join bb001 in _appDbContext.E9ACSICP_BB001s

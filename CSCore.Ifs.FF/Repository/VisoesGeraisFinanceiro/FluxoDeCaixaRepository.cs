@@ -16,12 +16,15 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
            decimal in_saldoAnterior = 0)
         {
             var query = from ff102 in _appDbContext.OsusrE9aCsicpFf102s
+                        .AsNoTracking()
 
                         join conta in _appDbContext.OsusrE9aCsicpBb012s
+                        .AsNoTracking()
                         on ff102.Ff102Contaid equals conta.Id into joinConta
                         from conta in joinConta.DefaultIfEmpty()
 
                         join ff102sit in _appDbContext.OsusrE9aCsicpFf102Sits
+                        .AsNoTracking()
                         on ff102.Ff102Situacaoid equals ff102sit.Id
                         
                         where ff102.TenantId == in_tenant
