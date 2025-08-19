@@ -1,0 +1,520 @@
+# SOPHIA ERP - Padrão Universal para APIs
+
+## Visão Geral
+Este documento define o padrão universal para todas as APIs do sistema SOPHIA ERP, fornecendo diretrizes consistentes para desenvolvimento e manutenção.
+
+## Estrutura Padrão do Projeto
+
+### Tecnologias Base (Todas as APIs)
+- **Linguagem**: C# (.NET Core/ASP.NET Core)
+- **ORM**: Entity Framework Core
+- **Banco de Dados**: SQL Server
+- **Autenticação**: JWT (JSON Web Tokens)
+- **Service Discovery**: Eureka (Steeltoe)
+- **Message Broker**: RabbitMQ (MassTransit)
+- **Logging**: Serilog
+- **Containerização**: Docker
+- **Documentação**: Swagger/OpenAPI
+
+### Arquitetura de Camadas Padrão
+```
+CS{MODULO}###_API_{NOME}/
+├── CS{MODULO}###_API_{NOME}/              # API Layer (Controllers)
+├── {MODULO}###.82Application/             # Application Layer (Services)
+├── {MODULO}###.51CrossCutting/            # CrossCutting (IoC, Configuration)
+├── {MODULO}###.41Infra.Data/              # Infrastructure Data Layer
+└── Submodulo/CSLB900_Cores/              # Shared Core Modules
+```
+
+### Nomenclatura de APIs por Módulo
+- **CSOS101_API_Auth**: Autenticação
+- **CSGG104_API_Materiais**: Materiais/Produtos
+- **CSFF105_API_Financeiro**: Financeiro
+- **CSY103_API_Systems**: Sistemas
+- **CST102_API_Statica**: Dados Estáticos
+- **CS800_API_Interna**: API Interna
+
+## Convenções de Nomenclatura Universais
+
+### Variáveis (OBRIGATÓRIO EM TODAS AS APIs)
+- **Escopo Global/Trabalho**: `work_variavel`
+- **Escopo Local/Métodos Privados**: `aux_variavel`
+- **Parâmetros de Entrada**: `in_parametro`
+- **Retornos**: `ret_valor`
+
+### Classes e Interfaces Padrão
+- **DTOs**: `Dto{Acao}{Entidade}`
+  - Exemplo: `DtoCreateGG007`, `DtoGetFF001`, `DtoUpdateSY025`
+- **Interfaces de Serviço**: `I{Entidade}Service`
+  - Exemplo: `IGG007Service`, `IFF001Service`, `ISY025Service`
+- **Repositórios**: `I{Entidade}Repository`
+  - Exemplo: `IGG007Repository`, `IFF001Repository`
+- **Implementações**: `{Nome}Impl`
+  - Exemplo: `GG007ServiceImpl`, `TokenServiceImpl`
+
+### Entidades por Módulo
+- **GG**: Materiais (ex: `CSICP_GG001`, `CSICP_GG008`)
+- **FF**: Financeiro (ex: `CSICP_FF001`, `CSICP_FF030`)
+- **SY**: Sistema (ex: `CSICP_SY001`, `CSICP_SY025`)
+- **BB**: Base/Cadastros (ex: `CSICP_BB001`, `CSICP_BB027`)
+- **DD**: Documentos (ex: `CSICP_DD156`)
+
+### Propriedades e Parâmetros
+```csharp
+// Padrão para todas as propriedades
+public string PropertyName { get; set; } = string.Empty;
+public DateTime CreatedAt { get; set; }
+public bool IsActive { get; set; } = true;
+
+// Data Annotations obrigatórias
+[Required]
+public string RequiredField { get; set; } = string.Empty;
+
+// Headers padrão
+[FromHeader(Name = "Tenant_ID")] int tenant
+[FromHeader(Name = "Authorization")] string authorization
+```
+
+## Variáveis de Ambiente Universais
+
+### Configuração Base (Todas as APIs)
+```bash
+# Banco de Dados
+DATABASE_CONNECTION_STRING=string_conexao_sql_server
+DefaultConnection=string_conexao_alternativa
+
+# Autenticação JWT
+JWT_SECRET_KEY=chave_secreta_jwt
+API_URL=url_da_api_para_validacao
+
+# Service Discovery
+EUREKA_SERVER=url_servidor_eureka
+
+# Versionamento
+VERSION_SWAGGER=versao_automatica
+```
+
+### CORS (Produção)
+```bash
+CORS_URL_BASICO=url_basica_permitida
+CORS_URL_{MODULO}=url_especifica_do_modulo
+# Exemplos:
+# CORS_URL_MATERIAIS=https://materiais.sophia.com
+# CORS_URL_FINANCEIRO=https://financeiro.sophia.com
+```
+
+### RabbitMQ (Message Broker)
+```bash
+RABBITMQ_USERNAME=usuario_rabbit
+RABBITMQ_PASSWORD=senha_rabbit
+RABBITMQ_SERVER=amqp://servidor:5672
+```
+
+## Estrutura de Dependency Injection Padrão
+
+### Program.cs Base
+```csharp
+// Configuração padrão para todas as APIs
+LoggerConfig.ConfigurarLogger();
+var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog();
+
+// Serviços base
+builder.Services.AddInfrastructureAPI(builder.Configuration);
+builder.Services.ConfigurarController();
+builder.Services.ConfigurarSwagger();
+builder.Services.ConfigurarAutenticacaoJWT();
+builder.Services.AddAuthorization();
+
+// Service Discovery (Eureka)
+builder.Services.AddDiscoveryClient(builder.Configuration);
+builder.Services.AddHealthChecks();
+
+// CORS apenas em produção
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Services.ConfigurarCors();
+    builder.WebHost.UseUrls(["http://0.0.0.0:80"]);
+}
+
+var app = builder.Build();
+
+// Pipeline padrão
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+
+// Autorização condicional
+if (app.Environment.IsDevelopment())
+    app.MapControllers();
+else
+    app.MapControllers().RequireAuthorization();
+
+app.Run();
+```
+
+### Registro de Serviços Padrão
+```csharp
+public static void ConfigureDependenciesRepository(this IServiceCollection services)
+{
+    // Serviços core (todas as APIs)
+    services.AddScoped<ICS_GenerateId, SCS_GenerateId>();
+    services.AddScoped<ICS_ConsumingLog, SCS_ConsumingLogService>();
+    
+    // Repositórios específicos por módulo
+    services.AddScoped<I{ENTIDADE}Repository, {ENTIDADE}RepositoryImpl>();
+    
+    // Unit of Work
+    services.AddScoped<IUnityOfWork{MODULO}, UnitOfWork{MODULO}>();
+    
+    // Message Broker
+    services.ConfigureRabbitMQ();
+}
+```
+
+## Configuração CORS Padrão
+
+```csharp
+public static void ConfigurarCors(this IServiceCollection services)
+{
+    var work_urlBasica = Environment.GetEnvironmentVariable("CORS_URL_BASICO");
+    var work_urlModulo = Environment.GetEnvironmentVariable("CORS_URL_{MODULO}");
+
+    services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(policy =>
+        {
+            if (work_urlBasica != null && work_urlModulo != null)
+            {
+                policy.WithOrigins(work_urlBasica, work_urlModulo)
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            }
+            else
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            }
+        });
+    });
+}
+```
+
+## Configuração Swagger Universal
+
+```csharp
+public static void ConfigurarSwagger(this IServiceCollection services)
+{
+    var work_versaoAuto = Environment.GetEnvironmentVariable("VERSION_SWAGGER");
+    var work_versaoManual = "1.0.0"; // Específica por API
+    var work_versaoCompleta = work_versaoAuto + work_versaoManual;
+    
+    services.AddSwaggerGen(c =>
+    {
+        // XML Documentation
+        var aux_xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var aux_xmlPath = Path.Combine(AppContext.BaseDirectory, aux_xmlFile);
+        c.IncludeXmlComments(aux_xmlPath);
+        
+        // API Info
+        c.SwaggerDoc("v1", new OpenApiInfo 
+        { 
+            Title = "API {MODULO}", 
+            Version = work_versaoCompleta,
+            Description = "Documentação da API"
+        });
+        
+        // JWT Security
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Description = "JWT Authorization Header - utilizado com Bearer Authentication...",
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+        });
+        
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
+    });
+}
+```
+
+## Padrão de Controllers Universal
+
+```csharp
+[ApiController]
+[Route("/{modulo}/v1/{ENTIDADE}")]
+[Tags("{ENTIDADE} - Descrição da Entidade")]
+public class {ENTIDADE}Controller(IUnityOfWork{MODULO} in_uow) : ControllerBase
+{
+    private readonly IUnityOfWork{MODULO} _uow = in_uow;
+    
+    [SwaggerOperation(Summary = "Cria um novo registro")]
+    [HttpPost]
+    public async Task<ActionResult<DtoApiResponse<string>>> Create(
+        DtoCreate{ENTIDADE} in_dto, 
+        [FromHeader(Name = "Tenant_ID")] int in_tenant)
+    {
+        var work_result = await _uow.{ENTIDADE}Service.Create(in_dto, in_tenant);
+        
+        DtoApiResponse<string> ret_response = new()
+        {
+            Success = true,
+            Message = HandlerReturnMessages.ENTITY_CREATED_MESSAGE,
+            Data = work_result
+        };
+        return Ok(ret_response);
+    }
+    
+    [SwaggerOperation(Summary = "Obtém lista de registros com filtros")]
+    [HttpGet]
+    public async Task<ActionResult<DtoApiResponse<PaginationModel<DtoGet{ENTIDADE}>>>> GetList(
+        [FromQuery] ParametrosBaseFiltro in_filtros,
+        [FromHeader(Name = "Tenant_ID")] int in_tenant)
+    {
+        var work_lista = await _uow.{ENTIDADE}Service.GetList(in_filtros, in_tenant);
+        
+        var work_result = new PaginationModel<DtoGet{ENTIDADE}>
+        {
+            CurrentPage = work_lista.CurrentPage,
+            TotalPage = work_lista.TotalPage,
+            PageSize = work_lista.PageSize,
+            TotalCount = work_lista.TotalCount,
+            HasPrevius = work_lista.HasPrevius,
+            HasNext = work_lista.HasNext,
+            List = work_lista
+        };
+        
+        DtoApiResponse<PaginationModel<DtoGet{ENTIDADE}>> ret_response = new()
+        {
+            Success = true,
+            Message = HandlerReturnMessages.ENTITY_GET_LIST_MESSAGE,
+            Data = work_result
+        };
+        return Ok(ret_response);
+    }
+}
+```
+
+## Configuração RabbitMQ Padrão
+
+```csharp
+public static void ConfigureRabbitMQ(this IServiceCollection services)
+{
+    var work_apiUrl = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:9607";
+    var work_username = Environment.GetEnvironmentVariable("RABBITMQ_USERNAME")!;
+    var work_password = Environment.GetEnvironmentVariable("RABBITMQ_PASSWORD")!;
+    var work_host = Environment.GetEnvironmentVariable("RABBITMQ_SERVER")!;
+    
+    // Extrai domínio para routing
+    var aux_url = work_apiUrl.Replace("https://", "").Replace("http://", "");
+    var aux_partes = aux_url.Split('.');
+    var work_dominio = aux_partes[0].Contains("/") ? aux_partes[0].Split('/')[0] : aux_partes[0];
+    
+    services.AddMassTransit(busConfigurator =>
+    {
+        // Registrar consumers específicos do módulo
+        busConfigurator.AddConsumer<Evt{MODULO}Consumer>();
+        
+        busConfigurator.UsingRabbitMq((context, configurator) =>
+        {
+            configurator.Host(new Uri(work_host), host =>
+            {
+                host.Username(work_username);
+                host.Password(work_password);
+            });
+            
+            // Configurar endpoints específicos
+            configurator.ReceiveEndpoint($"fila_{modulo}_{work_dominio}", e =>
+            {
+                e.ConfigureConsumer<Evt{MODULO}Consumer>(context);
+                e.PrefetchCount = 1;
+                e.ConcurrentMessageLimit = 1;
+            });
+        });
+    });
+}
+```
+
+## Headers Obrigatórios (Todas as APIs)
+
+### Request Headers
+- **Tenant_ID**: `int` - Identificador do tenant (multi-tenancy)
+- **Authorization**: `Bearer {token}` - Token JWT
+
+### Response Headers
+- **Content-Type**: `application/json`
+- **X-API-Version**: Versão da API
+
+## Padrões de Response Universal
+
+```csharp
+// Sucesso
+public class DtoApiResponse<T>
+{
+    public bool Success { get; set; } = true;
+    public string Message { get; set; } = string.Empty;
+    public T? Data { get; set; }
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+}
+
+// Paginação
+public class PaginationModel<T>
+{
+    public int CurrentPage { get; set; }
+    public int TotalPage { get; set; }
+    public int PageSize { get; set; }
+    public int TotalCount { get; set; }
+    public bool HasPrevius { get; set; }
+    public bool HasNext { get; set; }
+    public IEnumerable<T> List { get; set; } = [];
+}
+
+// Erro
+public class DtoErrorResponse
+{
+    public bool Success { get; set; } = false;
+    public string Message { get; set; } = string.Empty;
+    public string? Details { get; set; }
+    public int StatusCode { get; set; }
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
+}
+```
+
+## Filtros Globais Padrão
+
+```csharp
+// Global Exception Handler
+public class GlobalExceptionHandler : IExceptionFilter
+{
+    public void OnException(ExceptionContext context)
+    {
+        var work_response = new DtoErrorResponse
+        {
+            Message = context.Exception.Message,
+            StatusCode = 500,
+            Details = context.Exception.StackTrace
+        };
+        
+        context.Result = new ObjectResult(work_response)
+        {
+            StatusCode = 500
+        };
+    }
+}
+
+// Logging Action Filter
+public class LoggingActionFilter : ActionFilterAttribute
+{
+    public override void OnActionExecuting(ActionExecutingContext context)
+    {
+        // Log entrada
+    }
+    
+    public override void OnActionExecuted(ActionExecutedContext context)
+    {
+        // Log saída
+    }
+}
+```
+
+## Unit of Work Pattern Padrão
+
+```csharp
+public interface IUnityOfWork{MODULO}
+{
+    // Serviços específicos do módulo
+    I{ENTIDADE1}Service {ENTIDADE1}Service { get; }
+    I{ENTIDADE2}Service {ENTIDADE2}Service { get; }
+    
+    // Controle de transação
+    Task BeginTransactionAsync();
+    Task CommitAsync();
+    Task RollbackAsync();
+    void Dispose();
+}
+
+public class UnitOfWork{MODULO} : IUnityOfWork{MODULO}
+{
+    private readonly AppDbContext _context;
+    private IDbContextTransaction? _transaction;
+    
+    // Lazy initialization dos serviços
+    public I{ENTIDADE}Service {ENTIDADE}Service => new {ENTIDADE}ServiceImpl(repository, generateId);
+    
+    // Implementação das transações
+    public async Task BeginTransactionAsync()
+    {
+        if (_transaction == null)
+            _transaction = await _context.Database.BeginTransactionAsync();
+    }
+    
+    public async Task CommitAsync()
+    {
+        await _context.SaveChangesAsync();
+        await _transaction!.CommitAsync();
+    }
+    
+    public async Task RollbackAsync()
+    {
+        await _transaction!.RollbackAsync();
+    }
+}
+```
+
+## Instruções Universais para IA
+
+### Ao Criar/Modificar Qualquer API:
+1. **SEMPRE** usar convenção de variáveis (`work_`, `aux_`, `in_`, `ret_`)
+2. Incluir `Tenant_ID` header em todos os endpoints
+3. Implementar padrão de response `DtoApiResponse<T>`
+4. Usar `SwaggerOperation` para documentação
+5. Seguir estrutura de camadas definida
+
+### Configuração de Ambiente:
+1. **Desenvolvimento**: JWT opcional, CORS liberado, Swagger habilitado
+2. **Produção**: JWT obrigatório, CORS restrito, porta 80
+3. **Sempre** verificar variáveis de ambiente com fallbacks
+
+### Dependency Injection:
+1. Usar `Scoped` para repositórios e serviços
+2. Implementar Unit of Work por módulo
+3. Configurar RabbitMQ consumers específicos
+4. Manter separação clara entre camadas
+
+### Segurança:
+1. JWT obrigatório em produção
+2. Validação de Tenant_ID em todas as operações
+3. CORS configurado por ambiente
+4. Logs estruturados com Serilog
+
+### Performance:
+1. Query Splitting no EF Core
+2. Paginação obrigatória em listas
+3. Async/await em todas operações de BD
+4. Connection pooling configurado
+
+### Monitoramento:
+1. Health Checks implementados
+2. Eureka Service Discovery
+3. Logging estruturado
+4. Exception handling global
+
+Este padrão garante consistência entre todas as APIs do sistema SOPHIA ERP, facilitando manutenção, desenvolvimento e integração.

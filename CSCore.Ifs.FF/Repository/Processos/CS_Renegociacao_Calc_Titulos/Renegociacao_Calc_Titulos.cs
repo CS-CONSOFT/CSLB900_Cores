@@ -2,6 +2,9 @@
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ex.Personalizada;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parametro;
+using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar;
+using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar.Fabrica;
 using CSLB900.MSTools.GenerateId;
 using CSLB900.MSTools.Util;
 using MathNet.Numerics;
@@ -10,20 +13,7 @@ using NPOI.POIFS.Crypt.Dsig;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
 {
-    public class Prm_Renegociacao_Calc_Titulos
-    {
-        public int in_tenantID { get; set; }
-        public string in_renegociacaoID { get; set; } = string.Empty;
-        public string in_condicaoPagamento { get; set; } = string.Empty;
-        public int in_StID_bb008_tp_Dias { get; set; }
-        public int in_StID_bb008_tp_ParcelaDias { get; set; }
-        public int in_StID_bb008_tp_ParcelaMes { get; set; }
-        public int in_StID_bb008_tp_A_vista { get; set; }
-        public decimal in_faturaTotal { get; set; }
-        public string in_ChaveControle_ID { get; set; } = string.Empty;
-        public decimal in_valorEntrada { get; set; }
-        public DateTime in_data { get; set; }
-    }
+   
     public class Renegociacao_Calc_Titulos
     {
         private readonly AppDbContext _appDbContext;
@@ -61,18 +51,13 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
                     work_valor_entrada);
 
 
-                int aux_parcela_atual = 0;
-                if (EhTipoDias(in_Renegociacao_Calc_Titulos, work_bb008))
-                    await ProcessarParcelasTipoDias(in_Renegociacao_Calc_Titulos, work_condicaoPagtoDividida, work_valor_entrada, calculoFinanciamento.ValorParcela, calculoFinanciamento.ValorRestoParcela, aux_parcela_atual);
+                IProcessarCalculoTitulo processarCalculoTitulo
+                    = ProcessarRenegociacaoCalcTituloFactory
+                    .Create(in_Renegociacao_Calc_Titulos, work_bb008,calculoFinanciamento, _appDbContext,
+                    _generateId, work_condicaoPagtoDividida,work_qtdParcelas, work_valor_entrada);
 
-                if (EhTipoParcelaDias(in_Renegociacao_Calc_Titulos, work_bb008))
-                    await ProcessarParcelasTipoParcelaDias(in_Renegociacao_Calc_Titulos, work_condicaoPagtoDividida, work_valor_entrada, work_qtdParcelas, calculoFinanciamento, aux_parcela_atual);
+                await processarCalculoTitulo.Processar(in_Renegociacao_Calc_Titulos, calculoFinanciamento);
 
-                if (EhTipoParcelaMes(in_Renegociacao_Calc_Titulos, work_bb008))
-                    await ProcessarParcelasTipoParcelaMes(in_Renegociacao_Calc_Titulos, work_condicaoPagtoDividida, work_valor_entrada, work_qtdParcelas, calculoFinanciamento, aux_parcela_atual);
-
-                if (EhTipoAVista(in_Renegociacao_Calc_Titulos, work_bb008))
-                    await ProcessaTipoAVista(in_Renegociacao_Calc_Titulos, calculoFinanciamento);
             }
             catch (Exception ex)
             {
@@ -82,94 +67,8 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
             }
         }
 
-        private async Task ProcessaTipoAVista(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos, (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) calculoFinanciamento)
-        {
-            CSICP_FF999 work_ff999 = new CSICP_FF999
-            {
-                Id = _generateId.GenerateUuId(),
-                TenantId = in_Renegociacao_Calc_Titulos.in_tenantID,
-                Ff999IdControle = in_Renegociacao_Calc_Titulos.in_ChaveControle_ID,
-                Ff999Valorparcela = calculoFinanciamento.ValorFinanciado,
-                Ff999Parcela = 1,
-                Ff999Datavencto = in_Renegociacao_Calc_Titulos.in_data
-            };
-            _appDbContext.Add(work_ff999);
-            await _appDbContext.SaveChangesAsync();
-        }
+      
 
-        private async Task ProcessarParcelasTipoParcelaDias(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos, string[] work_condicaoPagtoDividida, int work_valor_entrada, int work_qtdParcelas, (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) calculoFinanciamento, int aux_parcela_atual)
-        {
-            await ProcessarParcelasTipoParcelaDiasMes(in_Renegociacao_Calc_Titulos, work_condicaoPagtoDividida, work_valor_entrada, work_qtdParcelas, calculoFinanciamento, aux_parcela_atual, isParcelaMes: false);
-        }
-
-        private async Task ProcessarParcelasTipoParcelaMes(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos, string[] work_condicaoPagtoDividida, int work_valor_entrada, int work_qtdParcelas, (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) calculoFinanciamento, int aux_parcela_atual)
-        {
-            await ProcessarParcelasTipoParcelaDiasMes(in_Renegociacao_Calc_Titulos, work_condicaoPagtoDividida, work_valor_entrada, work_qtdParcelas, calculoFinanciamento, aux_parcela_atual, isParcelaMes: true);
-        }
-
-        private async Task ProcessarParcelasTipoParcelaDiasMes(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos, string[] work_condicaoPagtoDividida, int work_valor_entrada, int work_qtdParcelas, (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) calculoFinanciamento, int aux_parcela_atual, bool isParcelaMes)
-        {
-            int aux_dias_mes_entrada = int.Parse(work_condicaoPagtoDividida[0]);
-            int aux_dias_mes_intervalo = int.Parse(work_condicaoPagtoDividida[1]);
-
-            while (aux_parcela_atual <= work_qtdParcelas)
-            {
-                CSICP_FF999 work_ff999 = new CSICP_FF999
-                {
-                    Id = _generateId.GenerateUuId(),
-                    TenantId = in_Renegociacao_Calc_Titulos.in_tenantID,
-                    Ff999IdControle = in_Renegociacao_Calc_Titulos.in_ChaveControle_ID,
-                    Ff999Valorparcela = in_Renegociacao_Calc_Titulos.in_valorEntrada,
-                    Ff999Parcela = aux_parcela_atual + 1,
-                    Ff999Datavencto = isParcelaMes ? in_Renegociacao_Calc_Titulos.in_data.AddMonths(aux_dias_mes_entrada) : in_Renegociacao_Calc_Titulos.in_data.AddDays(aux_dias_mes_entrada)
-                };
-                if (!PossuiEntrada(work_valor_entrada, aux_parcela_atual, aux_dias_mes_entrada))
-                {
-                    work_ff999.Ff999Datavencto = isParcelaMes ? in_Renegociacao_Calc_Titulos.in_data.AddMonths(aux_dias_mes_intervalo): in_Renegociacao_Calc_Titulos.in_data.AddDays(aux_dias_mes_intervalo);
-                    calculoFinanciamento.ValorParcela = 0;
-                }
-                _appDbContext.Add(work_ff999);
-                aux_parcela_atual += 1;
-            }
-            await _appDbContext.SaveChangesAsync();
-        }
-
-        private static bool PossuiEntrada(int work_valor_entrada, int aux_parcela_atual, int aux_dias_mes_entrada)
-        {
-            return aux_parcela_atual == 1 && aux_dias_mes_entrada > 0 && work_valor_entrada > 0;
-        }
-
-        private async Task ProcessarParcelasTipoDias(
-            Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos,
-            string[] aux_condicaoPagtoDividida,
-            int work_valor_entrada,
-            decimal work_valor_parcela,
-            decimal work_valor_resto_parcela,
-            int aux_parcela_atual)
-        {
-
-            foreach (var current in aux_condicaoPagtoDividida)
-            {
-                CSICP_FF999 work_ff999 = new CSICP_FF999
-                {
-                    Id = _generateId.GenerateUuId(),
-                    TenantId = in_Renegociacao_Calc_Titulos.in_tenantID,
-                    Ff999IdControle = in_Renegociacao_Calc_Titulos.in_ChaveControle_ID,
-                    Ff999Valorparcela = in_Renegociacao_Calc_Titulos.in_valorEntrada,
-                    Ff999Parcela = aux_parcela_atual + 1,
-                    Ff999Datavencto = in_Renegociacao_Calc_Titulos.in_data.AddDays(int.Parse(current))
-                };
-
-                if (EhSemEntrada(work_valor_entrada, aux_parcela_atual))
-                {
-                    work_ff999.Ff999Valorparcela = work_valor_parcela + work_valor_resto_parcela;
-                    work_valor_resto_parcela = 0;
-                }
-                aux_parcela_atual += 1;
-                _appDbContext.Add(work_ff999);
-            }
-            await _appDbContext.SaveChangesAsync();
-        }
 
         private static (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado)
                          CalcularValoresFinanciamento(decimal faturaTotal, int qtdParcelas, int valorEntrada)
@@ -203,11 +102,6 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
             return (valorParcela, valorRestoParcela, valorFinanciado);
         }
 
-        private static bool EhSemEntrada(int work_valor_entrada, int aux_parcela_atual)
-        {
-            return aux_parcela_atual != 0 || work_valor_entrada == 0;
-        }
-
         private static (int aux_entrada, int aux_qtdParcelas) AvaliarCondicaoPagamento(
             Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos,
             CSICP_Bb008 work_bb008,
@@ -239,19 +133,5 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
             return work_bb008.Bb008Tipoid == in_Renegociacao_Calc_Titulos.in_StID_bb008_tp_Dias;
         }
 
-        private static bool EhTipoParcelaDias(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos, CSICP_Bb008 work_bb008)
-        {
-            return work_bb008.Bb008Tipoid == in_Renegociacao_Calc_Titulos.in_StID_bb008_tp_ParcelaDias;
-        }
-
-        private static bool EhTipoParcelaMes(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos, CSICP_Bb008 work_bb008)
-        {
-            return work_bb008.Bb008Tipoid == in_Renegociacao_Calc_Titulos.in_StID_bb008_tp_ParcelaMes;
-        }
-
-        private static bool EhTipoAVista(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos, CSICP_Bb008 work_bb008)
-        {
-            return work_bb008.Bb008Tipoid == in_Renegociacao_Calc_Titulos.in_StID_bb008_tp_A_vista;
-        }
     }
 }
