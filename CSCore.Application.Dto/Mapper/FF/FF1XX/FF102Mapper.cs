@@ -9,6 +9,7 @@ using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.CS_Models.Staticas.FF;
+using CSLB900.MSTools.Calculos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -209,6 +210,12 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 Ff102PixcobQrcode = entity.Ff102PixcobQrcode,
                 Ff102PixcobStatus = entity.Ff102PixcobStatus,
                 Ff102TrilhaApiid = entity.Ff102TrilhaApiid,
+                CSDiasAtraso = entity.CSDiasAtraso,
+                CSValorCorrecaoMonetaria = entity.CSValorCorrecaoMonetaria,
+                CSValorMulta = entity.CSValorMulta,
+                CSValorHonorarios = entity.CSValorHonorarios,
+                CSValorJuros = entity.CSValorJuros,
+                CSValorAPagar = entity.CSValorAPagar,
                 NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
                 NavBB005 = entity.NavBB005?.ToDtoGetBB005_Exibicao(),
                 NavBB006 = entity.NavBB006?.ToDtoGetExibicao(),
