@@ -400,8 +400,8 @@ public class RepoDtoCSICP_FF102 : CSICP_FF102
     public CSICP_BB007? NavBB007 { get; set; }
     public CSICP_Bb008? NavBB008 { get; set; }
     public CSICP_Bb009? NavBB009 { get; set; }
-    public CSICP_BB012? NavBB012 { get; set; }
     public CSICP_Bb019? NavBB019 { get; set; }
+    public CSICP_BB012? NavBB012 { get; set; }
     public CSICP_BB012? NavBB012ContaID { get; set; }
     public CSICP_BB012? NavBB012ContaRealID { get; set; }
     public CSICP_BB012? NavBB012AvalistaID { get; set; }

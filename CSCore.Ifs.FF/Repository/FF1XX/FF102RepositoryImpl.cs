@@ -31,46 +31,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             }
             RepoDtoCSICP_FF102? cSICP_FF102 = await query.FirstOrDefaultAsync(e => e.Id == in_ff102Id);
 
-            (var resultadoCalcJuros, var resultadoCalcDiasAtrasoJuros) = CalculoTitulos.CalcularTituloPercentualJuros(
-                cSICP_FF102.Ff102DataVencimento,
-                cSICP_FF102.Ff102VlLiqTitulo,
-                cSICP_FF102.Ff102PercJurosAtr,
-                cSICP_FF102.Ff102Nodiasliberacao);
-
-                cSICP_FF102.CSDiasAtraso = resultadoCalcDiasAtrasoJuros;
-                cSICP_FF102.CSValorJuros = resultadoCalcJuros;
-
-            (var resultadoCalcMulta, var resultadoCalcDiasAtrasoMulta) = CalculoTitulos.CalcularTituloPercentualMulta(
-                cSICP_FF102.Ff102DataVencimento,
-                cSICP_FF102.Ff102VlLiqTitulo,
-                cSICP_FF102.Ff102PercMulta,
-                cSICP_FF102.Ff102Nodiasliberacao);
-
-                cSICP_FF102.CSValorMulta = resultadoCalcMulta;
-
-            (var resultadoCalcHonorarios, var resultadoCalcDiasAtrasoHonorarios) = CalculoTitulos.CalcularTituloPercentualHonorarios(
-                cSICP_FF102.Ff102DataVencimento,
-                cSICP_FF102.Ff102VlLiqTitulo,
-                cSICP_FF102.Ff102PercHonorarios,
-                cSICP_FF102.Ff102Nodiasliberacao);
-
-                cSICP_FF102.CSValorHonorarios = resultadoCalcHonorarios;
-
-            (var resultadoCalcCorrecaoMonetaria, var resultadoCalcDiasAtrasoCorrecaoMonetaria) = CalculoTitulos.CalcularTituloPercentualCorrecaoMonetaria(
-                cSICP_FF102.Ff102DataVencimento,
-                cSICP_FF102.Ff102VlLiqTitulo,
-                cSICP_FF102.Ff102PercCorrmonetaria,
-                cSICP_FF102.Ff102Nodiasliberacao);
-
-                cSICP_FF102.CSValorCorrecaoMonetaria = resultadoCalcCorrecaoMonetaria;
-
-                cSICP_FF102.CSValorAPagar = 
-                cSICP_FF102.Ff102VlLiqTitulo +
-                cSICP_FF102.CSValorJuros +
-                cSICP_FF102.CSValorMulta +
-                cSICP_FF102.CSValorHonorarios +
-                cSICP_FF102.CSValorCorrecaoMonetaria;
-
             return cSICP_FF102;
         }
 
@@ -244,6 +204,37 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    join ff120track in _appDbContext.OsusrE9aCsicpFf120Trackapis
                    on ff102.Ff102TrilhaApiid equals ff120track.Id into ff120track_ff102_join
                    from ff120track in ff120track_ff102_join.DefaultIfEmpty()
+
+                   let CSValorJuros = CalculoTitulos.CalcularTituloPercentualJuros(
+                       ff102.Ff102DataVencimento,
+                       ff102.Ff102VlLiqTitulo,
+                       ff102.Ff102PercJurosAtr,
+                       ff102.Ff102Nodiasliberacao)
+
+                   let CSValorMulta = CalculoTitulos.CalcularTituloPercentualMulta(
+                       ff102.Ff102DataVencimento,
+                       ff102.Ff102VlLiqTitulo,
+                       ff102.Ff102PercMulta,
+                       ff102.Ff102Nodiasliberacao)
+
+                   let CSValorHonorarios = CalculoTitulos.CalcularTituloPercentualHonorarios(
+                       ff102.Ff102DataVencimento,
+                       ff102.Ff102VlLiqTitulo,
+                       ff102.Ff102PercHonorarios,
+                       ff102.Ff102Nodiasliberacao)
+
+                   let CSValorCorrecaoMonetaria = CalculoTitulos.CalcularTituloPercentualCorrecaoMonetaria(
+                       ff102.Ff102DataVencimento,
+                       ff102.Ff102VlLiqTitulo,
+                       ff102.Ff102PercCorrmonetaria,
+                       ff102.Ff102Nodiasliberacao)
+
+                   let CSValorAPagar =
+                       ff102.Ff102VlLiqTitulo +
+                       CSValorJuros.Item1 +
+                       CSValorMulta.Item1 +
+                       CSValorHonorarios.Item1 +
+                       CSValorCorrecaoMonetaria.Item1
 
                    where ff102.TenantId == in_tenant
                    select new RepoDtoCSICP_FF102
@@ -434,6 +425,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                        Ff102PixcobQrcode = ff102.Ff102PixcobQrcode,
                        Ff102PixcobStatus = ff102.Ff102PixcobStatus,
                        Ff102TrilhaApiid = ff102.Ff102TrilhaApiid,
+                       CSValorJuros = CSValorJuros.Item1,
+                       CSValorMulta = CSValorMulta.Item1,
+                       CSValorHonorarios = CSValorHonorarios.Item1,
+                       CSValorCorrecaoMonetaria = CSValorCorrecaoMonetaria.Item1,
+                       CSValorAPagar = CSValorAPagar,
 
                        NavBB001 = bb001 != null ? new CSICP_BB001
                        {
@@ -491,7 +487,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Bb019Administradora = bb019.Bb019Administradora,
                        } : null,
 
-                       NavBB012 = bb012conta != null ? new CSICP_BB012
+                       NavBB012ContaID = bb012conta != null ? new CSICP_BB012
                        {
                            TenantId = bb012conta.TenantId,
                            Id = bb012conta.Id,
@@ -791,13 +787,13 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 query = query.Where(e => e.Ff102Sfx!.Equals(in_sufixo));
 
             if (in_nomeConta != null)
-                query = query.Where(e => e.NavBB012!.Bb012NomeCliente!.Contains(in_nomeConta));
+                query = query.Where(e => e.NavBB012ContaID!.Bb012NomeCliente!.Contains(in_nomeConta));
 
             if (in_situacaoId != null)
                 query = query.Where(e => e.Ff102Situacaoid!.Equals(in_situacaoId));
 
             if (in_codigoConta != null)
-                query = query.Where(e => e.NavBB012!.Bb012Codigo.Equals(in_codigoConta));
+                query = query.Where(e => e.NavBB012ContaID!.Bb012Codigo.Equals(in_codigoConta));
 
             if (in_TpCobranca != null)
                 query = query.Where(e => e.Ff102Tpcobranca!.Equals(in_TpCobranca));

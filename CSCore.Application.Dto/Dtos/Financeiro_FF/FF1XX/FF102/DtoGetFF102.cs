@@ -405,7 +405,6 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
         public Dto_GetBB007SemListSimples? NavBB007 { get; set; }
         public Dto_GetBB008_Exibicao? NavBB008 { get; set; }
         public Dto_GetBB009_Exibicao? NavBB009 { get; set; }
-        public Dto_GetBB012_Exibicao? NavBB012 { get; set; }
         public Dto_GetBB019_Exibicao? NavBB019 { get; set; }
         public Dto_GetBB012_Exibicao? NavBB012ContaID { get; set; }
         public Dto_GetBB012_Exibicao? NavBB012ContaRealID { get; set; }

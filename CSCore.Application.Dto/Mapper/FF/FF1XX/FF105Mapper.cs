@@ -1,7 +1,6 @@
 ﻿using CSBS101._82Application.Mapper.BB00X;
 using CSBS101._82Application.Mapper.BB00X.BB009;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
-using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF105;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using System;
