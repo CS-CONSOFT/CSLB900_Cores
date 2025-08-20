@@ -13,7 +13,7 @@ namespace CSLB900.MSToolsTestes.Calculos
             var diasLiberacao = 0;
 
             (decimal valorJuros, int diasAtraso) = CalculoTitulos
-                .CalcularTituloPercentualJuros(dataVencimento, valorTitulo, percentualJuros, diasLiberacao);
+                .CalcularCorrecaoMonetaria(dataVencimento, valorTitulo, percentualJuros, diasLiberacao);
             Assert.Equal(2.35M, valorJuros);
         }
 
@@ -38,7 +38,7 @@ namespace CSLB900.MSToolsTestes.Calculos
             var percentualJuros = 5;
             var diasLiberacao = 5;
             (decimal valorJuros, int diasAtraso) = CalculoTitulos
-                .CalcularTituloPercentualMulta(dataVencimento, valorTitulo, percentualJuros, diasLiberacao);
+                .CalcularCorrecaoMonetaria(dataVencimento, valorTitulo, percentualJuros, diasLiberacao);
             Assert.Equal(50, valorJuros);
             Assert.Equal(443, diasAtraso);
         }
