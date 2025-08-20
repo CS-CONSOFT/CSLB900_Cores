@@ -398,6 +398,10 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
         public decimal? CSValorJuros { get; set; } = default;
 
         public decimal? CSValorAPagar { get; set; } = default;
+        public decimal? CSPercentualJurosConfig { get; set; }
+        public decimal? CSPercentualMultaConfig { get; set; }
+        public decimal? CSPercentualCorrecaoMonetariaConfig { get; set; }
+        public decimal? CSPercentualHonorarioConfig { get; set; }
 
         public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
         public Dto_GetBB005_Exibicao? NavBB005 { get; set; } 

@@ -112,6 +112,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             retRepoDtoFF102.CSDiasAtraso = prmRetornoCalculo.OutDiasAtrasoJuros;
             retRepoDtoFF102.CSDiasAtraso = prmRetornoCalculo.OutDiasAtrasoJuros;
 
+            retRepoDtoFF102.CSPercentualCorrecaoMonetariaConfig = prmRetornoCalculo.OutPercentualCorrecaoMonetariaConfig;
+            retRepoDtoFF102.CSPercentualHonorarioConfig = prmRetornoCalculo.OutPercentualHonorarioConfig;
+            retRepoDtoFF102.CSPercentualJurosConfig = prmRetornoCalculo.OutPercentualJurosConfig;
+            retRepoDtoFF102.CSPercentualMultaConfig = prmRetornoCalculo.OutPercentualMultaConfig;
+
             retRepoDtoFF102.CSValorAPagar = prmRetornoCalculo.OutValorJuros +
                                             prmRetornoCalculo.OutValorMulta +
                                             prmRetornoCalculo.OutValorCorrecaoMonetaria +
@@ -804,6 +809,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             QualDataFiltro? in_tipoDataFiltro)
         {
             
+
 
             if (in_estabelecimentoId != null)
                 query = query.Where(e => e.Ff102Filialid!.Equals(in_estabelecimentoId));
