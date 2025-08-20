@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CSCompartilhado.Exception\CSCore.Ex.csproj" />
     <ProjectReference Include="..\CSCore.Domain\CSCore.Domain.csproj" />
     <ProjectReference Include="..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />
   </ItemGroup>

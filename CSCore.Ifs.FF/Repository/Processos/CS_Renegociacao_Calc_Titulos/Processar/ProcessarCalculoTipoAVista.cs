@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar
 {
-    public class ProcessarCalculoTipoAVista : IProcessarCalculoTitulo
+    public class ProcessarCalculoTipoAVista : IAuxProcessarCalculoTitulo
     {
         private readonly AppDbContext _appDbContext;
         private readonly ICS_GenerateId _generateId;

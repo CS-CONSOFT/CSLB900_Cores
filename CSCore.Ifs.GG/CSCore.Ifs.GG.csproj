@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />
-    <ProjectReference Include="..\CSCore.Ifs.Eventos\CSCore.Ifs.Eventos.csproj" />
     <ProjectReference Include="..\CSCore.Logger\CS_Logs.csproj" />
   </ItemGroup>
 

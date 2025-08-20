@@ -205,25 +205,27 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff102.Ff102TrilhaApiid equals ff120track.Id into ff120track_ff102_join
                    from ff120track in ff120track_ff102_join.DefaultIfEmpty()
 
-                   let CSValorJuros = CalculoTitulos.CalcularTituloPercentualJuros(
+                   let CSValorJuros = CalculoTitulos.CalcularJuros(
                        ff102.Ff102DataVencimento,
                        ff102.Ff102VlLiqTitulo,
                        ff102.Ff102PercJurosAtr,
-                       ff102.Ff102Nodiasliberacao)
+                       ff102.Ff102Nodiasliberacao,
+                       false)
 
-                   let CSValorMulta = CalculoTitulos.CalcularTituloPercentualMulta(
+                   let CSValorMulta = CalculoTitulos.CalcularMulta(
                        ff102.Ff102DataVencimento,
                        ff102.Ff102VlLiqTitulo,
                        ff102.Ff102PercMulta,
-                       ff102.Ff102Nodiasliberacao)
+                       ff102.Ff102Nodiasliberacao,
+                       false)
 
-                   let CSValorHonorarios = CalculoTitulos.CalcularTituloPercentualHonorarios(
+                   let CSValorHonorarios = CalculoTitulos.CalcularHonorarios(
                        ff102.Ff102DataVencimento,
                        ff102.Ff102VlLiqTitulo,
                        ff102.Ff102PercHonorarios,
                        ff102.Ff102Nodiasliberacao)
 
-                   let CSValorCorrecaoMonetaria = CalculoTitulos.CalcularTituloPercentualCorrecaoMonetaria(
+                   let CSValorCorrecaoMonetaria = CalculoTitulos.CalcularCorrecaoMonetaria(
                        ff102.Ff102DataVencimento,
                        ff102.Ff102VlLiqTitulo,
                        ff102.Ff102PercCorrmonetaria,
