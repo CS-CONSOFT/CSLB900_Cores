@@ -57,6 +57,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         {
             IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_estabelecimentoId, query,
+                in_tipoRegistro,
                 in_prefixo,
                 in_titulo,
                 in_sufixo,
@@ -788,6 +789,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
         private IQueryable<RepoDtoCSICP_FF102> FiltraQuandoExisteFiltro(string? in_estabelecimentoId,
             IQueryable<RepoDtoCSICP_FF102> query,
+            int? in_tipoRegistro,
             string? in_prefixo,
             decimal? in_titulo,
             string? in_sufixo,
@@ -805,10 +807,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             QualDataFiltro? in_tipoDataFiltro)
         {
             
-
-
             if (in_estabelecimentoId != null)
                 query = query.Where(e => e.Ff102Filialid!.Equals(in_estabelecimentoId));
+
+            if (in_tipoRegistro != null)
+                query = query.Where(e => e.Ff102Tiporegistro!.Equals(in_tipoRegistro));
 
             if (in_prefixo != null)
                 query = query.Where(e => e.Ff102Pfx!.Equals(in_prefixo));
