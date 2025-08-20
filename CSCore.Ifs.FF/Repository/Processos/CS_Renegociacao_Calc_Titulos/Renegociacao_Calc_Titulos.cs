@@ -4,6 +4,7 @@ using CSCore.Ex.Personalizada;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Interface;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parametro;
+using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar.Fabrica;
 using CSLB900.MSTools.GenerateId;
 using CSLB900.MSTools.Util;
@@ -24,7 +25,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
             _generateId = generateId;
         }
 
-        public async Task Executar(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos)
+        public async Task<bool> Executar(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos)
         {
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
@@ -57,6 +58,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
 
                 await processarCalculoTitulo.Processar(in_Renegociacao_Calc_Titulos, calculoFinanciamento);
 
+                return true;
             }
             catch (Exception ex)
             {

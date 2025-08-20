@@ -71,6 +71,10 @@ namespace CSCore.Ex
                 {
                     HandleException(context, stopwatch, StatusCodes.Status400BadRequest);
                 }
+                else if (context.Exception is InvalidOperationException)
+                {
+                    HandleException(context, stopwatch, StatusCodes.Status406NotAcceptable);
+                }
                 else if(context.Exception is ExceptionSemAuditoria _ex)
                 {
                     int statusCode = DetermineStatusCodeFromMessage(_ex.Message);
@@ -178,9 +182,11 @@ namespace CSCore.Ex
 
             // 404 - Not Found
             if (lowerMessage.Contains("não encontrado") ||
+                lowerMessage.Contains("não encontrada") ||
                 lowerMessage.Contains("not found") ||
                 lowerMessage.Contains("nenhum produto") ||
                 lowerMessage.Contains("entidade não encontrada") ||
+                lowerMessage.Contains("nenhum registro encontrado") ||
                 lowerMessage.Contains("coleta não encontrada"))
             {
                 return StatusCodes.Status404NotFound;

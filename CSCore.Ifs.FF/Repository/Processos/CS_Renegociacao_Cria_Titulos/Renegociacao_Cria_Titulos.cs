@@ -4,6 +4,7 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos.Parametro;
 using CSLB900.MSTools.GenerateId;
+using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos
@@ -21,62 +22,75 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos
             _generateProtocolo = generateProtocolo;
         }
 
-        public async Task Executar(Prm_Renegociacao_Cria_Titulo InPrmCriaTitulo)
+        public async Task<bool> Executar(Prm_Renegociacao_Cria_Titulo InPrmCriaTitulo)
         {
-            CSICP_FF017 WorkFF017 = await GetRenegociacaoById(InPrmCriaTitulo);
-
-            IEnumerable<CSICP_FF999> Work_GetMemoriaCalculo = await GetMemoriaCalculoByControleId(InPrmCriaTitulo);
-
-            if (!Work_GetMemoriaCalculo.Any()) throw new ExceptionSemAuditoria("Memória de cálculo não encontrada!");
-
-            decimal protocolo = await _generateProtocolo.Fcn_Protocolo10(InPrmCriaTitulo.InBB001FilialID, "CPAGAR");
-
-            bool AuxIsConfAprovAutomatico = await Verifica_ConfirmAutomatico(InPrmCriaTitulo.InBB001FilialID, InPrmCriaTitulo.InTenantID);
-
-            CSICP_FF003 Work_GetEspecie = await GetEspecieById(InPrmCriaTitulo, WorkFF017);
-
-            var Work_AgenteCobrador = await (from bb006 in _appDbContext.OsusrE9aCsicpBb006s
-                                             where bb006.TenantId == InPrmCriaTitulo.InTenantID
-                                             && bb006.Id == WorkFF017.Ff017Agcobradorid && bb006.Bb006Isactive == true
-                                             join sy001 in _appDbContext.OsusrE9aCsicpSy001s
-                                             on bb006.Bb006CodcobradorId equals sy001.Id into sy001Group
-                                             from sy001 in sy001Group.DefaultIfEmpty()
-                                             select new
-                                             {
-                                                 bb006.Bb006CodcobradorId,
-                                                 bb006.Bb006Nomereduzido,
-                                                 bb006.Bb006Isactive,
-                                                 sy001.Sy001Nome
-                                             }).AsNoTrackingWithIdentityResolution().FirstOrDefaultAsync()
-                                             ?? throw new ExceptionSemAuditoria("Agente cobrador não encontrado!");
-
-            List<CSICP_FF102> FF102EntidadesParaInserir = [];
-            List<CSICP_FF103> FF103EntidadesParaInserir = [];
-            List<CSICP_FF104> FF104EntidadesParaInserir = [];
-            List<CSICP_FF999> FF999EntidadesParaDeletar = [];
-
-            foreach (var current in Work_GetMemoriaCalculo)
+            using var transaction = await _appDbContext.Database.BeginTransactionAsync();
+            try
             {
-                string? Ff102SfxValue = current.Ff999Parcela?.ToString().PadLeft(2, '0');
-                CSICP_FF102 AuxFF102ParaInserir = CriarEntidadeFF102(InPrmCriaTitulo, WorkFF017, Work_GetMemoriaCalculo, protocolo, AuxIsConfAprovAutomatico, Work_GetEspecie, Work_AgenteCobrador.Bb006CodcobradorId, current, Ff102SfxValue);
-                FF102EntidadesParaInserir.Add(AuxFF102ParaInserir);
 
-                CSICP_FF104 AuxFF104ParaInserir = CriaEntidadeFF104(InPrmCriaTitulo, WorkFF017, AuxFF102ParaInserir);
-                FF104EntidadesParaInserir.Add(AuxFF104ParaInserir);
+                CSICP_FF017 WorkFF017 = await GetRenegociacaoById(InPrmCriaTitulo);
 
-                // Adiciona o título atual à lista de títulos a serem deletados
-                FF999EntidadesParaDeletar.Add(current);
+                IEnumerable<CSICP_FF999> Work_GetMemoriaCalculo = await GetMemoriaCalculoByControleId(InPrmCriaTitulo);
 
-                if (IsEntLiquidadaEPrimeiraParcela(InPrmCriaTitulo, Ff102SfxValue))
+                if (!Work_GetMemoriaCalculo.Any()) throw new Exception("Memória de cálculo não encontrada!");
+
+                decimal protocolo = await _generateProtocolo.Fcn_Protocolo10(InPrmCriaTitulo.InBB001FilialID, "CPAGAR");
+
+                bool AuxIsConfAprovAutomatico = await Verifica_ConfirmAutomatico(InPrmCriaTitulo.InBB001FilialID, InPrmCriaTitulo.InTenantID);
+
+                CSICP_FF003 Work_GetEspecie = await GetEspecieById(InPrmCriaTitulo, WorkFF017);
+
+                var Work_AgenteCobrador = await (from bb006 in _appDbContext.OsusrE9aCsicpBb006s
+                                                 where bb006.TenantId == InPrmCriaTitulo.InTenantID
+                                                 && bb006.Id == WorkFF017.Ff017Agcobradorid && bb006.Bb006Isactive == true
+                                                 join sy001 in _appDbContext.OsusrE9aCsicpSy001s
+                                                 on bb006.Bb006CodcobradorId equals sy001.Id into sy001Group
+                                                 from sy001 in sy001Group.DefaultIfEmpty()
+                                                 select new
+                                                 {
+                                                     bb006.Bb006CodcobradorId,
+                                                     bb006.Bb006Nomereduzido,
+                                                     bb006.Bb006Isactive,
+                                                     sy001.Sy001Nome
+                                                 }).AsNoTrackingWithIdentityResolution().FirstOrDefaultAsync()
+                                                 ?? throw new Exception("Agente cobrador não encontrado!");
+
+                List<CSICP_FF102> FF102EntidadesParaInserir = [];
+                List<CSICP_FF103> FF103EntidadesParaInserir = [];
+                List<CSICP_FF104> FF104EntidadesParaInserir = [];
+                List<CSICP_FF999> FF999EntidadesParaDeletar = [];
+
+                foreach (var current in Work_GetMemoriaCalculo)
                 {
-                    CSICP_FF103 AuxFF103ParaInserir = CriaEntidadeFF103(InPrmCriaTitulo, WorkFF017, AuxFF102ParaInserir);
-                    FF103EntidadesParaInserir.Add(AuxFF103ParaInserir);
+                    string? Ff102SfxValue = current.Ff999Parcela?.ToString().PadLeft(2, '0');
+                    CSICP_FF102 AuxFF102ParaInserir = CriarEntidadeFF102(InPrmCriaTitulo, WorkFF017, Work_GetMemoriaCalculo, protocolo, AuxIsConfAprovAutomatico, Work_GetEspecie, Work_AgenteCobrador.Bb006CodcobradorId, current, Ff102SfxValue);
+                    FF102EntidadesParaInserir.Add(AuxFF102ParaInserir);
+
+                    CSICP_FF104 AuxFF104ParaInserir = CriaEntidadeFF104(InPrmCriaTitulo, WorkFF017, AuxFF102ParaInserir);
+                    FF104EntidadesParaInserir.Add(AuxFF104ParaInserir);
+
+                    // Adiciona o título atual à lista de títulos a serem deletados
+                    FF999EntidadesParaDeletar.Add(current);
+
+                    if (IsEntLiquidadaEPrimeiraParcela(InPrmCriaTitulo, Ff102SfxValue))
+                    {
+                        CSICP_FF103 AuxFF103ParaInserir = CriaEntidadeFF103(InPrmCriaTitulo, WorkFF017, AuxFF102ParaInserir);
+                        FF103EntidadesParaInserir.Add(AuxFF103ParaInserir);
+                    }
                 }
+                // Atualiza os campos da renegociação
+                WorkFF017.Ff017Aberto = false;
+                List<CSICP_FF102> FF102EntidadesParaAtualizar = await GetTitulosParaAtualizar(InPrmCriaTitulo, WorkFF017);
+                await PersistirRenegociacaoTitulos(WorkFF017, FF102EntidadesParaInserir, FF103EntidadesParaInserir, FF104EntidadesParaInserir, FF999EntidadesParaDeletar, FF102EntidadesParaAtualizar);
+                await transaction.CommitAsync();
+                return true;
             }
-            // Atualiza os campos da renegociação
-            WorkFF017.Ff017Aberto = false;
-            List<CSICP_FF102> FF102EntidadesParaAtualizar = await GetTitulosParaAtualizar(InPrmCriaTitulo, WorkFF017);
-            await PersistirRenegociacaoTitulos(WorkFF017, FF102EntidadesParaInserir, FF103EntidadesParaInserir, FF104EntidadesParaInserir, FF999EntidadesParaDeletar, FF102EntidadesParaAtualizar);
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                if (ex is ExceptionSemAuditoria) throw new ExceptionSemAuditoria(1001, HandlerExceptionMessage.CreateExceptionMessage(ex));
+                else throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
+            }
         }
 
         private CSICP_FF103 CriaEntidadeFF103(Prm_Renegociacao_Cria_Titulo InPrmCriaTitulo, CSICP_FF017 WorkFF017, CSICP_FF102 AuxFF102ParaInserir)
@@ -168,6 +182,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos
             _appDbContext.Update(WorkFF017);
 
             await _appDbContext.SaveChangesAsync();
+
         }
 
         private async Task<List<CSICP_FF102>> GetTitulosParaAtualizar(Prm_Renegociacao_Cria_Titulo InPrmCriaTitulo, CSICP_FF017 WorkFF017)

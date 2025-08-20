@@ -1,6 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Interface;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parametro;
 using CSLB900.MSTools.GenerateId;
 
