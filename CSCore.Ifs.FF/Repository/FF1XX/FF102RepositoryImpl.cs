@@ -4,6 +4,7 @@ using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.LB900.Calculos;
+using CSCore.Ifs.LB900.Calculos.Parametros;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Calculos;
 using CSLB900.MSTools.Extensao;
@@ -26,14 +27,102 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             {
                 query = query.Where(e => e.Ff102Tiporegistro == in_tipoRegistro);
             }
-            RepoDtoCSICP_FF102? cSICP_FF102 = await query.FirstOrDefaultAsync(e => e.Id == in_ff102Id);
 
-            return cSICP_FF102;
+            RepoDtoCSICP_FF102? retRepoDtoFF102 = await query.FirstOrDefaultAsync(e => e.Id == in_ff102Id);
+
+            await CalcularValoresAtrasoReceberAsync(retRepoDtoFF102);
+
+            return retRepoDtoFF102;
+        }
+
+
+        public async Task<(List<RepoDtoCSICP_FF102>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
+            string? in_estabelecimentoId,
+            int in_tipoRegistro,
+            string? in_prefixo,
+            decimal? in_titulo,
+            string? in_sufixo,
+            string? in_nomeConta,
+            int? in_situacaoId,
+            int? in_codigoConta,
+            int? in_TpCobranca,
+            decimal? in_NoTitulonoBanco,
+            string? in_serie,
+            decimal? in_numeroNotaf,
+            string? in_AgCobrador,
+            string? in_centroCusto,
+            DateTime? in_dataInicio,
+            DateTime? in_dataFinal,
+            QualDataFiltro? in_tipoDataFiltro)
+        {
+            IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
+            query = FiltraQuandoExisteFiltro(in_estabelecimentoId, query,
+                in_prefixo,
+                in_titulo,
+                in_sufixo,
+                in_nomeConta,
+                in_situacaoId,
+                in_codigoConta,
+                in_TpCobranca,
+                in_NoTitulonoBanco,
+                in_serie,
+                in_numeroNotaf,
+                in_AgCobrador,
+                in_centroCusto,
+                in_dataInicio,
+                in_dataFinal,
+                in_tipoDataFiltro);
+
+            var queryCount = query;
+            var count = queryCount.Count();
+            query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
+
+            List<RepoDtoCSICP_FF102> repoDtoCSICP_FF102List = await query.ToListAsync();
+            foreach (var current in repoDtoCSICP_FF102List)
+            {
+                await CalcularValoresAtrasoReceberAsync(current);
+            }
+
+            return (repoDtoCSICP_FF102List, count);
+        }
+
+
+        private async Task CalcularValoresAtrasoReceberAsync(RepoDtoCSICP_FF102 retRepoDtoFF102)
+        {
+            PrmEntradaContasAReceber prmEntradaContasAReceber = new PrmEntradaContasAReceber
+            {
+                InTenantID = retRepoDtoFF102.TenantId,
+                InDataVencimento = retRepoDtoFF102.Ff102DataVencimento,
+                InDiasLiberacao = retRepoDtoFF102.Ff102Nodiasliberacao,
+                InValorTitulo = retRepoDtoFF102.Ff102ValorTitulo ?? 0,
+                InPercentualCorrecaoMonetaria = retRepoDtoFF102.Ff102PercCorrmonetaria,
+                InPercentualMulta = retRepoDtoFF102.Ff102PercMulta,
+                InPercentualJuros = retRepoDtoFF102.Ff102PercJurosAtr,
+                InPercentualHonorarios = retRepoDtoFF102.Ff102PercHonorarios,
+                InEstabID = retRepoDtoFF102.Ff102Filialid ?? "",
+                InFinacEspJurosMulta = retRepoDtoFF102.Ff102Isconcfinanc ?? false,
+
+            };
+            PrmRetornoCalculo prmRetornoCalculo
+                = await _calculoAtrasoMultaJurosTitulos.CalcularContasAReceber(prmEntradaContasAReceber);
+
+            retRepoDtoFF102.CSValorJuros = prmRetornoCalculo.OutValorJuros;
+            retRepoDtoFF102.CSValorMulta = prmRetornoCalculo.OutValorMulta;
+            retRepoDtoFF102.CSValorCorrecaoMonetaria = prmRetornoCalculo.OutValorCorrecaoMonetaria;
+            retRepoDtoFF102.CSValorHonorarios = prmRetornoCalculo.OutValorHonorario;
+            retRepoDtoFF102.CSDiasAtraso = prmRetornoCalculo.OutDiasAtrasoJuros;
+            retRepoDtoFF102.CSDiasAtraso = prmRetornoCalculo.OutDiasAtrasoJuros;
+
+            retRepoDtoFF102.CSValorAPagar = prmRetornoCalculo.OutValorJuros+
+                                            prmRetornoCalculo.OutValorMulta +
+                                            prmRetornoCalculo.OutValorCorrecaoMonetaria +
+                                            prmRetornoCalculo.OutValorHonorario +
+                                            prmRetornoCalculo.OutDiasAtrasoJuros +
+                                            prmRetornoCalculo.OutDiasAtrasoJuros; 
         }
 
         private IQueryable<RepoDtoCSICP_FF102> GetQueryBase(int in_tenant)
         {
-            
 
             return from ff102 in _appDbContext.OsusrE9aCsicpFf102s
 
@@ -204,38 +293,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff102.Ff102TrilhaApiid equals ff120track.Id into ff120track_ff102_join
                    from ff120track in ff120track_ff102_join.DefaultIfEmpty()
 
-                   let CSValorJuros = CalculoTitulos.CalcularJuros(
-                       ff102.Ff102DataVencimento,
-                       ff102.Ff102VlLiqTitulo,
-                       ff102.Ff102PercJurosAtr,
-                       ff102.Ff102Nodiasliberacao,
-                       false)
 
-                   let CSValorMulta = CalculoTitulos.CalcularMulta(
-                       ff102.Ff102DataVencimento,
-                       ff102.Ff102VlLiqTitulo,
-                       ff102.Ff102PercMulta,
-                       ff102.Ff102Nodiasliberacao,
-                       false)
-
-                   let CSValorHonorarios = CalculoTitulos.CalcularHonorarios(
-                       ff102.Ff102DataVencimento,
-                       ff102.Ff102VlLiqTitulo,
-                       ff102.Ff102PercHonorarios,
-                       ff102.Ff102Nodiasliberacao)
-
-                   let CSValorCorrecaoMonetaria = CalculoTitulos.CalcularCorrecaoMonetaria(
-                       ff102.Ff102DataVencimento,
-                       ff102.Ff102VlLiqTitulo,
-                       ff102.Ff102PercCorrmonetaria,
-                       ff102.Ff102Nodiasliberacao)
-
-                   let CSValorAPagar =
-                       ff102.Ff102VlLiqTitulo +
-                       CSValorJuros.Item1 +
-                       CSValorMulta.Item1 +
-                       CSValorHonorarios.Item1 +
-                       CSValorCorrecaoMonetaria.Item1
 
                    where ff102.TenantId == in_tenant
                    select new RepoDtoCSICP_FF102
@@ -426,11 +484,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                        Ff102PixcobQrcode = ff102.Ff102PixcobQrcode,
                        Ff102PixcobStatus = ff102.Ff102PixcobStatus,
                        Ff102TrilhaApiid = ff102.Ff102TrilhaApiid,
-                       CSValorJuros = CSValorJuros.Item1,
-                       CSValorMulta = CSValorMulta.Item1,
-                       CSValorHonorarios = CSValorHonorarios.Item1,
-                       CSValorCorrecaoMonetaria = CSValorCorrecaoMonetaria.Item1,
-                       CSValorAPagar = CSValorAPagar,
+                       //CSValorJuros = CSValorJuros.Item1,
+                       //CSValorMulta = CSValorMulta.Item1,
+                       //CSValorHonorarios = CSValorHonorarios.Item1,
+                       //CSValorCorrecaoMonetaria = CSValorCorrecaoMonetaria.Item1,
+                       //CSValorAPagar = CSValorAPagar,
 
                        NavBB001 = bb001 != null ? new CSICP_BB001
                        {
@@ -711,50 +769,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Tiporegistro = staticaConfirmado.Tiporegistro,
                        } : null,
                    };
-        }
-
-        public async Task<(List<RepoDtoCSICP_FF102>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
-            string? in_estabelecimentoId,
-            int in_tipoRegistro,
-            string? in_prefixo,
-            decimal? in_titulo,
-            string? in_sufixo,
-            string? in_nomeConta,
-            int? in_situacaoId,
-            int? in_codigoConta,
-            int? in_TpCobranca,
-            decimal? in_NoTitulonoBanco,
-            string? in_serie,
-            decimal? in_numeroNotaf,
-            string? in_AgCobrador,
-            string? in_centroCusto,
-            DateTime? in_dataInicio,
-            DateTime? in_dataFinal,
-            QualDataFiltro? in_tipoDataFiltro)
-        {
-            IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
-            query = FiltraQuandoExisteFiltro(in_estabelecimentoId, query,
-                in_prefixo,
-                in_titulo,
-                in_sufixo,
-                in_nomeConta,
-                in_situacaoId,
-                in_codigoConta,
-                in_TpCobranca,
-                in_NoTitulonoBanco,
-                in_serie,
-                in_numeroNotaf,
-                in_AgCobrador,
-                in_centroCusto,
-                in_dataInicio,
-                in_dataFinal,
-                in_tipoDataFiltro);
-
-            var queryCount = query;
-            var count = queryCount.Count();
-            query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
-
-            return (await query.ToListAsync(), count);
         }
 
         private IQueryable<RepoDtoCSICP_FF102> FiltraQuandoExisteFiltro(string? in_estabelecimentoId,
