@@ -50,7 +50,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
                     work_valor_entrada);
 
 
-                IProcessarCalculoTitulo processarCalculoTitulo
+                IAuxProcessarCalculoTitulo processarCalculoTitulo
                     = ProcessarRenegociacaoCalcTituloFactory
                     .Create(in_Renegociacao_Calc_Titulos, work_bb008,calculoFinanciamento, _appDbContext,
                     _generateId, work_condicaoPagtoDividida,work_qtdParcelas, work_valor_entrada);

@@ -13,7 +13,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
 {
     public class ProcessarRenegociacaoCalcTituloFactory
     {
-        public static IProcessarCalculoTitulo Create(
+        public static IAuxProcessarCalculoTitulo Create(
             Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos,
             CSICP_Bb008 work_bb008,
             (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) in_calculoFinanciamento,

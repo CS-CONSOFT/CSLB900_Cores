@@ -6,7 +6,7 @@ using CSLB900.MSTools.GenerateId;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar
 {
-    public class ProcessarParcelasTipoParcelaDiasOuMes : IProcessarCalculoTitulo
+    public class ProcessarParcelasTipoParcelaDiasOuMes : IAuxProcessarCalculoTitulo
     {
         private readonly ICS_GenerateId _generateId;
         private readonly string[] _aux_condicaoPagtoDividida;

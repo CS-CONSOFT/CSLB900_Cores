@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Interface
 {
-    public interface IProcessarCalculoTitulo
+    public interface IAuxProcessarCalculoTitulo
     {
         Task Processar(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos,
             (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) in_calculoFinanciamento);

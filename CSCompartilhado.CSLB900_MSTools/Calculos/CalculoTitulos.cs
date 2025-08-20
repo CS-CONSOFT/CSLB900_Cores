@@ -2,12 +2,79 @@
 {
     public static class CalculoTitulos
     {
-        private static (decimal, int) CalcularTituloPercentual(
+     
+
+        public static (decimal, int) CalcularJuros
+            (DateTime DataVencimento,
+            decimal ValorTitulo,
+            decimal? PercentualJuros,
+            int? DiasLiberacao,
+            // InFinacEspJuros: Se for true, não calcula juros, apenas retorna 0
+            bool InFinacEspJuros)
+        {
+            if(InFinacEspJuros == true) return (0, 0);
+
+
+            return CalcularTituloPercentual(
+                DataVencimento,
+                ValorTitulo,
+                PercentualJuros,
+                DiasLiberacao,
+                (valor, dias) => valor * dias);
+        }
+
+
+        public static (decimal, int) CalcularMulta(
             DateTime DataVencimento,
             decimal ValorTitulo,
-            decimal? Percentual,
+            decimal? PercentualMulta,
             int? DiasLiberacao,
-            Func<decimal, int, decimal> calculo)
+            // InFinacEspMulta: Se for true, não calcula multa, apenas retorna 0
+            bool InFinacEspMulta)
+        {
+            if (InFinacEspMulta == true) return (0, 0);
+            return CalcularTituloPercentual
+                (DataVencimento,
+                ValorTitulo,
+                PercentualMulta,
+                DiasLiberacao, 
+                (valor, _) => valor);
+        }
+
+        public static (decimal, int) CalcularHonorarios(
+             DateTime DataVencimento,
+            decimal ValorTitulo,
+            decimal? PercentualHonorarios,
+            int? DiasLiberacao)
+        {
+            return CalcularTituloPercentual(
+                DataVencimento,
+                ValorTitulo,
+                PercentualHonorarios,
+                DiasLiberacao,
+                (valor, _) => valor);
+        }
+
+        public static (decimal, int) CalcularCorrecaoMonetaria(
+            DateTime DataVencimento,
+            decimal ValorTitulo,
+            decimal? PercentualCorrMonetaria,
+           int? DiasLiberacao)
+        {
+            return CalcularTituloPercentual(
+                DataVencimento,
+                ValorTitulo,
+                PercentualCorrMonetaria, 
+                DiasLiberacao,
+                (valor, _) => valor);
+        }
+
+        private static (decimal, int) CalcularTituloPercentual(
+         DateTime DataVencimento,
+         decimal ValorTitulo,
+         decimal? Percentual,
+         int? DiasLiberacao,
+         Func<decimal, int, decimal> calculo)
         {
             (decimal valorBase, int diasAtraso) = RealizaCalculoPercentual(
                 DataVencimento, ValorTitulo, Percentual, DiasLiberacao);
@@ -16,44 +83,6 @@
 
             return (Math.Round(valorFinal, 2), diasAtraso);
         }
-        public static (decimal, int) CalcularTituloPercentualJuros
-            (DateTime DataVencimento,
-            decimal ValorTitulo,
-            decimal? PercentualJuros,
-            int? DiasLiberacao)
-        {
-            return CalcularTituloPercentual(DataVencimento, ValorTitulo, PercentualJuros, DiasLiberacao, (valor, dias) => valor * dias);
-        }
-
-
-        public static (decimal, int) CalcularTituloPercentualMulta(
-            DateTime DataVencimento,
-            decimal ValorTitulo,
-            decimal? PercentualMulta,
-            int? DiasLiberacao)
-        {
-            return CalcularTituloPercentual(DataVencimento, ValorTitulo, PercentualMulta, DiasLiberacao, (valor, _) => valor);
-        }
-
-        public static (decimal, int) CalcularTituloPercentualHonorarios(
-             DateTime DataVencimento,
-            decimal ValorTitulo,
-            decimal? PercentualHonorarios,
-            int? DiasLiberacao)
-        {
-            return CalcularTituloPercentual(DataVencimento, ValorTitulo, PercentualHonorarios, DiasLiberacao, (valor, _) => valor);
-        }
-
-        public static (decimal, int) CalcularTituloPercentualCorrecaoMonetaria(
-            DateTime DataVencimento,
-            decimal ValorTitulo,
-            decimal? PercentualCorrMonetaria,
-           int? DiasLiberacao)
-        {
-            return CalcularTituloPercentual(DataVencimento, ValorTitulo, PercentualCorrMonetaria, DiasLiberacao, (valor, _) => valor);
-        }
-
-
 
 
         private static (decimal, int) RealizaCalculoPercentual
@@ -72,9 +101,13 @@
             return (valorJuros, DiasAtraso);
         }
 
-        private static int CalculaDiasDeAtraso(DateTime DataVencimento, int? DiasLiberacao)
+        private static int CalculaDiasDeAtraso(
+            DateTime DataVencimento, int? DiasLiberacao)
         {
             DataVencimento.AddDays(DiasLiberacao is not null ? (double)DiasLiberacao : 0);
+
+            if (DataVencimento >= DateTime.UtcNow) return 0;
+
             TimeSpan DuracaoAteVencimento = DateTime.UtcNow - DataVencimento;
 
             int DiasAtraso = DuracaoAteVencimento.Days;
