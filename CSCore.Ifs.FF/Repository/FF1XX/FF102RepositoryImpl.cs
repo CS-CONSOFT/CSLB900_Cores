@@ -94,14 +94,13 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 InTenantID = retRepoDtoFF102.TenantId,
                 InDataVencimento = retRepoDtoFF102.Ff102DataVencimento,
                 InDiasLiberacao = retRepoDtoFF102.Ff102Nodiasliberacao,
-                InValorTitulo = retRepoDtoFF102.Ff102ValorTitulo ?? 0,
+                InValorTitulo = retRepoDtoFF102.Ff102VlLiqTitulo,
                 InPercentualCorrecaoMonetaria = retRepoDtoFF102.Ff102PercCorrmonetaria,
                 InPercentualMulta = retRepoDtoFF102.Ff102PercMulta,
                 InPercentualJuros = retRepoDtoFF102.Ff102PercJurosAtr,
                 InPercentualHonorarios = retRepoDtoFF102.Ff102PercHonorarios,
                 InEstabID = retRepoDtoFF102.Ff102Filialid ?? "",
-                InFinacEspJurosMulta = retRepoDtoFF102.Ff102Isconcfinanc ?? false,
-
+                InFinacEspJurosMulta = retRepoDtoFF102.NavBB01201Jur?.Codgcs == 1,
             };
             PrmRetornoCalculo prmRetornoCalculo
                 = await _calculoAtrasoMultaJurosTitulos.CalcularContasAReceber(prmEntradaContasAReceber);
@@ -113,12 +112,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             retRepoDtoFF102.CSDiasAtraso = prmRetornoCalculo.OutDiasAtrasoJuros;
             retRepoDtoFF102.CSDiasAtraso = prmRetornoCalculo.OutDiasAtrasoJuros;
 
-            retRepoDtoFF102.CSValorAPagar = prmRetornoCalculo.OutValorJuros+
+            retRepoDtoFF102.CSValorAPagar = prmRetornoCalculo.OutValorJuros +
                                             prmRetornoCalculo.OutValorMulta +
                                             prmRetornoCalculo.OutValorCorrecaoMonetaria +
                                             prmRetornoCalculo.OutValorHonorario +
-                                            prmRetornoCalculo.OutDiasAtrasoJuros +
-                                            prmRetornoCalculo.OutDiasAtrasoJuros; 
+                                            retRepoDtoFF102.Ff102VlLiqTitulo;
         }
 
         private IQueryable<RepoDtoCSICP_FF102> GetQueryBase(int in_tenant)
@@ -142,6 +140,12 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    join bb012conta in _appDbContext.OsusrE9aCsicpBb012s
                    on ff102.Ff102Contaid equals bb012conta.Id into bb012conta_ff102_join
                    from bb012conta in bb012conta_ff102_join.DefaultIfEmpty()
+
+                   join bb01201 in _appDbContext.OsusrE9aCsicpBb01201s
+                   on bb012conta.Id equals bb01201.Id into bb01201_join
+                   from bb01201 in bb01201_join.DefaultIfEmpty()
+
+
 
                    join bb01202 in _appDbContext.OsusrE9aCsicpBb01202s
                    on bb012conta.Id equals bb01202.Id into bb01202_join
@@ -554,6 +558,13 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Bb012NomeCliente = bb012conta.Bb012NomeCliente,
                            Bb012GrupocontaId = bb012conta.Bb012GrupocontaId,
 
+                           OsusrE9aCsicpBb01201 = bb01201 != null ? new CSICP_BB01201
+                           {
+                               Id = bb01201.Id,
+                               Bb012SitespecialId = bb01201.Bb012SitespecialId
+                           } : null,
+
+
                            Nav_BB01202 = bb01202 != null ? new CSICP_BB01202
                            {
                                Id = bb01202.Id,
@@ -590,6 +601,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                        {
                            Id = bb012_01jur.Id,
                            Label = bb012_01jur.Label,
+                           Codgcs = bb012_01jur.Codgcs,
                        } : null,
 
                        NavBB026 = bb026pagto != null ? new CSICP_Bb026
@@ -649,6 +661,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Id = ff102cob.Id,
                            Label = ff102cob.Label,
                        } : null,
+
+                       
 
                        NavFF102Aut = ff102Aut != null ? new CSICP_FF102Aut
                        {
@@ -789,6 +803,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             DateTime? in_dataFinal,
             QualDataFiltro? in_tipoDataFiltro)
         {
+            
+
             if (in_estabelecimentoId != null)
                 query = query.Where(e => e.Ff102Filialid!.Equals(in_estabelecimentoId));
 
