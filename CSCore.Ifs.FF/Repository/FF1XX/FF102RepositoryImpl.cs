@@ -493,12 +493,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                        Ff102PixcobQrcode = ff102.Ff102PixcobQrcode,
                        Ff102PixcobStatus = ff102.Ff102PixcobStatus,
                        Ff102TrilhaApiid = ff102.Ff102TrilhaApiid,
-                       CSDiasAtraso = CSValorJuros.Item2,
-                       CSValorJuros = CSValorJuros.Item1,
-                       CSValorMulta = CSValorMulta.Item1,
-                       CSValorHonorarios = CSValorHonorarios.Item1,
-                       CSValorCorrecaoMonetaria = CSValorCorrecaoMonetaria.Item1,
-                       CSValorAPagar = CSValorAPagar,
+                      
 
                        NavBB001 = bb001 != null ? new CSICP_BB001
                        {
