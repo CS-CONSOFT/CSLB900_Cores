@@ -3,24 +3,21 @@ using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.LB900.Calculos;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Calculos;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Win32;
-using NPOI.HPSF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using static CSCore.Domain.ComboTypes;
 
 
 namespace CSCore.Ifs.FF.Repository.FF1XX
 {
-    public class FF102RepositoryImpl(AppDbContext appDbContext)
+    public class FF102RepositoryImpl(AppDbContext appDbContext, ICalculoAtrasoMultaJurosTitulos calculoAtrasoMultaJurosTitulos)
         : RepositorioBaseImpl<CSICP_FF102>(appDbContext, "Id"), IFF102Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
+        private readonly ICalculoAtrasoMultaJurosTitulos _calculoAtrasoMultaJurosTitulos = calculoAtrasoMultaJurosTitulos;
         public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int? in_tipoRegistro)
         {
             IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
@@ -36,6 +33,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
         private IQueryable<RepoDtoCSICP_FF102> GetQueryBase(int in_tenant)
         {
+            
+
             return from ff102 in _appDbContext.OsusrE9aCsicpFf102s
 
                        //42 tabelas
