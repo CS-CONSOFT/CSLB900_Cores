@@ -15,20 +15,20 @@ namespace CSCore.Ifs.LB900.Calculos
             _appDbContext = appDbContext;
         }
 
-        public async Task<PrmRetornoCalculo> CalcularContasAReceber(PrmEntradaContasAPagar InEntradaCalculo)
+        public async Task<PrmRetornoCalculo> CalcularContasAReceber(PrmEntradaCalculo InEntradaCalculo)
         {
             CSICP_FF000? WorkFF000 = await RecuperarParametrosTitulo(InEntradaCalculo);
             if (WorkFF000 is null) return new PrmRetornoCalculo();
             return CalcularTitulos(InEntradaCalculo, WorkFF000);
         }
 
-        public PrmRetornoCalculo CalcularContasAPagar(PrmEntradaContasAPagar InEntradaCalculo)
+        public PrmRetornoCalculo CalcularContasAPagar(PrmEntradaCalculo InEntradaCalculo)
         {
             return CalcularTitulos(InEntradaCalculo, InCSICPFF000: null);
         }
 
         private PrmRetornoCalculo CalcularTitulos(
-          PrmEntradaContasAPagar InEntradaCalculo,
+          PrmEntradaCalculo InEntradaCalculo,
           CSICP_FF000? InCSICPFF000)
         {
             // Criar cópia para evitar mutação do objeto original
@@ -70,7 +70,7 @@ namespace CSCore.Ifs.LB900.Calculos
         }
 
         private static ParametrosCalculoLocal CriarParametrosCalculoComDefaults(
-           PrmEntradaContasAPagar entradaCalculo,
+           PrmEntradaCalculo entradaCalculo,
            CSICP_FF000? parametrosTitulo)
             {
                 return new ParametrosCalculoLocal
@@ -103,7 +103,7 @@ namespace CSCore.Ifs.LB900.Calculos
             }
 
         private static PrmRetornoCalculo MontarRetornoCalculo(
-            PrmEntradaContasAPagar InEntradaCalculo,
+            PrmEntradaCalculo InEntradaCalculo,
             CSICP_FF000? WorkFF000,
             decimal WorkValorCalculoJuros,
             int WorkDiasAtrasoJuros,
@@ -141,7 +141,7 @@ namespace CSCore.Ifs.LB900.Calculos
 
 
 
-        private async Task<CSICP_FF000?> RecuperarParametrosTitulo(PrmEntradaContasAPagar InEntradaCalculo)
+        private async Task<CSICP_FF000?> RecuperarParametrosTitulo(PrmEntradaCalculo InEntradaCalculo)
         {
             return await _appDbContext.OsusrE9aCsicpFf000s
                 .Where(e => e.TenantId == InEntradaCalculo.InTenantID
@@ -149,6 +149,7 @@ namespace CSCore.Ifs.LB900.Calculos
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
+
 
 
         private class ParametrosCalculoLocal

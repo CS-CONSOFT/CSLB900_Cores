@@ -393,6 +393,11 @@ public class RepoDtoCSICP_FF102 : CSICP_FF102
     public decimal? CSValorJuros { get; set; } = default;
 
     public decimal? CSValorAPagar { get; set; } = default;
+    public decimal? CSPercentualJurosConfig { get; set; }
+    public decimal? CSPercentualMultaConfig { get; set; }
+    public decimal? CSPercentualCorrecaoMonetariaConfig { get; set; }
+    public decimal? CSPercentualHonorarioConfig { get; set; }
+
 
     public CSICP_BB001? NavBB001 { get; set; }
     public CSICP_Bb005? NavBB005 { get; set; }

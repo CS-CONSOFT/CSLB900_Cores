@@ -9,7 +9,7 @@ namespace CSCore.Ifs.LB900.Calculos
 {
     public interface ICalculoAtrasoMultaJurosTitulos
     {
-        Task<PrmRetornoCalculo> CalcularContasAReceber(PrmEntradaContasAPagar InEntradaCalculo);
-        PrmRetornoCalculo CalcularContasAPagar(PrmEntradaContasAPagar InEntradaCalculo);
+        Task<PrmRetornoCalculo> CalcularContasAReceber(PrmEntradaCalculo InEntradaCalculo);
+        PrmRetornoCalculo CalcularContasAPagar(PrmEntradaCalculo InEntradaCalculo);
     }
 }
