@@ -31,7 +31,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_EscreveValores
                                                FF018_VALOR_MULTASUM = g.Sum(x => x.Ff018ValorMulta ?? 0),
                                                FF018_VALOR_TITULOSUM = g.Sum(x => x.Ff018ValorTitulo ?? 0)
                                            })
-                           .AsNoTracking()
+                           .AsNoTrackingWithIdentityResolution()
                            .FirstOrDefaultAsync();
 
                 CSICP_FF017? WorkFF017 = await _appDbContext.OsusrE9aCsicpFf017s

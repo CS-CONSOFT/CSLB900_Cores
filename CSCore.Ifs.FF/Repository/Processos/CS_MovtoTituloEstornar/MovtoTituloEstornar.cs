@@ -44,17 +44,19 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloEstornar
 
         private static void ValidarEstornoMovimento(CSICP_FF103 WorkFF103)
         {
-            if (WorkFF103.Ff103ObjBxId == PdvWebLabel || WorkFF103.Ff103ObjBxLabel == "BXPER")
-                throw new InvalidOperationException(WorkFF103.Ff103ObjBxLabel == PdvWebLabel ? "O Estorno de baixas do PDV, somente poderá ser estornada pelo PDV!" : "O Estorno de baixas via Permuta, não poderá ser estornado!");
+            var validacoes = new List<(bool, string)>
+            {
+                (WorkFF103.Ff103ObjBxId == PdvWebLabel || WorkFF103.Ff103ObjBxLabel == "BXPER", WorkFF103.Ff103ObjBxLabel == PdvWebLabel ? "O Estorno de baixas do PDV, somente poderá ser estornada pelo PDV!" : "O Estorno de baixas via Permuta, não poderá ser estornado!"),
+                (WorkFF103.Ff103Baixado == false,  "O Estorno não pode ser efetuado, movimento não está Baixado!"),
+                (WorkFF103.Ff103Estornado == true,  "Não é possivel o Estorno, movimento já foi estornado!"),
+                (WorkFF103.Ff103Cancelado == true,  "Não é possivel o Estorno, movimento está cancelado!")
+            };
 
-            if (WorkFF103.Ff103Baixado == false)
-                throw new InvalidOperationException("O Estorno não pode ser efetuado, movimento não está Baixado!");
-
-            if (WorkFF103.Ff103Estornado == true)
-                throw new InvalidOperationException("Não é possivel o Estorno, movimento já foi estornado!");
-
-            if (WorkFF103.Ff103Cancelado == true)
-                throw new InvalidOperationException("Não é possivel o Estorno, movimento está cancelado!");
+            foreach (var (condition, message) in validacoes)
+            {
+                if (condition)
+                    throw new InvalidOperationException(message);
+            }
         }
     }
 }
