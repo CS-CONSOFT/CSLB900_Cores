@@ -1,68 +1,68 @@
-name: AutoMerge Workflow
+# name: AutoMerge Workflow
 
-on:
-  push:
-    branches:
-      - 'dev_**'
+# on:
+#   push:
+#     branches:
+#       - 'dev_**'
 
-jobs:
-  automerge-dev-branch:
-    if: startsWith(github.ref, 'refs/heads/dev_')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Extrair nome da branch
-        id: branch_name
-        run: |
-          branch_name=${GITHUB_REF#refs/heads/}
-          echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
+# jobs:
+#   automerge-dev-branch:
+#     if: startsWith(github.ref, 'refs/heads/dev_')
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Extrair nome da branch
+#         id: branch_name
+#         run: |
+#           branch_name=${GITHUB_REF#refs/heads/}
+#           echo "branch_name=$branch_name" >> $GITHUB_OUTPUT
 
-      - name: Criar Pull Request para develop
-        id: criar_pr
-        run: |
+#       - name: Criar Pull Request para develop
+#         id: criar_pr
+#         run: |
 
-          author_name="${{ github.event.head_commit.author.name }}"
-          if [ -z "$author_name" ] || [ "$author_name" = "null" ]; then
-            author_name="${{ github.actor }}"
-          fi
-          echo "Repositório: ${{ github.repository }}"
-          echo "Branch: ${{ steps.branch_name.outputs.branch_name }}"
+#           author_name="${{ github.event.head_commit.author.name }}"
+#           if [ -z "$author_name" ] || [ "$author_name" = "null" ]; then
+#             author_name="${{ github.actor }}"
+#           fi
+#           echo "Repositório: ${{ github.repository }}"
+#           echo "Branch: ${{ steps.branch_name.outputs.branch_name }}"
           
-          response=$(curl -s -X POST \
-            -H "Authorization: token ${{ secrets.CS_ACCESS_TOKEN_GITHUB }}" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/${{ github.repository }}/pulls \
-            -d "{
-                  \"title\": \"Auto merge: ${{ steps.branch_name.outputs.branch_name }} -> develop - commiot feito por $author_name\",
-                  \"body\": \"Merge automático da branch ${{ steps.branch_name.outputs.branch_name }} para develop - commit feito por $author_name\",
-                  \"head\": \"${{ steps.branch_name.outputs.branch_name }}\",
-                  \"base\": \"develop\"}")
+#           response=$(curl -s -X POST \
+#             -H "Authorization: token ${{ secrets.CS_ACCESS_TOKEN_GITHUB }}" \
+#             -H "Accept: application/vnd.github+json" \
+#             https://api.github.com/repos/${{ github.repository }}/pulls \
+#             -d "{
+#                   \"title\": \"Auto merge: ${{ steps.branch_name.outputs.branch_name }} -> develop - commiot feito por $author_name\",
+#                   \"body\": \"Merge automático da branch ${{ steps.branch_name.outputs.branch_name }} para develop - commit feito por $author_name\",
+#                   \"head\": \"${{ steps.branch_name.outputs.branch_name }}\",
+#                   \"base\": \"develop\"}")
           
-          echo "Response completa:"
-          echo "$response"
+#           echo "Response completa:"
+#           echo "$response"
           
-          pr_number=$(echo "$response" | jq -r '.number // empty')
-          pr_url=$(echo "$response" | jq -r '.html_url // empty')
-          echo "PR Number: $pr_number"
-          echo "PR URL: $pr_url"
-          echo "pr_number=$pr_number" >> $GITHUB_OUTPUT
+#           pr_number=$(echo "$response" | jq -r '.number // empty')
+#           pr_url=$(echo "$response" | jq -r '.html_url // empty')
+#           echo "PR Number: $pr_number"
+#           echo "PR URL: $pr_url"
+#           echo "pr_number=$pr_number" >> $GITHUB_OUTPUT
           
-          # Verificar se houve erro na criação do PR
-          if [ "$pr_number" = "null" ] || [ -z "$pr_number" ]; then
-            echo "Erro ao criar PR:"
-            echo "$response"
-            exit 1
-          fi
+#           # Verificar se houve erro na criação do PR
+#           if [ "$pr_number" = "null" ] || [ -z "$pr_number" ]; then
+#             echo "Erro ao criar PR:"
+#             echo "$response"
+#             exit 1
+#           fi
 
-      - name: Merge PR via API
-        if: ${{ steps.criar_pr.outputs.pr_number != '' && steps.criar_pr.outputs.pr_number != 'null' }}
-        run: |
-          echo "Fazendo merge do PR #${{ steps.criar_pr.outputs.pr_number }}"
+#       - name: Merge PR via API
+#         if: ${{ steps.criar_pr.outputs.pr_number != '' && steps.criar_pr.outputs.pr_number != 'null' }}
+#         run: |
+#           echo "Fazendo merge do PR #${{ steps.criar_pr.outputs.pr_number }}"
           
-          response=$(curl -s -X PUT \
-            -H "Authorization: token ${{ secrets.CS_ACCESS_TOKEN_GITHUB }}" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.criar_pr.outputs.pr_number }}/merge \
-            -d '{"merge_method":"merge"}')
+#           response=$(curl -s -X PUT \
+#             -H "Authorization: token ${{ secrets.CS_ACCESS_TOKEN_GITHUB }}" \
+#             -H "Accept: application/vnd.github+json" \
+#             https://api.github.com/repos/${{ github.repository }}/pulls/${{ steps.criar_pr.outputs.pr_number }}/merge \
+#             -d '{"merge_method":"merge"}')
           
-          echo "Resposta do merge:"
-          echo "$response"
+#           echo "Resposta do merge:"
+#           echo "$response"
