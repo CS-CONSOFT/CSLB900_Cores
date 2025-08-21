@@ -35,6 +35,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.CS_Mov
                 WorkFF103.Ff103Flagregistro = 1; // Estornado
 
                 await _appDbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
 
                 PrmEntradaCalculoBaixa prmEntradaCalculoBaixa = new PrmEntradaCalculoBaixa
                 {
@@ -46,7 +47,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.CS_Mov
                     InSTIDFF103TpBaiDevolucao = InPrmTituloEstornar.InSTIDFF103TpBaiDevolucao_tituloCalcBaixa,
                     InSTIDFF103TpBaiDoacao = InPrmTituloEstornar.InSTIDFF103TpBaiDoacao_tituloCalcBaixa,
                     InFF102Id = InPrmTituloEstornar.InFF102Id_tituloCalcBaixa,
-                    //InEstabID = InPrmTituloEstornar.InEstabID_tituloCalcBaixa,
+                    InBB001Id = InPrmTituloEstornar.InEstabID_tituloCalcBaixa,
                 };
                 await _tituloCalculoBaixa.Executar(prmEntradaCalculoBaixa);
 
