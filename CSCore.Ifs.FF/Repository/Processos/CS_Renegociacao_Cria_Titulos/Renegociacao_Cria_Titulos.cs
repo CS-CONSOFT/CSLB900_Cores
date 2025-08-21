@@ -3,6 +3,7 @@ using CSCore.Ex.Personalizada;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos.Parametro;
+using CSCore.Ifs.LB900.AdapterGerarValores;
 using CSLB900.MSTools.GenerateId;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,8 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos
     public class Renegociacao_Cria_Titulos : IRenegociacaoCriaTitulo
     {
         private readonly AppDbContext _appDbContext;
+
+
         private readonly ICS_GenerateId _generateId;
         private readonly IGenerateProtocolo _generateProtocolo;
 
@@ -97,7 +100,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos
         {
             return new CSICP_FF103
             {
-                Id = _generateId.GenerateUuId(),
+                Id =  _generateId.GenerateUuId(),
                 TenantId = InPrmCriaTitulo.InTenantID,
                 Ff103Filialid = AuxFF102ParaInserir.Ff102Filialid,
                 Ff103Pfx = AuxFF102ParaInserir.Ff102Pfx,

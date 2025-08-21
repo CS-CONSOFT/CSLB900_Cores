@@ -15,7 +15,6 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
         public static IAuxProcessarCalculoTitulo Create(
             Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos,
             CSICP_Bb008 work_bb008,
-            (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) in_calculoFinanciamento,
             AppDbContext appDbContext,
             ICS_GenerateId generateId,
             string[] aux_condicaoPagtoDividida,
@@ -23,29 +22,49 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             decimal work_valor_entrada)
         {
             //tipo dias
-            if (work_bb008.Bb008Tipoid == in_Renegociacao_Calc_Titulos.in_StID_bb008_tp_Dias)
+            if (IsTipoDias(in_Renegociacao_Calc_Titulos, work_bb008))
             {
                 return new ProcessarCalculoTituloTipoDias(appDbContext, generateId, aux_condicaoPagtoDividida, work_valor_entrada);
             }
 
             //tipo parcela dia
-            else if (work_bb008.Bb008Tipoid == in_Renegociacao_Calc_Titulos.in_StID_bb008_tp_ParcelaDias)
+            else if (IsTipoParcelaDias(in_Renegociacao_Calc_Titulos, work_bb008))
             {
                 return new ProcessarParcelasTipoParcelaDiasOuMes(generateId, aux_condicaoPagtoDividida, work_qtd_parcelas, isParcelaMes: false, work_valor_entrada, appDbContext);
             }
 
             //tipo parcela mes
-            else if (work_bb008.Bb008Tipoid == in_Renegociacao_Calc_Titulos.in_StID_bb008_tp_ParcelaMes)
+            else if (IsTipoParcelaMes(in_Renegociacao_Calc_Titulos, work_bb008))
             {
                 return new ProcessarParcelasTipoParcelaDiasOuMes(generateId, aux_condicaoPagtoDividida, work_qtd_parcelas, isParcelaMes: true, work_valor_entrada, appDbContext);
             }
 
             //a vista
-            else if (work_bb008.Bb008Tipoid == in_Renegociacao_Calc_Titulos.in_StID_bb008_tp_A_vista)
+            else if (IsTipoAVista(in_Renegociacao_Calc_Titulos, work_bb008))
             {
                 return new ProcessarCalculoTipoAVista(appDbContext, generateId);
             }
             throw new NotSupportedException("Tipo de renegociação não suportado.");
+        }
+
+        private static bool IsTipoAVista(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos, CSICP_Bb008 work_bb008)
+        {
+            return work_bb008.Bb008Tipoid == in_Renegociacao_Calc_Titulos.in_StID_bb008_tp_A_vista;
+        }
+
+        private static bool IsTipoParcelaMes(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos, CSICP_Bb008 work_bb008)
+        {
+            return work_bb008.Bb008Tipoid == in_Renegociacao_Calc_Titulos.in_StID_bb008_tp_ParcelaMes;
+        }
+
+        private static bool IsTipoParcelaDias(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos, CSICP_Bb008 work_bb008)
+        {
+            return work_bb008.Bb008Tipoid == in_Renegociacao_Calc_Titulos.in_StID_bb008_tp_ParcelaDias;
+        }
+
+        private static bool IsTipoDias(Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos, CSICP_Bb008 work_bb008)
+        {
+            return work_bb008.Bb008Tipoid == in_Renegociacao_Calc_Titulos.in_StID_bb008_tp_Dias;
         }
     }
 }
