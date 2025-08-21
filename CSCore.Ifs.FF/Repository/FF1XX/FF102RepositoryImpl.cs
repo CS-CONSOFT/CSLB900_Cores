@@ -19,7 +19,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     {
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly ICalculoAtrasoMultaJurosTitulos _calculoAtrasoMultaJurosTitulos = calculoAtrasoMultaJurosTitulos;
-        public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int? in_tipoRegistro)
+        public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int in_tipoRegistro)
         {
             IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
             //1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar
@@ -150,8 +150,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    join bb01201 in _appDbContext.OsusrE9aCsicpBb01201s
                    on bb012conta.Id equals bb01201.Id into bb01201_join
                    from bb01201 in bb01201_join.DefaultIfEmpty()
-
-
 
                    join bb01202 in _appDbContext.OsusrE9aCsicpBb01202s
                    on bb012conta.Id equals bb01202.Id into bb01202_join
@@ -664,7 +662,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Label = ff102cob.Label,
                        } : null,
 
-                       
 
                        NavFF102Aut = ff102Aut != null ? new CSICP_FF102Aut
                        {
@@ -789,7 +786,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
         private IQueryable<RepoDtoCSICP_FF102> FiltraQuandoExisteFiltro(string? in_estabelecimentoId,
             IQueryable<RepoDtoCSICP_FF102> query,
-            int? in_tipoRegistro,
+            int in_tipoRegistro,
             string? in_prefixo,
             decimal? in_titulo,
             string? in_sufixo,

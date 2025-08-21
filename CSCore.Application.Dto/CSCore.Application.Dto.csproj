@@ -7,21 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Dtos\Financeiro_FF\VisoesGeraisFinanceiro\Inadimplencia\**" />
     <Compile Remove="Dtos\Materiais_GG\GG00X\GG156\**" />
-    <EmbeddedResource Remove="Dtos\Financeiro_FF\VisoesGeraisFinanceiro\Inadimplencia\**" />
     <EmbeddedResource Remove="Dtos\Materiais_GG\GG00X\GG156\**" />
-    <None Remove="Dtos\Financeiro_FF\VisoesGeraisFinanceiro\Inadimplencia\**" />
     <None Remove="Dtos\Materiais_GG\GG00X\GG156\**" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CSCompartilhado.CSLB900_MSTools\CSLB900.MSTools.csproj" />
     <ProjectReference Include="..\CSCore.Domain\CSCore.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Dtos\Financeiro_FF\VisoesGeraisFinanceiro\" />
   </ItemGroup>
 
 </Project>

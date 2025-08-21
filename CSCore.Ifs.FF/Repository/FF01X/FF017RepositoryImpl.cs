@@ -57,7 +57,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                    from bb026 in bb026_ff017_join.DefaultIfEmpty()
 
                    join dd125 in _appDbContext.OsusrTeiCsicpDd125s
-                   on ff017.Ff017Valecreditoid equals dd125.Dd125CartacredId into dd125_ff017_join //verificar se está correto a propriedade
+                   on ff017.Ff017Valecreditoid equals dd125.Dd125CartacredId into dd125_ff017_join
                    from dd125 in dd125_ff017_join.DefaultIfEmpty()
 
                    join ff003 in _appDbContext.OsusrE9aCsicpFf003s
