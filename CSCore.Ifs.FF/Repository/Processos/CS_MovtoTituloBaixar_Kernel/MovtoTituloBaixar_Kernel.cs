@@ -1,5 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.FF.Repository.Processos.CS_TituloCalculoBaixa;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,28 +9,51 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
     public class MovtoTituloBaixar_Kernel : IMovtoTituloBaixar_Kernel
     {
         private readonly AppDbContext _appDbContext;
+        private readonly ITituloCalculoBaixa _tituloCalculoBaixa;
 
-        public MovtoTituloBaixar_Kernel(AppDbContext appDbContext)
+        public MovtoTituloBaixar_Kernel(AppDbContext appDbContext, ITituloCalculoBaixa tituloCalculoBaixa)
         {
+            _tituloCalculoBaixa = tituloCalculoBaixa;
             _appDbContext = appDbContext;
         }
+
 
         public async Task<bool> Executar(PrmMovtoTituloBaixarKernel InPrmMovtoTituloBaixarKernel)
         {
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
             {
-                CSICP_FF103 WorkBaixa = await BuscarMovimentoParaBaixa(InPrmMovtoTituloBaixarKernel.InFF103ID, InPrmMovtoTituloBaixarKernel.InTenantID);
+                CSICP_FF103 WorkBaixa 
+                    = await BuscarMovimentoParaBaixaComTracking(
+                        InPrmMovtoTituloBaixarKernel.InFF103ID,
+                        InPrmMovtoTituloBaixarKernel.InTenantID);
 
                 VerificarRestricoesBaixa(WorkBaixa, InPrmMovtoTituloBaixarKernel);
 
                 WorkBaixa.Ff103Baixado = true;
                 WorkBaixa.Ff103Flagregistro = 1;
+                WorkBaixa.NavFF102 = null;
 
+                _appDbContext.Update(WorkBaixa);
                 await _appDbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
+                transaction.Dispose();
 
-                //chamar o CS_TituloCalculoBaixa
+                PrmEntradaCalculoBaixa prmEntradaCalculoBaixa = new PrmEntradaCalculoBaixa
+                {
+                    InTenantID = InPrmMovtoTituloBaixarKernel.InTenantID,
+                    InFF102Id = WorkBaixa.Ff102Id ?? "",
+                    InBB001Id = InPrmMovtoTituloBaixarKernel.InEstabID_tituloCalcBaixa,
 
+                    //id de tabela estatica
+                    InSTIDFF102Liquidado = InPrmMovtoTituloBaixarKernel.InSTIDff102SitLiquidado,
+                    InSTIDFF102BxParcial = InPrmMovtoTituloBaixarKernel.InSTIDFF102BxParcial_tituloCalcBaixa,
+                    InSTIDFF102Aberto = InPrmMovtoTituloBaixarKernel.InSTIDFF102Aberto_tituloCalcBaixa,
+                    InSTIDFF103TpBaiCancelamento = InPrmMovtoTituloBaixarKernel.InSTIDFF103TpBaiCancelamento_tituloCalcBaixa,
+                    InSTIDFF103TpBaiDevolucao = InPrmMovtoTituloBaixarKernel.InSTIDFF103TpBaiDevolucao_tituloCalcBaixa,
+                    InSTIDFF103TpBaiDoacao = InPrmMovtoTituloBaixarKernel.InSTIDFF103TpBaiDoacao_tituloCalcBaixa,
+                };
+                await _tituloCalculoBaixa.Executar(prmEntradaCalculoBaixa);
                 return true;
             }
             catch (Exception ex)
@@ -74,7 +98,9 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
                      (WorkBaixa.Ff103ValorTarifas ?? 0) +
                      (WorkBaixa.Ff103ValorJuros ?? 0) -
                      (WorkBaixa.Ff103ValorDesconto ?? 0) +
-                     (WorkBaixa.NavFF102?.Ff102VlLiqTitulo ?? 0)),
+                     (WorkBaixa.NavFF102?.Ff102VlLiqTitulo ?? 0)) +
+                     (WorkBaixa.Ff103VlHonorarios ?? 0) +
+                     (WorkBaixa.Ff103VlCorrmonetaria ?? 0),
                     "Valor pago é superior ao valor calculado do título."
                 ),
 
@@ -91,7 +117,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
 
 
 
-        private async Task<CSICP_FF103> BuscarMovimentoParaBaixa(string InFF103ID, int InTenantID)
+        private async Task<CSICP_FF103> BuscarMovimentoParaBaixaComTracking(string InFF103ID, int InTenantID)
         {
             var WorkResultado = await (from ff103 in _appDbContext.OsusrE9aCsicpFf103s
                                        where ff103.Id == InFF103ID && ff103.TenantId == InTenantID

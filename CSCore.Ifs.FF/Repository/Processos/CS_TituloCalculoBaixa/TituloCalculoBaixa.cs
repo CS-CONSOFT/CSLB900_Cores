@@ -17,18 +17,23 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_TituloCalculoBaixa
 
         public async Task<bool> Executar(PrmEntradaCalculoBaixa InPrmEntradaCalculo)
         {
-            if (InPrmEntradaCalculo == null)
-                throw new ArgumentNullException(nameof(InPrmEntradaCalculo), "Parâmetro de entrada não pode ser nulo");
-
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
             {
+                if (InPrmEntradaCalculo == null)
+                    throw new ArgumentNullException(nameof(InPrmEntradaCalculo), "Parâmetro de entrada não pode ser nulo");
+
                 CSICP_FF102 WorkFF102 = await _appDbContext.OsusrE9aCsicpFf102s
-                              .Where(e => e.TenantId == InPrmEntradaCalculo.InTenantID && e.Id == InPrmEntradaCalculo.InFF102Id)
-                              .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Titulo não encontrado");
+                                 .Where(e => e.TenantId == InPrmEntradaCalculo.InTenantID && e.Id == InPrmEntradaCalculo.InFF102Id)
+                                 .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Titulo não encontrado");
+
+                ZerandoValoresFF102(WorkFF102);
 
                 List<CSICP_FF103>? WorkListaFF103 = await _appDbContext.OsusrE9aCsicpFf103s
-                    .Where(e => e.TenantId == InPrmEntradaCalculo.InTenantID && e.Ff102Id == InPrmEntradaCalculo.InFF102Id)
+                    .Where(e =>
+                    e.TenantId == InPrmEntradaCalculo.InTenantID
+                    && e.Ff102Id == InPrmEntradaCalculo.InFF102Id &&
+                    e.Ff103Baixado == true && e.Ff103Estornado == false)
                     .AsNoTracking()
                     .ToListAsync();
 
@@ -36,50 +41,50 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_TituloCalculoBaixa
                 DateTime? FlagDataDaBaixa = null;
 
                 if (ListaFF103Vazia(WorkListaFF103))
-                    AtualizaDataEValorLiquidoTitulo(WorkFF102);
+                    AtualizaValorLiquidoTitulo(WorkFF102);
 
                 /*o foreach é bypassado caso a lista esteja vazia, então o que prevalece é a atribuição acima.
                  Caso a lista não esteja vazia, o que aconteceu na linha 37 é bypassado e acontece o fluxo do foreach*/
                 foreach (var current in WorkListaFF103)
                 {
-                    /*Duvida: a ff103 é uma lista, a gente ta atualizando a ff102 dentro do foreach a cada item da ff103,
-                     mas o commit de atualizacao é feito ao final do fluxo, fora do foreach. Ou seja, o que seria salvo
-                    seria apenas a ultima atribuição realizada pelo foreach.
-
-                    Ex.
-                    Iteracao 1 -> Valor = 1
-                    Iteracao 2 -> Valor = 2
-                    Iteracao 3 -> Valor = 3
-                    Iteracao 4 -> Valor = 4
-                    Iteracao 5 -> Valor = 5
-
-                    Ao final do fluxo, o que seria salvo seria apenas o valor 5, pois é o ultimo valor atribuído.
-
-                    O certo seria salvar todas as ff102 necessarias ou entao recuperar apenas 1 ff103
-                     */
                     if (IsCancelamento(current, InPrmEntradaCalculo))
                         FlagIsBaixaCancelamento = true;
                     AtualizaPropriedadesDaFF102(InPrmEntradaCalculo, WorkFF102, current);
                 }
 
-
-                if (ValorLiquidoTituloPositivo(WorkFF102))
-                    AtualizaSituacaoTitulo(InPrmEntradaCalculo, WorkFF102, FlagIsBaixaCancelamento);
+                AtualizaSituacaoTitulo(InPrmEntradaCalculo, WorkFF102, FlagIsBaixaCancelamento);
 
                 await AtualizaDataVencimentoRealTitulo(InPrmEntradaCalculo, WorkFF102, FlagDataDaBaixa);
 
+                _appDbContext.Update(WorkFF102);
                 await _appDbContext.SaveChangesAsync();
                 await transaction.CommitAsync();
+                // Se chegou até aqui, significa que a operação foi bem-sucedida
                 return true;
             }
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
+                if (ex is InvalidOperationException) throw new InvalidOperationException(HandlerExceptionMessage.CreateExceptionMessage(ex));
                 if (ex is KeyNotFoundException) throw new KeyNotFoundException(HandlerExceptionMessage.CreateExceptionMessage(ex));
                 else throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
             }
         }
 
+        private static void ZerandoValoresFF102(CSICP_FF102 WorkFF102)
+        {
+            WorkFF102.Ff102TotalPagamentos = 0;
+            WorkFF102.Ff102TotalMultaPaga = 0;
+            WorkFF102.Ff102TotalJuros = 0;
+            WorkFF102.Ff102TotalDescontos = 0;
+            WorkFF102.Ff102TotalDevolucao = 0;
+            WorkFF102.Ff102TotalDoacao = 0;
+            WorkFF102.Ff102TotalTarifas = 0;
+            WorkFF102.Ff102VlLiqTitulo = 0;
+            WorkFF102.Ff102NoPagamentos = 0;
+            WorkFF102.Ff102VlCorrmonetaria = 0;
+            WorkFF102.Ff102VlHonorarios = 0;
+        }
 
 
 
@@ -92,10 +97,10 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_TituloCalculoBaixa
         private static void AtualizaPropriedadesDaFF102(
             PrmEntradaCalculoBaixa InPrmEntradaCalculo, CSICP_FF102 WorkFF102, CSICP_FF103 current)
         {
-            AtualizaDataEValorLiquidoTitulo(WorkFF102);
 
             WorkFF102.Ff102TotalPagamentos =
                 (WorkFF102.Ff102TotalPagamentos ?? 0) + (current.Ff103ValorPago ?? 0);
+
             WorkFF102.Ff102TotalMultaPaga =
                 (WorkFF102.Ff102TotalMultaPaga ?? 0) + (current.Ff103ValorMulta ?? 0);
 
@@ -115,7 +120,9 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_TituloCalculoBaixa
             WorkFF102.Ff102VlHonorarios =
                 (WorkFF102.Ff102VlHonorarios ?? 0) + (current.Ff103VlHonorarios ?? 0);
 
+            AtualizaValorLiquidoTitulo(WorkFF102);
 
+            
             WorkFF102.Ff102DataUltPagto = current.Ff103DataBaixa;
 
             WorkFF102.Ff102NoPagamentos =
@@ -142,7 +149,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_TituloCalculoBaixa
             PrmEntradaCalculoBaixa InPrmEntradaCalculo, CSICP_FF102 WorkFF102, DateTime? InFlagDataDaBaixa)
         {
             DateTime? auxData =
-              await ChecaCalendarioContasReceber(InPrmEntradaCalculo.InTenantID, InFlagDataDaBaixa, InPrmEntradaCalculo.InEstabID);
+              await ChecaCalendarioContasReceber(InPrmEntradaCalculo.InTenantID, InFlagDataDaBaixa, InPrmEntradaCalculo.InBB001Id);
             WorkFF102.Ff102DataVencReal = auxData;
             
         }
@@ -151,6 +158,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_TituloCalculoBaixa
         {
             WorkFF102.Ff102Situacaoid = ValorLiquidoTituloZerado(WorkFF102) ?
                             InPrmEntradaCalculo.InSTIDFF102Liquidado : ValorLiquidoTituloPositivo(WorkFF102) ?
+                            //caso a flag cancelamento seja verdadeira, o título será considerado cancelado
                             InPrmEntradaCalculo.InSTIDFF102BxParcial : InFlagIsBaixaCancelamento ?
                             InPrmEntradaCalculo.InSTIDFF103TpBaiCancelamento : InPrmEntradaCalculo.InSTIDFF102Aberto;
         }
@@ -165,24 +173,37 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_TituloCalculoBaixa
             return WorkFF102.Ff102VlLiqTitulo == 0;
         }
 
-        private static void AtualizaDataEValorLiquidoTitulo(CSICP_FF102 WorkFF102)
+        private static void AtualizaValorLiquidoTitulo(CSICP_FF102 WorkFF102)
         {
             WorkFF102.Ff102VlLiqTitulo = Math.Round(
+
                    (WorkFF102.Ff102ValorTitulo ?? 0)
+
                    + (WorkFF102.Ff102VlAcrescimos ?? 0)
+
                    - (WorkFF102.Ff102VlDecrescimos ?? 0)
+
                    - (WorkFF102.Ff102TotalPagamentos ?? 0)
+
                    + (WorkFF102.Ff102TotalJuros ?? 0)
+
                    + (WorkFF102.Ff102TotalMultaPaga ?? 0)
+
                    + (WorkFF102.Ff102TotalTarifas ?? 0)
+
                    + (WorkFF102.Ff102VlCorrmonetaria ?? 0)
+
                    + (WorkFF102.Ff102VlHonorarios ?? 0)
+
                    - (WorkFF102.Ff102ValorTaxaCartao ?? 0)
+
                    - (WorkFF102.Ff102TotalDescontos ?? 0)
+
                    - (WorkFF102.Ff102ValorDesagio ?? 0)
+
                    - (WorkFF102.Ff102TotalImpostosmenos ?? 0), 2);
 
-            WorkFF102.Ff102DataUltPagto = null;
+
         }
 
         private async Task<DateTime?> ChecaCalendarioContasReceber(int InTenantID, DateTime? InDataVencimento, string InEstabID)

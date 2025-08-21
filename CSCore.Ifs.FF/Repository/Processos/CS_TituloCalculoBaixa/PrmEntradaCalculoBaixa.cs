@@ -16,6 +16,6 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_TituloCalculoBaixa
         public int InSTIDFF103TpBaiDevolucao { get; set; }
         public int InSTIDFF103TpBaiDoacao { get; set; }
         public string InFF102Id { get; set; } = string.Empty;
-        public string InEstabID { get; set; } = string.Empty;
+        public string InBB001Id { get; set; } = string.Empty;
     }
 }

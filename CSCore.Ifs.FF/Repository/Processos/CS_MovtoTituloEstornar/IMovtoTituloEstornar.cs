@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloEstornar;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.CS_Mov
 {
     public interface IMovtoTituloEstornar
     {
-        Task<bool> Executar(string InFF103ID, int InTenantID);
+        Task<bool> Executar(PrmTituloEstornar InPrmTituloEstornar);
     }
 }

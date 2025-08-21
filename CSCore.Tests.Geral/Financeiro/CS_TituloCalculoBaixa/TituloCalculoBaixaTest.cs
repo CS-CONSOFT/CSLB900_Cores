@@ -2,7 +2,6 @@ using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.Processos.CS_TituloCalculoBaixa;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace CSCore.Tests.Geral.Financeiro.CS_TituloCalculoBaixa
 {
@@ -155,7 +154,7 @@ namespace CSCore.Tests.Geral.Financeiro.CS_TituloCalculoBaixa
             {
                 InTenantID = 135,
                 InFF102Id = Guid.NewGuid().ToString(),
-                InEstabID = "001",
+                InBB001Id = "001",
                 InSTIDFF102Liquidado = 1,
                 InSTIDFF102BxParcial = 2,
                 InSTIDFF102Aberto = 3,
