@@ -52,6 +52,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
                     InSTIDFF103TpBaiCancelamento = InPrmMovtoTituloBaixarKernel.InSTIDFF103TpBaiCancelamento_tituloCalcBaixa,
                     InSTIDFF103TpBaiDevolucao = InPrmMovtoTituloBaixarKernel.InSTIDFF103TpBaiDevolucao_tituloCalcBaixa,
                     InSTIDFF103TpBaiDoacao = InPrmMovtoTituloBaixarKernel.InSTIDFF103TpBaiDoacao_tituloCalcBaixa,
+                    InSY001UsuarioID = InPrmMovtoTituloBaixarKernel.InSY001UsuarioID,
                 };
                 await _tituloCalculoBaixa.Executar(prmEntradaCalculoBaixa);
                 return true;

@@ -56,6 +56,9 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_TituloCalculoBaixa
 
                 await AtualizaDataVencimentoRealTitulo(InPrmEntradaCalculo, WorkFF102, FlagDataDaBaixa);
 
+                //seta usuarioID
+                WorkFF102.Ff102Usuarioproprieid = InPrmEntradaCalculo.InSY001UsuarioID;
+
                 _appDbContext.Update(WorkFF102);
                 await _appDbContext.SaveChangesAsync();
                 await transaction.CommitAsync();

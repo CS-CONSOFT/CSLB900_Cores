@@ -10,6 +10,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
     public class PrmMovtoTituloBaixarKernel
     {
         public string InFF103ID { get; set; } = string.Empty;
+        public string InSY001UsuarioID { get; set; } = string.Empty;
         public int InTenantID { get; set; }
         public int InSTIDff102SitLiquidado { get; set; }
         public int InSTIDff102SitCancelado { get; set; }
