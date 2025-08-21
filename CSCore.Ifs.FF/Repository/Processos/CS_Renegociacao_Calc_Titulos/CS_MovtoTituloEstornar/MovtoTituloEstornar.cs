@@ -4,7 +4,7 @@ using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
 
-namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloEstornar
+namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.CS_MovtoTituloEstornar
 {
     public class MovtoTituloEstornar : IMovtoTituloEstornar
     {

@@ -80,7 +80,7 @@ public partial class CSICP_FF102
 
     public DateTime Ff102DataVencimento { get; set; } = default(DateTime);
 
-    public DateTime Ff102DataVencReal { get; set; } = default(DateTime);
+    public DateTime? Ff102DataVencReal { get; set; } = default(DateTime);
 
     public decimal? Ff102ValorTitulo { get; set; }
 

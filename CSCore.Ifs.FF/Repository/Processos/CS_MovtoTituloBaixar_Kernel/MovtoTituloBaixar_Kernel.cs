@@ -1,19 +1,18 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
-using CSCore.Ex.Personalizada;
 using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
 {
-    public class MovtoTituloBaixar_Kernel
+    public class MovtoTituloBaixar_Kernel : IMovtoTituloBaixar_Kernel
     {
         private readonly AppDbContext _appDbContext;
+
+        public MovtoTituloBaixar_Kernel(AppDbContext appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
 
         public async Task<bool> Executar(PrmMovtoTituloBaixarKernel InPrmMovtoTituloBaixarKernel)
         {

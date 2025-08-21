@@ -8,5 +8,6 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
 {
     public interface IMovtoTituloBaixar_Kernel
     {
+        Task<bool> Executar(PrmMovtoTituloBaixarKernel InPrmMovtoTituloBaixarKernel);
     }
 }
