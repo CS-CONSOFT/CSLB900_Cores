@@ -9,6 +9,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloEstornar
     public class PrmTituloEstornar
     {
         public string InFF103ID { get;set; } = string.Empty;
+        public string InSY001UsuarioID { get;set; } = string.Empty;
         public int InTenantID { get; set; }
         /*PARAMTROS PARA _tituloCalculoBaixa*/
         public int InSTIDFF102Liquidado_tituloCalcBaixa { get; set; }

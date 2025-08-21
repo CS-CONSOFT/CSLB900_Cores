@@ -23,20 +23,17 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.CS_Mov
         public async Task<bool> Executar(PrmTituloEstornar InPrmTituloEstornar)
         {
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
+
+            var idFF102 = await ExecutarEstornoMovimento(InPrmTituloEstornar, transaction);
+            InPrmTituloEstornar.InFF102Id_tituloCalcBaixa = idFF102;
+
+            return await ExecutarCalculoBaixa(InPrmTituloEstornar);
+        }
+
+        private async Task<bool> ExecutarCalculoBaixa(PrmTituloEstornar InPrmTituloEstornar)
+        {
             try
             {
-                CSICP_FF103? WorkFF103 = await _appDbContext.OsusrE9aCsicpFf103s
-               .Where(e => e.TenantId == InPrmTituloEstornar.InTenantID && e.Id == InPrmTituloEstornar.InFF103ID)
-               .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Movimento não encontrado para Baixa!");
-
-                ValidarEstornoMovimento(WorkFF103);
-
-                WorkFF103.Ff103Estornado = true;
-                WorkFF103.Ff103Flagregistro = 1; // Estornado
-
-                await _appDbContext.SaveChangesAsync();
-                await transaction.CommitAsync();
-
                 PrmEntradaCalculoBaixa prmEntradaCalculoBaixa = new PrmEntradaCalculoBaixa
                 {
                     InTenantID = InPrmTituloEstornar.InTenantID,
@@ -48,10 +45,36 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.CS_Mov
                     InSTIDFF103TpBaiDoacao = InPrmTituloEstornar.InSTIDFF103TpBaiDoacao_tituloCalcBaixa,
                     InFF102Id = InPrmTituloEstornar.InFF102Id_tituloCalcBaixa,
                     InBB001Id = InPrmTituloEstornar.InEstabID_tituloCalcBaixa,
+                    InSY001UsuarioID = InPrmTituloEstornar.InSY001UsuarioID
                 };
                 await _tituloCalculoBaixa.Executar(prmEntradaCalculoBaixa);
 
                 return true;
+            }
+            catch (Exception ex)
+            {
+                if (ex is KeyNotFoundException) throw new KeyNotFoundException(HandlerExceptionMessage.CreateExceptionMessage(ex));
+                if (ex is InvalidOperationException) throw new InvalidOperationException(HandlerExceptionMessage.CreateExceptionMessage(ex));
+                else throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
+            }
+        }
+
+        private async Task<string> ExecutarEstornoMovimento(PrmTituloEstornar InPrmTituloEstornar, Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction)
+        {
+            try
+            {
+                CSICP_FF103? WorkFF103 = await _appDbContext.OsusrE9aCsicpFf103s
+                   .Where(e => e.TenantId == InPrmTituloEstornar.InTenantID && e.Id == InPrmTituloEstornar.InFF103ID)
+                   .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Movimento não encontrado para Baixa!");
+
+                ValidarEstornoMovimento(WorkFF103);
+
+                WorkFF103.Ff103Estornado = true;
+                WorkFF103.Ff103Flagregistro = 1; // Estornado
+
+                await _appDbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return WorkFF103.Ff102Id ?? "";
             }
             catch (Exception ex)
             {

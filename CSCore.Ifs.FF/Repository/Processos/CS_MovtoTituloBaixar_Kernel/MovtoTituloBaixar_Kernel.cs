@@ -21,28 +21,20 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
         public async Task<bool> Executar(PrmMovtoTituloBaixarKernel InPrmMovtoTituloBaixarKernel)
         {
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
+            var ff102ID = await ProcessarMovimentoParaBaixa(InPrmMovtoTituloBaixarKernel, transaction);
+
+            return await ExecutarCalculoBaixa(InPrmMovtoTituloBaixarKernel, transaction, ff102ID);
+
+        }
+
+        private async Task<bool> ExecutarCalculoBaixa(PrmMovtoTituloBaixarKernel InPrmMovtoTituloBaixarKernel, Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction, string ff102ID)
+        {
             try
             {
-                CSICP_FF103 WorkBaixa 
-                    = await BuscarMovimentoParaBaixaComTracking(
-                        InPrmMovtoTituloBaixarKernel.InFF103ID,
-                        InPrmMovtoTituloBaixarKernel.InTenantID);
-
-                VerificarRestricoesBaixa(WorkBaixa, InPrmMovtoTituloBaixarKernel);
-
-                WorkBaixa.Ff103Baixado = true;
-                WorkBaixa.Ff103Flagregistro = 1;
-                WorkBaixa.NavFF102 = null;
-
-                _appDbContext.Update(WorkBaixa);
-                await _appDbContext.SaveChangesAsync();
-                await transaction.CommitAsync();
-                transaction.Dispose();
-
                 PrmEntradaCalculoBaixa prmEntradaCalculoBaixa = new PrmEntradaCalculoBaixa
                 {
                     InTenantID = InPrmMovtoTituloBaixarKernel.InTenantID,
-                    InFF102Id = WorkBaixa.Ff102Id ?? "",
+                    InFF102Id = ff102ID,
                     InBB001Id = InPrmMovtoTituloBaixarKernel.InEstabID_tituloCalcBaixa,
 
                     //id de tabela estatica
@@ -64,9 +56,39 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
                 if (ex is KeyNotFoundException) throw new KeyNotFoundException(HandlerExceptionMessage.CreateExceptionMessage(ex));
                 else throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
             }
-
         }
-        
+
+        private async Task<string> ProcessarMovimentoParaBaixa(PrmMovtoTituloBaixarKernel InPrmMovtoTituloBaixarKernel, Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction)
+        {
+            try
+            {
+                CSICP_FF103 WorkBaixa
+                    = await BuscarMovimentoParaBaixaComTracking(
+                        InPrmMovtoTituloBaixarKernel.InFF103ID,
+                        InPrmMovtoTituloBaixarKernel.InTenantID);
+
+                VerificarRestricoesBaixa(WorkBaixa, InPrmMovtoTituloBaixarKernel);
+
+                WorkBaixa.Ff103Baixado = true;
+                WorkBaixa.Ff103Flagregistro = 1;
+                WorkBaixa.NavFF102 = null;
+
+                _appDbContext.Update(WorkBaixa);
+                await _appDbContext.SaveChangesAsync();
+                await transaction.CommitAsync();
+                
+                return WorkBaixa.Ff102Id ?? "";
+
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                if (ex is InvalidOperationException) throw new InvalidOperationException(HandlerExceptionMessage.CreateExceptionMessage(ex));
+                if (ex is KeyNotFoundException) throw new KeyNotFoundException(HandlerExceptionMessage.CreateExceptionMessage(ex));
+                else throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
+            }
+        }
+
         private void VerificarRestricoesBaixa(CSICP_FF103 WorkBaixa, PrmMovtoTituloBaixarKernel InPrmMovtoTituloBaixarKernel)
         {
             var validations = new List<(bool Condition, string Message)>
