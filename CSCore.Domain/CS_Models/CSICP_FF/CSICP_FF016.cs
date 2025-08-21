@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Domain.CS_Models.Staticas.FF;
+using System;
 using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
@@ -16,4 +17,13 @@ public partial class CSICP_FF016
     public int? Ff016EmailsdestId { get; set; }
 
     public string? Ff016Textocarta { get; set; }
+
+    public class RepoDtoCSICP_FF016 : CSICP_FF016
+    {
+        // Navegação
+        public OsusrE9aCsicpFf016Email? NavFF016Email { get; set; }
+
+        //public OsusrE9aCsicpFf16Tagcar? NavFF016TagCar { get; set; }
+    }
+
 }
