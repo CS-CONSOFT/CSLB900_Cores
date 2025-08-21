@@ -1,5 +1,4 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
-using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
@@ -32,6 +31,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         {
             if (in_ff131Id != null)
                 query = query.Where(e => e.Ff131Id == in_ff131Id);
+
+            // Filtra apenas registros onde FF131_ISEFETIVADO é false
+            query = query.Where(e => e.NavFF131.Ff131Isefetivado == false);
+
             return query;
         }
 
@@ -111,6 +114,16 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                         await _appDbContext.SaveChangesAsync();
                     }
                 }
+            }
+
+            // Atualiza o campo FF131_ISEFETIVADO para true no final do processamento
+            var ff131Entity = await _appDbContext.OsusrE9aCsicpFf131s
+                .FirstOrDefaultAsync(x => x.Ff131Id == in_ff131Id && x.TenantId == in_tenant);
+
+            if (ff131Entity != null)
+            {
+                ff131Entity.Ff131Isefetivado = true;
+                await _appDbContext.SaveChangesAsync();
             }
         }
     }
