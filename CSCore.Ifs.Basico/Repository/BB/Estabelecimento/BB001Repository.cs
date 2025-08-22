@@ -32,6 +32,31 @@ namespace CSCore.Ifs.Repository.BB
             return await q1.ToListAsync();
         }
 
+
+        public async Task<CSICP_BB001Cfgfi?> GetBB001Cfgfis(int in_tenant, string in_bb001ID)
+        {
+            var query = from bb001Cfgfi in _appDbContext.E9ACSICP_BB001Cfgfis
+            where bb001Cfgfi.Bb001EmpresaId == in_bb001ID && bb001Cfgfi.TenantId == in_tenant
+            select new CSICP_BB001Cfgfi
+           {
+                  TenantId = bb001Cfgfi.TenantId,
+                    Bb001CfgId = bb001Cfgfi.Bb001CfgId,
+                    Bb001EmpresaId = bb001Cfgfi.Bb001EmpresaId,
+                    Bb001TptributacaoId = bb001Cfgfi.Bb001TptributacaoId,
+                    Bb001PercIcms = bb001Cfgfi.Bb001PercIcms,
+                    Bb001PercCsllBc = bb001Cfgfi.Bb001PercCsllBc,
+                    Bb001PercCsllBcServico = bb001Cfgfi.Bb001PercCsllBcServico,
+                    Bb001PercIrpjBc = bb001Cfgfi.Bb001PercIrpjBc,
+                    Bb001PercIrpjBcServico = bb001Cfgfi.Bb001PercIrpjBcServico,
+                    Bb001NaturezapjId = bb001Cfgfi.Bb001NaturezapjId,
+                    Bb001TpatividadeId = bb001Cfgfi.Bb001TpatividadeId,
+                    Bb001Regimetributarioid = bb001Cfgfi.Bb001Regimetributarioid,
+            };
+            return await query
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<CSICP_BB001> RemoveAsync(CSICP_BB001 entity)
         {
             _appDbContext.Remove(entity);
@@ -109,5 +134,6 @@ namespace CSCore.Ifs.Repository.BB
                 if (valido == false) throw new Exception("O CNPJ informado é inválido.");
             }
         }
+
     }
 }

@@ -10,4 +10,8 @@
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />
+	</ItemGroup>
+
 </Project>

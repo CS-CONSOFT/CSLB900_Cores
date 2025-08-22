@@ -53,5 +53,11 @@
         public int? Bb012Countappmcon { get; set; } = null;
 
         public int? Bb012Oricadastroid { get; set; } = 1;
+
+        //csicp_aa043
+        public string? bb012_LCEspecial_ID { get; set; }
+
+        //csicp_aa046_TpGov
+        public int? bb012_TpGovId { get; set; }
     }
 }

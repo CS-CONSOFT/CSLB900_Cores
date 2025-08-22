@@ -1,4 +1,9 @@
-﻿using System;
+﻿using CSBS101._82Application.Dto.BB00X.BB001;
+using CSBS101._82Application.Dto.BB00X.BB006;
+using CSBS101._82Application.Dto.BB00X.BB009;
+using CSCore.Domain;
+using CSCore.Domain.CS_Models.Staticas.FF;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -73,5 +78,11 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF105
         public int? Ff105Statusapi { get; set; }
 
         public DateTime? Ff105DataCriacao { get; set; }
+        public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
+        public Dto_GetBB006_Exibicao? NavBB006 { get; set; }
+        public Dto_GetBB009_Exibicao? NavBB009 { get; set; }
+        public CSICP_FF102ApiBanco? NavFF102ApiBanco { get; set; }
+        public OsusrE9aCsicpFf105Status? NavFF105Status { get; set; }
+        public OsusrE9aCsicpFf105Statusapi? NavFF105Statusapi { get; set; }
     }
 }

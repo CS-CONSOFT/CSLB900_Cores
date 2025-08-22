@@ -80,8 +80,8 @@ namespace CSBS101._82Application.Mapper.BB00X.BB00X.BB001
                     Cidade = entity.Cidade,
                     Pais = entity.Bb001Pais
                 },
-                NavRamoEmpresa = entity.Bb001RamoempresaNavigation
-
+                NavRamoEmpresa = entity.Bb001RamoempresaNavigation,
+                BB001_IsRegimeRegular = entity.BB001_IsRegimeRegular,
             };
         }
 
@@ -98,7 +98,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB00X.BB001
                 Id = entity.Id,
                 Bb001Codigoempresa = entity.Bb001Codigoempresa,
                 Bb001Razaosocial = entity.Bb001Razaosocial,
-
+                BB001_IsRegimeRegular = entity.BB001_IsRegimeRegular,
             };
         }
 
@@ -107,10 +107,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB00X.BB001
             List<Dto_GetSplsFromBB001> ListaSimples,
             List<Dto_GetCnaeFromBB001> ListaCnaeFromBB001,
             List<Dto_GetImageFromBB001> ListaImageFromBB001,
-            List<Dto_GetXmlFromBB001> ListaXmlFromBB001
-
-
-            )
+            List<Dto_GetXmlFromBB001> ListaXmlFromBB001 )
         {
             if (entity == null)
             {
@@ -183,7 +180,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB00X.BB001
                 NavListCnaes = ListaCnaeFromBB001,
                 NavListImages = ListaImageFromBB001,
                 NavListSimples = ListaSimples,
-
+                BB001_IsRegimeRegular = entity.BB001_IsRegimeRegular,
             };
         }
 
@@ -199,7 +196,8 @@ namespace CSBS101._82Application.Mapper.BB00X.BB00X.BB001
                 Id = entity.Id,
                 Bb001Codigoempresa = entity.Bb001Codigoempresa,
                 Bb001Razaosocial = entity.Bb001Razaosocial,
-                Bb001Nomefantasia = entity.Bb001Nomefantasia
+                Bb001Nomefantasia = entity.Bb001Nomefantasia,
+                BB001_IsRegimeRegular = entity.BB001_IsRegimeRegular
             };
         }
 
@@ -264,7 +262,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB00X.BB001
                 Bb001ChaveApl = entity.Bb001ChaveApl,
                 Bb001AutToken = entity.Bb001AutToken,
                 Bb001TokenCspix = entity.Bb001TokenCspix,
-                //NavBB001AXML = entity.NavBB001AXML.Select(e => e.ToDtoGet()).ToList(),
+                    BB001_IsRegimeRegular = entity.BB001_IsRegimeRegular
             };
         }
 
@@ -323,6 +321,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB00X.BB001
                 Bb001Descricaooficial = dto.Bb001Descricaooficial,
                 Bb001Capitalmunicipio = dto.Bb001Capitalmunicipio,
                 Bb001Codgcartorio = dto.Bb001Codgcartorio,
+                BB001_IsRegimeRegular = dto.BB001_IsRegimeRegular,
             };
         }
 

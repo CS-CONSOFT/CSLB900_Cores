@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG046
 {
-    public class DtoCreateUpdateGG046 : IConverteParaEntidade<OsusrE9aCsicpGg046>
+    public class DtoCreateUpdateGG046 : IConverteParaEntidade<CSICP_GG046>
     {
         public int? Gg046Seq { get; set; }
 
@@ -27,9 +27,9 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG046
         public string? Gg046Descricaosaldo { get; set; }
 
         public string? Gg046Codbarrasalfa { get; set; }
-        public OsusrE9aCsicpGg046 ToEntity(int tenant, string? id)
+        public CSICP_GG046 ToEntity(int tenant, string? id)
         {
-            return new OsusrE9aCsicpGg046
+            return new CSICP_GG046
             {
                 TenantId = tenant,
                 Gg046Id = id!,

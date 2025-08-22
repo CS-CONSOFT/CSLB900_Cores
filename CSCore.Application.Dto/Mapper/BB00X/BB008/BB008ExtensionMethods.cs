@@ -81,11 +81,10 @@ namespace CSBS101._82Application.Mapper.BB00X
             {
                 TenantId = entity.TenantId,
                 Id = entity.Id,
-
                 Bb008Codigo = entity.Bb008Codigo,
-                //Bb008CondicaoPagto = entity.Bb008CondicaoPagto,
+                Bb008CondicaoPagto = entity.Bb008CondicaoPagto,
                 //Bb008Tipo = entity.Bb008Tipo,
-                Bb008Condicao = entity.Bb008Condicao,
+                //Bb008Condicao = entity.Bb008Condicao,
                 //Bb008Codformapagto = entity.Bb008Codformapagto,
 
             };

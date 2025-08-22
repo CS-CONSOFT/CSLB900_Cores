@@ -30,5 +30,5 @@ public partial class CSICP_GG045
 
     public CSICP_GG520? Gg045Saldo { get; set; }
 
-    public OsusrE9aCsicpGg045Stat? Gg045Stat { get; set; }
+    public OSUSR_E9A_CSICP_GG045_STAT? Gg045Stat { get; set; }
 }

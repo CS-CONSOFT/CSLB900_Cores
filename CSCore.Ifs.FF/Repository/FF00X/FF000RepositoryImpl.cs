@@ -12,8 +12,6 @@ namespace CSCore.Ifs.FF.Repository.FF00X
     public class FF000RepositoryImpl(AppDbContext appDbContext) :
         RepositorioBaseImpl<CSICP_FF000>(appDbContext, "Ff000Id"), IFF000Repository
     {
-
-        //fiz uma mudança no repositorio sub modulo, isso deve ser deletado
         private readonly AppDbContext _appDbContext = appDbContext;
 
         public async Task<CSICP_FF000?> GetByIdAsync(int tenant, string id)

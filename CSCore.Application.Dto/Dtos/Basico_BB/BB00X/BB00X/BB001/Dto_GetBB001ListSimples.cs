@@ -117,7 +117,7 @@ namespace CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB00X.BB001
 
         public string? Bb001TokenCspix { get; set; } = null!;
 
-        //public ICollection<Dto_GetXmlFromBB001> NavBB001AXML { get; set; } = new List<Dto_GetXmlFromBB001>();
+        public bool? BB001_IsRegimeRegular { get; set; }
     }
 
 }

@@ -37,6 +37,6 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG074
         public DtoGetGG520Simples? NavGG520 { get; set; }
         public DtoGetGG007Simples? NavGG007 { get; set; }
         public CSICP_GG072Stq? NavGG072Stq { get; set; }
-        public OsusrE9aCsicpGg073Tmov? NavGG073TpMov { get; set; }
+        public OSUSR_E9A_CSICP_GG073_TMOV? NavGG073TpMov { get; set; }
     }
 }

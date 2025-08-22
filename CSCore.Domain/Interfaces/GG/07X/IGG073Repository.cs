@@ -9,7 +9,7 @@ namespace CSCore.Domain.Interfaces.GG._07X
             DateTime DataInicial,
             DateTime DataFinal, string? BB005_CentroCustoID, string? GG001_AlmoxID, int? GG073_StatusID, int? GG073_TMov_ID);
 
-        Task BaixaEstoque(string GG073_ID, int tenant);
+        Task BaixaEstoque(string GG073_ID, int tenant, string in_usuarioID);
 
         Task<CSICP_GG073?> GetByIdAsync(string id, int tenant);
         Task UpdateGG073StatusId(CSICP_GG073 entidadeParaAtualizar, int gg073Sta_fechado_id);

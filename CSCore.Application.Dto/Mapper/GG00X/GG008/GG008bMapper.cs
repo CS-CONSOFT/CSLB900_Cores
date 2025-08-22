@@ -12,12 +12,16 @@ namespace CSCore.Application.Dto.Mapper.GG00X.GG008
             {
                 TenantId = entity.TenantId,
                 Id = entity.Id,
+                Gg008bFilialid = entity.Gg008bFilialid,
+                Gg008bProdutoid = entity.Gg008bProdutoid,
+                Gg008bFilial = entity.Gg008bFilial,
+                Gg008bCodgproduto = entity.Gg008bCodgproduto,
                 Gg008bSeq = entity.Gg008bSeq,
                 Gg008bRefsimilar = entity.Gg008bRefsimilar,
                 Gg008bDatavigor = entity.Gg008bDatavigor,
+                Gg008bCodgmarca = entity.Gg008bCodgmarca,
                 Gg008bMarcaid = entity.Gg008bMarcaid,
                 NavGg006Marca = entity.NavGg006Marca?.ToDtoGetSimples(),
             };
         }
-    }
-}
+    }}

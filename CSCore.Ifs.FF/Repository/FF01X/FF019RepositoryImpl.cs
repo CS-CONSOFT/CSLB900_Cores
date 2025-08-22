@@ -16,36 +16,36 @@ namespace CSCore.Ifs.FF.Repository.FF01X
         : RepositorioBaseImpl<CSICP_FF019>(appDbContext, "Ff019Id"), IFF019Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task<CSICP_FF019?> GetByIdAsync(int tenant, string id)
+        public async Task<CSICP_FF019?> GetByIdAsync(int in_tenant, string in_ff019Id)
         {
-            IQueryable<CSICP_FF019> query = GetQueryBase(tenant);
-            CSICP_FF019? cSICP_FF019 = await query.FirstOrDefaultAsync(e => e.Ff019Id == long.Parse(id));
+            IQueryable<CSICP_FF019> query = GetQueryBase(in_tenant);
+            CSICP_FF019? cSICP_FF019 = await query.FirstOrDefaultAsync(e => e.Ff019Id == long.Parse(in_ff019Id));
             return cSICP_FF019;
         }
 
-        public async Task<(List<CSICP_FF019>, int)> GetListAsync(int tenant, string? estabelecimentoId, int page, int pageSize)
+        public async Task<(List<CSICP_FF019>, int)> GetListAsync(int in_tenant, string? in_estabId, int in_pageNumber, int in_pageSize)
         {
-            IQueryable<CSICP_FF019> query = GetQueryBase(tenant);
-            query = FiltraQuandoExisteFiltro(estabelecimentoId, query);
+            IQueryable<CSICP_FF019> query = GetQueryBase(in_tenant);
+            query = FiltraQuandoExisteFiltro(in_estabId, query);
 
             var queryCount = query;
             var count = queryCount.Count();
-            query = query.PaginacaoNoBanco(page, pageSize);
+            query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
 
             return (await query.ToListAsync(), count);
         }
 
-        private static IQueryable<CSICP_FF019> FiltraQuandoExisteFiltro(string? estabelecimentoId, IQueryable<CSICP_FF019> query)
+        private static IQueryable<CSICP_FF019> FiltraQuandoExisteFiltro(string? in_estabId, IQueryable<CSICP_FF019> query)
         {
-            if (estabelecimentoId != null)
-                query = query.Where(e => e.Ff000Id!.Equals(estabelecimentoId));
+            if (in_estabId != null)
+                query = query.Where(e => e.Ff000Id!.Equals(in_estabId));
             return query;
         }
 
-        private IQueryable<CSICP_FF019> GetQueryBase(int tenant)
+        private IQueryable<CSICP_FF019> GetQueryBase(int in_tenant)
         {
             return from ff019 in _appDbContext.OsusrE9aCsicpFf019s
-                   where ff019.TenantId == tenant
+                   where ff019.TenantId == in_tenant
 
                    select new CSICP_FF019
                    {

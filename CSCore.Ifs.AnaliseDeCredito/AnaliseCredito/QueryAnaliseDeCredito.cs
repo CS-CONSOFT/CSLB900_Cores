@@ -47,30 +47,30 @@ namespace CSCore.Ifs.AnaliseDeCredito.NovaPasta
             // Subqueries para atrasos e pagamentos
             var ff103 = _appDbContext.OsusrE9aCsicpFf103s
                 .Where(ff => ff.TenantId == in_tenantID
-                    && ff.Ff102!.Ff102Contaid == in_contaID
-                    && ff.Ff102!.Ff102DataEmissao <= DateTime.Now
-                    && ff.Ff102!.Ff102DataEmissao >= dataLimite
+                    && ff.NavFF102!.Ff102Contaid == in_contaID
+                    && ff.NavFF102!.Ff102DataEmissao <= DateTime.Now
+                    && ff.NavFF102!.Ff102DataEmissao >= dataLimite
                     && ff.Ff103Baixado == true
                     && ff.Ff103Estornado == false
                     && ff.Ff103Cancelado == false
                     && ff.Ff103Tpbaixaid == id);
 
             decimal qtdAtrasosFreq = await ff103
-                .Where(ff => EF.Functions.DateDiffDay(ff.Ff102!.Ff102DataVencimento, ff.Ff103DataBaixa) > 15)
+                .Where(ff => EF.Functions.DateDiffDay(ff.NavFF102!.Ff102DataVencimento, ff.Ff103DataBaixa) > 15)
                 .CountAsync() * Peso_AF;
 
             decimal qtdAtrasosModerados = await ff103
-                .Where(ff => EF.Functions.DateDiffDay(ff.Ff102!.Ff102DataVencimento, ff.Ff103DataBaixa) >= 6
-                          && EF.Functions.DateDiffDay(ff.Ff102!.Ff102DataVencimento, ff.Ff103DataBaixa) <= 15)
+                .Where(ff => EF.Functions.DateDiffDay(ff.NavFF102!.Ff102DataVencimento, ff.Ff103DataBaixa) >= 6
+                          && EF.Functions.DateDiffDay(ff.NavFF102!.Ff102DataVencimento, ff.Ff103DataBaixa) <= 15)
                 .CountAsync() * Peso_AM;
 
             decimal qtdPagtosPontuais = await ff103
-                .Where(ff => EF.Functions.DateDiffDay(ff.Ff102!.Ff102DataVencimento, ff.Ff103DataBaixa) >= 1
-                          && EF.Functions.DateDiffDay(ff.Ff102!.Ff102DataVencimento, ff.Ff103DataBaixa) <= 5)
+                .Where(ff => EF.Functions.DateDiffDay(ff.NavFF102!.Ff102DataVencimento, ff.Ff103DataBaixa) >= 1
+                          && EF.Functions.DateDiffDay(ff.NavFF102!.Ff102DataVencimento, ff.Ff103DataBaixa) <= 5)
                 .CountAsync() * Peso_PP;
 
             decimal qtdSemprePagaPrazo = await ff103
-                .Where(ff => EF.Functions.DateDiffDay(ff.Ff102!.Ff102DataVencimento, ff.Ff103DataBaixa) <= 0)
+                .Where(ff => EF.Functions.DateDiffDay(ff.NavFF102!.Ff102DataVencimento, ff.Ff103DataBaixa) <= 0)
                 .CountAsync() * Peso_SP;
 
             int qtdTitulos = await ff103.CountAsync();

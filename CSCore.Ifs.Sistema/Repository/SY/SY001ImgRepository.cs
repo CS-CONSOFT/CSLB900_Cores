@@ -1,5 +1,6 @@
 ﻿using CSCore.Domain;
 using CSCore.Domain.Interfaces.SY;
+using CSCore.Ex.Personalizada;
 using CSCore.Ifs.CS_Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,12 +15,18 @@ namespace CSCore.Ifs.Repository.SY
 
         public async Task<Csicp_Sy001Img> CreateAsync(Csicp_Sy001Img entity)
         {
+            var hasImage = await _appDbContext
+                .OsusrE9aCsicpSy001Imgs
+                .Where(e => e.TenantId == entity.TenantId && e.UsuarioId == entity.UsuarioId)
+                .AnyAsync();
+            if(hasImage) throw new ExceptionSemAuditoria("O usuário já possui uma imagem cadastrada.");
+
             _appDbContext.Add(entity);
             await _appDbContext.SaveChangesAsync();
             return entity;
         }
 
-        public async Task<Csicp_Sy001Img> GetByIdAsync(string id, int tenant)
+        public async Task<Csicp_Sy001Img?> GetByIdAsync(string id, int tenant)
         {
             return await GetEntityById(id, tenant);
         }

@@ -1,4 +1,18 @@
-﻿using System;
+﻿using CSBS101._82Application.Dto.BB00X.BB001;
+using CSBS101._82Application.Dto.BB00X.BB005;
+using CSBS101._82Application.Dto.BB00X.BB006;
+using CSBS101._82Application.Dto.BB00X.BB009;
+using CSBS101._82Application.Dto.BB00X.BB012.Get;
+using CSBS101._82Application.Dto.BB00X.BB026;
+using CSBS101.C82Application.Dto.BB00X.BB00X.BB008;
+using CSCore.Application.Dto.Dtos.DD.DD125;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF003;
+using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
+using CSCore.Domain;
+using CSCore.Domain.CS_Models.CSICP_DD;
+using CSCore.Domain.CS_Models.CSICP_FF;
+using CSCore.Domain.CS_Models.Staticas.FF;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -69,5 +83,17 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF017
         public int? Ff017Statusvcid { get; set; }
 
         public string? Ff017Formapagtoid { get; set; }
+
+        public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
+        public Dto_GetBB005_Exibicao? NavBB005 { get; set; }
+        public Dto_GetBB006_Exibicao? NavBB006 { get; set; }
+        public Dto_GetBB008_Exibicao? NavBB008 { get; set; }
+        public Dto_GetBB009_Exibicao? NavBB009 { get; set; }
+        public Dto_GetBB012_Exibicao? NavBB012 { get; set; }
+        public Dto_GetBB026_Exibicao? NavBB026 { get; set; }
+        public DtoGetDD125? NavDD125 { get; set; } //Quais campos são necessários?
+        public OsusrE9aCsicpFf107Vc? NavFF107vc { get; set; }
+        public Dto_GetFF003_Exibicao? NavFF003 { get; set; }
+        public Dto_GetSY001Simples? NavSY001 { get; set; }
     }
 }

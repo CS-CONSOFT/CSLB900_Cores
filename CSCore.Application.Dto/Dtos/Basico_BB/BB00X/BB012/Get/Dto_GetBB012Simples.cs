@@ -1,4 +1,7 @@
-﻿namespace CSBS101._82Application.Dto.BB00X.BB012.Get
+﻿using CSCore.Application.Dto.Dtos.Basico_AA.AA00X;
+using CSCore.Domain.CS_Models.Staticas.AA;
+
+namespace CSBS101._82Application.Dto.BB00X.BB012.Get
 {
     public class Dto_GetBB012Simples
     {
@@ -56,6 +59,12 @@
         public int? Bb012Countappmcon { get; set; }
 
         public int? Bb012Oricadastroid { get; set; }
+        //csicp_aa043
+        public string? bb012_LCEspecial_ID { get; set; }
+
+        //csicp_aa046_TpGov
+        public int? bb012_TpGovId { get; set; }
+
     }
 }
 

@@ -12,8 +12,8 @@ namespace CSBS101._82Application.Dto.BB00X.BB005
         [Range(0, int.MaxValue, ErrorMessage = "O campo Código deve ser maior ou igual a 0.")]
         public int? Bb005Codigo { get; set; } = 0;
 
-        [StringLength(90, ErrorMessage = "O campo Nome do Centro de Custo deve ter no máximo 90 caracteres.")]
-        [Required(ErrorMessage = "O campo Nome do Centro de Custo é obrigatório.")]
+        //[StringLength(90, ErrorMessage = "O campo Nome do Centro de Custo deve ter no máximo 90 caracteres.")]
+        //[Required(ErrorMessage = "O campo Nome do Centro de Custo é obrigatório.")]
         public string? Bb005Nomeccusto { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "O campo Coluna de Impressão é obrigatório.")]

@@ -121,5 +121,5 @@ public partial class CSICP_FF103
 
     public string? Ff103CtlMsg { get; set; }
 
-    public virtual CSICP_FF102? Ff102 { get; set; }
+    public CSICP_FF102? NavFF102 { get; set; }
 }
