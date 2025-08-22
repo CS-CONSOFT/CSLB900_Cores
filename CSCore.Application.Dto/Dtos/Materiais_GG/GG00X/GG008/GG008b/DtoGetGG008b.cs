@@ -8,14 +8,23 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008b
 
         public string Id { get; set; } = null!;
 
+        public string? Gg008bFilialid { get; set; }
+
+        public string? Gg008bProdutoid { get; set; }
+
+        public int? Gg008bFilial { get; set; }
+
+        public int? Gg008bCodgproduto { get; set; }
+
         public int? Gg008bSeq { get; set; }
 
         public string? Gg008bRefsimilar { get; set; }
 
         public DateTime? Gg008bDatavigor { get; set; }
 
-        public string? Gg008bMarcaid { get; set; }
+        public int? Gg008bCodgmarca { get; set; }
 
+        public string? Gg008bMarcaid { get; set; }
         public DtoGetGG006Simples? NavGg006Marca { get; set; }
     }
 }

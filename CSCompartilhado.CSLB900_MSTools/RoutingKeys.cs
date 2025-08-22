@@ -66,6 +66,16 @@ namespace CSCore.RabbitMQ
         public static string FilaProcessaAnaliseDeCredito => "Queue_ProcessaAnaliseDeCredito";
         public static string ExProcessaAnaliseDeCredito => "Exchange_ProcessaAnaliseDeCredito";
         public static string ProcessaAnaliseDeCredito => "Action_ProcessaAnaliseDeCredito";
+
+
+        public static string FilaBBEnvioTitulo => "Queue_BBEnvioTitulo";
+        public static string BBEnvioTitulo => "Action_BBEnvioTitulo";
+        public static string ExBBEnvioTitulo => "Exchange_BBEnvioTitulo";
+
+        // Banco do Brasil - Resposta de Títulos
+        public static string BBEnvioTituloResponse => "Action_BB_EnvioTitulo_Response";
+        public static string ExBBEnvioTituloResponse => "Exchange_BB_EnvioTitulo_Response";
+        public static string FilaBBEnvioTituloResponse => "Queue_BB_EnvioTitulo_Response";
     }
 }
 

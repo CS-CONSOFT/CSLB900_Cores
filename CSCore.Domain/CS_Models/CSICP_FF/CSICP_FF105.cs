@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Domain.CS_Models.Staticas.FF;
+using System;
 using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
@@ -70,4 +71,14 @@ public partial class CSICP_FF105
     public int? Ff105Statusapi { get; set; }
 
     public DateTime? Ff105DataCriacao { get; set; }
+
+    public class RepoDtoCSICP_FF105 : CSICP_FF105
+    {
+        public CSICP_BB001? NavBB001 { get; set; }
+        public CSICP_Bb006? NavBB006 { get; set; }
+        public CSICP_Bb009? NavBB009 { get; set; }
+        public CSICP_FF102ApiBanco? NavFF102ApiBanco { get; set; }
+        public OsusrE9aCsicpFf105Status? NavFF105Status { get; set; }
+        public OsusrE9aCsicpFf105Statusapi? NavFF105Statusapi { get; set; }
+    }
 }

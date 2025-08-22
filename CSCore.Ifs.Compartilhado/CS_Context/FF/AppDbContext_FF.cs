@@ -2729,6 +2729,10 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF103_VL_HONORARIOS");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
+                entity.HasOne(e => e.NavFF102)
+                    .WithOne()
+                    .HasForeignKey<CSICP_FF103>(e => e.Ff102Id);
+
             });
 
             modelBuilder.Entity<CSICP_FF103a>(entity =>

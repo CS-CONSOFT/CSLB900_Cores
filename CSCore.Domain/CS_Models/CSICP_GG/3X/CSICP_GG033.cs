@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CSCore.Domain.CS_Models.CSICP_GG;
+﻿namespace CSCore.Domain.CS_Models.CSICP_GG;
 
 public partial class CSICP_GG033
 {
@@ -65,7 +62,5 @@ public partial class CSICP_GG033
 
     public string? Gg033Codbarrasalfa { get; set; }
 
-    public CSICP_GG032? Gg032 { get; set; }
-
-    public CSICP_GG520? Gg033Saldo { get; set; }
+    public CSICP_GG520? NavGG033_Saldo { get; set; }
 }

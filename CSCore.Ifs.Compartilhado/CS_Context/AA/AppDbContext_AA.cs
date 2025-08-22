@@ -38,9 +38,28 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<CSICP_Aa041> OsusrE9aCsicpAa041s { get; set; }
 
         public DbSet<CSICP_Aa042> OsusrE9aCsicpAa042s { get; set; }
+        public DbSet<CSICP_AA043> CSICP_AA043 { get; set; }
 
         partial void OnModelCreating_CSICP_AA(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CSICP_AA043>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Aa043Artigo)
+                    .HasMaxLength(30)
+                    .HasColumnName("AA043_ARTIGO");
+                entity.Property(e => e.Aa043Ec)
+                    .HasMaxLength(50)
+                    .HasColumnName("AA043_EC");
+                entity.Property(e => e.Aa043LcRedacao)
+                    .HasMaxLength(1000)
+                    .HasColumnName("AA043_LC_REDACAO");
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID");
+                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+            });
             modelBuilder.Entity<CSICP_AA001>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_AA001");

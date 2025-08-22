@@ -12,6 +12,7 @@ namespace CSCore.RabbitMQ.PublishObjetos
         public int in_tenantId { get; set; }
             public bool isQtdZero {get;set;}
             public FiltroProdutoRequest request { get; set; }
-        public int idgg001_talmox_virtual { get; set; } 
+        public int idgg001_talmox_virtual { get; set; }
+        public string in_usuarioId { get; set; }
     }
 }

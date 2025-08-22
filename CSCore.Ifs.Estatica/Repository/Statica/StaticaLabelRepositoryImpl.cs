@@ -77,8 +77,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
              .FirstOrDefaultAsync();
             return ID;
         }
-
-
         public async Task<int> GetIDStaticasByTypeGG073TMovPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg073Tmovs
@@ -88,7 +86,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
              .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeBB012_MRELPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpBb012Mrels
@@ -98,7 +95,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG054StaPorCodCS(int codCs)
         {
 
@@ -109,7 +105,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG055StaPorCodCS(int codCs)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg055Sta
@@ -119,11 +114,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
              .FirstOrDefaultAsync();
             return ID;
         }
-
-
-
-
-
         public async Task<int> GetIDStaticasByTypeGG032TpInvPorCodCS(string codCs)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg032Tpinvs
@@ -133,7 +123,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
              .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG032StaPorCodCS(string codCs)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg032Sta
@@ -169,7 +158,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasSimNao(string label)
         {
             int ID = await _appDbContext.E9ACSICP_Statica
@@ -178,7 +166,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeBB008_TPPorLabel(string label)
         {
 
@@ -188,7 +175,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeBB01201_con_PorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpBb01201Cons
@@ -197,7 +183,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                  .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypebb062_staPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpBb062Sta
@@ -206,7 +191,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                  .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG030Sta(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg030Sta
@@ -215,9 +199,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
-
-
         public async Task<int> GetIDStaticasByTypeGG023ValPorLabel(string Label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg023Vals
@@ -226,7 +207,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG030StaPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg030Sta
@@ -235,7 +215,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG019CgBar(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg019Cgbars
@@ -244,7 +223,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG045StatusPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg045Stats
@@ -253,7 +231,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG046SaidaPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg046Es
@@ -262,7 +239,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG046StatusPorLabel(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpGg046Stats
@@ -271,7 +247,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> GetIDStaticasByTypeGG001TAlmox(string label)
         {
             int ID = await _appDbContext.CSICP_GG001Talmoxes
@@ -280,7 +255,6 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                           .FirstOrDefaultAsync();
             return ID;
         }
-
         public async Task<int> csicp_bb012_GruCta(string label)
         {
             int ID = await _appDbContext.OsusrE9aCsicpBb012Gructa
@@ -324,6 +298,62 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                           .Select(e => e.Id)
                           .FirstOrDefaultAsync();
             return ID;
+        }
+
+        public async Task<int> GetIDStaticasByTypeFF105_TpPorLabel(string label)
+        {
+            int ID = await _appDbContext.OsusrE9aCsicpFf105Statuses
+                        .Where(e => e.Label!.Equals(label))
+                        .Select(e => e.Id)
+                        .FirstOrDefaultAsync();
+            return ID;
+        }
+
+
+        // Métodos genéricos
+        /// <typeparam name="T">Tipo da entidade estática que possui as propriedades Label, IsActive e Id</typeparam>
+        /// <param name="label">Valor do Label para busca</param>
+        /// <param name="idPropertyName">Nome da propriedade que contém o ID (padrão: "Id")</param>
+        /// <returns>ID da entidade encontrada ou 0 se não encontrada</returns>
+        public async Task<int> GetIDStaticaByLabel<T>(string label, string idPropertyName = "Id") where T : class
+        {
+            var query = _appDbContext.Set<T>().AsQueryable();
+
+            var entityType = _appDbContext.Model.FindEntityType(typeof(T));
+            var isActiveProperty = entityType?.FindProperty("IsActive");
+
+            if (isActiveProperty != null)
+                query = query.Where(e => EF.Property<bool?>(e, "IsActive") == true);
+
+            return await _appDbContext.Set<T>()
+                .Where(e => EF.Property<string>(e, "Label") == label)
+                .Select(e => EF.Property<int>(e, idPropertyName))
+                .FirstOrDefaultAsync();
+        }
+
+        /// <typeparam name="T">Tipo da entidade estática que possui as propriedades Label, IsActive e Id</typeparam>
+        /// <param name="label">Valor do Label para busca</param>
+        /// <param name="idPropertyName">Nome da propriedade que contém o ID (padrão: "Id")</param>
+        /// <returns>ID da entidade encontrada ou 0 se não encontrada</returns>
+        public async Task<int> GetIDStaticaByLabelWithoutIsActive<T>(string label, string idPropertyName = "Id") where T : class
+        {
+            return await _appDbContext.Set<T>()
+                .Where(e => EF.Property<string>(e, "Label") == label)
+                .Select(e => EF.Property<int>(e, idPropertyName))
+                .FirstOrDefaultAsync();
+        }
+
+        /// <typeparam name="T">Tipo da entidade estática que possui as propriedades Label, IsActive e Id</typeparam>
+        /// <param name="label">Valor do Label para busca</param>
+        /// <param name="idPropertyName">Nome da propriedade que contém o ID (padrão: "Id")</param>
+        /// <returns>ID da entidade encontrada ou 0 se não encontrada</returns>
+        public async Task<int> GetIDStaticaByCodCS<T>(int codCs, string idPropertyName = "Id") where T : class
+        {
+            return await _appDbContext.Set<T>()
+                .Where(e => EF.Property<bool?>(e, "IsActive") == true)
+                .Where(e => EF.Property<int?>(e, "Codgcs") == codCs)
+                .Select(e => EF.Property<int>(e, idPropertyName))
+                .FirstOrDefaultAsync();
         }
     }
 }

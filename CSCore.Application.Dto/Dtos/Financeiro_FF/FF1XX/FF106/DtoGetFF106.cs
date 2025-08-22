@@ -1,4 +1,11 @@
-﻿using CSCore.Domain.CS_Models.CSICP_FF;
+﻿using CSBS101._82Application.Dto.BB00X.BB001;
+using CSBS101._82Application.Dto.BB00X.BB006;
+using CSBS101._82Application.Dto.BB00X.BB009;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF105;
+using CSCore.Domain;
+using CSCore.Domain.CS_Models.CSICP_FF;
+using CSCore.Domain.CS_Models.Staticas.FF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,5 +85,13 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF106
         public virtual CSICP_FF102? Ff102 { get; set; }
 
         public virtual CSICP_FF105? Ff105 { get; set; }
+        public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
+        public Dto_GetBB006_Exibicao? NavBB006 { get; set; }
+        public Dto_GetBB009_Exibicao? NavBB009 { get; set; }
+        public DtoGetFF102_SemNavs? NavFF102 { get; set; }
+        public DtoGetFF105_SemNavs? NavFF105 { get; set; }
+        public CSICP_FF112ApiOcorrencium? NavFF112ApiOcorrencia { get; set; }
+        public CSICP_FF112ApiBaixa? NavFF112ApiBaixa { get; set; }
+        public CSICP_FF112ApiLiquidacao? NavFF112ApiLiquidacao { get; set; }
     }
 }

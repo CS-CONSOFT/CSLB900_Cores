@@ -4,8 +4,6 @@ using CSCore.Domain.Interfaces.DD._04X;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using Microsoft.EntityFrameworkCore;
-using static CSCore.Domain.CS_Models.CSICP_DD.CSICP_DD040;
-using static CSCore.Domain.CS_Models.CSICP_DD.CSICP_DD042;
 
 namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
 {
@@ -19,6 +17,15 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
             IQueryable<RepoDtoCSICP_DD040> query = GetQueryBase(in_tenant);
             RepoDtoCSICP_DD040? cSICP_DD040 = await query.FirstOrDefaultAsync(e => e.Dd040Id == in_dd040Id);
             return cSICP_DD040;
+        }
+
+   
+        public async Task<List<CSICP_BB001_AXML>> GetListAsyncBB001AXML(int in_tenant, string? in_bb001Id)
+        {
+            IQueryable<CSICP_BB001_AXML> query = _appDbContext.E9ACSICP_BB001Axmls
+                .Where(e => e.TenantId == in_tenant)
+                .Where(e => e.Bb001aEstabid == in_bb001Id);
+            return await query.ToListAsync();
         }
 
         private IQueryable<RepoDtoCSICP_DD040> GetQueryBase(int in_tenant)
@@ -447,13 +454,8 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                        } : null
                    };
         }
-        public async Task<List<CSICP_BB001_AXML>> GetListAsyncBB001AXML(int in_tenant, string? in_bb001Id)
-        {
-            IQueryable<CSICP_BB001_AXML> query = _appDbContext.E9ACSICP_BB001Axmls
-                .Where(e => e.TenantId == in_tenant)
-                .Where(e => e.Bb001aEstabid == in_bb001Id);
-            return await query.ToListAsync();
-        }
+
+
         public async Task<List<RepoCSICP_DD042>> GetListAsyncDD042(int in_tenant, string in_dd040Id)
         {
             var query = from dd042 in _appDbContext.OsusrTeiCsicpDd042s
@@ -624,5 +626,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                 });
             return await query.ToListAsync();
         }
+
+       
     }
 }

@@ -24,4 +24,12 @@ public partial class CSICP_FF131
     public bool? Ff131Isefetivado { get; set; }
 
     public string? Ff131Protocolo { get; set; }
+
+    public class RepoDtoCSICP_FF131 : CSICP_FF131
+    {
+        public CSICP_BB001? NavBB001Filial { get; set; }
+        public CSICP_BB012? NavBB012Conta { get; set; }
+        public CSICP_BB012? NavBB012TomadorConta { get; set; }
+        public Csicp_Sy001? NavSy001Usuario { get; set; }
+    }
 }

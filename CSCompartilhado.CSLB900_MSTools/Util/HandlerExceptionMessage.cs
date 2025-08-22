@@ -6,11 +6,18 @@ namespace CSLB900.MSTools.Util
     {
         public static string CreateExceptionMessage(Exception ex)
         {
+            
             var msg = ex.Message;
             if (ex.InnerException != null)
             {
                 msg = ex.InnerException.Message;
             }
+
+            if(msg.Contains("The DELETE statement conflicted with the REFERENCE constraint"))
+            {
+                msg = "Não é possível excluir o registro atual, pois ele está sendo referenciado em outro local.";
+            }
+
             // Loga o erro usando Serilog
             Log.Error(ex, "ERROR: Exceção capturada: {Mensagem}", msg);
             return msg;

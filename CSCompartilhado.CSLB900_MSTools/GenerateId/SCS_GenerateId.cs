@@ -1,6 +1,4 @@
-﻿using CSLB900.MSTools.GenerateId;
-
-namespace CS901Library.GenerateId
+﻿namespace CSLB900.MSTools.GenerateId
 {
     public class SCS_GenerateId : ICS_GenerateId
     {

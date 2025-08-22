@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace GG104Materiais.C82Application.Service.BancoDoBrasil.Parametros
+namespace CSCore.Ifs.FF.External.Parametros
 {
     public class RetornoCriaBoleto
     {

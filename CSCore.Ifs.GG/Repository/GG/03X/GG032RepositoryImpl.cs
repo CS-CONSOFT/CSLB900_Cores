@@ -94,10 +94,16 @@ namespace CSCore.Ifs.Repository.GG._03X
             var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
             {
+
+                /*
+                    1	Bloqueado	
+                    2	Solicitado	
+                    3	Concluído	
+                 */
                 CSICP_GG032 gg032inventario = await GetInventarioParaTrabalhoAsync(tenant, in_InventarioId);
 
                 if (EhAcaoDesbloquear(in_tipoAcaoInventario) &&
-                    InventarioStatusDiferenteDeBloqueado(in_StID_gg032_Sta_Bloqueado_ID, gg032inventario))
+                    InventarioStatusDifenteBloqueado(in_StID_gg032_Sta_Bloqueado_ID, gg032inventario))
                     throw new Exception("Inventário deve estar como BLOQUEADO para poder ser desbloqueado!");
 
                 if (EhAcaoBloquear(in_tipoAcaoInventario) &&
@@ -157,7 +163,7 @@ namespace CSCore.Ifs.Repository.GG._03X
             {
                 CSICP_GG032 gg032inventario = await GetInventarioParaTrabalhoAsync(tenant, in_InventarioId);
 
-                if (InventarioStatusDiferenteDeBloqueado(in_StID_GG032_Sta_Bloqueado_ID, gg032inventario))
+                if (InventarioStatusDifenteBloqueado(in_StID_GG032_Sta_Bloqueado_ID, gg032inventario))
                     throw new Exception("Inventário deve estar como BLOQUEADO para poder ser processado!");
 
                 List<CSICP_GG033> listgg033 = await GetInventarioProdutosAsync(tenant, gg032inventario);
@@ -409,7 +415,7 @@ namespace CSCore.Ifs.Repository.GG._03X
             return in_tipoAcaoInventario == (int)TIPO_ACAO_INVENTARIO.DESBLOQUEAR;
         }
 
-        private static bool InventarioStatusDiferenteDeBloqueado(int Parametro_csicp_gg032_Sta_Bloqueado_ID, CSICP_GG032 gg032inventario)
+        private static bool InventarioStatusDifenteBloqueado(int Parametro_csicp_gg032_Sta_Bloqueado_ID, CSICP_GG032 gg032inventario)
         {
             return gg032inventario.Gg032StatusId != Parametro_csicp_gg032_Sta_Bloqueado_ID;
         }

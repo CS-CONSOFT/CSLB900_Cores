@@ -3,7 +3,10 @@ using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.LB900.Calculos;
+using CSCore.Ifs.LB900.Calculos.Parametros;
 using CSCore.Ifs.Repository;
+using CSLB900.MSTools.Calculos;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 using static CSCore.Domain.ComboTypes;
@@ -11,33 +14,128 @@ using static CSCore.Domain.ComboTypes;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX
 {
-    public class FF102RepositoryImpl(AppDbContext appDbContext)
+    public class FF102RepositoryImpl(AppDbContext appDbContext, ICalculoAtrasoMultaJurosTitulos calculoAtrasoMultaJurosTitulos)
         : RepositorioBaseImpl<CSICP_FF102>(appDbContext, "Id"), IFF102Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int tenant, string? id, int? in_tipoRegistro)
+        private readonly ICalculoAtrasoMultaJurosTitulos _calculoAtrasoMultaJurosTitulos = calculoAtrasoMultaJurosTitulos;
+        public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int in_tipoRegistro)
         {
-            IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(tenant);
+            IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
             //1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar
-            if (in_tipoRegistro is not null) 
+            if (in_tipoRegistro != null)
             {
                 query = query.Where(e => e.Ff102Tiporegistro == in_tipoRegistro);
             }
-            RepoDtoCSICP_FF102? cSICP_FF102 = await query.FirstOrDefaultAsync(e => e.Id == id);
-            return cSICP_FF102;
 
+            RepoDtoCSICP_FF102? retRepoDtoFF102 = await query.FirstOrDefaultAsync(e => e.Id == in_ff102Id);
+
+            await CalcularValoresAtrasoReceberAsync(retRepoDtoFF102);
+
+            return retRepoDtoFF102;
         }
 
-        private IQueryable<RepoDtoCSICP_FF102> GetQueryBase(int tenant)
+
+        public async Task<(List<RepoDtoCSICP_FF102>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
+            string? in_estabelecimentoId,
+            int in_tipoRegistro,
+            string? in_prefixo,
+            decimal? in_titulo,
+            string? in_sufixo,
+            string? in_nomeConta,
+            int? in_situacaoId,
+            int? in_codigoConta,
+            int? in_TpCobranca,
+            decimal? in_NoTitulonoBanco,
+            string? in_serie,
+            decimal? in_numeroNotaf,
+            string? in_AgCobrador,
+            string? in_centroCusto,
+            DateTime? in_dataInicio,
+            DateTime? in_dataFinal,
+            QualDataFiltro? in_tipoDataFiltro)
         {
+            IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
+            query = FiltraQuandoExisteFiltro(in_estabelecimentoId, query,
+                in_tipoRegistro,
+                in_prefixo,
+                in_titulo,
+                in_sufixo,
+                in_nomeConta,
+                in_situacaoId,
+                in_codigoConta,
+                in_TpCobranca,
+                in_NoTitulonoBanco,
+                in_serie,
+                in_numeroNotaf,
+                in_AgCobrador,
+                in_centroCusto,
+                in_dataInicio,
+                in_dataFinal,
+                in_tipoDataFiltro);
+
+            var queryCount = query;
+            var count = queryCount.Count();
+            query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
+
+            List<RepoDtoCSICP_FF102> repoDtoCSICP_FF102List = await query.ToListAsync();
+            foreach (var current in repoDtoCSICP_FF102List)
+            {
+                await CalcularValoresAtrasoReceberAsync(current);
+            }
+
+            return (repoDtoCSICP_FF102List, count);
+        }
+
+
+        private async Task CalcularValoresAtrasoReceberAsync(RepoDtoCSICP_FF102 retRepoDtoFF102)
+        {
+            PrmEntradaContasAReceber prmEntradaContasAReceber = new PrmEntradaContasAReceber
+            {
+                InTenantID = retRepoDtoFF102.TenantId,
+                InDataVencimento = retRepoDtoFF102.Ff102DataVencimento,
+                InDiasLiberacao = retRepoDtoFF102.Ff102Nodiasliberacao,
+                InValorTitulo = retRepoDtoFF102.Ff102VlLiqTitulo,
+                InPercentualCorrecaoMonetaria = retRepoDtoFF102.Ff102PercCorrmonetaria,
+                InPercentualMulta = retRepoDtoFF102.Ff102PercMulta,
+                InPercentualJuros = retRepoDtoFF102.Ff102PercJurosAtr,
+                InPercentualHonorarios = retRepoDtoFF102.Ff102PercHonorarios,
+                InEstabID = retRepoDtoFF102.Ff102Filialid ?? "",
+                InFinacEspJurosMulta = retRepoDtoFF102.NavBB01201Jur?.Codgcs == 1,
+            };
+            PrmRetornoCalculo prmRetornoCalculo
+                = await _calculoAtrasoMultaJurosTitulos.CalcularContasAReceber(prmEntradaContasAReceber);
+
+            retRepoDtoFF102.CSValorJuros = prmRetornoCalculo.OutValorJuros;
+            retRepoDtoFF102.CSValorMulta = prmRetornoCalculo.OutValorMulta;
+            retRepoDtoFF102.CSValorCorrecaoMonetaria = prmRetornoCalculo.OutValorCorrecaoMonetaria;
+            retRepoDtoFF102.CSValorHonorarios = prmRetornoCalculo.OutValorHonorario;
+            retRepoDtoFF102.CSDiasAtraso = prmRetornoCalculo.OutDiasAtrasoJuros;
+            retRepoDtoFF102.CSDiasAtraso = prmRetornoCalculo.OutDiasAtrasoJuros;
+
+            retRepoDtoFF102.CSPercentualCorrecaoMonetariaConfig = prmRetornoCalculo.OutPercentualCorrecaoMonetariaConfig;
+            retRepoDtoFF102.CSPercentualHonorarioConfig = prmRetornoCalculo.OutPercentualHonorarioConfig;
+            retRepoDtoFF102.CSPercentualJurosConfig = prmRetornoCalculo.OutPercentualJurosConfig;
+            retRepoDtoFF102.CSPercentualMultaConfig = prmRetornoCalculo.OutPercentualMultaConfig;
+
+            retRepoDtoFF102.CSValorAPagar = prmRetornoCalculo.OutValorJuros +
+                                            prmRetornoCalculo.OutValorMulta +
+                                            prmRetornoCalculo.OutValorCorrecaoMonetaria +
+                                            prmRetornoCalculo.OutValorHonorario +
+                                            retRepoDtoFF102.Ff102VlLiqTitulo;
+        }
+
+        private IQueryable<RepoDtoCSICP_FF102> GetQueryBase(int in_tenant)
+        {
+
             return from ff102 in _appDbContext.OsusrE9aCsicpFf102s
-                   
-                   //42 tabelas
-                   join bb001 in _appDbContext.E9ACSICP_BB001s 
+
+                       //42 tabelas
+                   join bb001 in _appDbContext.E9ACSICP_BB001s
                    on ff102.Ff102Filialid equals bb001.Id into bb001_ff102_join
                    from bb001 in bb001_ff102_join.DefaultIfEmpty()
 
-                   join ff003 in _appDbContext.OsusrE9aCsicpFf003s 
+                   join ff003 in _appDbContext.OsusrE9aCsicpFf003s
                    on ff102.Ff102Especieid equals ff003.Id into ff003_ff102_join
                    from ff003 in ff003_ff102_join.DefaultIfEmpty()
 
@@ -45,23 +143,27 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff102.Ff102Tipoparcelaid equals ff102ent.Id into ff102ent_ff102_join
                    from ff102ent in ff102ent_ff102_join.DefaultIfEmpty()
 
-                   join bb012conta in _appDbContext.OsusrE9aCsicpBb012s 
+                   join bb012conta in _appDbContext.OsusrE9aCsicpBb012s
                    on ff102.Ff102Contaid equals bb012conta.Id into bb012conta_ff102_join
                    from bb012conta in bb012conta_ff102_join.DefaultIfEmpty()
 
+                   join bb01201 in _appDbContext.OsusrE9aCsicpBb01201s
+                   on bb012conta.Id equals bb01201.Id into bb01201_join
+                   from bb01201 in bb01201_join.DefaultIfEmpty()
+
                    join bb01202 in _appDbContext.OsusrE9aCsicpBb01202s
-                    on bb012conta.Id equals bb01202.Id into bb01202_join
+                   on bb012conta.Id equals bb01202.Id into bb01202_join
                    from bb01202 in bb01202_join.DefaultIfEmpty()
 
                    join bb01206 in _appDbContext.OsusrE9aCsicpBb01206s
                     on bb012conta.Id equals bb01206.Id into bb01206_join
                    from bb01206 in bb01206_join.DefaultIfEmpty()
 
-                   join bb012contareal in _appDbContext.OsusrE9aCsicpBb012s 
+                   join bb012contareal in _appDbContext.OsusrE9aCsicpBb012s
                    on ff102.Ff102Contarealid equals bb012contareal.Id into bb012contareal_ff102_join
                    from bb012contareal in bb012contareal_ff102_join.DefaultIfEmpty()
 
-                   join bb012avalista in _appDbContext.OsusrE9aCsicpBb012s 
+                   join bb012avalista in _appDbContext.OsusrE9aCsicpBb012s
                    on ff102.Ff102AvalistaId equals bb012avalista.Id into bb012avalista_ff102_join
                    from bb012avalista in bb012avalista_ff102_join.DefaultIfEmpty()
 
@@ -102,14 +204,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    from sy001CodCobrador in sy001_ff102_join.DefaultIfEmpty()
 
                    join sy001Aprovador in _appDbContext.OsusrE9aCsicpSy001s
-                     on ff102.Ff102cpAprovadorid equals sy001Aprovador.Id into sy001Aprovador_ff102_join
+                   on ff102.Ff102cpAprovadorid equals sy001Aprovador.Id into sy001Aprovador_ff102_join
                    from sy001Aprovador in sy001Aprovador_ff102_join.DefaultIfEmpty()
 
-                   join ff102des in _appDbContext.OsusrE9aCsicpFf102Des 
+                   join ff102des in _appDbContext.OsusrE9aCsicpFf102Des
                    on ff102.Ff102TipoDesconto equals ff102des.Id into ff102des_ff102_join
                    from ff102des in ff102des_ff102_join.DefaultIfEmpty()
 
-                   join ff102c021 in _appDbContext.OsusrE9aCsicpFf102C021s 
+                   join ff102c021 in _appDbContext.OsusrE9aCsicpFf102C021s
                    on ff102.Ff102CnabCodDesconto equals ff102c021.Id into ff102c021_ff102_join
                    from ff102c021 in ff102c021_ff102_join.DefaultIfEmpty()
 
@@ -117,7 +219,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff102.Ff102FluxoCaixa equals staticaFluxoCaixa.Id into staticaFluxoCaixa_ff102_join
                    from staticaFluxoCaixa in staticaFluxoCaixa_ff102_join.DefaultIfEmpty()
 
-                   join ff102sit in _appDbContext.OsusrE9aCsicpFf102Sits 
+                   join ff102sit in _appDbContext.OsusrE9aCsicpFf102Sits
                    on ff102.Ff102Situacaoid equals ff102sit.Id into ff102sit_ff102_join
                    from ff102sit in ff102sit_ff102_join.DefaultIfEmpty()
 
@@ -199,7 +301,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff102.Ff102TrilhaApiid equals ff120track.Id into ff120track_ff102_join
                    from ff120track in ff120track_ff102_join.DefaultIfEmpty()
 
-                   where ff102.TenantId == tenant
+
+
+                   where ff102.TenantId == in_tenant
                    select new RepoDtoCSICP_FF102
                    {
                        TenantId = ff102.TenantId,
@@ -388,6 +492,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                        Ff102PixcobQrcode = ff102.Ff102PixcobQrcode,
                        Ff102PixcobStatus = ff102.Ff102PixcobStatus,
                        Ff102TrilhaApiid = ff102.Ff102TrilhaApiid,
+                      
 
                        NavBB001 = bb001 != null ? new CSICP_BB001
                        {
@@ -426,7 +531,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            TenantId = bb008.TenantId,
                            Id = bb008.Id,
                            Bb008Codigo = bb008.Bb008Codigo,
-                           Bb008Condicao = bb008.Bb008Condicao,
+                           Bb008CondicaoPagto = bb008.Bb008CondicaoPagto,
                        } : null,
 
                        NavBB009 = bb009 != null ? new CSICP_Bb009
@@ -445,19 +550,28 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Bb019Administradora = bb019.Bb019Administradora,
                        } : null,
 
-                       NavBB012 = bb012conta != null ? new CSICP_BB012
+                       NavBB012ContaID = bb012conta != null ? new CSICP_BB012
                        {
                            TenantId = bb012conta.TenantId,
                            Id = bb012conta.Id,
                            Bb012Codigo = bb012conta.Bb012Codigo,
                            Bb012NomeCliente = bb012conta.Bb012NomeCliente,
                            Bb012GrupocontaId = bb012conta.Bb012GrupocontaId,
+
+                           OsusrE9aCsicpBb01201 = bb01201 != null ? new CSICP_BB01201
+                           {
+                               Id = bb01201.Id,
+                               Bb012SitespecialId = bb01201.Bb012SitespecialId
+                           } : null,
+
+
                            Nav_BB01202 = bb01202 != null ? new CSICP_BB01202
                            {
                                Id = bb01202.Id,
                                Bb012Cpf = bb01202.Bb012Cpf,
                                Bb012Cnpj = bb01202.Bb012Cnpj,
                            } : null,
+
                            NavBB01206 = bb01206 != null ? new CSICP_BB01206
                            {
                                Id = bb01206.Id,
@@ -487,6 +601,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                        {
                            Id = bb012_01jur.Id,
                            Label = bb012_01jur.Label,
+                           Codgcs = bb012_01jur.Codgcs,
                        } : null,
 
                        NavBB026 = bb026pagto != null ? new CSICP_Bb026
@@ -546,6 +661,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Id = ff102cob.Id,
                            Label = ff102cob.Label,
                        } : null,
+
 
                        NavFF102Aut = ff102Aut != null ? new CSICP_FF102Aut
                        {
@@ -668,8 +784,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    };
         }
 
-        public async Task<(List<RepoDtoCSICP_FF102>, int)> GetListAsync(int tenant, int page, int pageSize,
-            string? in_estabelecimentoId,
+        private IQueryable<RepoDtoCSICP_FF102> FiltraQuandoExisteFiltro(string? in_estabelecimentoId,
+            IQueryable<RepoDtoCSICP_FF102> query,
             int in_tipoRegistro,
             string? in_prefixo,
             decimal? in_titulo,
@@ -687,51 +803,12 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             DateTime? in_dataFinal,
             QualDataFiltro? in_tipoDataFiltro)
         {
-            IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(tenant);
-            query = FiltraQuandoExisteFiltro(in_estabelecimentoId, query,
-                in_prefixo,
-                in_titulo,
-                in_sufixo,
-                in_nomeConta,
-                in_situacaoId,
-                in_codigoConta,
-                in_TpCobranca,
-                in_NoTitulonoBanco,
-                in_serie,
-                in_numeroNotaf,
-                in_AgCobrador,
-                in_centroCusto,
-                in_dataInicio,
-                in_dataFinal,
-                in_tipoDataFiltro);
-
-            var queryCount = query;
-            var count = queryCount.Count();
-            query = query.PaginacaoNoBanco(page, pageSize);
-
-            return (await query.ToListAsync(), count);
-        }
-
-        private IQueryable<RepoDtoCSICP_FF102> FiltraQuandoExisteFiltro(string? in_estabelecimentoId,
-            IQueryable<RepoDtoCSICP_FF102> query,
-            string? in_prefixo,
-            decimal? in_titulo,
-            string? in_sufixo,
-            string? in_nomeConta,
-            int? in_situacaoId,
-            int? in_codigoConta,
-            int? in_TpCobranca,
-            decimal? in_NoTitulonoBanco,
-            string? in_serie,
-            decimal? in_numeroNotaf,
-            string? in_AgCobrador,
-            string? in_centroCusto,
-            DateTime? in_dataInicio,
-            DateTime? in_dataFinal,
-            QualDataFiltro? in_tipoDataFiltro)
-        {
+            
             if (in_estabelecimentoId != null)
                 query = query.Where(e => e.Ff102Filialid!.Equals(in_estabelecimentoId));
+
+            if (in_tipoRegistro != null)
+                query = query.Where(e => e.Ff102Tiporegistro!.Equals(in_tipoRegistro));
 
             if (in_prefixo != null)
                 query = query.Where(e => e.Ff102Pfx!.Equals(in_prefixo));
@@ -743,13 +820,13 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 query = query.Where(e => e.Ff102Sfx!.Equals(in_sufixo));
 
             if (in_nomeConta != null)
-                query = query.Where(e => e.NavBB012!.Bb012NomeCliente!.Contains(in_nomeConta));
+                query = query.Where(e => e.NavBB012ContaID!.Bb012NomeCliente!.Contains(in_nomeConta));
 
             if (in_situacaoId != null)
                 query = query.Where(e => e.Ff102Situacaoid!.Equals(in_situacaoId));
 
             if (in_codigoConta != null)
-                query = query.Where(e => e.NavBB012!.Bb012Codigo.Equals(in_codigoConta));
+                query = query.Where(e => e.NavBB012ContaID!.Bb012Codigo.Equals(in_codigoConta));
 
             if (in_TpCobranca != null)
                 query = query.Where(e => e.Ff102Tpcobranca!.Equals(in_TpCobranca));

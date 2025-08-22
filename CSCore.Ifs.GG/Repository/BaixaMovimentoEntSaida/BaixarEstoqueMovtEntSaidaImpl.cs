@@ -15,7 +15,7 @@ namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly ISendEndpointProvider _sendEndpointProvider = sendEndpointProvider;
 
-        public async Task CS001_Baixa_Movto_ENTSAI(ParametrosBaixaSaldo parametrosBaixaEstoque, int tenant)
+        public async Task CS001_Baixa_Movto_ENTSAI(ParametrosBaixaSaldo parametrosBaixaEstoque, int tenant, string in_usuarioID)
         {
             IQueryable<CSICP_GG074> queryGG074 = GeraQueryGG074(parametrosBaixaEstoque.GG073_ID);
 
@@ -26,7 +26,8 @@ namespace CSCore.Ifs.GG.Repository.BaixaMovimentoEntSaida
                 ListaGG074 = listaGG074_Produtos_Movimento,
                 ParametrosBaixaSaldo = parametrosBaixaEstoque,
                 Tenant_ID = tenant,
-                GG073Corrente = parametrosBaixaEstoque.GG073Corrente
+                GG073Corrente = parametrosBaixaEstoque.GG073Corrente,
+                Usuario_ID = in_usuarioID
             };
 
             string? urlParaRoutingKey = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:9607";

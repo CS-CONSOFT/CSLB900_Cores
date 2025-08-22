@@ -49,7 +49,7 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG073
 
         public OsusrE9aCsicpGg073Stat? Gg073Status { get; set; }
 
-        public OsusrE9aCsicpGg073Tmov? Gg073Tmov { get; set; }
+        public OSUSR_E9A_CSICP_GG073_TMOV? Gg073Tmov { get; set; }
 
         public CSICP_GG023Val? Gg073Valorizarpor { get; set; }
     }

@@ -146,5 +146,6 @@ namespace CSBS101.C82Application.Dto.BB00X.BB00X.BB001
 
         [MaxLength(36, ErrorMessage = "Token CSPix não pode ter mais que 36 caracteres.")]
         public string? Bb001TokenCspix { get; set; }
+        public bool? BB001_IsRegimeRegular { get; set; }
     }
 }

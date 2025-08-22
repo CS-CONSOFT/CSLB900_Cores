@@ -20,6 +20,6 @@ namespace CSBS101._82Application.Dto.BB00X.BB001.BB001Cnae
 
         public bool? Bb001IscnaeFiscal { get; set; }
 
-        public CSICP_AA029 NavCnae { get; set; } = null!;
+        public CSICP_AA029? NavCnae { get; set; }
     }
 }

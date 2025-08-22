@@ -80,7 +80,7 @@ public partial class CSICP_FF102
 
     public DateTime Ff102DataVencimento { get; set; } = default(DateTime);
 
-    public DateTime Ff102DataVencReal { get; set; } = default(DateTime);
+    public DateTime? Ff102DataVencReal { get; set; } = default(DateTime);
 
     public decimal? Ff102ValorTitulo { get; set; }
 
@@ -382,14 +382,31 @@ public partial class CSICP_FF102
 
 public class RepoDtoCSICP_FF102 : CSICP_FF102
 {
+    public int? CSDiasAtraso { get; set; } = default;
+
+    public decimal? CSValorCorrecaoMonetaria { get; set; } = default;
+
+    public decimal? CSValorMulta { get; set; } = default;
+
+    public decimal? CSValorHonorarios { get; set; } = default;
+
+    public decimal? CSValorJuros { get; set; } = default;
+
+    public decimal? CSValorAPagar { get; set; } = default;
+    public decimal? CSPercentualJurosConfig { get; set; }
+    public decimal? CSPercentualMultaConfig { get; set; }
+    public decimal? CSPercentualCorrecaoMonetariaConfig { get; set; }
+    public decimal? CSPercentualHonorarioConfig { get; set; }
+
+
     public CSICP_BB001? NavBB001 { get; set; }
     public CSICP_Bb005? NavBB005 { get; set; }
     public CSICP_Bb006? NavBB006 { get; set; }
     public CSICP_BB007? NavBB007 { get; set; }
     public CSICP_Bb008? NavBB008 { get; set; }
     public CSICP_Bb009? NavBB009 { get; set; }
-    public CSICP_BB012? NavBB012 { get; set; }
     public CSICP_Bb019? NavBB019 { get; set; }
+    public CSICP_BB012? NavBB012 { get; set; }
     public CSICP_BB012? NavBB012ContaID { get; set; }
     public CSICP_BB012? NavBB012ContaRealID { get; set; }
     public CSICP_BB012? NavBB012AvalistaID { get; set; }

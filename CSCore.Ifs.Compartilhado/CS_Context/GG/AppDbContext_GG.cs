@@ -44,9 +44,9 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<CSICP_GG045> OsusrE9aCsicpGg045s { get; set; }
 
 
-        public DbSet<OsusrE9aCsicpGg046> OsusrE9aCsicpGg046s { get; set; }
+        public DbSet<CSICP_GG046> OsusrE9aCsicpGg046s { get; set; }
 
-        public DbSet<OsusrE9aCsicpGg046E> OsusrE9aCsicpGg046Es { get; set; }
+        public DbSet<OSUSR_E9A_CSICP_GG046_ES> OsusrE9aCsicpGg046Es { get; set; }
 
 
         public DbSet<CSICP_GG054> OsusrE9aCsicpGg054s { get; set; }
@@ -732,8 +732,8 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("GG033_SALDOID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                
 
+                entity.HasOne(e => e.NavGG033_Saldo).WithOne().HasForeignKey<CSICP_GG033>(e => e.Gg033Saldoid);
 
             });
 
@@ -1121,7 +1121,7 @@ namespace CSCore.Ifs.CS_Context
             });
 
 
-            modelBuilder.Entity<OsusrE9aCsicpGg046>(entity =>
+            modelBuilder.Entity<CSICP_GG046>(entity =>
             {
                 entity.HasKey(e => e.Gg046Id).HasName("OSPRK_OSUSR_E9A_CSICP_GG046");
 
@@ -1179,11 +1179,11 @@ namespace CSCore.Ifs.CS_Context
       
 
                 entity.HasOne(d => d.Nav_Gg250Saldoent).WithOne()
-                    .HasForeignKey<OsusrE9aCsicpGg046>(d => d.Gg046SaldoentId);
+                    .HasForeignKey<CSICP_GG046>(d => d.Gg046SaldoentId);
 
             });
 
-            modelBuilder.Entity<OsusrE9aCsicpGg046E>(entity =>
+            modelBuilder.Entity<OSUSR_E9A_CSICP_GG046_ES>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_GG046_ES");
 

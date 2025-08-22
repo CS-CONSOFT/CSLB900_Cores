@@ -114,6 +114,8 @@ public partial class CSICP_BB001
 
     public string? Bb001TokenCspix { get; set; }
 
+    public bool? BB001_IsRegimeRegular { get; set; }
+
     //navegacao
     public ICollection<CSICP_BB001Img> OsusrE9aCsicpBb001Imgs { get; set; } = new List<CSICP_BB001Img>();
     public CSICP_Aa025? Bb001Pais { get; set; }
