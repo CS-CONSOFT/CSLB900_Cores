@@ -58,7 +58,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                         };
 
             // Aplicar filtro de estabelecimentos se fornecido
-            if (request.FiltroEstabelecimentos != null && request.FiltroEstabelecimentos.Any())
+            if (request.FiltroEstabelecimentos != null && request.FiltroEstabelecimentos.Count != 0)
             {
                 query = query.Where(t => t.IdEstabelecimento != null && request.FiltroEstabelecimentos.Contains(t.IdEstabelecimento));
             }

@@ -47,7 +47,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                             IdEstabelecimento = ff102.Ff102Filialid
                         };
 
-            if (in_filtroEstabelecimentos != null && in_filtroEstabelecimentos.Any())
+            if (in_filtroEstabelecimentos != null && in_filtroEstabelecimentos.Count != 0)
             {
                 query = query.Where(t => t.IdEstabelecimento != null && in_filtroEstabelecimentos.Contains(t.IdEstabelecimento));
             }

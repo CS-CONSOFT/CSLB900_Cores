@@ -28,10 +28,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         {
             // Verifica se o borderô existe
             var ff105 = await _appDbContext.OsusrE9aCsicpFf105s
-                .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == in_ff105_borderoId);
-
-            if (ff105 == null)
-                throw new Exception("Borderô FF105 não encontrado");
+                .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == in_ff105_borderoId) 
+                ?? throw new Exception("Borderô FF105 não encontrado");
 
             // Busca o status do borderô com join
             var ff105ComStatus = await (from ff105bordero in _appDbContext.OsusrE9aCsicpFf105s
@@ -239,10 +237,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                         continue;
 
                     var ff102 = await _appDbContext.OsusrE9aCsicpFf102s
-                        .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == ff106.Ff102Id);
-
-                    if (ff102 == null)
-                        throw new Exception("Título FF102 não encontrado");
+                        .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == ff106.Ff102Id) ?? throw new Exception("Título FF102 não encontrado");
 
                     //Guardar os valores da tabela ff102 na tabela ff106
                     ff106.Ff106Agcobradorid = ff102.Ff102Agcobradorid;
@@ -308,10 +303,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 foreach (var ff106 in ff106List)
                 {
                     var ff102 = await _appDbContext.OsusrE9aCsicpFf102s
-                        .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == ff106.Ff102Id);
-
-                    if (ff102 == null)
-                        throw new Exception("Título FF102 não encontrado");
+                        .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == ff106.Ff102Id) ?? throw new Exception("Título FF102 não encontrado");
 
                     //Guarda os valores da tabela ff106 na tabela ff102
                     ff102.Ff102Agcobradorid = ff106.Ff106Agcobradorid;

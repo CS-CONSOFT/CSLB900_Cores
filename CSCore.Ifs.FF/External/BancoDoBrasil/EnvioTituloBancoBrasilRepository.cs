@@ -68,7 +68,7 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly IFF102Repository _iFF102Repository = iFF102Repository;
 
-        public async Task CS01_Envio_Titulos(string in_ff102ID, int in_tenantID)
+        public async Task CS01_Envio_Titulos(string in_ff102ID, int in_tenantID, int in_tipoRegistro)
         {
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
@@ -78,7 +78,7 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
                     await _iFF102Repository.GetByIdAsync(
                     in_tenantID,
                     in_ff102ID,
-                    in_tipoRegistro: null) ?? throw new KeyNotFoundException("RepoDtoCSICP_FF102 não encontrado");
+                    in_tipoRegistro) ?? throw new KeyNotFoundException("RepoDtoCSICP_FF102 não encontrado");
 
                 //pega o cnab
                 ReturnCnab returnCnab = await CS_Ret_CfgCNAB(getTitulo.Ff102Agcobradorid ?? "");

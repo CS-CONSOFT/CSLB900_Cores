@@ -22,7 +22,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         }
 
         public async Task<(List<RepoDtoCSICP_FF112>, int)> GetListAsync(
-            int in_tenant, int in_pageNumber, int in_pageSize, string? in_estabId, string? in_descCnab, string? in_bancoId, bool? in_isActive, int? in_tipoOperacao)
+            int in_tenant, int in_pageNumber, int in_pageSize, string? in_estabId, string? in_descCnab, string? in_bancoId,
+            bool? in_isActive, int? in_tipoOperacao)
         {
             IQueryable<RepoDtoCSICP_FF112> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_estabId, in_descCnab, in_bancoId, in_isActive, in_tipoOperacao, query);
@@ -35,7 +36,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         }
 
         private IQueryable<RepoDtoCSICP_FF112> FiltraQuandoExisteFiltro(
-            string? in_estabId, string? in_descCnab, string? in_bancoId, bool? in_isActive, int? in_tipoOperacao, IQueryable<RepoDtoCSICP_FF112> query)
+            string? in_estabId, string? in_descCnab, string? in_bancoId, bool? in_isActive, int? in_tipoOperacao,
+            IQueryable<RepoDtoCSICP_FF112> query)
         {
             if (in_estabId != null)
                 query = query.Where(e => e.Ff112Filialid!.Equals(in_estabId));
