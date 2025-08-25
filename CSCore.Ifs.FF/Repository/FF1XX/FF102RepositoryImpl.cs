@@ -129,7 +129,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
             return from ff102 in _appDbContext.OsusrE9aCsicpFf102s
 
-                       //42 tabelas
+                   //42 tabelas
                    join bb001 in _appDbContext.E9ACSICP_BB001s
                    on ff102.Ff102Filialid equals bb001.Id into bb001_ff102_join
                    from bb001 in bb001_ff102_join.DefaultIfEmpty()
@@ -299,8 +299,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    join ff120track in _appDbContext.OsusrE9aCsicpFf120Trackapis
                    on ff102.Ff102TrilhaApiid equals ff120track.Id into ff120track_ff102_join
                    from ff120track in ff120track_ff102_join.DefaultIfEmpty()
-
-
 
                    where ff102.TenantId == in_tenant
                    select new RepoDtoCSICP_FF102

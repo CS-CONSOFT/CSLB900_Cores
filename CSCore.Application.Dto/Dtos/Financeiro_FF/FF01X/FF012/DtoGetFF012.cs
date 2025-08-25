@@ -7,7 +7,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF012
     public class DtoGetFF012
     {
         public int TenantId { get; set; }
-        public string Id { get; set; } = "";
+        public string Id { get; set; } = null!;
         public string? Ff012Filialid { get; set; }
         public int? Ff012CodigoGrupo { get; set; }
         public string? Ff012DescricaoGrupo { get; set; }
