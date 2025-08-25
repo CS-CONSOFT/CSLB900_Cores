@@ -166,6 +166,7 @@ namespace CSBS101._82Application.Dto.BB00X.BB001
         public int? Bb001Codigoempresa { get; set; } = null!;
 
         public string? Bb001Razaosocial { get; set; } = null!;
+
         public bool? BB001_IsRegimeRegular { get; set; }
     }
 }

@@ -15,13 +15,13 @@ namespace CSCore.Ifs.FF.Repository.FF01X
         private readonly AppDbContext _appDbContext = appDbContext;
 
         public async Task<(List<RepoDtoCSICP_FF012>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
-            string? in_filialId, int? in_codigoGrupo)
+            string? in_estabId, int? in_codigoGrupo)
         {
             IQueryable<RepoDtoCSICP_FF012> query = GetQueryBase(in_tenant);
 
             // Aplicar filtros
-            if (!string.IsNullOrEmpty(in_filialId))
-                query = query.Where(e => e.Ff012Filialid == in_filialId);
+            if (!string.IsNullOrEmpty(in_estabId))
+                query = query.Where(e => e.Ff012Filialid == in_estabId);
 
             if (in_codigoGrupo.HasValue)
                 query = query.Where(e => e.Ff012CodigoGrupo == in_codigoGrupo);
