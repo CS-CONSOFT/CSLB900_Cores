@@ -1,7 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
-using CSCore.Ex.Personalizada;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel;
 using CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloEstornar;
 using CSCore.Ifs.FF.Repository.Processos.CS_TituloCalculoBaixa;
 using CSLB900.MSTools.Util;
