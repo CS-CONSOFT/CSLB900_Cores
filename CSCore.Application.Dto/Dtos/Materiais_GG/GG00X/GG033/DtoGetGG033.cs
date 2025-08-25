@@ -64,6 +64,6 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG033
 
         public string? Gg033Codbarrasalfa { get; set; }
 
-        public DtoGetGG520Simples? NavGG033_Saldo { get; set; }
+        public DtoGetGG520SimplesComProdutoSemKardex? NavGG033_Saldo { get; set; }
     }
 }

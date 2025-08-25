@@ -1,4 +1,5 @@
-﻿using CSCore.Domain.CS_Models.CSICP_GG;
+﻿using CSCore.Domain;
+using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_QueryFilters.GG032;
 using CSCore.Domain.Interfaces.GG._03X;
 using CSCore.Ifs.CS_Context;
@@ -425,7 +426,50 @@ namespace CSCore.Ifs.Repository.GG._03X
         {
             IQueryable<CSICP_GG032> query = from _CSICP_GG032 in _appDbContext.OsusrE9aCsicpGg032s
                                             where _CSICP_GG032.TenantId == tenant
-                                            select _CSICP_GG032;
+
+                                            join _CSICP_BB012 in _appDbContext.OsusrE9aCsicpBb012s
+                                            on _CSICP_GG032.Gg032Usuarioid equals _CSICP_BB012.Id into _CSICP_BB012_joined
+                                            from _CSICP_BB012 in _CSICP_BB012_joined.DefaultIfEmpty()
+
+                                            join _OsusrE9aCsicpGg032Stum in _appDbContext.OsusrE9aCsicpGg032Sta
+                                            on _CSICP_GG032.Gg032StatusId equals _OsusrE9aCsicpGg032Stum.Id into _OsusrE9aCsicpGg032Stum_joined
+                                            from _OsusrE9aCsicpGg032Stum in _OsusrE9aCsicpGg032Stum_joined.DefaultIfEmpty()
+
+
+                                            select new CSICP_GG032
+                                            {
+                                                TenantId = _CSICP_GG032.TenantId,
+                                                Id = _CSICP_GG032.Id,
+                                                Gg032Filialid = _CSICP_GG032.Gg032Filialid,
+                                                Gg032Usuarioid = _CSICP_GG032.Gg032Usuarioid,
+                                                Gg032Filial = _CSICP_GG032.Gg032Filial,
+                                                Gg032Datamovimento = _CSICP_GG032.Gg032Datamovimento,
+                                                Gg032Observacao = _CSICP_GG032.Gg032Observacao,
+                                                Gg032Almoxid = _CSICP_GG032.Gg032Almoxid,
+                                                Gg032Codgalmox = _CSICP_GG032.Gg032Codgalmox,
+                                                Gg032Totalcusto = _CSICP_GG032.Gg032Totalcusto,
+                                                Gg032Totalcreal = _CSICP_GG032.Gg032Totalcreal,
+                                                Gg032Totalcmedio = _CSICP_GG032.Gg032Totalcmedio,
+                                                Gg032Totalvenda = _CSICP_GG032.Gg032Totalvenda,
+                                                Gg032DataHoraBloqueado = _CSICP_GG032.Gg032DataHoraBloqueado,
+                                                Gg032DataHoraProcessado = _CSICP_GG032.Gg032DataHoraProcessado,
+                                                Gg032QtosPodutos = _CSICP_GG032.Gg032QtosPodutos,
+                                                Gg032QtosNaoconform = _CSICP_GG032.Gg032QtosNaoconform,
+                                                Gg032QtosNaoinventariado = _CSICP_GG032.Gg032QtosNaoinventariado,
+                                                Gg032QtdRegraNconf = _CSICP_GG032.Gg032QtdRegraNconf,
+                                                Gg032TipoinventarioId = _CSICP_GG032.Gg032TipoinventarioId,
+                                                Gg032StatusId = _CSICP_GG032.Gg032StatusId,
+                                                Gg032Protocolnumber = _CSICP_GG032.Gg032Protocolnumber,
+                                                NavGG032Status = _OsusrE9aCsicpGg032Stum,
+                                                NavBB012Usuario = _CSICP_BB012 != null ? new CSICP_BB012
+                                                {
+                                                    TenantId = _CSICP_BB012.TenantId,
+                                                    Id = _CSICP_BB012.Id,
+                                                    Bb012NomeCliente = _CSICP_BB012.Bb012NomeCliente,
+                                                    Bb012NomeFantasia = _CSICP_BB012.Bb012NomeFantasia,
+                                                    Bb012Codigo = _CSICP_BB012.Bb012Codigo
+                                                } : null
+                                            };
             return query;
         }
 

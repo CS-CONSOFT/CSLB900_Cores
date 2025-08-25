@@ -1,4 +1,6 @@
-﻿namespace CSCore.Domain.CS_Models.CSICP_GG;
+﻿using CSCore.Domain.CS_Models.Staticas.GG;
+
+namespace CSCore.Domain.CS_Models.CSICP_GG;
 
 public partial class CSICP_GG032
 {
@@ -45,5 +47,9 @@ public partial class CSICP_GG032
     public int? Gg032StatusId { get; set; }
 
     public string? Gg032Protocolnumber { get; set; }
+
+    public OsusrE9aCsicpGg032Stum? NavGG032Status { get; set; }
+
+    public CSICP_BB012? NavBB012Usuario { get; set; }
 
 }

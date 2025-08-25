@@ -299,6 +299,35 @@ namespace CSCore.Application.Dto.Mapper.GG00X
             };
         }
 
+        public static DtoGetGG520SimplesComProdutoSemKardex ToDtoGetSimplesComProdutoESemKardex(this CSICP_GG520 entity)
+        {
+            return new DtoGetGG520SimplesComProdutoSemKardex
+            {
+                Id = entity.Id,
+                Gg520Filialid = entity.Gg520Filialid,
+                Gg520KardexId = entity.Gg520KardexId,
+                Gg520Almoxid = entity.Gg520Almoxid,
+                Gg520NsNumerosaldo = entity.Gg520NsNumerosaldo,
+                Gg520Descricaosaldo = entity.Gg520Descricaosaldo,
+                Gg520Ultinventario = entity.Gg520Ultinventario,
+                Gg520ItemEmContagem = entity.Gg520ItemEmContagem,
+                Gg520Ultrecebimento = entity.Gg520Ultrecebimento,
+                Gg520Qtdultrecebto = entity.Gg520Qtdultrecebto,
+                Gg520UltimaVenda = entity.Gg520UltimaVenda,
+                Gg520Lote = entity.Gg520Lote,
+                Gg520Saldo = entity.Gg520Saldo,
+                Gg520QtdeUltVenda = entity.Gg520QtdeUltVenda,
+                Gg520DescricaoLote = entity.Gg520DescricaoLote,
+                Gg520DataValidade = entity.Gg520DataValidade,
+                Gg520EstqMinimo = entity.Gg520EstqMinimo,
+                Gg520Estoquemaximo = entity.Gg520Estoquemaximo,
+                Gg520Superpromocao = entity.Gg520Superpromocao,
+                Gg001AlmoxarifadoCodigo = entity.NavGG001Almox?.Gg001Codigoalmox.ToString(),
+                Gg001AlmoxarifadoDescricao = entity.NavGG001Almox?.Gg001Descalmox,
+                NavGG520Produto = entity.Nav_GG008Kardex?.NavGG008Produto?.ToDtoGetExibicaoSimples()
+            };
+        }
+
 
         public static DtoGetGG520_2 ToDtoGetPesquisaProduto(this CSICP_GG520 entity)
         {

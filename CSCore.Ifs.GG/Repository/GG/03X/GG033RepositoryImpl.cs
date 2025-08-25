@@ -1,4 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
+using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Domain.Interfaces.GG._03X;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
@@ -51,6 +52,14 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
                                             join gg520 in _appDbContext.OsusrE9aCsicpGg520s
                                             on _CSICP_GG033.Gg033Saldoid equals gg520.Id into gg520Join
                                             from gg520 in gg520Join.DefaultIfEmpty()
+
+                                            join gg008kdx in _appDbContext.OsusrE9aCsicpGg008Kdxes
+                                            on gg520.Gg520KardexId equals gg008kdx.Gg008Kardexid into gg008kdxJoin
+                                            from gg008kdx in gg008kdxJoin.DefaultIfEmpty()
+
+                                            join gg008 in _appDbContext.OsusrE9aCsicpGg008s
+                                            on gg008kdx.Gg008Produtoid equals gg008.Id into gg008Join
+                                            from gg008 in gg008Join.DefaultIfEmpty()
 
                                             select new CSICP_GG033
                                             {
@@ -146,8 +155,22 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
                                                     Gg520Ispdv = gg520.Gg520Ispdv,
                                                     Gg520Vicmssubstituto = gg520.Gg520Vicmssubstituto,
                                                     Gg520VfuturaSaldoid = gg520.Gg520VfuturaSaldoid,
+                                                    Nav_GG008Kardex = gg008kdx != null ? new CSICP_GG008Kdx
+                                                    {
+                                                        TenantId = gg008kdx.TenantId,
+                                                        Gg008Kardexid = gg008kdx.Gg008Kardexid,
+                                                        NavGG008Produto = gg008 != null ? new CSICP_GG008
+                                                        {
+                                                            TenantId = gg008.TenantId,
+                                                            Id = gg008.Id,
+                                                            Gg008Descreduzida = gg008.Gg008Descreduzida,
+                                                            Gg008Codgproduto = gg008.Gg008Codgproduto
+                                                        } : null
+                                                    } : null
                                                 } : null
                                             };
+
+
             return query;
         }
 

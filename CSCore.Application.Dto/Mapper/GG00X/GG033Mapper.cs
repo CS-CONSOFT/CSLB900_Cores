@@ -39,8 +39,7 @@ namespace CSCore.Application.Dto.Mapper.GG00X
                 Gg033QuemcontouUserid = entity.Gg033QuemcontouUserid,
                 Gg033Posicao = entity.Gg033Posicao,
                 Gg033Codbarrasalfa = entity.Gg033Codbarrasalfa,
-                NavGG033_Saldo = entity.NavGG033_Saldo?.ToDtoGetSimples(),
-
+                NavGG033_Saldo = entity.NavGG033_Saldo?.ToDtoGetSimplesComProdutoESemKardex(),
             };
         }
     }
