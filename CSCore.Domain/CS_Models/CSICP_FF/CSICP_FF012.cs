@@ -28,4 +28,14 @@ public partial class CSICP_FF012
     public virtual CSICP_FF014? Ff014Comissaocobrador { get; set; }
 
     public virtual CSICP_FF014? Ff014Comissaosuper { get; set; }
+
+    public class RepoDtoCSICP_FF012 : CSICP_FF012
+    {
+        // Navegações
+        public CSICP_BB001? NavBB001 { get; set; }
+        public Csicp_Sy001? NavSY001 { get; set; }
+        public CSICP_FF014? NavFF014ComissaoSuper { get; set; }
+        public CSICP_FF014? NavFF014ComissaoCobrador { get; set; }
+        public CSICP_FF012? NavFF012GrupoPai { get; set; }
+    }
 }
