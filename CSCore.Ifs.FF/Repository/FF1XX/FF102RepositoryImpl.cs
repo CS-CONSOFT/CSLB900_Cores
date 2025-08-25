@@ -6,7 +6,6 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.LB900.Calculos;
 using CSCore.Ifs.LB900.Calculos.Parametros;
 using CSCore.Ifs.Repository;
-using CSLB900.MSTools.Calculos;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 using static CSCore.Domain.ComboTypes;
@@ -19,7 +18,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     {
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly ICalculoAtrasoMultaJurosTitulos _calculoAtrasoMultaJurosTitulos = calculoAtrasoMultaJurosTitulos;
-        public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int in_tipoRegistro)
+        public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int? in_tipoRegistro)
         {
             IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
             //1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar
@@ -492,7 +491,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                        Ff102PixcobQrcode = ff102.Ff102PixcobQrcode,
                        Ff102PixcobStatus = ff102.Ff102PixcobStatus,
                        Ff102TrilhaApiid = ff102.Ff102TrilhaApiid,
-                      
+
 
                        NavBB001 = bb001 != null ? new CSICP_BB001
                        {
@@ -803,7 +802,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             DateTime? in_dataFinal,
             QualDataFiltro? in_tipoDataFiltro)
         {
-            
+
             if (in_estabelecimentoId != null)
                 query = query.Where(e => e.Ff102Filialid!.Equals(in_estabelecimentoId));
 

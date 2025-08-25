@@ -66,11 +66,11 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF103
 
         public string? Ff103ObjBxId { get; set; }
 
-        public bool? Ff103Baixado { get; set; }
+        public bool Ff103Baixado { get; set; }
 
-        public bool? Ff103Estornado { get; set; }
+        public bool Ff103Estornado { get; set; }
 
-        public bool? Ff103Cancelado { get; set; }
+        public bool Ff103Cancelado { get; set; }
 
         public DateTime? Ff103Dataregistro { get; set; }
 
@@ -102,13 +102,13 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF103
 
         public decimal? Ff103VlHonorarios { get; set; }
 
-        public bool? Ff103CtlIscontabilizadoid { get; set; }
+        public bool Ff103CtlIscontabilizadoid { get; set; }
 
         public string? Ff103CtlUsuarioid { get; set; }
 
         public DateTime? Ff103CtlDtregistro { get; set; }
 
-        public bool? Ff103CtlIsestornadoid { get; set; }
+        public bool Ff103CtlIsestornadoid { get; set; }
 
         public string? Ff103CtlEstusuarioid { get; set; }
 
