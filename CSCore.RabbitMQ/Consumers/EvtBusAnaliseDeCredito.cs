@@ -15,13 +15,14 @@ namespace CSCore.RabbitMQ.Bus
         private readonly IHubContext<HubNotification> _hubContext = hubContext;
         public async Task Consume(ConsumeContext<Rbt_CS_AnaliseCredito> context)
         {
-            try
-            {
-                Log.Information("RabbitMQ: Mensagem recebida no consumer {Consumer} às {Data}. Tipo da mensagem: {MessageType}. Conteúdo: {@Message}",
+            Log.Information("RabbitMQ: Mensagem recebida no consumer {Consumer} às {Data}. Tipo da mensagem: {MessageType}. Conteúdo: {@Message}",
                     this.GetType().Name,
                     DateTime.UtcNow.ToLocalTime(),
                     context.Message.GetType().Name,
                     context.Message);
+            try
+            {
+
                 await _creditoSemScore.ExecutarAnaliseCredito(
                     context.Message.in_CalcularScoreClearsale,
                     context.Message.in_tenantID,
