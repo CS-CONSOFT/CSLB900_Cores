@@ -95,7 +95,6 @@ namespace CSCore.Ifs.Repository.GG._03X
             var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
             {
-
                 /*
                     1	Bloqueado	
                     2	Solicitado	
@@ -376,14 +375,11 @@ namespace CSCore.Ifs.Repository.GG._03X
         }
 
 
+
         private async Task<CSICP_GG032> GetInventarioParaTrabalhoAsync(int tenant, string Parametro_InventarioId)
         {
-            var queryInventario = CriaQueryBase(tenant);
-            queryInventario = queryInventario.Where(e => e.Id == Parametro_InventarioId);
-
-            CSICP_GG032 gg032inventario = await queryInventario.FirstOrDefaultAsync()
-                ?? throw new KeyNotFoundException("Inventário não foi encontrado!");
-            return gg032inventario;
+            // Usa o método da classe base que já retorna entidade rastreada
+            return await GetEntityForUpdateAsync(Parametro_InventarioId, tenant);
         }
 
         private async Task<List<CSICP_GG033>> GetInventarioProdutosAsync(int tenant, CSICP_GG032 gg032inventario)

@@ -14,6 +14,7 @@ public partial class AppDbContext : DbContext
         if (this != null)
         {
             this.ChangeTracker.LazyLoadingEnabled = false;
+            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.TrackAll;
         }
     }
 
