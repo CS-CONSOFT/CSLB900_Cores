@@ -1,4 +1,5 @@
 ﻿using CSCore.Domain.Interfaces.GG._03X;
+using CSCore.RabbitMQ.Hub;
 using CSCore.RabbitMQ.Hub.Ax;
 using CSCore.RabbitMQ.PublishObjetos;
 using CSLB900.MSTools.Util;
@@ -10,10 +11,12 @@ namespace CSCore.RabbitMQ.Bus
     public class EvtBusProcessaAjustePrecoGG031 : IConsumer<Rbt_CS_ProcessaAjustePreco_GG031_Prm>
     {
         private readonly IGG031Repository _gg031Repository;
+        private readonly IHubContext<HubNotification> _hubContext;
 
-        public EvtBusProcessaAjustePrecoGG031(IGG031Repository gg031Repository)
+        public EvtBusProcessaAjustePrecoGG031(IGG031Repository gg031Repository, IHubContext<HubNotification> hubContext)
         {
             _gg031Repository = gg031Repository;
+            _hubContext = hubContext;
         }
 
         public async Task Consume(ConsumeContext<Rbt_CS_ProcessaAjustePreco_GG031_Prm> context)
@@ -39,14 +42,22 @@ namespace CSCore.RabbitMQ.Bus
                     context.Message.in_StID_Gg023_Val_ECommmerce,
                     context.Message.in_StID_Gg030_Atendido
                 );
+
+                await _hubContext.Clients.Group("ajuste-de-preco-gg031-" + context.Message.usuarioID)
+            .SendAsync(HubMethodNames.AJUSTE_PRECO_GG031, new
+            {
+                Success = false,
+                Message = "Sucesso ao realizar ajuste de preço",
+                Timestamp = DateTime.UtcNow
+            });
             }
             catch (Exception ex)
             {
-                await _hubContext.Clients.Group("gera-protocolo-ci-" + context.Message.InUsuarioID)
-              .SendAsync(HubMethodNames.GERA_PROTOCOLO_CI, new
+                await _hubContext.Clients.Group("ajuste-de-preco-gg031-" + context.Message.usuarioID)
+              .SendAsync(HubMethodNames.AJUSTE_PRECO_GG031, new
               {
                   Success = false,
-                  Message = "Falha ao gerar protocolo CI: " + HandlerExceptionMessage.CreateExceptionMessage(ex),
+                  Message = "Falha ao realizar ajuste de preço: " + HandlerExceptionMessage.CreateExceptionMessage(ex),
                   Timestamp = DateTime.UtcNow
               });
                 throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));

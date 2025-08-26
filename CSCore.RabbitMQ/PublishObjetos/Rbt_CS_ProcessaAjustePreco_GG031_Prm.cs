@@ -3,6 +3,7 @@
     public class Rbt_CS_ProcessaAjustePreco_GG031_Prm
     {
         public string movimentoId { get; set; } = string.Empty;
+        public string usuarioID { get; set; } = string.Empty;
         public int tenantId { get; set; }
         public int in_StID_Gg030Status_Solicitado { get; set; }
         public int in_StID_Gg023_Val_Venda { get; set; }
