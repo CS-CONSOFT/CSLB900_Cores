@@ -127,7 +127,7 @@ namespace CSCore.Ifs.Repository.GG._03X
                     _appDbContext.OsusrE9aCsicpGg033s.Update(gg033item);
                 }
 
-                gg032inventario.Gg032StatusId = EhAcaoBloquear(in_tipoAcaoInventario) ? in_StID_gg032_Sta_Bloqueado_ID : in_StID_csicp_gg032_Sta_Solicitado_ID;
+                gg032inventario.Gg032StatusId = in_tipoAcaoInventario == 1 ? in_StID_gg032_Sta_Bloqueado_ID : in_StID_csicp_gg032_Sta_Solicitado_ID;
                 gg032inventario.Gg032DataHoraBloqueado = DateTime.Now.ToLocalTime();
 
                 _appDbContext.OsusrE9aCsicpGg032s.Update(gg032inventario);
