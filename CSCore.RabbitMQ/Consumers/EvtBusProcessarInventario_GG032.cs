@@ -19,7 +19,7 @@ namespace CSCore.RabbitMQ.Bus
 
         public EvtBusProcessarInventario_GG032(IGG032Repository repository,
             IStaticaLabelRepository staticaLabelRepository,
-            IHubContext<HubNotification> hubContext )
+            IHubContext<HubNotification> hubContext)
         {
             _repository = repository;
             _staticaLabelRepository = staticaLabelRepository;
@@ -45,7 +45,7 @@ namespace CSCore.RabbitMQ.Bus
                     _staticaLabelRepository
                     .GetIDStaticaByLabel<OsusrE9aCsicpGg028Nat>(Entities.GG028Nat.Inventario);
 
-              
+
                 await _repository.CS_InventarioProcessar(
                     context.Message.tenant,
                     context.Message.in_InventarioId,
@@ -76,6 +76,7 @@ namespace CSCore.RabbitMQ.Bus
                      DetailsError = HandlerExceptionMessage.CreateExceptionMessage(ex),
                      Timestamp = DateTime.UtcNow
                  });
+                throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
             }
         }
     }

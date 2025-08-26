@@ -8,7 +8,6 @@ using CSCore.RabbitMQ.PublishObjetos;
 using CSLB900.MSTools.Util;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 namespace CSCore.RabbitMQ.Bus
 {
@@ -38,8 +37,8 @@ namespace CSCore.RabbitMQ.Bus
              context.Message.GetType().Name,
              context.Message);
 
-               
-                try
+
+            try
             {
                 int idGG032StaBloqueado = await _staticaLabelRepository.GetIDStaticaByLabel<OsusrE9aCsicpGg032Stum>("Bloqueado");
                 int idGG032StaSolicitado = await _staticaLabelRepository.GetIDStaticaByLabel<OsusrE9aCsicpGg032Stum>("Solicitado");
@@ -52,9 +51,9 @@ namespace CSCore.RabbitMQ.Bus
                     idGG032StaSolicitado,
                     context.Message.in_tipoAcaoInventario);
 
-   
 
-                await _hubContext.Clients.Group("bloquear-desbloquear-inventario-"+ context.Message.in_usuarioID)
+
+                await _hubContext.Clients.Group("bloquear-desbloquear-inventario-" + context.Message.in_usuarioID)
                    .SendAsync(HubMethodNames.BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032, new
                    {
                        Success = true,
@@ -68,10 +67,13 @@ namespace CSCore.RabbitMQ.Bus
                  .SendAsync(HubMethodNames.BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032, new
                  {
                      Success = false,
-                     Message = context.Message.in_tipoAcaoInventario == 1 ? "Falha ao bloquear inventário!" : "Falha ao desbloquear inventário!",
+                     Message = context.Message.in_tipoAcaoInventario == 1
+                     ? "Falha ao bloquear inventário: " + HandlerExceptionMessage.CreateExceptionMessage(ex)
+                     : "Falha ao desbloquear inventário: " + HandlerExceptionMessage.CreateExceptionMessage(ex),
                      DetailsError = HandlerExceptionMessage.CreateExceptionMessage(ex),
                      Timestamp = DateTime.UtcNow
                  });
+                throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
             }
         }
     }
