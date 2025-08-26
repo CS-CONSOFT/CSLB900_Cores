@@ -35,28 +35,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         }
 
 
-        public async Task<(List<RepoDtoCSICP_FF102>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
-            string? in_estabelecimentoId,
-            int in_tipoRegistro,
-            string? in_prefixo,
-            decimal? in_titulo,
-            string? in_sufixo,
-            string? in_nomeConta,
-            int? in_situacaoId,
-            int? in_codigoConta,
-            int? in_TpCobranca,
-            decimal? in_NoTitulonoBanco,
-            string? in_serie,
-            decimal? in_numeroNotaf,
-            string? in_AgCobrador,
-            string? in_centroCusto,
-            DateTime? in_dataInicio,
-            DateTime? in_dataFinal,
-            QualDataFiltro? in_tipoDataFiltro)
+        public async Task<(List<RepoDtoCSICP_FF102>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize, string? in_estabelecimentoId, int? in_tipoRegistro, string? in_prefixo, decimal? in_titulo, string? in_sufixo, string? in_nomeConta, int? in_situacaoId, int? in_codigoConta, int? in_TpCobranca, decimal? in_NoTitulonoBanco, string? in_serie, decimal? in_numeroNotaf, string? in_AgCobrador, string? in_centroCusto, DateTime? in_dataInicio, DateTime? in_dataFinal, QualDataFiltro? in_tipoDataFiltro)
         {
             IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_estabelecimentoId, query,
-                in_tipoRegistro,
+                in_tipoRegistro ?? 0,
                 in_prefixo,
                 in_titulo,
                 in_sufixo,
@@ -129,7 +112,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
             return from ff102 in _appDbContext.OsusrE9aCsicpFf102s
 
-                   //42 tabelas
+                       //42 tabelas
                    join bb001 in _appDbContext.E9ACSICP_BB001s
                    on ff102.Ff102Filialid equals bb001.Id into bb001_ff102_join
                    from bb001 in bb001_ff102_join.DefaultIfEmpty()
@@ -855,5 +838,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
             return query;
         }
+
+
     }
 }
