@@ -23,5 +23,17 @@ namespace CSCore.Application.Dto.Mapper.FF.FF00X
                 NavFF002_Mod = entity.NavFF002_Mod
             };
         }
+
+        public static DtoGetFF002Simples ToDtoGetSimples(this CSICP_FF002 entity)
+        {
+            return new DtoGetFF002Simples
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Ff002Tiporegistro = entity.Ff002Tiporegistro,
+                Ff002Codigo = entity.Ff002Codigo,
+                Ff002Motivo = entity.Ff002Motivo
+            };
+        }
     }
 }
