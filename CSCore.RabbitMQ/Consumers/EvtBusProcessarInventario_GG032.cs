@@ -61,7 +61,6 @@ namespace CSCore.RabbitMQ.Bus
                    {
                        Success = true,
                        Message = "Inventário processado com sucesso!",
-                       DetailsError = "",
                        Timestamp = DateTime.UtcNow
                    });
 
@@ -72,8 +71,7 @@ namespace CSCore.RabbitMQ.Bus
                  .SendAsync(HubMethodNames.PROCESSAR_INVENTARIO_GG032, new
                  {
                      Success = false,
-                     Message = "Falha ao processar inventário",
-                     DetailsError = HandlerExceptionMessage.CreateExceptionMessage(ex),
+                     Message = HandlerExceptionMessage.CreateExceptionMessage(ex),
                      Timestamp = DateTime.UtcNow
                  });
                 throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
