@@ -10,7 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.Repository.BB.Conta
 {
-    public class BB012Repository(AppDbContext context, IVerificaSiteProperties verificaSiteProperties) : IBB012Repository
+    public class BB012Repository(
+        AppDbContext context,
+        IVerificaSiteProperties verificaSiteProperties) : IBB012Repository
     {
         private readonly AppDbContext _appDbContext = context;
         private readonly IVerificaSiteProperties _verificaSiteProperties = verificaSiteProperties;
