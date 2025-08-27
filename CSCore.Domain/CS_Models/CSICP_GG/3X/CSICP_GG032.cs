@@ -52,6 +52,6 @@ public partial class CSICP_GG032
 
     public Csicp_Sy001? NavSy001Usuario { get; set; }
 
-    public CSICP_GG001Talmox? NavGG001Talmox { get; set; }
+    public OsusrE9aCsicpGg032Tpinv? NavGG032Tinventario { get; set; }
 
 }

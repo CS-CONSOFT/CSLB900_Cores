@@ -597,6 +597,7 @@ namespace CSCore.Ifs.CS_Context
 
                 entity.HasOne(e => e.NavSy001Usuario).WithOne().HasForeignKey<CSICP_GG032>(e => e.Gg032Usuarioid);
                 entity.HasOne(e => e.NavGG032Status).WithOne().HasForeignKey<CSICP_GG032>(e => e.Gg032StatusId);
+                entity.HasOne(e => e.NavGG032Tinventario).WithOne().HasForeignKey<CSICP_GG032>(e => e.Gg032TipoinventarioId);
             });
 
 
