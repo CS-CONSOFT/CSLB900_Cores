@@ -1,12 +1,8 @@
 ﻿using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using CSCore.Domain.CS_QueryFilters.GG032;
 using CSCore.Domain.Interfaces.GG._03X;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.GG.Repository.Extrato;
-using CSCore.Ifs.GG.Repository.GG._03X;
 using CSLB900.MSTools.Extensao;
-using CSLB900.MSTools.GenerateId;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,17 +28,10 @@ namespace CSCore.Ifs.Repository.GG._03X
 
 
     public class GG032RepositoryImpl(
-        AppDbContext appDbContext,
-        IGeraExtrato geraExtrato,
-        ICS_GenerateId generateId,
-        IGerarInventarioEmMassa gerarInventarioEmMassa) :
+        AppDbContext appDbContext) :
         RepositorioBaseImpl<CSICP_GG032>(appDbContext), IGG032Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        private readonly IGeraExtrato _geraExtrato = geraExtrato;
-        private readonly ICS_GenerateId _generateId = generateId;
-        private readonly IGerarInventarioEmMassa _gerarInventarioEmMassa = gerarInventarioEmMassa;
-
 
         public async Task<CSICP_GG032?> GetByIdAsync(int tenant, string id)
         {
@@ -82,40 +71,6 @@ namespace CSCore.Ifs.Repository.GG._03X
             return (listaCSICP_GG032, count);
         }
 
-        /// <summary>
-        /// Bloqueia ou desbloqueia o inventário. 
-        /// 1 - bloquear || 2 - desbloquear
-        /// </summary>
-        public async Task CS_BloquearDesbloquearInventario(
-            int tenant, string in_InventarioId,
-            int in_StID_gg032_Sta_Bloqueado_ID,
-            int in_StID_csicp_gg032_Sta_Solicitado_ID,
-            int in_tipoAcaoInventario)
-        {
-
-        }
-
-
-        public async Task<string> CS_GeradorInventarioEmMassa(
-            int in_tenantId, int in_StID_EntitiesGG001TAlmox_Virtual, bool isQtdZero, FiltroProdutoRequest request)
-        {
-            return await _gerarInventarioEmMassa
-                .CS_GeradorInventarioEmMassa(in_tenantId, isQtdZero, in_StID_EntitiesGG001TAlmox_Virtual, request);
-        }
-
-
-        public async Task CS_InventarioProcessar(
-            int tenant,
-            string in_InventarioId,
-            int in_StID_GG032_Sta_Bloqueado_ID,
-            int in_StID_GG032_Sta_Concluido_ID,
-            int in_StID_GG028_EntSaida_Saida_ID,
-            int in_StID_GG028_EntSaida_Entrada_ID,
-            int in_StID_GG028_Nat_Inventario_ID)
-        {
-
-
-        }
 
         private static IQueryable<CSICP_GG032> FiltraQuandoExisteFiltros
            (IQueryable<CSICP_GG032> query,

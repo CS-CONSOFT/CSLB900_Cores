@@ -1,5 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.GG.Repository.Extrato;
+using CSLB900.MSTools.GenerateId;
 using CSLB900.MSTools.Util;
 
 namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario
@@ -7,10 +9,14 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario
     public class ProcessarInventarioGG032Impl : OperacoesBaseInventarioRepository, IProcessarInventarioGG032
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IGeraExtrato _geraExtrato;
+        private readonly ICS_GenerateId _GenerateId;
 
-        public ProcessarInventarioGG032Impl(AppDbContext appDbContext)
+        public ProcessarInventarioGG032Impl(AppDbContext appDbContext, IGeraExtrato geraExtrato, ICS_GenerateId _GenerateId)
         {
             _appDbContext = appDbContext;
+            _geraExtrato = geraExtrato;
+            this._GenerateId = _GenerateId;
         }
 
         class InternalPrmProcessaProdutosInventario
@@ -67,13 +73,13 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario
         }
 
         private async Task ProcessaProdutosInventarioEAtualizaSaldoEProdutoAsync
-            (InternalPrmProcessaProdutosInventario prmProcessaProdutosInventario)
+            (InternalPrmProcessaProdutosInventario InPrmProcessaProdutosInventario)
         {
-            foreach (var currProduto in prmProcessaProdutosInventario.ListGg033)
+            foreach (var currProduto in InPrmProcessaProdutosInventario.ListGg033)
             {
                 if (ProdutoNaoEstaMarcadoParaInventariar(currProduto))
                 {
-                    prmProcessaProdutosInventario.Gg032Inventario.Gg032QtosNaoinventariado += 1;
+                    InPrmProcessaProdutosInventario.Gg032Inventario.Gg032QtosNaoinventariado += 1;
                     continue;
                 }
 
@@ -81,7 +87,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario
                     throw new Exception($"Algum produto não foi alterado, não é possível processar o inventário!");
 
                 CSICP_GG520? saldoEncontrado =
-                    await GetSaldoParaTrabalhoAsync(prmProcessaProdutosInventario.Tenant, currProduto.Id, _appDbContext);
+                    await GetSaldoParaTrabalhoAsync(InPrmProcessaProdutosInventario.Tenant, currProduto.Id, _appDbContext);
                 if (saldoEncontrado is null) continue;
 
                 currProduto.Gg033Qtdajuste = QuantidadeInventarioEhIgualSaldo(currProduto, saldoEncontrado) ? 0
@@ -113,29 +119,30 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario
                 await _appDbContext.SaveChangesAsync();
 
                 await _geraExtrato.CS_CriaExtratoOrigem(
-                        inTenant: tenant,
+                        inTenant: InPrmProcessaProdutosInventario.Tenant,
                         inGG028_ORIGEMPROGRAMA: "GG032",
                         inGG028_ORIGEM_PKID: currProduto.Id,
-                        inGG028_ORIGEM_DOC_PKID: gg032inventario.Id,
-                        inGG028_DATA_MOVIMENTO: gg032inventario.Gg032Datamovimento,
-                        inGG028_ALMOXID: gg032inventario.Gg032Almoxid,
+                        inGG028_ORIGEM_DOC_PKID: InPrmProcessaProdutosInventario.Gg032Inventario.Id,
+                        inGG028_DATA_MOVIMENTO: InPrmProcessaProdutosInventario.Gg032Inventario.Gg032Datamovimento,
+                        inGG028_ALMOXID: InPrmProcessaProdutosInventario.Gg032Inventario.Gg032Almoxid,
                         inGG028_SALDOID: currProduto.Gg033Saldoid,
                         inGG028_TRANSACAOID: null,
                         inGG028_CONTAID: null,
-                        inGG028_USUARIOID: gg032inventario.Gg032Usuarioid,
+                        inGG028_USUARIOID: InPrmProcessaProdutosInventario.Gg032Inventario.Gg032Usuarioid,
                         inGG028_QTD_MOVIMENTO: currProduto.Gg033Qtdajuste,
                         inGG028_VALOR_UNITARIO: currProduto.Gg033Precocusto,
                         inGG028_SALDO_ANTERIOR: V_SaldoAnteriorProduto,
                         inGG028_N_PDV: null,
-                        inProtocolo_Documento: gg032inventario.Gg032Protocolnumber,
+                        inProtocolo_Documento: InPrmProcessaProdutosInventario.Gg032Inventario.Gg032Protocolnumber,
                         inGG028_NF_OU_CUPOM: null,
-                        inEntSaida_ID: EhEntrada(currProduto) ? in_StID_EntSaida_Entrada_ID : in_StID_EntSaida_Saida_ID,
-                        inNatureza_ID: in_StID_Nat_Inventario_ID
+                        inEntSaida_ID: EhEntrada(currProduto)
+                        ? InPrmProcessaProdutosInventario.InStIDEntSaidaEntradaID : InPrmProcessaProdutosInventario.InStIDEntSaidaSaidaID,
+                        inNatureza_ID: InPrmProcessaProdutosInventario.InStIDNatInventarioID
                     );
 
 
-                if (NaoEstaEmConformidade(gg032inventario, currProduto))
-                    InvetarioGeraLista_NC_PI(gg032inventario, currProduto);
+                if (NaoEstaEmConformidade(InPrmProcessaProdutosInventario.Gg032Inventario, currProduto))
+                    InvetarioGeraLista_NC_PI(InPrmProcessaProdutosInventario.Gg032Inventario, currProduto);
 
 
                 _appDbContext.Update(currProduto);
@@ -144,7 +151,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario
 
         private void InvetarioGeraLista_NC_PI(CSICP_GG032 gg032inventario, CSICP_GG033 currProduto)
         {
-            var id = _generateId.GenerateUuId();
+            var id = _GenerateId.GenerateUuId();
             gg032inventario.Gg032QtosNaoconform += 1;
             var gg037 = new CSICP_GG037
             {
@@ -156,7 +163,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario
                 Gg037GeradoListaInv = true
             };
 
-            var id_2 = _generateId.GenerateUuId();
+            var id_2 = _GenerateId.GenerateUuId();
             var gg036 = new CSICP_GG036
             {
                 Id = id_2,

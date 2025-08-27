@@ -2,5 +2,6 @@
 {
     public interface IProcessarInventarioGG032
     {
+        Task<bool> ProcessarInventario(PrmProcessarInventarioGG032 InPrmProcessarInventario);
     }
 }

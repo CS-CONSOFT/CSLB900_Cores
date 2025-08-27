@@ -191,7 +191,7 @@
             public const string Sistema = "Sistema";
         }
 
-        public static class GG001_TAlmox_Virtual
+        public static class GG001_TAlmox
         {
             public const string Virtual = "Virtual";
         }
