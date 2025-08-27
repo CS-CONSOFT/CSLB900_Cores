@@ -33,7 +33,8 @@ namespace CSCore.Application.Dto.Mapper.GG00X
                 Gg032StatusId = entity.Gg032StatusId,
                 Gg032Protocolnumber = entity.Gg032Protocolnumber,
                 NavSy001Usuario = entity.NavSy001Usuario?.ToDtoGetSimples(),
-                NavGG032Status = entity.NavGG032Status
+                NavGG032Status = entity.NavGG032Status,
+                NavGG001Talmox = entity.NavGG001Talmox
             };
         }
     }

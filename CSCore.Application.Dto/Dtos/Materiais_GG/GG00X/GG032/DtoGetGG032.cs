@@ -52,5 +52,7 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG032
 
         public Dto_GetSY001Simples? NavSy001Usuario { get; set; }
 
+        public CSICP_GG001Talmox? NavGG001Talmox { get; set; }
+
     }
 }

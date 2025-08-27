@@ -431,6 +431,10 @@ namespace CSCore.Ifs.Repository.GG._03X
                                             on _CSICP_GG032.Gg032StatusId equals _OsusrE9aCsicpGg032Stum.Id into _OsusrE9aCsicpGg032Stum_joined
                                             from _OsusrE9aCsicpGg032Stum in _OsusrE9aCsicpGg032Stum_joined.DefaultIfEmpty()
 
+                                            join _tipoInventario in _appDbContext.CSICP_GG001Talmoxes
+                                            on _CSICP_GG032.Gg032TipoinventarioId equals _tipoInventario.Id into _tipoInventario_joined
+                                            from _tipoInventario in _tipoInventario_joined.DefaultIfEmpty()
+
 
                                             select new CSICP_GG032
                                             {
@@ -463,7 +467,8 @@ namespace CSCore.Ifs.Repository.GG._03X
                                                     Id = _CSICP_BB012.Id,
                                                     Sy001Nome = _CSICP_BB012.Sy001Nome,
                                                     Sy001Usuario = _CSICP_BB012.Sy001Usuario
-                                                } : null
+                                                } : null,
+                                                NavGG001Talmox = _tipoInventario ?? null
                                             };
             return query;
         }
