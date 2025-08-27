@@ -423,7 +423,7 @@ namespace CSCore.Ifs.Repository.GG._03X
             IQueryable<CSICP_GG032> query = from _CSICP_GG032 in _appDbContext.OsusrE9aCsicpGg032s
                                             where _CSICP_GG032.TenantId == tenant
 
-                                            join _CSICP_BB012 in _appDbContext.OsusrE9aCsicpBb012s
+                                            join _CSICP_BB012 in _appDbContext.OsusrE9aCsicpSy001s
                                             on _CSICP_GG032.Gg032Usuarioid equals _CSICP_BB012.Id into _CSICP_BB012_joined
                                             from _CSICP_BB012 in _CSICP_BB012_joined.DefaultIfEmpty()
 
@@ -457,13 +457,12 @@ namespace CSCore.Ifs.Repository.GG._03X
                                                 Gg032StatusId = _CSICP_GG032.Gg032StatusId,
                                                 Gg032Protocolnumber = _CSICP_GG032.Gg032Protocolnumber,
                                                 NavGG032Status = _OsusrE9aCsicpGg032Stum,
-                                                NavBB012Usuario = _CSICP_BB012 != null ? new CSICP_BB012
+                                                NavSy001Usuario = _CSICP_BB012 != null ? new Csicp_Sy001
                                                 {
                                                     TenantId = _CSICP_BB012.TenantId,
                                                     Id = _CSICP_BB012.Id,
-                                                    Bb012NomeCliente = _CSICP_BB012.Bb012NomeCliente,
-                                                    Bb012NomeFantasia = _CSICP_BB012.Bb012NomeFantasia,
-                                                    Bb012Codigo = _CSICP_BB012.Bb012Codigo
+                                                    Sy001Nome = _CSICP_BB012.Sy001Nome,
+                                                    Sy001Usuario = _CSICP_BB012.Sy001Usuario
                                                 } : null
                                             };
             return query;

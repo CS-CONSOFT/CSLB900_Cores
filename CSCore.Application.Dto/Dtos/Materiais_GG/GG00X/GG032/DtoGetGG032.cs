@@ -1,4 +1,4 @@
-﻿using CSBS101._82Application.Dto.BB00X.BB012.Get;
+﻿using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
 using CSCore.Domain.CS_Models.Staticas.GG;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG032
@@ -50,7 +50,7 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG032
         public string? Gg032Protocolnumber { get; set; }
         public OsusrE9aCsicpGg032Stum? NavGG032Status { get; set; }
 
-        public Dto_GetBB012_Exibicao? NavBB012Usuario { get; set; }
+        public Dto_GetSY001Simples? NavSy001Usuario { get; set; }
 
     }
 }

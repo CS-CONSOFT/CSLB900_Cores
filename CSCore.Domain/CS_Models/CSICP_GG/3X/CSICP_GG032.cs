@@ -50,6 +50,6 @@ public partial class CSICP_GG032
 
     public OsusrE9aCsicpGg032Stum? NavGG032Status { get; set; }
 
-    public CSICP_BB012? NavBB012Usuario { get; set; }
+    public Csicp_Sy001? NavSy001Usuario { get; set; }
 
 }

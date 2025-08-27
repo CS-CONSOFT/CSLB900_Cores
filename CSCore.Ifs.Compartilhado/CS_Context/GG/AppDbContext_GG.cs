@@ -595,7 +595,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("GG032_USUARIOID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(e => e.NavBB012Usuario).WithOne().HasForeignKey<CSICP_GG032>(e => e.Gg032Usuarioid);
+                entity.HasOne(e => e.NavSy001Usuario).WithOne().HasForeignKey<CSICP_GG032>(e => e.Gg032Usuarioid);
                 entity.HasOne(e => e.NavGG032Status).WithOne().HasForeignKey<CSICP_GG032>(e => e.Gg032StatusId);
             });
 
