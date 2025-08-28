@@ -13,9 +13,7 @@ public class LoggerConfig
             .MinimumLevel.Override("Microsoft.Extensions.Http", LogEventLevel.Warning) // Filtra logs de HTTP Client
             .MinimumLevel.Override("Steeltoe", LogEventLevel.Warning) // Filtra logs do Steeltoe (Eureka)
             .MinimumLevel.Override("MassTransit", LogEventLevel.Warning) // Filtra logs do MassTransit
-             .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Error) // Filtra logs do EF Core
-            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Error) // Filtra comandos SQL
-            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Query", LogEventLevel.Error) // Filtra queries
+
             .Filter.ByExcluding(logEvent =>
                 logEvent.MessageTemplate.Text.Contains("Start processing HTTP request") ||
                 logEvent.MessageTemplate.Text.Contains("Sending HTTP request") ||
