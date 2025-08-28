@@ -15,7 +15,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         private readonly AppDbContext _appDbContext = appDbContext;
 
         public async Task<(List<RepoDtoCSICP_FF107>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
-            string? in_ff102Id)
+            string in_ff102Id)
         {
             IQueryable<RepoDtoCSICP_FF107> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_ff102Id, query);
@@ -29,7 +29,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         }
 
         private IQueryable<RepoDtoCSICP_FF107> FiltraQuandoExisteFiltro(
-            string? in_ff102Id, IQueryable<RepoDtoCSICP_FF107> query)
+            string in_ff102Id, IQueryable<RepoDtoCSICP_FF107> query)
         {
             if (!string.IsNullOrEmpty(in_ff102Id))
                 query = query.Where(e => e.Ff102Tituloid == in_ff102Id);
