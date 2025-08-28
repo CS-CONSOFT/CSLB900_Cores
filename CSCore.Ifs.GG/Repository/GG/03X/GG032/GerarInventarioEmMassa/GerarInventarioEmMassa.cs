@@ -1,6 +1,8 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Domain.CS_QueryFilters.GG032;
+using CSCore.Domain.EstaticasLabel.GG;
+using CSCore.Domain.Interfaces.Estatica;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.Repository.GG._03X;
@@ -24,11 +26,13 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
     public class GerarInventarioEmMassa(
          AppDbContext appDbContext,
            ICS_GenerateId generateId,
-        IGenerateProtocolo generateProtocolo) : IGerarInventarioEmMassa
+        IGenerateProtocolo generateProtocolo,
+        IStaticaLabelRepository staticaLabelRepository) : IGerarInventarioEmMassa
     {
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly ICS_GenerateId _generateId = generateId;
         private readonly IGenerateProtocolo _generateProtocolo = generateProtocolo;
+        private readonly IStaticaLabelRepository staticaLabelRepository = staticaLabelRepository;
 
 
         public async Task<string> CS_GeradorInventarioEmMassa(
@@ -41,7 +45,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
             {
-                var idCriado = await CS002_Le_Produtos(
+                var idCriado = await ProcessaInventario(
                     in_tenantId,
                     in_isQtdZero,
                     request.FilialID,
@@ -73,7 +77,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
 
 
 
-        private async Task<string> CS002_Le_Produtos(
+        private async Task<string> ProcessaInventario(
             int in_tenantID,
             bool in_isQtdZero,
             string in_filialID,
@@ -118,6 +122,8 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
             gg032inventario.Gg032Totalcmedio = Math.Round(valoresTotaisGG032.TotalCustoMedio, 2);
             gg032inventario.Gg032Totalvenda = Math.Round(valoresTotaisGG032.TotalCustoVenda, 2);
             gg032inventario.Gg032Almoxid = in_almoxID;
+
+
 
             _appDbContext.Update(gg032inventario);
 
@@ -287,6 +293,17 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
                     .FirstOrDefaultAsync();
 
                 string idInventario = _generateId.GenerateUuId();
+
+
+                int gg032TInvNormal_ID
+                     = await staticaLabelRepository
+                     .GetIDStaticaByLabel<OsusrE9aCsicpGg032Tpinv>(Entities.CodCS_GG032TpInv.Normal);
+
+                int gg032StatusSolicitado_ID
+                     = await staticaLabelRepository
+                     .GetIDStaticaByLabel<OsusrE9aCsicpGg032Stum>(Entities.CodCS_GG032Sta.Solicitado);
+
+
                 var inventario = new CSICP_GG032
                 {
                     TenantId = in_tenantID,
@@ -296,9 +313,12 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
                     Gg032Datamovimento = DateTime.Now.ToLocalTime().Date,
                     Gg032Observacao = "Gerado via usuario '" + usuario + "'!",
                     Gg032Usuarioid = in_usuarioID,
-                    Gg032TipoinventarioId = in_TpInventarioID,
-                    Gg032StatusId = in_StatusID
+                    Gg032TipoinventarioId = in_TpInventarioID == 0 ? gg032TInvNormal_ID : in_TpInventarioID,
+                    Gg032StatusId = in_StatusID == 0 ? gg032StatusSolicitado_ID : in_StatusID,
                 };
+
+
+
                 _appDbContext.Add(inventario);
                 await _appDbContext.SaveChangesAsync();
                 return idInventario;
@@ -306,12 +326,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
             return string.Empty;
         }
 
-        private async Task<int?> CS_GetSequenciaProdutos(string idInventario)
-        {
-            return await _appDbContext.OsusrE9aCsicpGg033s
-                .Where(e => e.Gg032Id!.Equals(idInventario))
-                .MaxAsync(e => e.Gg033Posicao);
-        }
+
 
         private void CS004_Cria_Det_inv_Aut(
             int in_tenantID,

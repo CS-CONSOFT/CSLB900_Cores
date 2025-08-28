@@ -9,7 +9,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032
         protected virtual async Task<CSICP_GG032> GetInventarioParaTrabalhoAsync(int tenantId, string idInventario, AppDbContext appDbContext)
         {
             return await appDbContext.OsusrE9aCsicpGg032s.Where(e => e.TenantId == tenantId && e.Id == idInventario)
-                .FirstOrDefaultAsync(tenantId, idInventario) ?? throw new Exception("Inventário não encontrado!");
+                .FirstOrDefaultAsync() ?? throw new Exception("Inventário não encontrado!");
         }
 
         protected virtual bool InventarioStatusDifenteBloqueado(int Parametro_csicp_gg032_Sta_Bloqueado_ID, CSICP_GG032 gg032inventario)
