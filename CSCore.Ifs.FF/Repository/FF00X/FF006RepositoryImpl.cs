@@ -17,14 +17,14 @@ namespace CSCore.Ifs.FF.Repository.FF00X
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<CSICP_FF006?> GetByIdAsync(int tenant, string id)
+        public async Task<CSICP_FF006?> GetByIdAsync(int tenant, long id)
         {
             IQueryable<CSICP_FF006> query = GetQueryBase(tenant);
-            CSICP_FF006? cSICP_FF006 = await query.FirstOrDefaultAsync(e => e.Ff006Id == long.Parse(id));
+            CSICP_FF006? cSICP_FF006 = await query.FirstOrDefaultAsync(e => e.Ff006Id == id);
             return cSICP_FF006;
         }
 
-        public async Task<(List<CSICP_FF006>, int)> GetListAsync(int tenant, string? ff102Id, int page, int pageSize)
+        public async Task<(List<CSICP_FF006>, int)> GetListAsync(int tenant, string ff102Id, int page, int pageSize)
         {
             IQueryable<CSICP_FF006> query = GetQueryBase(tenant);
             query = FiltraQuandoExisteFiltro(ff102Id, query);
@@ -36,9 +36,9 @@ namespace CSCore.Ifs.FF.Repository.FF00X
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<CSICP_FF006> FiltraQuandoExisteFiltro(string? ff102Id, IQueryable<CSICP_FF006> query)
+        private IQueryable<CSICP_FF006> FiltraQuandoExisteFiltro(string ff102Id, IQueryable<CSICP_FF006> query)
         {
-            if (ff102Id != null)
+            if (!string.IsNullOrEmpty(ff102Id))
                 query = query.Where(e => e.Ff102Id!.Equals(ff102Id));
             return query;
         }
