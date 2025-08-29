@@ -236,5 +236,14 @@
             public const string Devolvido = "Devolvido";
             public const string Permutado = "Permutado";
         }
+
+        public static class Csicp_ff116_Label 
+        {
+            public const string Prorrogar = "Prorrogado";
+            public const string Aprovar = "Solicitado Aprovação";
+            public const string Confirmar = "Confirmado";
+            public const string VlrAlterado = "Vlr Alterado";
+            public const string AtrJurosNCob = "Atribuído Juros Não Cobrados";
+        }
     }
 }
