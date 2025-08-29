@@ -396,14 +396,18 @@ namespace CSCore.Ifs.Repository.BB.Conta
         {
             if (bb01202.Bb012Cpf != null && bb01202.Bb012Cpf != 0)
             {
+                bb01202.Bb012Cnpj = "";
                 bool valido = ValidaCpf.CpfValido(bb01202.Bb012Cpf);
                 if (valido == false) throw new Exception("O CPF informado é inválido.");
+                return;
             }
 
-            if (bb01202.Bb012Cnpj != null && bb01202.Bb012Cnpj != "0" && bb01202.Bb012Cnpj != "")
+            if (bb01202.Bb012Cnpj != null && bb01202.Bb012Cnpj != "0" || bb01202.Bb012Cnpj != "")
             {
+                bb01202.Bb012Cpf = 0;
                 bool valido = ValidaCnpj.CnpjValido(bb01202.Bb012Cnpj);
                 if (valido == false) throw new Exception("O CNPJ informado é inválido.");
+                return;
             }
         }
 
