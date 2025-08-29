@@ -9,6 +9,7 @@ namespace CSCore.Domain.Interfaces.GG._03X
         Task<(IEnumerable<CSICP_GG032>, int)> GetListAsync(int tenant, int pageSize, int page,
              string? search,
              int? GG032Status_ID,
+             int? GG032TipoInventario,
              int? codigo,
              DateTime DataInicial,
              DateTime DataFinal);
