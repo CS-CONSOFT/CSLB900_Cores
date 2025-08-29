@@ -2,6 +2,44 @@
 
 public partial class CSICP_GG033
 {
+    public CSICP_GG033()
+    {
+    }
+
+    public CSICP_GG033(CSICP_GG033 entidade, string id, string gg032ID)
+    {
+        TenantId = entidade.TenantId;
+        Id = id;
+        Gg033Filialid = entidade.Gg033Filialid;
+        Gg032Id = gg032ID;
+        Gg033Saldoid = entidade.Gg033Saldoid;
+        Gg033Produto = entidade.Gg033Produto;
+        Gg033Codigobarras = entidade.Gg033Codigobarras;
+        Gg033Datareferente = entidade.Gg033Datareferente;
+        Gg033Qtdinventario = entidade.Gg033Qtdinventario;
+        Gg033Saldoestoque = entidade.Gg033Saldoestoque;
+        Gg033Qtdajuste = entidade.Gg033Qtdajuste;
+        Gg033Entsai = entidade.Gg033Entsai;
+        Gg033Precocusto = entidade.Gg033Precocusto;
+        Gg033Precocustoreal = entidade.Gg033Precocustoreal;
+        Gg033Precocustomedio = entidade.Gg033Precocustomedio;
+        Gg033Precovenda = entidade.Gg033Precovenda;
+        Gg033Datafechanterior = entidade.Gg033Datafechanterior;
+        Gg033Qtdfechanterior = entidade.Gg033Qtdfechanterior;
+        Gg033Naoinventariar = entidade.Gg033Naoinventariar;
+        Gg033Alterado = entidade.Gg033Alterado;
+        Gg033NnGrupoId = entidade.Gg033NnGrupoId;
+        Gg033NnClasseId = entidade.Gg033NnClasseId;
+        Gg033NnMarcaId = entidade.Gg033NnMarcaId;
+        Gg033NnArtigoId = entidade.Gg033NnArtigoId;
+        Gg033NnLinhaId = entidade.Gg033NnLinhaId;
+        Gg033NnSubgrupoId = entidade.Gg033NnSubgrupoId;
+        Gg033QuemdigitouUserId = entidade.Gg033QuemdigitouUserId;
+        Gg033QuemcontouUserid = entidade.Gg033QuemcontouUserid;
+        Gg033Posicao = entidade.Gg033Posicao;
+        Gg033Codbarrasalfa = entidade.Gg033Codbarrasalfa;
+    }
+
     public int TenantId { get; set; }
 
     public string Id { get; set; } = null!;
