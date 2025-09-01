@@ -12,7 +12,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais
             _appDbContext = appDbContext;
         }
 
-        public async Task ExportarParaExcel(TipoExportacao tipoExportacao, string InGG032_ID, int InTenantID)
+        public async Task ExportarParaExcel(CSEnumTipoExportacaoArquivo tipoExportacao, string InGG032_ID, int InTenantID)
         {
             try
             {

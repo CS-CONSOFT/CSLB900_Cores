@@ -133,11 +133,12 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="protocolo">protocolo da gg032</param>
         /// <param name="nomeArquivo">passar sem a extensao</param>
         /// <param name="extensao">usar sem o ponto, apenas a extensao. Ex. XML</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        protected virtual string GetFilePath(string nomeArquivo, ExtensaoArquivo extensao)
+        protected virtual string GetFilePath(string protocolo,string nomeArquivo, ExtensaoArquivo extensao)
         {
             if (string.IsNullOrWhiteSpace(nomeArquivo))
                 throw new ArgumentException("Nome do arquivo não pode ser nulo ou vazio.", nameof(nomeArquivo));
@@ -151,7 +152,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
             return Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
             "Downloads",
-            nomeArquivo + "."+ extensaoArquivo);
+            "Prt." + protocolo + "." +nomeArquivo + "."+ extensaoArquivo);
         }
 
         public virtual void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet)

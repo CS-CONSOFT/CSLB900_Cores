@@ -39,7 +39,7 @@ namespace CSCore.Tests.Geral.GG.ExportarArquivosFiscais
             // Act
             await 
                 _repository
-                .ExportarParaExcel(TipoExportacao.XLS_BLC_K, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+                .ExportarParaExcel(CSEnumTipoExportacaoArquivo.XLS_BLC_K, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace CSCore.Tests.Geral.GG.ExportarArquivosFiscais
             // Act
             await
                 _repository
-                .ExportarParaExcel(TipoExportacao.XLS_BLC_0200, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+                .ExportarParaExcel(CSEnumTipoExportacaoArquivo.XLS_BLC_0200, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
         }
 
         [Fact]
@@ -57,9 +57,18 @@ namespace CSCore.Tests.Geral.GG.ExportarArquivosFiscais
             // Act
             await
                 _repository
-                .ExportarParaExcel(TipoExportacao.XLS_SISPRO, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+                .ExportarParaExcel(CSEnumTipoExportacaoArquivo.XLS_SISPRO, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
         }
 
+
+        [Fact]
+        public async Task ExportarParaExcelBLOCOH2_DevecriarArquivoComSucesso()
+        {
+            // Act
+            await
+                _repository
+                .ExportarParaExcel(CSEnumTipoExportacaoArquivo.TXT_BLOCO_H2, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+        }
 
         [Fact]
         public async Task ExportarParaExcelBLOCOH_DevecriarArquivoComSucesso()
@@ -67,8 +76,9 @@ namespace CSCore.Tests.Geral.GG.ExportarArquivosFiscais
             // Act
             await
                 _repository
-                .ExportarParaExcel(TipoExportacao.TXT_BLOCO_H2, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+                .ExportarParaExcel(CSEnumTipoExportacaoArquivo.TXT_BLOCO_H, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
         }
+
 
 
 

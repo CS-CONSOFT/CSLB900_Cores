@@ -24,7 +24,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
             var produtosDoInventario = await GetInventario(inGg032ID, inTenantID, _appDbContext);
 
             if (produtosDoInventario.Count == 0 || !produtosDoInventario.Any()) return;
-
+            string protocolo = produtosDoInventario.FirstOrDefault()?.Gg032Protocolo ?? "0";
             using var workbook = new ClosedXML.Excel.XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Produtos do Inventário");
 
@@ -43,7 +43,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
                 worksheet.Cell(index, 8).Value = "";
                 index++;
             }
-            workbook.SaveAs(GetFilePath("Block-K."  +produtosDoInventario[0].Gg032Protocolo, ExtensaoArquivo.XLSX));
+            workbook.SaveAs(GetFilePath(protocolo,"BlocoK", ExtensaoArquivo.XLSX));
 
 
 

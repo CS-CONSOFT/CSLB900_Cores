@@ -8,6 +8,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
     {
         private readonly AppDbContext _appDbContext;
         private Func<DtoArquivosFiscaisExcelGetInventario, bool> _InFuncIf;
+        private string _NomeArquivo;
 
 
         /// <summary>
@@ -15,19 +16,21 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
         /// </summary>
         /// <param name="appDbContext"></param>
         /// <param name="InFuncIf">O FuncIf é uma função de filtro, passada como parâmetro para a estratégia de exportação, que determina dinamicamente quais produtos do inventário devem ser incluídos em determinados registros do arquivo fiscal, conforme regras específicas de cada bloco (H ou H2).</param>
-        public ExportarArquivoTXTBlocoH_e_H2(AppDbContext appDbContext, Func<DtoArquivosFiscaisExcelGetInventario, bool> InFuncIf)
+        public ExportarArquivoTXTBlocoH_e_H2(AppDbContext appDbContext,
+            Func<DtoArquivosFiscaisExcelGetInventario, bool> InFuncIf, string NomeArquivo)
         {
             _appDbContext = appDbContext;
             _InFuncIf = InFuncIf;
+            _NomeArquivo = NomeArquivo;
         }
 
 
         public async Task Exportar(string gg032ID, int inTenantID)
         {
             var produtosInventario = await GetInventario(gg032ID, inTenantID, _appDbContext);
-
+            if (produtosInventario.Count == 0 || !produtosInventario.Any()) return;
             string protocolo = produtosInventario.FirstOrDefault()?.Gg032Protocolo ?? "0";
-            using var file = File.AppendText(GetFilePath("Prt."+ protocolo + ".CS.BlocoH", ExtensaoArquivo.TXT));
+            using var file = File.AppendText(GetFilePath(protocolo, _NomeArquivo, ExtensaoArquivo.TXT));
 
             var arqText = new StringBuilder();
 
