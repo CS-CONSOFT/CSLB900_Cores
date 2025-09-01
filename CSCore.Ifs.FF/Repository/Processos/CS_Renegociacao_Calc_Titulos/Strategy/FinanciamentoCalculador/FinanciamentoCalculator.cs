@@ -8,8 +8,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strate
 {
     public static class FinanciamentoCalculator
     {
-        public static (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado)
-            CalcularValoresFinanciamento(decimal faturaTotal, int qtdParcelas, int valorEntrada)
+        public static (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) CalcularValoresFinanciamento(decimal faturaTotal, int qtdParcelas, int valorEntrada)
         {
             if (qtdParcelas <= 0)
                 throw new ArgumentException("Quantidade de parcelas deve ser maior que zero.", nameof(qtdParcelas));
