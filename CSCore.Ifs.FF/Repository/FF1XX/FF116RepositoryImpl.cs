@@ -44,7 +44,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    from ff102 in ff102_join.DefaultIfEmpty()
 
                    where ff116.TenantId == in_tenant
-                         && ff116.Ff102Tituloid == in_ff102Id  //verificar essa sugestão da IA com o Agnaldo e Valter
+                         && ff116.Ff102Tituloid == in_ff102Id 
 
 
                    select new RepoDtoCSICP_FF116
