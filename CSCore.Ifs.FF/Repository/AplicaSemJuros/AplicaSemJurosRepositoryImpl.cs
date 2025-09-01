@@ -111,7 +111,6 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
             titulo.Ff102SitespecialId = InPrmAplicaSemJuros.InStIDNCobraJuros;
             titulo.Ff102Dtimestamp = DateTime.UtcNow.ToLocalTime();
         }
-
         private void GravaOcorrencia(CSICP_FF102 titulo, PrmAplicaSemJuros InPrmAplicaSemJuros)
         {
             var ocorrencia = new CSICP_FF116

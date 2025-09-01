@@ -11,5 +11,6 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
         public string InMotivo { get; set; } = string.Empty;
         public int InStIDFF102SitAberto { get; set; }
         public int InStIDAlteracaoDataVencimento { get; set; }
+        public int InStIDFF102SitBaixaParcial { get; internal set; }
     }
 }
