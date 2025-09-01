@@ -34,13 +34,43 @@ namespace CSCore.Tests.Geral.GG.ExportarArquivosFiscais
         }
 
         [Fact]
-        public async Task ExportarParaExcel_DevecriarArquivoComSucesso()
+        public async Task ExportarParaExcelBlocoK_DevecriarArquivoComSucesso()
         {
             // Act
             await 
                 _repository
-                .ExportarParaExcel(TipoExportacao.XLS, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+                .ExportarParaExcel(TipoExportacao.XLS_BLC_K, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
         }
+
+        [Fact]
+        public async Task ExportarParaExcelBloco0200_DevecriarArquivoComSucesso()
+        {
+            // Act
+            await
+                _repository
+                .ExportarParaExcel(TipoExportacao.XLS_BLC_0200, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+        }
+
+        [Fact]
+        public async Task ExportarParaExcelSISPRO_DevecriarArquivoComSucesso()
+        {
+            // Act
+            await
+                _repository
+                .ExportarParaExcel(TipoExportacao.XLS_SISPRO, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+        }
+
+
+        [Fact]
+        public async Task ExportarParaExcelBLOCOH_DevecriarArquivoComSucesso()
+        {
+            // Act
+            await
+                _repository
+                .ExportarParaExcel(TipoExportacao.TXT_BLOCO_H2, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+        }
+
+
 
 
         public void Dispose()

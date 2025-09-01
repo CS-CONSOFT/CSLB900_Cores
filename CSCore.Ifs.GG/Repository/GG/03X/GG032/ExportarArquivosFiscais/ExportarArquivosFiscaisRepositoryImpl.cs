@@ -16,7 +16,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais
         {
             try
             {
-                IExportarArquivo instanciaExportar = ExportarArquivoStrategy.ExportarArquivo(tipoExportacao, _appDbContext);
+                IExportarArquivo instanciaExportar = ExportarArquivoFactory.ExportarArquivo(tipoExportacao, _appDbContext);
                 await instanciaExportar.Exportar(InGG032_ID, InTenantID);
             }
             catch (Exception)
