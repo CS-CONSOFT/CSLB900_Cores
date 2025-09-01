@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Ifs.FF.Repository.GravaOcorrencia;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
 {
     public interface IAplicaSemJurosRepository
     {
-        Task<bool> ExecutarAplicaSemJuros(PrmAplicaSemJuros InPrmAplicaSemJuros);
+        Task<bool> ExecutarAplicaSemJuros(PrmGravaOcorrencia parametros);
     }
 }
