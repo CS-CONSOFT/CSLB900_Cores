@@ -32,16 +32,16 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
             {
-                // Validar parâmetros de entrada
+                // Valida parâmetros de entrada
                 ValidarParametros(InPrmAplicaSemJuros);
 
-                // Buscar o título
+                // Busca o título
                 CSICP_FF102 titulo = await BuscarTitulo(InPrmAplicaSemJuros);
 
                 // Valida regras de negócio
                 await ValidarSituacao(titulo, InPrmAplicaSemJuros);
 
-                // não cobrança de juros
+                // Não cobrança de juros
                 AplicarNaoCobrancaJuros(titulo, InPrmAplicaSemJuros);
 
                 // Grava ocorrência
@@ -60,30 +60,26 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
             }
         }
 
-        private static void AplicarNaoCobrancaJuros(CSICP_FF102 titulo, PrmAplicaSemJuros parametros)
+        private static void ValidarParametros(PrmAplicaSemJuros InPrmAplicaSemJuros)
         {
-            titulo.Ff102SitespecialId = parametros.InStIDNCobraJuros;
-            titulo.Ff102Dtimestamp = DateTime.UtcNow.ToLocalTime();
+            if (InPrmAplicaSemJuros == null)
+                throw new ArgumentNullException(nameof(InPrmAplicaSemJuros), "Parâmetro de entrada não pode ser nulo");
+
+            if (InPrmAplicaSemJuros.InTenantID <= 0)
+                throw new ArgumentException("ID do tenant deve ser maior que zero", nameof(InPrmAplicaSemJuros.InTenantID));
+
+            if (string.IsNullOrEmpty(InPrmAplicaSemJuros.InFF102ID))
+                throw new ArgumentException("ID do título é obrigatório", nameof(InPrmAplicaSemJuros.InFF102ID));
+
+            if (string.IsNullOrEmpty(InPrmAplicaSemJuros.InUsuarioID))
+                throw new ArgumentException("ID do usuário é obrigatório", nameof(InPrmAplicaSemJuros.InUsuarioID));
         }
 
-        private static void ValidarParametros(PrmAplicaSemJuros parametros)
-        {
-            if (parametros == null)
-                throw new ArgumentNullException(nameof(parametros), "Parâmetro de entrada não pode ser nulo");
-
-            if (string.IsNullOrEmpty(parametros.InFF102ID))
-                throw new ArgumentException("ID do título é obrigatório", nameof(parametros.InFF102ID));
-
-            if (string.IsNullOrEmpty(parametros.InUsuarioID))
-                throw new ArgumentException("ID do usuário é obrigatório", nameof(parametros.InUsuarioID));
-        }
-
-        private async Task<CSICP_FF102> BuscarTitulo(PrmAplicaSemJuros parametros)
+        private async Task<CSICP_FF102> BuscarTitulo(PrmAplicaSemJuros InPrmAplicaSemJuros)
         {
             var titulo = await _appDbContext.OsusrE9aCsicpFf102s
-                .Where(e => e.TenantId == parametros.InTenantID 
-                       && e.Id == parametros.InFF102ID 
-                       && e.Ff102Tiporegistro == parametros.InTipoRegistro)
+                .Where(e => e.TenantId == InPrmAplicaSemJuros.InTenantID
+                       && e.Id == InPrmAplicaSemJuros.InFF102ID)
                 .FirstOrDefaultAsync();
 
             if (titulo == null)
@@ -95,7 +91,7 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
         private async Task ValidarSituacao(CSICP_FF102 titulo, PrmAplicaSemJuros InPrmAplicaSemJuros)
         {
             // Validação 1: Situação deve estar Aberto ou Baixa Parcial
-            if (titulo.Ff102Situacaoid != InPrmAplicaSemJuros.InStIDFF102SitAberto && 
+            if (titulo.Ff102Situacaoid != InPrmAplicaSemJuros.InStIDFF102SitAberto &&
                 titulo.Ff102Situacaoid != InPrmAplicaSemJuros.InStIDFF102SitBxParcial)
             {
                 throw new InvalidOperationException("O Título precisa está aberto ou em Baixa Parcial!");
@@ -110,13 +106,19 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
             await ValidarSituacao(titulo, InPrmAplicaSemJuros);
         }
 
+        private static void AplicarNaoCobrancaJuros(CSICP_FF102 titulo, PrmAplicaSemJuros InPrmAplicaSemJuros)
+        {
+            titulo.Ff102SitespecialId = InPrmAplicaSemJuros.InStIDNCobraJuros;
+            titulo.Ff102Dtimestamp = DateTime.UtcNow.ToLocalTime();
+        }
+
         private void GravaOcorrencia(CSICP_FF102 titulo, PrmAplicaSemJuros InPrmAplicaSemJuros)
         {
             var ocorrencia = new CSICP_FF116
             {
                 Id = _generateId.GenerateUuId(),
                 TenantId = InPrmAplicaSemJuros.InTenantID,
-                Ff116Filialid = InPrmAplicaSemJuros.InFF102ID,
+                Ff116Filialid = InPrmAplicaSemJuros.InFilialIDBB001,
                 Ff116Tipomovto = InPrmAplicaSemJuros.InStIDNCobraJuros,
                 Ff116Datamovto = DateTime.UtcNow.ToLocalTime(),
                 Ff116Usuariopropid = InPrmAplicaSemJuros.InUsuarioID,
