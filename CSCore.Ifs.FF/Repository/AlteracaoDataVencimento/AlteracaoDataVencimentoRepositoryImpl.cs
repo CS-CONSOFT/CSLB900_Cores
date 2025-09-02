@@ -33,21 +33,22 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
                 CSICP_FF102 titulo = await BuscarTitulo(parametros);
 
                 // Valida regras de negócio
-                ValidaRegras(titulo, parametros);
+                ValidaSituacao(titulo, parametros);
 
                 // Atualiza data de vencimento do título
                 titulo.Ff102DataVencimento = parametros.NovaDataVencimento!.Value;
                 titulo.Ff102Dtimestamp = DateTime.UtcNow.ToLocalTime();
 
                 // Define propriedades específicas para ocorrência
+                parametros.TipoMovimento = parametros.InStIDProrrogar;
+                parametros.InFilialIDBB001 = titulo.Ff102Filialid;
+                parametros.InFF102ID = titulo.Id;
                 parametros.DataVencimento = titulo.Ff102DataVencimento;
-                parametros.ValorAntigo = titulo.Ff102ValorTitulo;
-                parametros.ValorNovo = titulo.Ff102ValorTitulo;
+                parametros.NovaDataVencimento = parametros.NovaDataVencimento; //verificar se é necessário
                 parametros.TipoOperacao = TipoOperacaoOcorrencia.AlteracaoDataVencimento;
-                parametros.TipoMovimento = parametros.InStIDAlteracaoDataVencimento;
 
                 // Grava ocorrência
-                _gravaOcorrenciaRepository.GravaOcorrenciaPrms(parametros);
+                await _gravaOcorrenciaRepository.GravaOcorrenciaPrms(parametros);
 
                 // Salva alterações
                 await _appDbContext.SaveChangesAsync();
@@ -72,8 +73,6 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
             if (string.IsNullOrEmpty(parametros.InUsuarioID))
                 throw new ArgumentException("ID do usuário é obrigatório", nameof(parametros.InUsuarioID));
 
-            if (!parametros.NovaDataVencimento.HasValue)
-                throw new ArgumentException("Nova data de vencimento é obrigatória", nameof(parametros.NovaDataVencimento));
         }
 
         private async Task<CSICP_FF102> BuscarTitulo(PrmGravaOcorrencia parametros)
@@ -84,7 +83,7 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
             return titulo ?? throw new KeyNotFoundException("Título não encontrado");
         }
 
-        private static void ValidaRegras(CSICP_FF102 titulo, PrmGravaOcorrencia parametros)
+        private static void ValidaSituacao(CSICP_FF102 titulo, PrmGravaOcorrencia parametros)
         {
             // Validação 1: Situação deve estar Aberto
             if (titulo.Ff102Situacaoid != parametros.InStIDFF102SitAberto)

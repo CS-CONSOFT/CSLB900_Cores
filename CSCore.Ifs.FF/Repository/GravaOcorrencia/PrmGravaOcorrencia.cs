@@ -21,7 +21,7 @@ namespace CSCore.Ifs.FF.Repository.GravaOcorrencia
         public int? InStIDFF102SitAberto { get; set; }
         public int? InStIDFF102SitBxParcial { get; set; }
         public int? InStIDNCobraJuros { get; set; }
-        public int? InStIDAlteracaoDataVencimento { get; set; }
+        public int? InStIDProrrogar { get; set; }
         
         // Propriedade para identificar o tipo de operação
         public TipoOperacaoOcorrencia TipoOperacao { get; set; }
