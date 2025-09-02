@@ -17,10 +17,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
 
         public async Task Exportar(string gg032ID, int inTenantID)
         {
-            var produtosDoInventario = await GetInventario(gg032ID, inTenantID, _appDbContext);
-
-            if (produtosDoInventario.Count == 0 || !produtosDoInventario.Any()) return;
-            string protocolo = produtosDoInventario.FirstOrDefault()?.Gg032Protocolo ?? "0";
+            (var produtosDoInventario, var protocolo) = await GetInventario(gg032ID, inTenantID, _appDbContext);
             using var workbook = new ClosedXML.Excel.XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Produtos do Inventário");
 
@@ -58,7 +55,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
                 worksheet.Cell(index, 27).Value = currentProduto.IndPropriedade;
                 index++;
             }
-            workbook.SaveAs(GetFilePath(protocolo,"Block-0200", ExtensaoArquivo.XLSX));
+            workbook.SaveAs(GetFilePath(protocolo ?? "","Block-0200", ExtensaoArquivo.XLSX));
         }
 
         public override void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet)

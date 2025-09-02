@@ -1,11 +1,5 @@
 ﻿using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy.Template;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy
 {
@@ -21,10 +15,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
 
         public async Task Exportar(string inGg032ID, int inTenantID)
         {
-            var produtosDoInventario = await GetInventario(inGg032ID, inTenantID, _appDbContext);
-
-            if (produtosDoInventario.Count == 0 || !produtosDoInventario.Any()) return;
-            string protocolo = produtosDoInventario.FirstOrDefault()?.Gg032Protocolo ?? "0";
+            (var produtosDoInventario, var protocolo) = await GetInventario(inGg032ID, inTenantID, _appDbContext);
             using var workbook = new ClosedXML.Excel.XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Produtos do Inventário");
 
@@ -34,7 +25,12 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
             foreach (var currentProduto in produtosDoInventario)
             {
                 worksheet.Cell(index, 1).Value = currentProduto.Bb001Codigoempresa + "-" + currentProduto.Bb001Razaosocial;
-                worksheet.Cell(index, 2).Value = new DateOnly(currentProduto.Gg032Datamovimento!.Value.Year, currentProduto.Gg032Datamovimento!.Value.Month, 1).ToString();
+
+                worksheet.Cell(index, 2).Value = new DateOnly(
+                    currentProduto.Gg032Datamovimento!.Value.Year,
+                    currentProduto.Gg032Datamovimento!.Value.Month,
+                    1).ToString();
+
                 worksheet.Cell(index, 3).Value = currentProduto.Gg032Datamovimento.ToString();
                 worksheet.Cell(index, 4).Value = currentProduto.Gg033Produto;
                 worksheet.Cell(index, 5).Value = produtosDoInventario.Count;
@@ -43,7 +39,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
                 worksheet.Cell(index, 8).Value = "";
                 index++;
             }
-            workbook.SaveAs(GetFilePath(protocolo,"BlocoK", ExtensaoArquivo.XLSX));
+            workbook.SaveAs(GetFilePath(protocolo ?? "","BlocoK", ExtensaoArquivo.XLSX));
 
 
 

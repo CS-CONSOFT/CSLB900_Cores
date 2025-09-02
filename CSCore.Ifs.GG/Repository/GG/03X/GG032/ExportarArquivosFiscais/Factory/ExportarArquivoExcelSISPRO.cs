@@ -19,9 +19,8 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
 
         public async Task Exportar(string gg032ID, int inTenantID)
         {
-            var produtosInventario = await GetInventario(gg032ID, inTenantID, _appDbContext);
-            if (produtosInventario.Count == 0 || !produtosInventario.Any()) return;
-            string protocolo = produtosInventario.FirstOrDefault()?.Gg032Protocolo ?? "0";
+            (var produtosInventario, var protocolo) 
+                = await GetInventario(gg032ID, inTenantID, _appDbContext);
             using var workbook = new ClosedXML.Excel.XLWorkbook();
             var worksheet = workbook.Worksheets.Add("Produtos do Inventário");
 
@@ -97,7 +96,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
 
                 index++;
             }
-            workbook.SaveAs(GetFilePath(protocolo,"SISPRO", ExtensaoArquivo.XLSX));
+            workbook.SaveAs(GetFilePath(protocolo ?? "","SISPRO", ExtensaoArquivo.XLSX));
         }
 
         public override void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet)

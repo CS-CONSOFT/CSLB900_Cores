@@ -57,7 +57,8 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
 
     public abstract class ExportarArquivoTemplate
     {
-        protected virtual async Task<List<DtoArquivosFiscaisExcelGetInventario>> GetInventario(string InGG032ID, int InTenantID, AppDbContext _appDbContext)
+        protected virtual async Task<(List<DtoArquivosFiscaisExcelGetInventario> produtos, string? protocolo)> GetInventario(
+            string InGG032ID, int InTenantID, AppDbContext _appDbContext)
         {
             var produtosDoInventario = await(
                 from gg033 in _appDbContext.OsusrE9aCsicpGg033s.AsNoTracking()
@@ -127,7 +128,10 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
                     GG520_vBCSTRet = gg520.Gg520Vbcstret ?? 0,
                 }).ToListAsync();
 
-            return produtosDoInventario;
+            if (produtosDoInventario.Count == 0 || !produtosDoInventario.Any()) 
+                throw new KeyNotFoundException("Lista de produtos do inventário vazia");
+
+            return (produtosDoInventario, produtosDoInventario[0].Gg032Protocolo);
         }
 
         /// <summary>

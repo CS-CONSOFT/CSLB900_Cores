@@ -27,10 +27,8 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
 
         public async Task Exportar(string gg032ID, int inTenantID)
         {
-            var produtosInventario = await GetInventario(gg032ID, inTenantID, _appDbContext);
-            if (produtosInventario.Count == 0 || !produtosInventario.Any()) return;
-            string protocolo = produtosInventario.FirstOrDefault()?.Gg032Protocolo ?? "0";
-            using var file = File.AppendText(GetFilePath(protocolo, _NomeArquivo, ExtensaoArquivo.TXT));
+            (var produtosInventario, var protocolo) = await GetInventario(gg032ID, inTenantID, _appDbContext);
+            using var file = File.AppendText(GetFilePath(protocolo ?? "", _NomeArquivo, ExtensaoArquivo.TXT));
 
             var arqText = new StringBuilder();
 
