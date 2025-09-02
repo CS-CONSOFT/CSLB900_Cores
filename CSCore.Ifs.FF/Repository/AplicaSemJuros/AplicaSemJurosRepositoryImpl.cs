@@ -39,15 +39,14 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
                 AplicarNaoCobrancaJuros(titulo, parametros);
 
                 // Define propriedades específicas para ocorrência
-                parametros.DataVencimento = titulo.Ff102DataVencimento;
-                parametros.NovaDataVencimento = titulo.Ff102DataVencimento;
-                parametros.ValorAntigo = titulo.Ff102ValorTitulo;
-                parametros.ValorNovo = titulo.Ff102ValorTitulo;
-                parametros.TipoOperacao = TipoOperacaoOcorrencia.AplicaSemJuros;
                 parametros.TipoMovimento = parametros.InStIDNCobraJuros;
+                parametros.InFilialIDBB001 = titulo.Ff102Filialid;
+                parametros.InFF102ID = titulo.Id;
+                parametros.DataVencimento = null;
+                parametros.TipoOperacao = TipoOperacaoOcorrencia.AplicaSemJuros;
 
                 // Grava ocorrência
-                _gravaOcorrenciaRepository.GravaOcorrenciaPrms(parametros);
+                await _gravaOcorrenciaRepository.GravaOcorrenciaPrms(parametros);
 
                 // Salva alterações
                 await _appDbContext.SaveChangesAsync();
