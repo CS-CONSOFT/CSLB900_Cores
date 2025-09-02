@@ -2733,6 +2733,14 @@ namespace CSCore.Ifs.CS_Context
                     .WithOne()
                     .HasForeignKey<CSICP_FF103>(e => e.Ff102Id);
 
+                entity.HasOne(e => e.NavSY001)
+                  .WithOne()
+                  .HasForeignKey<CSICP_FF103>(e => e.Ff103Usuarioproprid);
+
+                entity.HasOne(e => e.NavBB006)
+                 .WithOne()
+                 .HasForeignKey<CSICP_FF103>(e => e.Ff103Agcobradorid);
+
             });
 
             modelBuilder.Entity<CSICP_FF103a>(entity =>
