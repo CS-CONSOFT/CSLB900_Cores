@@ -31,6 +31,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return from ff116 in _appDbContext.OsusrE9aCsicpFf116s
                    .AsNoTracking()
 
+                   join bb001 in _appDbContext.E9ACSICP_BB001s
+                   on ff116.Ff116Filialid equals bb001.Id into bb001_join
+                   from bb001 in bb001_join.DefaultIfEmpty()
+
                    join ff116TMov in _appDbContext.OsusrE9aCsicpFf116Tmovs
                    on ff116.Ff116Tipomovto equals ff116TMov.Id into ff116TMov_join
                    from ff116TMov in ff116TMov_join.DefaultIfEmpty()
@@ -62,6 +66,16 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                        Ff116Vnovovlr = ff116.Ff116Vnovovlr,
                        Ff116Vvaloranterior = ff116.Ff116Vvaloranterior,
                        Ff116Msg = ff116.Ff116Msg,
+
+                       // Navegação para BB001
+                       NavBB001 = bb001 != null ? new CSICP_BB001
+                       {
+                           TenantId = bb001.TenantId,
+                           Id = bb001.Id,
+                           Bb001Codigoempresa = bb001.Bb001Codigoempresa,
+                           Bb001Razaosocial = bb001.Bb001Razaosocial,
+                           BB001_IsRegimeRegular = bb001.BB001_IsRegimeRegular
+                       } : null,
 
                        // Navegação para FF116_TMov
                        NavFF116TMov = ff116TMov != null ? new OsusrE9aCsicpFf116Tmov
