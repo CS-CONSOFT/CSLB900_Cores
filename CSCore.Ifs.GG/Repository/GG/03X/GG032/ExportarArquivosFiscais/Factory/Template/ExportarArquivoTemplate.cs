@@ -1,4 +1,6 @@
-﻿using CSCore.Ifs.CS_Context;
+﻿using ClosedXML.Excel;
+using CSCore.Ifs.CS_Context;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -142,7 +144,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
         /// <param name="extensao">usar sem o ponto, apenas a extensao. Ex. XML</param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        protected virtual string GetFilePath(string protocolo,string nomeArquivo, ExtensaoArquivo extensao)
+        protected virtual string GetFilename(string protocolo,string nomeArquivo, ExtensaoArquivo extensao)
         {
             if (string.IsNullOrWhiteSpace(nomeArquivo))
                 throw new ArgumentException("Nome do arquivo não pode ser nulo ou vazio.", nameof(nomeArquivo));
@@ -153,10 +155,15 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
                 nomeArquivo = nomeArquivo.Replace(extensaoArquivo, string.Empty);
 
 
-            return Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
-            "Downloads",
-            "Prt." + protocolo + "." +nomeArquivo + "."+ extensaoArquivo);
+            return "Prt." + protocolo + "." + nomeArquivo + "." + extensaoArquivo;
+        }
+
+        protected virtual byte[] DownloadFileWithMemoryStream(XLWorkbook workbook, string filename)
+        {
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            stream.Position = 0;
+            return stream.ToArray();
         }
 
         public virtual void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet)

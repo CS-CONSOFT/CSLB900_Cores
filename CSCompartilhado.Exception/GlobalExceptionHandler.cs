@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NPOI.OpenXmlFormats.Shared;
 using System.Diagnostics;
 using System.Text;
@@ -13,142 +15,91 @@ using System.Text.Json;
 
 namespace CSCore.Ex
 {
-    public class GlobalExceptionHandler(AppDbContext appDbContext) : IActionFilter
+    public class GlobalExceptionHandler
     {
-        private readonly AppDbContext _appDbContext = appDbContext;
+        private readonly RequestDelegate _next;
+        private readonly ILogger<GlobalExceptionHandler> _logger;
         private const string REQUEST_BODY_KEY = "RequestBody";
 
-
-        public void OnActionExecuting(ActionExecutingContext context)
+        public GlobalExceptionHandler(
+         RequestDelegate next,
+         ILogger<GlobalExceptionHandler> logger)
         {
-            // Habilita buffering para permitir múltiplas leituras do body
-            context.HttpContext.Request.EnableBuffering();
-
-            // PRIORIDADE 1: Capturar dos ActionArguments (DTOs já deserializados)
-            CaptureFromActionArguments(context);
+            _next = next;
+            _logger = logger;
         }
 
-
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-            if (!context.ModelState.IsValid)
-            {
-                var errors = context.ModelState.Values
-                                               .SelectMany(v => v.Errors)
-                                               .Select(e => e.ErrorMessage)
-                                               .ToList();
-
-                // Retorna uma resposta personalizada para erros de validação
-                context.Result = new ObjectResult(new DtoApiResponse<object>
-                {
-                    Success = false,
-                    Message = "Os dados enviados contêm erros de validação.",
-                    Data = errors// Passa os erros de validação para o campo Data
-                })
-                {
-                    StatusCode = StatusCodes.Status400BadRequest // Configura o código de status para 400 (Bad Request)
-                };
-                return; // Evita que o processo continue e sobrescreva a resposta
-            }
-
-            //TRATAR ERROS DE EXCECOES LANÇADAS
-            if (ExisteExcecao(context))
-            {
-                var stopwatch = Stopwatch.StartNew();
-                if (context.Exception is UnauthorizedAccessException)
-                {
-                    HandleException(context, stopwatch, StatusCodes.Status401Unauthorized);
-                }
-                else if (context.Exception is InvalidDataException)
-                {
-                    HandleException(context, stopwatch, StatusCodes.Status409Conflict);
-                }
-                else if (context.Exception is KeyNotFoundException)
-                {
-                    HandleException(context, stopwatch, StatusCodes.Status404NotFound);
-                }
-                else if (context.Exception is ArgumentOutOfRangeException)
-                {
-                    HandleException(context, stopwatch, StatusCodes.Status400BadRequest);
-                }
-                else if (context.Exception is InvalidOperationException)
-                {
-                    HandleException(context, stopwatch, StatusCodes.Status406NotAcceptable);
-                }
-                else if(context.Exception is ExceptionSemAuditoria _ex)
-                {
-                    int statusCode = DetermineStatusCodeFromMessage(_ex.Message);
-                    HandleException(context, stopwatch, statusCode, hasToSave: false);
-                }
-                // Para Exception genéricas, analisa a mensagem
-                else if (context.Exception is Exception ex)
-                {
-                    int statusCode = DetermineStatusCodeFromMessage(ex.Message);
-                    HandleException(context, stopwatch, statusCode);
-                }
-                else
-                {
-                    HandleException(context, stopwatch, StatusCodes.Status500InternalServerError);
-                }
-                context.ExceptionHandled = true;
-            }
-        }
-
-        private void CaptureFromActionArguments(ActionExecutingContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
-                 if (context.ActionArguments?.Any() == true)
-                {
-                    // Filtra apenas os argumentos que não são primitivos ou headers
-                    var relevantArguments = new Dictionary<string, object>();
+                // Capturar request body antes de processar
+                await CaptureRequestBodyAsync(context);
 
-                    foreach (var arg in context.ActionArguments)
-                    {
-                        // Ignora tipos primitivos, strings simples e headers
-                        if (!IsPrimitiveType(arg.Value?.GetType()) &&
-                            !arg.Key.ToLowerInvariant().Contains("tenant") &&
-                            !arg.Key.ToLowerInvariant().Contains("id") &&
-                            arg.Value != null)
-                        {
-                            relevantArguments[arg.Key] = arg.Value;
-                        }
-                    }
-
-                    if (relevantArguments.Any())
-                    {
-                        var jsonBody = JsonSerializer.Serialize(relevantArguments, new JsonSerializerOptions
-                        {
-                            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                            WriteIndented = false
-                        });
-
-                        context.HttpContext.Items[REQUEST_BODY_KEY] = jsonBody;
-                    }
-                }
+                // Continuar pipeline
+                await _next(context);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao capturar dos ActionArguments: {ex.Message}");
+                _logger.LogError(ex, "Exceção não tratada capturada pelo middleware global");
+                await HandleExceptionAsync(context, ex);
             }
         }
 
-        private static bool IsPrimitiveType(Type? type)
-        {
-            if (type == null) return true;
 
-            return type.IsPrimitive ||
-                   type == typeof(string) ||
-                   type == typeof(DateTime) ||
-                   type == typeof(decimal) ||
-                   type == typeof(Guid) ||
-                   type == typeof(int?) ||
-                   type == typeof(long?) ||
-                   type == typeof(bool?) ||
-                   type == typeof(DateTime?) ||
-                   type == typeof(decimal?) ||
-                   type == typeof(Guid?);
+        private async Task HandleExceptionAsync(HttpContext context, Exception ex)
+        {
+            var statusCode = DetermineStatusCode(ex);
+            var shouldSaveToDatabase = ShouldSaveException(ex);
+
+            await GenerateExceptionResponseToClient(
+                context,
+                statusCode,
+                ex,
+                shouldSaveToDatabase);
         }
+
+        private static int DetermineStatusCode(Exception ex) => ex switch
+        {
+            UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
+            InvalidDataException => StatusCodes.Status409Conflict,
+            KeyNotFoundException => StatusCodes.Status404NotFound,
+            ArgumentOutOfRangeException => StatusCodes.Status400BadRequest,
+            ArgumentException => StatusCodes.Status400BadRequest,
+            InvalidOperationException => StatusCodes.Status406NotAcceptable,
+            ExceptionSemAuditoria exemptEx => DetermineStatusCodeFromMessage(exemptEx.Message),
+            Exception genericEx => DetermineStatusCodeFromMessage(genericEx.Message),
+            _ => StatusCodes.Status500InternalServerError
+        };
+
+        private static bool ShouldSaveException(Exception ex)
+        {
+            // Não salvar exceções que são só validação ou que implementam ExceptionSemAuditoria
+            return ex is not ExceptionSemAuditoria;
+        }
+
+        private async Task CaptureRequestBodyAsync(HttpContext context)
+        {
+            if (context.Request.ContentLength > 0 &&
+                context.Request.ContentType?.Contains("application/json") == true)
+            {
+                context.Request.EnableBuffering();
+
+                using var reader = new StreamReader(
+                    context.Request.Body,
+                    Encoding.UTF8,
+                    leaveOpen: true);
+
+                var body = await reader.ReadToEndAsync();
+                context.Request.Body.Position = 0;
+
+                if (!string.IsNullOrEmpty(body))
+                {
+                    context.Items[REQUEST_BODY_KEY] = body;
+                }
+            }
+        }
+
 
      
 
@@ -250,16 +201,7 @@ namespace CSCore.Ex
             // Default: 500 - Internal Server Error
             return StatusCodes.Status500InternalServerError;
         }
-
-        private static bool ExisteExcecao(ActionExecutedContext context)
-        {
-            return context.Exception != null;
-        }
-
-        private void HandleException(ActionExecutedContext context, Stopwatch stopwatch, int statusCode, bool? hasToSave = true)
-        {
-            GenerateExceptionResponseToClient(context.HttpContext, statusCode, context.Exception!, hasToSave: hasToSave).Wait();
-        }
+ 
 
   
         private async Task GenerateExceptionResponseToClient(
@@ -366,8 +308,11 @@ namespace CSCore.Ex
                     ? ex.InnerException.Message
                     : ex.Message;
 
+                // Resolver o AppDbContext do escopo da requisição
+                using var scope = context.RequestServices.CreateScope();
+                var appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 // Usar SQL direto ao invés do Entity Framework
-                using var connection = _appDbContext.Database.GetDbConnection();
+                using var connection = appDbContext.Database.GetDbConnection();
                 if (connection.State != System.Data.ConnectionState.Open)
                 {
                     await connection.OpenAsync();

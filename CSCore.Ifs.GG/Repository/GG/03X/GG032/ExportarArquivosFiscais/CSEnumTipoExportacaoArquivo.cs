@@ -8,6 +8,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais
 {
     public enum CSEnumTipoExportacaoArquivo
     {
+        EXCEL,
         XLS_BLC_K,
         XLS_BLC_0200,
         XLS_SISPRO,

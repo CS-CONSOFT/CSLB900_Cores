@@ -8,6 +8,6 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
 {
     public interface IExportarArquivo
     {
-        public Task Exportar(string gg032ID, int inTenantID);
+        public Task<(byte[], string filename)> Exportar(string gg032ID, int inTenantID);
     }
 }

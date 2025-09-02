@@ -13,7 +13,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais
             this._appDbContext = appDbContext;
         }
 
-        public async Task Exportar(string gg032ID, int inTenantID)
+        public async Task<(byte[], string filename)> Exportar(string gg032ID, int inTenantID)
         {
             (var produtosDoInventario, var protocolo) = await GetInventario(gg032ID, inTenantID, _appDbContext);
             using var workbook = new ClosedXML.Excel.XLWorkbook();
@@ -60,7 +60,9 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais
                 worksheet.Cell(index, 32).Value = currentProduto.Codigodopais;                                            // CEP
                 index++;
             }
-            workbook.SaveAs(GetFilePath(protocolo ?? "", "BlocoK", ExtensaoArquivo.XLSX));
+            var filename = GetFilename(protocolo ?? "", "Arq", ExtensaoArquivo.XLSX);
+            var bytesParaDownload = DownloadFileWithMemoryStream(workbook, filename);
+            return (bytesParaDownload, filename);
         }
 
 

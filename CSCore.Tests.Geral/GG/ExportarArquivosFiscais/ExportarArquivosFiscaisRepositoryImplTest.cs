@@ -39,7 +39,7 @@ namespace CSCore.Tests.Geral.GG.ExportarArquivosFiscais
             // Act
             await 
                 _repository
-                .ExportarParaExcel(CSEnumTipoExportacaoArquivo.XLS_BLC_K, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+                .Exportar(CSEnumTipoExportacaoArquivo.XLS_BLC_K, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace CSCore.Tests.Geral.GG.ExportarArquivosFiscais
             // Act
             await
                 _repository
-                .ExportarParaExcel(CSEnumTipoExportacaoArquivo.XLS_BLC_0200, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+                .Exportar(CSEnumTipoExportacaoArquivo.XLS_BLC_0200, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace CSCore.Tests.Geral.GG.ExportarArquivosFiscais
             // Act
             await
                 _repository
-                .ExportarParaExcel(CSEnumTipoExportacaoArquivo.XLS_SISPRO, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+                .Exportar(CSEnumTipoExportacaoArquivo.XLS_SISPRO, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
         }
 
 
@@ -67,7 +67,7 @@ namespace CSCore.Tests.Geral.GG.ExportarArquivosFiscais
             // Act
             await
                 _repository
-                .ExportarParaExcel(CSEnumTipoExportacaoArquivo.TXT_BLOCO_H2, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+                .Exportar(CSEnumTipoExportacaoArquivo.TXT_BLOCO_H2, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace CSCore.Tests.Geral.GG.ExportarArquivosFiscais
             // Act
             await
                 _repository
-                .ExportarParaExcel(CSEnumTipoExportacaoArquivo.TXT_BLOCO_H, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+                .Exportar(CSEnumTipoExportacaoArquivo.TXT_BLOCO_H, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
         }
 
 

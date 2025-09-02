@@ -1,5 +1,6 @@
 ﻿using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy.Template;
+using NPOI.HPSF;
 using System.Text;
 
 namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy
@@ -25,10 +26,10 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
         }
 
 
-        public async Task Exportar(string gg032ID, int inTenantID)
+        public async Task<(byte[], string filename)> Exportar(string gg032ID, int inTenantID)
         {
             (var produtosInventario, var protocolo) = await GetInventario(gg032ID, inTenantID, _appDbContext);
-            using var file = File.AppendText(GetFilePath(protocolo ?? "", _NomeArquivo, ExtensaoArquivo.TXT));
+            using var file = File.AppendText(GetFilename(protocolo ?? "", _NomeArquivo, ExtensaoArquivo.TXT));
 
             var arqText = new StringBuilder();
 
@@ -54,10 +55,10 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
                 var h020 = FormatarRegistroH020(produto);
                 arqText.AppendLine(h020);
             }
-
-            // Escrever todo o conteúdo no arquivo
-            file.Write(arqText.ToString());
-            file.Close();
+            // Converter texto para bytes usando MemoryStream
+            var fileName = GetFilename(protocolo ?? "", _NomeArquivo, ExtensaoArquivo.TXT);
+            var textBytes = Encoding.UTF8.GetBytes(arqText.ToString());
+            return (textBytes, fileName);
         }
 
     }

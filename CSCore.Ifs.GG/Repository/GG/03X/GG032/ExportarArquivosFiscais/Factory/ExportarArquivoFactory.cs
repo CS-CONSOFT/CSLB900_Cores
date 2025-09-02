@@ -22,6 +22,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
                 CSEnumTipoExportacaoArquivo.TXT_BLOCO_H => new ExportarArquivoTXTBlocoH_e_H2(appDbContext, InFuncIf: FuncIfBlocoH(), "BlocoH"),
 
                 CSEnumTipoExportacaoArquivo.XLS_SISPRO => new ExportarArquivoExcelSISPRO(appDbContext),
+                CSEnumTipoExportacaoArquivo.EXCEL => new ExportarParaExcel(appDbContext),
                 _ => throw new NotImplementedException("Tipo de exportação não suportado")
             };
             return exportarArquivo;
