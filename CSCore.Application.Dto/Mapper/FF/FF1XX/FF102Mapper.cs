@@ -642,7 +642,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 Ff102PixcobQrcode = entity.Ff102PixcobQrcode,
                 Ff102PixcobStatus = entity.Ff102PixcobStatus,
                 Ff102TrilhaApiid = entity.Ff102TrilhaApiid,
-                NavBB012ContaID = entity.NavBB012ContaID?.ToDtoBB012_Exibicao(), 
+                NavBB012ContaID = entity.NavBB012?.ToDtoBB012_Exibicao(), 
                 NavFF102Sit = entity.NavFF102Sit,
             };
         }
