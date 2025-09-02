@@ -32,11 +32,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             }
         }
 
-        public Task<(List<CSICP_FF103>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize)
+        public Task<(List<CSICP_FF103>, int)> GetListAsync(int in_tenant, string? inff102ID, int in_pageNumber, int in_pageSize)
         {
             try
             {
                 var query = GetQueryBase(in_tenant);
+                if (inff102ID != null)
+                    query = query.Where(e => e.Ff102Id!.Equals(inff102ID));
+
                 query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
                 var count = query.Count();
                 return Task.FromResult((query.ToList(), count));
