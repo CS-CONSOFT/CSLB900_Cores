@@ -1,3 +1,4 @@
+using CSBS101._82Application.Dto.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102;
 using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
 using CSCore.Domain.CS_Models.Staticas.FF;
@@ -21,6 +22,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF116
         public string? Ff116Msg { get; set; }
 
         // Navegações
+        public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
         public OsusrE9aCsicpFf116Tmov? NavFF116TMov { get; set; }
         public Dto_GetSY001Simples? NavSY001 { get; set; }
         public DtoGetFF102_Exibicao? NavFF102 { get; set; }
