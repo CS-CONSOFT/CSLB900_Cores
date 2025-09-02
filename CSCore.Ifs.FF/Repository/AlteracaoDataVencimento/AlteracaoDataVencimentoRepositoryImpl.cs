@@ -21,7 +21,7 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
             _gravaOcorrenciaRepository = gravaOcorrenciaRepository;
         }
 
-        public async Task<bool> ExecutarAlteracaoDataVencimento(PrmGravaOcorrencia parametros)
+        public async Task<bool> ExecutarAlteracaoDataVencimento(PrmGravaOcorrencia parametros, int in_tenantID)
         {
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
@@ -36,16 +36,10 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
                 ValidaSituacao(titulo, parametros);
 
                 // Atualiza data de vencimento do título
-                titulo.Ff102DataVencimento = parametros.NovaDataVencimento!.Value;
+                titulo.Ff102DataVencimento = parametros.InNovaDataVencimento!.Value;
                 titulo.Ff102Dtimestamp = DateTime.UtcNow.ToLocalTime();
-
-                // Define propriedades específicas para ocorrência
-                parametros.TipoMovimento = parametros.InStIDProrrogar;
-                parametros.InFilialIDBB001 = titulo.Ff102Filialid;
-                parametros.InFF102ID = titulo.Id;
-                parametros.DataVencimento = titulo.Ff102DataVencimento;
-                parametros.NovaDataVencimento = parametros.NovaDataVencimento; //verificar se é necessário
-                parametros.TipoOperacao = TipoOperacaoOcorrencia.AlteracaoDataVencimento;
+                titulo.Ff102CodigoBarras = "";
+                titulo.Ff102Linhadigital = "";
 
                 // Grava ocorrência
                 await _gravaOcorrenciaRepository.GravaOcorrenciaPrms(parametros);
@@ -67,18 +61,18 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
         {
             ArgumentNullException.ThrowIfNull(parametros);
 
-            if (string.IsNullOrEmpty(parametros.InFF102ID))
-                throw new ArgumentException("ID do título é obrigatório", nameof(parametros.InFF102ID));
+            if (string.IsNullOrEmpty(parametros.InFF102TituloID))
+                throw new ArgumentException("ID do título é obrigatório", nameof(parametros.InFF102TituloID));
 
-            if (string.IsNullOrEmpty(parametros.InUsuarioID))
-                throw new ArgumentException("ID do usuário é obrigatório", nameof(parametros.InUsuarioID));
+            if (string.IsNullOrEmpty(parametros.InUsuarioPropID))
+                throw new ArgumentException("ID do usuário é obrigatório", nameof(parametros.InUsuarioPropID));
 
         }
 
-        private async Task<CSICP_FF102> BuscarTitulo(PrmGravaOcorrencia parametros)
+        private async Task<CSICP_FF102> BuscarTitulo(PrmGravaOcorrencia parametros, int in_tenantID)
         {
             var titulo = await _appDbContext.OsusrE9aCsicpFf102s
-                .FirstOrDefaultAsync(e => e.TenantId == parametros.InTenantID && e.Id == parametros.InFF102ID);
+                .FirstOrDefaultAsync(e => e.TenantId == in_tenantID && e.Id == parametros.InFF102TituloID);
 
             return titulo ?? throw new KeyNotFoundException("Título não encontrado");
         }
@@ -92,8 +86,8 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
             }
 
             // Validação 2: Nova data de vencimento não pode ser menor que data de emissão nem data atual
-            if (parametros.NovaDataVencimento < titulo.Ff102DataEmissao ||
-                parametros.NovaDataVencimento < DateTime.Now.Date)
+            if (parametros.InNovaDataVencimento < titulo.Ff102DataEmissao ||
+                parametros.InNovaDataVencimento < DateTime.Now.Date)
             {
                 throw new InvalidOperationException("A nova data de vencimento não pode ser menor que a data de emissão, nem menor que a data atual.");
             }

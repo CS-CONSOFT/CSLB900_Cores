@@ -21,32 +21,25 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
             _gravaOcorrenciaRepository = gravaOcorrenciaRepository;
         }
 
-        public async Task<bool> ExecutarAplicaSemJuros(PrmGravaOcorrencia parametros)
+        public async Task<bool> ExecutarAplicaSemJuros(PrmsAnaliseSemJurosRepository prmsAnalise, PrmGravaOcorrencia prmsOcorrencia)
         {
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
             {
                 // Valida parâmetros de entrada
-                ValidarParametros(parametros);
+                ValidarParametros(prmsAnalise);
 
                 // Busca o título
-                CSICP_FF102 titulo = await BuscarTitulo(parametros);
+                CSICP_FF102 titulo = await BuscarTitulo(prmsAnalise);
 
                 // Valida regras de negócio
-                ValidarSituacao(titulo, parametros);
+                ValidarSituacao(titulo, prmsOcorrencia);
 
                 // Aplica não cobrança de juros
-                AplicarNaoCobrancaJuros(titulo, parametros);
-
-                // Define propriedades específicas para ocorrência
-                parametros.TipoMovimento = parametros.InStIDNCobraJuros;
-                parametros.InFilialIDBB001 = titulo.Ff102Filialid;
-                parametros.InFF102ID = titulo.Id;
-                parametros.DataVencimento = null;
-                parametros.TipoOperacao = TipoOperacaoOcorrencia.AplicaSemJuros;
+                AplicarNaoCobrancaJuros(titulo, prmsOcorrencia);
 
                 // Grava ocorrência
-                await _gravaOcorrenciaRepository.GravaOcorrenciaPrms(parametros);
+                await _gravaOcorrenciaRepository.GravaOcorrenciaPrms(prmsOcorrencia);
 
                 // Salva alterações
                 await _appDbContext.SaveChangesAsync();
@@ -61,36 +54,33 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
             }
         }
 
-        private static void ValidarParametros(PrmGravaOcorrencia parametros)
+        private static void ValidarParametros(PrmsAnaliseSemJurosRepository prmsAnalise)
         {
-            ArgumentNullException.ThrowIfNull(parametros);
+            ArgumentNullException.ThrowIfNull(prmsAnalise);
 
-            if (parametros.InTenantID <= 0)
-                throw new ArgumentException("ID do tenant deve ser maior que zero", nameof(parametros.InTenantID));
+            if (prmsAnalise.InTenantID <= 0)
+                throw new ArgumentException("ID do tenant deve ser maior que zero", nameof(prmsAnalise.InTenantID));
 
-            if (string.IsNullOrEmpty(parametros.InFF102ID))
-                throw new ArgumentException("ID do título é obrigatório", nameof(parametros.InFF102ID));
+            if (string.IsNullOrEmpty(prmsAnalise.InFF102TituloID))
+                throw new ArgumentException("ID do título é obrigatório", nameof(prmsAnalise.InFF102TituloID));
 
-            if (string.IsNullOrEmpty(parametros.InUsuarioID))
-                throw new ArgumentException("ID do usuário é obrigatório", nameof(parametros.InUsuarioID));
-
-            if (!parametros.InStIDNCobraJuros.HasValue)
-                throw new ArgumentException("Status de não cobrança de juros é obrigatório", nameof(parametros.InStIDNCobraJuros));
+            if (string.IsNullOrEmpty(prmsAnalise.InUsuarioPropID))
+                throw new ArgumentException("ID do usuário é obrigatório", nameof(prmsAnalise.InUsuarioPropID));
         }
 
-        private async Task<CSICP_FF102> BuscarTitulo(PrmGravaOcorrencia parametros)
+        private async Task<CSICP_FF102> BuscarTitulo(PrmsAnaliseSemJurosRepository prmsAnalise)
         {
             var titulo = await _appDbContext.OsusrE9aCsicpFf102s
-                .FirstOrDefaultAsync(e => e.TenantId == parametros.InTenantID && e.Id == parametros.InFF102ID);
+                .FirstOrDefaultAsync(e => e.TenantId == prmsAnalise.InTenantID && e.Id == prmsAnalise.InFF102TituloID);
 
             return titulo ?? throw new KeyNotFoundException("Título não encontrado");
         }
 
-        private static void ValidarSituacao(CSICP_FF102 titulo, PrmGravaOcorrencia parametros)
+        private static void ValidarSituacao(CSICP_FF102 titulo, PrmGravaOcorrencia prmsOcorrencia)
         {
             // Validação 1: Situação deve estar Aberto ou Baixa Parcial
-            if (titulo.Ff102Situacaoid != parametros.InStIDFF102SitAberto &&
-                titulo.Ff102Situacaoid != parametros.InStIDFF102SitBxParcial)
+            if (titulo.Ff102Situacaoid != prmsOcorrencia.InStIDFF102SitAberto &&
+                titulo.Ff102Situacaoid != prmsOcorrencia.InStIDFF102SitBxParcial)
             {
                 throw new InvalidOperationException("O Título precisa estar aberto ou em Baixa Parcial!");
             }
@@ -102,9 +92,9 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
             }
         }
 
-        private static void AplicarNaoCobrancaJuros(CSICP_FF102 titulo, PrmGravaOcorrencia parametros)
+        private static void AplicarNaoCobrancaJuros(CSICP_FF102 titulo, PrmGravaOcorrencia prmsOcorrencia)
         {
-            titulo.Ff102SitespecialId = parametros.InStIDNCobraJuros;
+            titulo.Ff102SitespecialId = prmsOcorrencia.InStIDNCobraJuros;
             titulo.Ff102Dtimestamp = DateTime.UtcNow.ToLocalTime();
         }
     }
