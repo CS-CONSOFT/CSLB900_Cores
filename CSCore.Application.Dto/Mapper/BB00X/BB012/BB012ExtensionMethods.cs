@@ -17,8 +17,10 @@ using CSBS101._82Application.Mapper.AA00X.AA027;
 using CSBS101._82Application.Mapper.AA00X.AA028;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSBS101.C82Application.Dto.BB00X.BB012.Get.BB1207;
+using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get;
 using CSCore.Domain;
 using CSLB900.MSTools.Extensao;
+using Microsoft.Identity.Client;
 
 namespace CSBS101._82Application.Mapper.BB00X.BB012
 {
@@ -910,8 +912,22 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 Bb01203IsActive = entity.Bb01203IsActive,
             };
         }
+
+        public static Dto_GetBB012_ExibSimples ToDtoGetExibSimples(this CSICP_BB012 entity)
+        {
+            return new Dto_GetBB012_ExibSimples
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Bb012Codigo = entity.Bb012Codigo,
+                Bb012NomeCliente = entity.Bb012NomeCliente,
+            };
+        }
+
+
     }
 }
+
 
 
 

@@ -37,4 +37,6 @@ public partial class CSICP_FF003
     public CSICP_BB001? NavBB001 { get; set; }
     public OsusrE9aCsicpFf003Tpesp? NavFF003TpEsp { get; set; }
     public CSICP_Statica? NavStatica { get; set; }
+
+    public CSICP_Bb005? NavBB005 { get; set; }
 }

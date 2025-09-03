@@ -1,4 +1,8 @@
-﻿using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF003;
+﻿using CSBS101._82Application.Dto.BB00X.BB001;
+using CSBS101._82Application.Dto.BB00X.BB005;
+using CSBS101._82Application.Dto.BB00X.BB012.Get;
+using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF003;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.CS_Models.Staticas.FF;
@@ -34,10 +38,16 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF005
 
         public virtual CSICP_FF003? Ff003Especie { get; set; }
 
+        public Dto_GetBB001_Exibicao? NavBB001Filial { get; set; }
+
+        public Dto_GetBB012_ExibSimples? NavBB012ContaFornecedor { get; set; }
+
         public Dto_GetFF003_Exibicao? NavFF003 { get; set; }
 
         public OsusrE9aCsicpFf003Tpesp? NavFF003TpEsp { get; set; }
 
         public CSICP_AA037Imp? NavAA037Imp { get; set; }
+
+
     }
 }
