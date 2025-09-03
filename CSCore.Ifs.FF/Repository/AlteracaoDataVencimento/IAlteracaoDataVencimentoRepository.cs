@@ -5,6 +5,6 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
 {
     public interface IAlteracaoDataVencimentoRepository
     {
-        Task<bool> ExecutarAlteracaoDataVencimento(PrmGravaOcorrencia parametros);
+        Task<bool> ExecutarAlteracaoDataVencimento(PrmsAlteracaoDataVencimentoRepository InprmsAltDataVenc);
     }
 }

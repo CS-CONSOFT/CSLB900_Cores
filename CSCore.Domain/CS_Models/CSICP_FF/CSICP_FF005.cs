@@ -28,6 +28,9 @@ public partial class CSICP_FF005
 
     public virtual CSICP_FF003? Ff003Especie { get; set; }
 
+    public CSICP_BB001? NavBB001Filial { get; set; }
+    public CSICP_BB012? NavBB012ContaFornecedor { get; set; }
+
     public CSICP_FF003? NavFF003 { get; set; }
 
     public OsusrE9aCsicpFf003Tpesp? NavFF003TpEsp { get; set; }

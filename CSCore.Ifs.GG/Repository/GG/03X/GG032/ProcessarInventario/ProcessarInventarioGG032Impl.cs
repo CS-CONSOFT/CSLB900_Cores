@@ -87,7 +87,8 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario
                     throw new Exception($"Algum produto não foi alterado, não é possível processar o inventário!");
 
                 CSICP_GG520? saldoEncontrado =
-                    await GetSaldoParaTrabalhoAsync(InPrmProcessaProdutosInventario.Tenant, currProduto.Id, _appDbContext);
+                    await GetSaldoParaTrabalhoAsync(InPrmProcessaProdutosInventario.Tenant, currProduto.Gg033Saldoid ?? "", _appDbContext);
+
                 if (saldoEncontrado is null) continue;
 
                 currProduto.Gg033Qtdajuste = QuantidadeInventarioEhIgualSaldo(currProduto, saldoEncontrado) ? 0
@@ -118,28 +119,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario
                 _appDbContext.Update(saldoEncontrado);
                 await _appDbContext.SaveChangesAsync();
 
-                await _geraExtrato.CS_CriaExtratoOrigem(
-                        inTenant: InPrmProcessaProdutosInventario.Tenant,
-                        inGG028_ORIGEMPROGRAMA: "GG032",
-                        inGG028_ORIGEM_PKID: currProduto.Id,
-                        inGG028_ORIGEM_DOC_PKID: InPrmProcessaProdutosInventario.Gg032Inventario.Id,
-                        inGG028_DATA_MOVIMENTO: InPrmProcessaProdutosInventario.Gg032Inventario.Gg032Datamovimento,
-                        inGG028_ALMOXID: InPrmProcessaProdutosInventario.Gg032Inventario.Gg032Almoxid,
-                        inGG028_SALDOID: currProduto.Gg033Saldoid,
-                        inGG028_TRANSACAOID: null,
-                        inGG028_CONTAID: null,
-                        inGG028_USUARIOID: InPrmProcessaProdutosInventario.Gg032Inventario.Gg032Usuarioid,
-                        inGG028_QTD_MOVIMENTO: currProduto.Gg033Qtdajuste,
-                        inGG028_VALOR_UNITARIO: currProduto.Gg033Precocusto,
-                        inGG028_SALDO_ANTERIOR: V_SaldoAnteriorProduto,
-                        inGG028_N_PDV: null,
-                        inProtocolo_Documento: InPrmProcessaProdutosInventario.Gg032Inventario.Gg032Protocolnumber,
-                        inGG028_NF_OU_CUPOM: null,
-                        inEntSaida_ID: EhEntrada(currProduto)
-                        ? InPrmProcessaProdutosInventario.InStIDEntSaidaEntradaID : InPrmProcessaProdutosInventario.InStIDEntSaidaSaidaID,
-                        inNatureza_ID: InPrmProcessaProdutosInventario.InStIDNatInventarioID
-                    );
-
+                await RegistraExtratoInventarioProdutoAsync(InPrmProcessaProdutosInventario, currProduto, V_SaldoAnteriorProduto);
 
                 if (NaoEstaEmConformidade(InPrmProcessaProdutosInventario.Gg032Inventario, currProduto))
                     InvetarioGeraLista_NC_PI(InPrmProcessaProdutosInventario.Gg032Inventario, currProduto);
@@ -147,6 +127,31 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario
 
                 _appDbContext.Update(currProduto);
             }
+        }
+
+        private async Task RegistraExtratoInventarioProdutoAsync(InternalPrmProcessaProdutosInventario InPrmProcessaProdutosInventario, CSICP_GG033 currProduto, decimal V_SaldoAnteriorProduto)
+        {
+            await _geraExtrato.CS_CriaExtratoOrigem(
+                    inTenant: InPrmProcessaProdutosInventario.Tenant,
+                    inGG028_ORIGEMPROGRAMA: "GG032",
+                    inGG028_ORIGEM_PKID: currProduto.Id,
+                    inGG028_ORIGEM_DOC_PKID: InPrmProcessaProdutosInventario.Gg032Inventario.Id,
+                    inGG028_DATA_MOVIMENTO: InPrmProcessaProdutosInventario.Gg032Inventario.Gg032Datamovimento,
+                    inGG028_ALMOXID: InPrmProcessaProdutosInventario.Gg032Inventario.Gg032Almoxid,
+                    inGG028_SALDOID: currProduto.Gg033Saldoid,
+                    inGG028_TRANSACAOID: null,
+                    inGG028_CONTAID: null,
+                    inGG028_USUARIOID: InPrmProcessaProdutosInventario.Gg032Inventario.Gg032Usuarioid,
+                    inGG028_QTD_MOVIMENTO: currProduto.Gg033Qtdajuste,
+                    inGG028_VALOR_UNITARIO: currProduto.Gg033Precocusto,
+                    inGG028_SALDO_ANTERIOR: V_SaldoAnteriorProduto,
+                    inGG028_N_PDV: null,
+                    inProtocolo_Documento: InPrmProcessaProdutosInventario.Gg032Inventario.Gg032Protocolnumber,
+                    inGG028_NF_OU_CUPOM: null,
+                    inEntSaida_ID: EhEntrada(currProduto)
+                    ? InPrmProcessaProdutosInventario.InStIDEntSaidaEntradaID : InPrmProcessaProdutosInventario.InStIDEntSaidaSaidaID,
+                    inNatureza_ID: InPrmProcessaProdutosInventario.InStIDNatInventarioID
+                );
         }
 
         private void InvetarioGeraLista_NC_PI(CSICP_GG032 gg032inventario, CSICP_GG033 currProduto)

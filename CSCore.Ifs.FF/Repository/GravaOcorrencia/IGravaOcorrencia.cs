@@ -1,7 +1,9 @@
+using CSCore.Domain.CS_Models.CSICP_FF;
+
 namespace CSCore.Ifs.FF.Repository.GravaOcorrencia
 {
     public interface IGravaOcorrencia
     {
-        void GravaOcorrenciaPrms(PrmGravaOcorrencia parametros);
+        Task GravaOcorrenciaPrms(CSICP_FF116 entidade);
     }
 }
