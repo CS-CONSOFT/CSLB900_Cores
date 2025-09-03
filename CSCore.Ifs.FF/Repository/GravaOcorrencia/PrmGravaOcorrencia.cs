@@ -14,13 +14,5 @@ namespace CSCore.Ifs.FF.Repository.GravaOcorrencia
         public int InStIDNCobraJuros { get; set; }
         public int InStIDFF102SitAberto { get; set; }
         public int InStIDFF102SitBxParcial { get; set; }
-
-        public TipoOperacaoOcorrencia TipoOperacao { get; set; }
-    }
-
-    public enum TipoOperacaoOcorrencia
-    {
-        AlteracaoDataVencimento = 1,
-        AplicaSemJuros = 2
     }
 }

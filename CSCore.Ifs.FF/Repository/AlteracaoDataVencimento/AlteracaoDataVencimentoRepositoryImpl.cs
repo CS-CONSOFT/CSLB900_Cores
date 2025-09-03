@@ -21,7 +21,7 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
             _gravaOcorrenciaRepository = gravaOcorrenciaRepository;
         }
 
-        public async Task<bool> ExecutarAlteracaoDataVencimento(PrmGravaOcorrencia parametros, int in_tenantID)
+        public async Task<bool> ExecutarAlteracaoDataVencimento(PrmsAlteracaoDataVencimentoRepository InprmsAltDataVenc)
         {
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try

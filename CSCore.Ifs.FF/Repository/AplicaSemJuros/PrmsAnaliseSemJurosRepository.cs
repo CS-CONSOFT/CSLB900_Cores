@@ -11,5 +11,10 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
         public int InTenantID { get; set; }
         public string InFF102TituloID { get; set; } = string.Empty;
         public string InUsuarioPropID { get; set; } = string.Empty;
+        public string? InFilialID { get; set; }
+        public string InMsgMotivo { get; set; } = string.Empty;
+        public int InStIDNCobraJuros { get; set; }
+        public int InStIDFF102SitAberto { get; set; }
+        public int InStIDFF102SitBxParcial { get; set; }
     }
 }
