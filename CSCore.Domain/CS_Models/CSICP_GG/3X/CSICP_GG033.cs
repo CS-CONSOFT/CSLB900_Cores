@@ -101,4 +101,5 @@ public partial class CSICP_GG033
     public string? Gg033Codbarrasalfa { get; set; }
 
     public CSICP_GG520? NavGG033_Saldo { get; set; }
+    public CSICP_BB001? NavBB001Estab { get; set; }
 }

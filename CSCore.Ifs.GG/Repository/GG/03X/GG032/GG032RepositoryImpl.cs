@@ -64,8 +64,6 @@ namespace CSCore.Ifs.Repository.GG._03X
 
             query = query.PaginacaoNoBanco(page, pageSize);
 
-
-
             int count = query.GetCountTotal();
 
             List<CSICP_GG032> listaCSICP_GG032 = await query.ToListAsync();
@@ -155,7 +153,7 @@ namespace CSCore.Ifs.Repository.GG._03X
                                                 } : null,
                                                 NavGG032Tinventario = _tipoInventario ?? null
                                             };
-            return query;
+            return query.OrderByDescending(e => new {e.Gg032Datamovimento, e.Gg032Protocolnumber});
         }
 
 

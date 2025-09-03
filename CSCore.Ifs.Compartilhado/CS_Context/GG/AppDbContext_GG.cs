@@ -737,6 +737,7 @@ namespace CSCore.Ifs.CS_Context
 
 
                 entity.HasOne(e => e.NavGG033_Saldo).WithOne().HasForeignKey<CSICP_GG033>(e => e.Gg033Saldoid);
+                entity.HasOne(e => e.NavBB001Estab).WithOne().HasForeignKey<CSICP_GG033>(e => e.Gg033Filialid);
 
             });
 
