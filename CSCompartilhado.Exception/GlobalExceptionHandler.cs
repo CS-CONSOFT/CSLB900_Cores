@@ -216,9 +216,14 @@ namespace CSCore.Ex
 
             context.Response.StatusCode = code;
 
-            string? tenant = context.Request.Headers["Tenant_ID"][0];
+            // Verificação segura do header Tenant_ID
+            string? tenant = null;
+            if (context.Request.Headers.TryGetValue("Tenant_ID", out var tenantValues) && tenantValues.Count > 0)
+            {
+                tenant = tenantValues[0];
+            }
 
-            if(hasToSave == true)
+            if (hasToSave == true)
                 errorMessage = await SaveExceptionLogAsync(context, code, ex, errorMessage, tenant);
 
 

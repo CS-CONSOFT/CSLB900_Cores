@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parametro;
+using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.FinanciamentoCalculador;
 using CSLB900.MSTools.GenerateId;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar
@@ -14,7 +15,13 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
         private readonly decimal _work_valor_entrada;
         private readonly AppDbContext _appDbContext;
 
-        public ProcessarParcelasTipoParcelaDiasOuMes(ICS_GenerateId generateId, string[] aux_condicaoPagtoDividida, int aux_qtd_parcelas, bool isParcelaMes, decimal work_valor_entrada, AppDbContext appDbContext)
+        public ProcessarParcelasTipoParcelaDiasOuMes(
+            ICS_GenerateId generateId,
+            string[] aux_condicaoPagtoDividida,
+            int aux_qtd_parcelas,
+            bool isParcelaMes,
+            decimal work_valor_entrada,
+            AppDbContext appDbContext)
         {
             _generateId = generateId;
             _aux_condicaoPagtoDividida = aux_condicaoPagtoDividida;
@@ -25,37 +32,54 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
         }
 
         public async Task Processar(
-            Prm_Renegociacao_Calc_Titulos in_Renegociacao_Calc_Titulos,
-            (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) in_calculoFinanciamento)
+            Prm_Renegociacao_Calc_Simulacao_Titulos in_Renegociacao_Calc_Titulos,
+            RetornoFinanciamento in_calculoFinanciamento)
         {
-            int aux_dias_mes_entrada = int.Parse(_aux_condicaoPagtoDividida[0]);
-            int aux_dias_mes_intervalo = int.Parse(_aux_condicaoPagtoDividida[1]);
-            int aux_parcela_atual = 0;
-            while (aux_parcela_atual <= _aux_qtd_parcelas)
+
+            int entrada = int.Parse(_aux_condicaoPagtoDividida[1]);
+            int intervaloParcelas = int.Parse(_aux_condicaoPagtoDividida[2]);
+
+            for (int parcelaAtual = 1; parcelaAtual <= _aux_qtd_parcelas; parcelaAtual++)
             {
+                var isEntrada = PossuiEntrada(_work_valor_entrada, parcelaAtual, entrada);
+
                 CSICP_FF999 work_ff999 = new CSICP_FF999
                 {
                     Id = _generateId.GenerateUuId(),
-                    TenantId = in_Renegociacao_Calc_Titulos.in_tenantID,
-                    Ff999IdControle = in_Renegociacao_Calc_Titulos.in_ChaveControle_ID,
-                    Ff999Valorparcela = in_Renegociacao_Calc_Titulos.in_valorEntrada,
-                    Ff999Parcela = aux_parcela_atual + 1,
-                    Ff999Datavencto = _isParcelaMes ? in_Renegociacao_Calc_Titulos.in_data.AddMonths(aux_dias_mes_entrada) : in_Renegociacao_Calc_Titulos.in_data.AddDays(aux_dias_mes_entrada)
+                    TenantId = in_Renegociacao_Calc_Titulos.in_TenantID,
+                    Ff999IdControle = in_Renegociacao_Calc_Titulos.in_renegociacaoID,
+                    Ff999Valorparcela = in_Renegociacao_Calc_Titulos.in_valorEntrada + in_calculoFinanciamento.ValorRestoParcela,
+                    Ff999Parcela = parcelaAtual,
+                    Ff999Datavencto = _isParcelaMes ?
+                   in_Renegociacao_Calc_Titulos.in_data.AddMonths(entrada)
+                   : in_Renegociacao_Calc_Titulos.in_data.AddDays(entrada)
                 };
-                if (!PossuiEntrada(_work_valor_entrada, aux_parcela_atual, aux_dias_mes_entrada))
+
+                if (!isEntrada)
                 {
-                    work_ff999.Ff999Datavencto = _isParcelaMes ? in_Renegociacao_Calc_Titulos.in_data.AddMonths(aux_dias_mes_intervalo) : in_Renegociacao_Calc_Titulos.in_data.AddDays(aux_dias_mes_intervalo);
-                    in_calculoFinanciamento.ValorParcela = 0;
+                    if(parcelaAtual > 2 ) intervaloParcelas += intervaloParcelas;
+
+                    work_ff999.Ff999Valorparcela =
+                        in_calculoFinanciamento.ValorParcela;
+
+                    in_calculoFinanciamento.ValorRestoParcela = 0;
+
+                    work_ff999.Ff999Datavencto = _isParcelaMes ?
+                    in_Renegociacao_Calc_Titulos.in_data.AddMonths(intervaloParcelas)
+                    : in_Renegociacao_Calc_Titulos.in_data.AddDays(intervaloParcelas);
                 }
                 _appDbContext.Add(work_ff999);
-                aux_parcela_atual += 1;
+   
             }
             await _appDbContext.SaveChangesAsync();
         }
 
-        private static bool PossuiEntrada(decimal work_valor_entrada, int aux_parcela_atual, int aux_dias_mes_entrada)
+        private static bool PossuiEntrada(
+            decimal work_valor_entrada,
+            int aux_parcela_atual,
+            int aux_dias_mes_entrada)
         {
-            return aux_parcela_atual == 1 && aux_dias_mes_entrada > 0 && work_valor_entrada > 0;
+            return aux_parcela_atual == 1 && aux_dias_mes_entrada != 0 && work_valor_entrada > 0;
         }
 
     }

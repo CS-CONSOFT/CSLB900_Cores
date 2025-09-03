@@ -65,9 +65,9 @@ namespace CSCore.Tests.Geral.Financeiro.RenegociacaoCalcTitulo
                 Assert.Null(exception);
             }
 
-            private Prm_Renegociacao_Calc_Titulos CriarParametroTeste()
+            private Prm_Renegociacao_Calc_Simulacao_Titulos CriarParametroTeste()
             {
-                return new Prm_Renegociacao_Calc_Titulos
+                return new Prm_Renegociacao_Calc_Simulacao_Titulos
                 {
                     in_tenantID = 135,
                     in_renegociacaoID = Guid.NewGuid().ToString(),
