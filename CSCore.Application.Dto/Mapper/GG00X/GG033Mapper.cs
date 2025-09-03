@@ -42,7 +42,7 @@ namespace CSCore.Application.Dto.Mapper.GG00X
                 Gg033Codbarrasalfa = entity.Gg033Codbarrasalfa,
                 NavBB001Simples = entity.NavBB001Estab?.ToDtoGetSimples(),
                 NavGG033_Saldo = entity.NavGG033_Saldo?.ToDtoGetSimplesComProdutoESemKardex(),
-            }
+            };
         }
     }
 }
