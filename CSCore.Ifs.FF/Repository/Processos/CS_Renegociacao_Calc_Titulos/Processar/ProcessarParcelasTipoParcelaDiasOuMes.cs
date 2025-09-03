@@ -38,6 +38,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
 
             int entrada = int.Parse(_aux_condicaoPagtoDividida[1]);
             int intervaloParcelas = int.Parse(_aux_condicaoPagtoDividida[2]);
+            int ultimoIntervaloParcelaSalvo = intervaloParcelas;
 
             for (int parcelaAtual = 1; parcelaAtual <= _aux_qtd_parcelas; parcelaAtual++)
             {
@@ -65,9 +66,12 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
                     in_calculoFinanciamento.ValorRestoParcela = 0;
 
                     work_ff999.Ff999Datavencto = _isParcelaMes ?
-                    in_Renegociacao_Calc_Titulos.in_data.AddMonths(intervaloParcelas)
-                    : in_Renegociacao_Calc_Titulos.in_data.AddDays(intervaloParcelas);
+                    in_Renegociacao_Calc_Titulos.in_data.AddMonths(ultimoIntervaloParcelaSalvo)
+                    : in_Renegociacao_Calc_Titulos.in_data.AddDays(ultimoIntervaloParcelaSalvo);
                 }
+
+                ultimoIntervaloParcelaSalvo += intervaloParcelas;
+
                 _appDbContext.Add(work_ff999);
    
             }
