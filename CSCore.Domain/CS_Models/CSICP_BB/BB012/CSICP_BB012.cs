@@ -1,10 +1,11 @@
 ﻿
 using CSCore.Domain.CS_Models.CSICP_AA;
 using CSCore.Domain.CS_Models.Staticas.AA;
+using CSCore.Domain.DELETAR;
 
 namespace CSCore.Domain;
 
-public partial class CSICP_BB012
+public partial class CSICP_BB012 
 {
     public int TenantId { get; set; }
 
