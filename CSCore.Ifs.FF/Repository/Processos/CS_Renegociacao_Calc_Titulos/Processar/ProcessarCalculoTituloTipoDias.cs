@@ -31,7 +31,8 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
         }
 
         public async Task Processar(
-            Prm_Renegociacao_Calc_Simulacao_Titulos in_Renegociacao_Calc_Titulos, RetornoFinanciamento in_calculoFinanciamento)
+            Prm_Renegociacao_Calc_Simulacao_Titulos in_Renegociacao_Calc_Titulos,
+            RetornoFinanciamento in_calculoFinanciamento)
         {
             int aux_parcela_atual = 0;
             var entidadesParaInserir = new List<CSICP_FF999>();
@@ -49,13 +50,14 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
 
                 if (EhSemEntrada(_work_valor_entrada, aux_parcela_atual))
                 {
-                    work_ff999.Ff999Valorparcela = in_calculoFinanciamento.ValorParcela + in_calculoFinanciamento.ValorRestoParcela;
+                    work_ff999.Ff999Valorparcela 
+                        = in_calculoFinanciamento.ValorParcela + in_calculoFinanciamento.ValorRestoParcela;
                     in_calculoFinanciamento.ValorRestoParcela = 0;
                 }
                 aux_parcela_atual += 1;
                 entidadesParaInserir.Add(work_ff999);
-                //_appDbContext.Add(work_ff999);
             }
+
             _appDbContext.AddRange(entidadesParaInserir);
             await _appDbContext.SaveChangesAsync();
         }

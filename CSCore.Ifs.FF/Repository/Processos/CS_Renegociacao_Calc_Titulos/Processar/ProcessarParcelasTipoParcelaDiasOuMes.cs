@@ -38,13 +38,32 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
 
             int entrada = int.Parse(_aux_condicaoPagtoDividida[1]);
             int intervaloParcelas = int.Parse(_aux_condicaoPagtoDividida[2]);
-            int ultimoIntervaloParcelaSalvo = intervaloParcelas;
+            int ultimoIntervaloParcelaSalvo = intervaloParcelas + entrada;
 
             for (int parcelaAtual = 1; parcelaAtual <= _aux_qtd_parcelas; parcelaAtual++)
             {
                 var isEntrada = PossuiEntrada(_work_valor_entrada, parcelaAtual, entrada);
 
-                CSICP_FF999 work_ff999 = new CSICP_FF999
+                CSICP_FF999 work_ff999;
+                if (isEntrada)
+                {
+                    work_ff999 = new CSICP_FF999
+                    {
+                        Id = _generateId.GenerateUuId(),
+                        TenantId = in_Renegociacao_Calc_Titulos.in_TenantID,
+                        Ff999IdControle = in_Renegociacao_Calc_Titulos.in_renegociacaoID,
+                        Ff999Valorparcela = in_Renegociacao_Calc_Titulos.in_valorEntrada + in_calculoFinanciamento.ValorRestoParcela,
+                        Ff999Parcela = parcelaAtual,
+                        Ff999Datavencto = _isParcelaMes ?
+                   in_Renegociacao_Calc_Titulos.in_data.AddMonths(entrada)
+                   : in_Renegociacao_Calc_Titulos.in_data.AddDays(entrada)
+                    };
+                    _appDbContext.Add(work_ff999);
+                
+                    continue;
+                }
+
+                work_ff999 = new CSICP_FF999
                 {
                     Id = _generateId.GenerateUuId(),
                     TenantId = in_Renegociacao_Calc_Titulos.in_TenantID,
@@ -52,28 +71,18 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
                     Ff999Valorparcela = in_Renegociacao_Calc_Titulos.in_valorEntrada + in_calculoFinanciamento.ValorRestoParcela,
                     Ff999Parcela = parcelaAtual,
                     Ff999Datavencto = _isParcelaMes ?
-                   in_Renegociacao_Calc_Titulos.in_data.AddMonths(entrada)
-                   : in_Renegociacao_Calc_Titulos.in_data.AddDays(entrada)
+                  in_Renegociacao_Calc_Titulos.in_data.AddMonths(ultimoIntervaloParcelaSalvo)
+                  : in_Renegociacao_Calc_Titulos.in_data.AddDays(ultimoIntervaloParcelaSalvo)
                 };
 
-                if (!isEntrada)
-                {
-                    if(parcelaAtual > 2 ) intervaloParcelas += intervaloParcelas;
+                work_ff999.Ff999Valorparcela =
+                    in_calculoFinanciamento.ValorParcela;
 
-                    work_ff999.Ff999Valorparcela =
-                        in_calculoFinanciamento.ValorParcela;
-
-                    in_calculoFinanciamento.ValorRestoParcela = 0;
-
-                    work_ff999.Ff999Datavencto = _isParcelaMes ?
-                    in_Renegociacao_Calc_Titulos.in_data.AddMonths(ultimoIntervaloParcelaSalvo)
-                    : in_Renegociacao_Calc_Titulos.in_data.AddDays(ultimoIntervaloParcelaSalvo);
-                }
-
+                in_calculoFinanciamento.ValorRestoParcela = 0;
                 ultimoIntervaloParcelaSalvo += intervaloParcelas;
 
+
                 _appDbContext.Add(work_ff999);
-   
             }
             await _appDbContext.SaveChangesAsync();
         }

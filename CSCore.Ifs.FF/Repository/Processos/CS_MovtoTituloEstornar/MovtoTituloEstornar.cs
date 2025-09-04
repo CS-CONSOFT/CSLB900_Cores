@@ -23,7 +23,6 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.CS_Mov
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
 
             var idFF102 = await ExecutarEstornoMovimento(InPrmTituloEstornar, transaction);
-            InPrmTituloEstornar.InFF102Id_tituloCalcBaixa = idFF102;
 
             return await ExecutarCalculoBaixa(InPrmTituloEstornar);
         }
@@ -41,9 +40,9 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.CS_Mov
                     InSTIDFF103TpBaiCancelamento = InPrmTituloEstornar.InSTIDFF103TpBaiCancelamento_tituloCalcBaixa,
                     InSTIDFF103TpBaiDevolucao = InPrmTituloEstornar.InSTIDFF103TpBaiDevolucao_tituloCalcBaixa,
                     InSTIDFF103TpBaiDoacao = InPrmTituloEstornar.InSTIDFF103TpBaiDoacao_tituloCalcBaixa,
-                    InFF102Id = InPrmTituloEstornar.InFF102Id_tituloCalcBaixa,
-                    InBB001Id = InPrmTituloEstornar.InEstabID_tituloCalcBaixa,
-                    InSY001UsuarioID = InPrmTituloEstornar.InSY001UsuarioID
+                    InFF102Id = InPrmTituloEstornar.InFF102ID,
+                    InBB001Id = InPrmTituloEstornar.InBB001FilialID,
+                    InSY001UsuarioID = InPrmTituloEstornar.InSy001ID
                 };
                 await _tituloCalculoBaixa.Executar(prmEntradaCalculoBaixa);
 

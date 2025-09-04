@@ -24,13 +24,16 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             //tipo dias
             if (IsTipoDias(prmSimulacao, work_bb008))
             {
-                return new ProcessarCalculoTituloTipoDias(appDbContext, generateId, aux_condicaoPagtoDividida, work_valor_entrada);
+                return new ProcessarCalculoTituloTipoDias(
+                    appDbContext, generateId, aux_condicaoPagtoDividida, work_valor_entrada);
             }
 
             //tipo parcela dia
             else if (IsTipoParcelaDias(prmSimulacao, work_bb008))
             {
-                return new ProcessarParcelasTipoParcelaDiasOuMes(generateId, aux_condicaoPagtoDividida, work_qtd_parcelas, isParcelaMes: false, work_valor_entrada, appDbContext);
+                return new ProcessarParcelasTipoParcelaDiasOuMes(
+                    generateId, aux_condicaoPagtoDividida, work_qtd_parcelas, isParcelaMes: false,
+                    work_valor_entrada, appDbContext);
             }
 
             //tipo parcela mes

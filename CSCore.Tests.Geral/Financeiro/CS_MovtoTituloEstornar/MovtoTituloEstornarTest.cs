@@ -61,8 +61,8 @@ namespace CSCore.Tests.Geral.Financeiro.CS_MovtoTituloEstornar
             InSTIDFF103TpBaiCancelamento_tituloCalcBaixa = 1,
             InSTIDFF103TpBaiDevolucao_tituloCalcBaixa = 2,
             InSTIDFF103TpBaiDoacao_tituloCalcBaixa = 1,
-            InFF102Id_tituloCalcBaixa = "titulo_teste_id",
-            InEstabID_tituloCalcBaixa = "08878f25-412d-4914-934f-f785d61b8b77"
+            InFF102ID = "titulo_teste_id",
+            InBB001FilialID = "08878f25-412d-4914-934f-f785d61b8b77"
         };
 
         public void Dispose()

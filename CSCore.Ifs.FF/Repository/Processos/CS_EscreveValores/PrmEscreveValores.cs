@@ -12,6 +12,5 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_EscreveValores
         public int InSTIDFF102SitAberto { get; set; }
         public int InSTID102BxParcial { get; set; }
         public string InFF017ID { get; set; } = string.Empty;
-
     }
 }

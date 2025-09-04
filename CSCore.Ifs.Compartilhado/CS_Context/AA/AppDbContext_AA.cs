@@ -46,6 +46,8 @@ namespace CSCore.Ifs.CS_Context
             {
                 entity.HasKey(e => e.Id);
 
+                entity.ToTable("OSUSR_E9A_CSICP_AA143");
+
                 entity.Property(e => e.Aa043Artigo)
                     .HasMaxLength(30)
                     .HasColumnName("AA043_ARTIGO");
@@ -58,7 +60,7 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Id)
                     .HasMaxLength(36)
                     .HasColumnName("ID");
-                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+       
             });
             modelBuilder.Entity<CSICP_AA001>(entity =>
             {

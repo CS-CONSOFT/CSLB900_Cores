@@ -126,7 +126,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos
                 Ff103ValorPago = AuxFF102ParaInserir.Ff102ValorTitulo,
                 Ff103Usuarioproprid = AuxFF102ParaInserir.Ff102Usuarioproprieid,
                 Ff103Cobradorid = AuxFF102ParaInserir.Ff102Agcobradorid,
-                Ff103Tpbaixaid = InPrmCriaTitulo.InSTIDFf103TpBaiAutPgtoNaoAutorizado,
+                Ff103Tpbaixaid = InPrmCriaTitulo.InSTIDFf103TpBai,
                 Ff103FpagtoId = AuxFF102ParaInserir.Ff10FpagtoId,
                 Ff103Historico = "Bx via Vale Crédito da Renegociação",
                 Ff103ObjBxLabel = "BXRENEG",

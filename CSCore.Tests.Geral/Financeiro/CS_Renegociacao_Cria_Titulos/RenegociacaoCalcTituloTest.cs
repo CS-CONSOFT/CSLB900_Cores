@@ -85,7 +85,7 @@ namespace CSCore.Tests.Geral.Financeiro.RenegociacaoCalcTitulo
                     InSTIDStaticaNao = 0,
                     InSTIDFF102AutPgtoAutorizado = 0,
                     InSTIDFF102AutPgtoNaoAutorizado = 0,
-                    InSTIDFf103TpBaiAutPgtoNaoAutorizado = 0,
+                    InSTIDFf103TpBai = 0,
                     InEntLiquidada = false,
                 };
             }
