@@ -65,11 +65,11 @@ namespace CSCore.Tests.Geral.Financeiro.RenegociacaoCalcTitulo
                 Assert.Null(exception);
             }
 
-            private Prm_Renegociacao_Calc_Titulos CriarParametroTeste()
+            private Prm_Renegociacao_Calc_Simulacao_Titulos CriarParametroTeste()
             {
-                return new Prm_Renegociacao_Calc_Titulos
+                return new Prm_Renegociacao_Calc_Simulacao_Titulos
                 {
-                    in_tenantID = 135,
+                    in_TenantID = 135,
                     in_renegociacaoID = Guid.NewGuid().ToString(),
                     in_condicaoPagamento = "TESTE01",
                     in_StID_bb008_tp_Dias = 1,
@@ -77,7 +77,6 @@ namespace CSCore.Tests.Geral.Financeiro.RenegociacaoCalcTitulo
                     in_StID_bb008_tp_ParcelaMes = 3,
                     in_StID_bb008_tp_A_vista = 4,
                     in_faturaTotal = 1000,
-                    in_ChaveControle_ID = Guid.NewGuid().ToString(),
                     in_valorEntrada = 0,
                     in_data = DateTime.Now
                 };

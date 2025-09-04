@@ -4,9 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CSCore.Domain.CS_Models.CSICP_AA;
 
-public partial class CSICP_AA043
+public partial class CSICP_AA143
 {
-    public int? TenantId { get; set; }
 
     [Key]
     public string Id { get; set; } = null!;

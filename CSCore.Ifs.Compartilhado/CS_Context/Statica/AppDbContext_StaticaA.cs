@@ -26,11 +26,11 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<CSICP_AA39Mp255> E9ACSICP_AA039Mp255s { get; set; }
 
         public DbSet<CSICP_AA030Regime> E9ACSICP_AA030Regimes { get; set; }
-        public DbSet<CSICP_AA046_TP_GOV> CSICP_AA046_TP_GOV { get; set; }
+        public DbSet<CSICP_AA146_TP_GOV> CSICP_AA146_TP_GOV { get; set; }
 
         partial void OnModelCreatingStaticaAA(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CSICP_AA046_TP_GOV>(entity =>
+            modelBuilder.Entity<CSICP_AA146_TP_GOV>(entity =>
             {
                 entity
                     .HasKey(e => e.Id);

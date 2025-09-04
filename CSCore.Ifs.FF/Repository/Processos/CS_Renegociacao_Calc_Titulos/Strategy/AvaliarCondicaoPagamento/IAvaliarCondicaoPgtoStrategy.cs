@@ -8,6 +8,6 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strate
 {
     public interface IAvaliarCondicaoPgtoStrategy
     {
-        (int aux_entrada, int aux_qtdParcelas) AvaliarCondicaoPagamento(string[]? aux_condicaoPagtoDividida);
+       int AvaliarCondicaoPagamento(string[]? aux_condicaoPagtoDividida);
     }
 }

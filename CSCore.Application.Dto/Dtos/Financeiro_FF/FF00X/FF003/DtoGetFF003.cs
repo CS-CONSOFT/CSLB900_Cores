@@ -1,4 +1,5 @@
 ﻿using CSBS101._82Application.Dto.BB00X.BB001;
+using CSBS101._82Application.Dto.BB00X.BB005;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.Staticas.FF;
 using System;
@@ -41,6 +42,8 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF003
         public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
         public OsusrE9aCsicpFf003Tpesp? NavFF003TpEsp { get; set; }
         public CSICP_Statica? NavStatica { get; set; }
+        public Dto_GetBB005_Exibicao? NavBB005 { get; set; }
+
     }
     public class Dto_GetFF003_Exibicao
     {

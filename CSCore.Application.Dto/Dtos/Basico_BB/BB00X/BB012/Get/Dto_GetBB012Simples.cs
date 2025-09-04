@@ -59,7 +59,7 @@ namespace CSBS101._82Application.Dto.BB00X.BB012.Get
         public int? Bb012Countappmcon { get; set; }
 
         public int? Bb012Oricadastroid { get; set; }
-        //csicp_aa043
+        //csicp_aa143
         public string? bb012_LCEspecial_ID { get; set; }
 
         //csicp_aa046_TpGov

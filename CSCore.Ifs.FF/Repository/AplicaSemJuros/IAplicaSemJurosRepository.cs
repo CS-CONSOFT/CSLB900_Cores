@@ -9,6 +9,6 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
 {
     public interface IAplicaSemJurosRepository
     {
-        Task<bool> ExecutarAplicaSemJuros(PrmGravaOcorrencia parametros);
+        Task<bool> ExecutarAplicaSemJuros(PrmsAnaliseSemJurosRepository prmsAnaliseSJuros);
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CSCore.Domain.CS_Models.Staticas.AA;
+namespace CSCore.Domain.DELETAR;
 
-public partial class CSICP_AA046_TP_GOV
+public partial class OsusrE9aCsicpAa149Tpopgov
 {
     public int Id { get; set; }
 
@@ -13,5 +13,5 @@ public partial class CSICP_AA046_TP_GOV
 
     public bool? IsActive { get; set; }
 
-    public string? Tpcompragov { get; set; }
+    public int? CodgCs { get; set; }
 }
