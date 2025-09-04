@@ -42,13 +42,6 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
                 // Valida regras de negócio
                 ValidaSituacao(titulo, InprmsAltDataVenc);
 
-                // Atualiza data de vencimento do título
-                titulo.Ff102DataVencimento = InprmsAltDataVenc.InNovaDataVencimento;
-                titulo.Ff102Dtimestamp = DateTime.UtcNow.ToLocalTime();
-
-                titulo.Ff102CodigoBarras = "";
-                titulo.Ff102Linhadigital = "";
-
                 // Gera protocolo
                 var protocolNumber = await _generateProtocolo.Fcn_Protocolo10(
                     InprmsAltDataVenc.InFilialID ?? string.Empty,
@@ -58,19 +51,24 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
                 {
                     Id = _generateId.GenerateUuId(),
                     TenantId = InprmsAltDataVenc.InTenantID,
-                    Ff116Filialid = InprmsAltDataVenc.InFilialID, // É da ff102 ou parametro?
+                    Ff116Filialid = titulo.Ff102Filialid,
                     Ff116Usuariopropid = InprmsAltDataVenc.InUsuarioPropID,
                     Ff102Tituloid = InprmsAltDataVenc.InFF102TituloID,
                     Ff116Tipomovto = InprmsAltDataVenc.InStIDProrrogar,
-
-                    Ff116Datavencto = titulo.Ff102DataVencimento, //Verificar o que é para gravar
+                    Ff116Datavencto = titulo.Ff102DataVencimento,
                     Ff116Novovencto = InprmsAltDataVenc.InNovaDataVencimento,
-
                     Ff116Protocolnumber = protocolNumber.ToString(),
                 };
 
                 // Grava ocorrência
                 await _gravaOcorrenciaRepository.GravaOcorrenciaPrms(ocorrencia);
+
+                // Atualiza data de vencimento do título
+                titulo.Ff102DataVencimento = InprmsAltDataVenc.InNovaDataVencimento;
+                titulo.Ff102Dtimestamp = DateTime.UtcNow.ToLocalTime();
+
+                titulo.Ff102CodigoBarras = "";
+                titulo.Ff102Linhadigital = "";
 
                 // Salva alterações
                 await _appDbContext.SaveChangesAsync();

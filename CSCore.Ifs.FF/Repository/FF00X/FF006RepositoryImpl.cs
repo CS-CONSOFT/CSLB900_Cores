@@ -50,10 +50,6 @@ namespace CSCore.Ifs.FF.Repository.FF00X
         {
             return from ff006 in _appDbContext.OsusrE9aCsicpFf006s
 
-                   join ff102 in _appDbContext.OsusrE9aCsicpFf102s
-                   on ff006.Ff102Id equals ff102.Id into ff102_join
-                   from ff102 in ff102_join.DefaultIfEmpty()
-
                    join ff006sta in _appDbContext.OsusrE9aCsicpFf006Sta
                    on ff006.Ff006Statusid equals ff006sta.Id into ff006sta_join
                    from ff006sta in ff006sta_join.DefaultIfEmpty()
@@ -86,19 +82,6 @@ namespace CSCore.Ifs.FF.Repository.FF00X
                        Ff006Statusid = ff006.Ff006Statusid,
                        Ff006Chave = ff006.Ff006Chave,
                        Ff006Tabela = ff006.Ff006Tabela,
-
-                       NavFF102 = ff102 != null ? new CSICP_FF102
-                       {
-                           TenantId = ff102.TenantId,
-                           Id = ff102.Id,
-                           Ff102Tiporegistro = ff102.Ff102Tiporegistro,
-                           Ff102Filialid = ff102.Ff102Filialid,
-                           Ff102Pfx = ff102.Ff102Pfx,
-                           Ff102NoTitulo = ff102.Ff102NoTitulo,
-                           Ff102Sfx = ff102.Ff102Sfx,
-                           Ff102Contaid = ff102.Ff102Contaid,
-                           Ff102Contarealid = ff102.Ff102Contarealid,
-                       } : null,
 
                        NavSy001Solicitante = sy001Solicitante != null ? new Csicp_Sy001
                        {

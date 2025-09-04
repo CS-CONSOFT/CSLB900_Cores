@@ -43,9 +43,6 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
                 // Valida regras de negócio
                 ValidarSituacao(titulo, prmsAnaliseSJuros);
 
-                // Aplica não cobrança de juros
-                AplicarNaoCobrancaJuros(titulo, prmsAnaliseSJuros);
-
                 var protocolNumber = await _generateProtocolo.Fcn_Protocolo10(
                     prmsAnaliseSJuros.InFilialID ?? string.Empty,
                     "O_CR");
@@ -55,7 +52,7 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
                     Id = _generateId.GenerateUuId(),
                     TenantId = prmsAnaliseSJuros.InTenantID, 
                     Ff116Tipomovto = prmsAnaliseSJuros.InStIDNCobraJuros,
-                    Ff116Filialid = prmsAnaliseSJuros.InFilialID,
+                    Ff116Filialid = titulo.Ff102Filialid,
                     Ff116Usuariopropid = prmsAnaliseSJuros.InUsuarioPropID,
                     Ff102Tituloid = prmsAnaliseSJuros.InFF102TituloID, 
                     Ff116Datavencto = null,
@@ -65,6 +62,9 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
 
                 // Grava ocorrência
                 await _gravaOcorrenciaRepository.GravaOcorrenciaPrms(ocorrencia);
+
+                // Aplica não cobrança de juros
+                AplicarNaoCobrancaJuros(titulo, prmsAnaliseSJuros);
 
                 // Salva alterações
                 await _appDbContext.SaveChangesAsync();

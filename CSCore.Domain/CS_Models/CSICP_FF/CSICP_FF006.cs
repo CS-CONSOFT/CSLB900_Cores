@@ -45,6 +45,5 @@ public partial class CSICP_FF006
         public Csicp_Sy001? NavSy001Solicitante {  get; set; }
         public Csicp_Sy001? NavSy001Resgate {  get; set; }
         public OsusrE9aCsicpFf006Stum? NavFF006Sta { get; set; }
-        public CSICP_FF102? NavFF102 { get; set; }
     }
 }
