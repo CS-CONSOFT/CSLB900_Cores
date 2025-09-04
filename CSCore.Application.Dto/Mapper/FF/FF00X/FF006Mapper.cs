@@ -36,9 +36,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF00X
                 Ff102 = entity.Ff102,
                 NavSy001Solicitante = entity.NavSy001Solicitante?.ToDtoGetSimples(),
                 NavSy001Resgate = entity.NavSy001Resgate?.ToDtoGetSimples(),
-                NavFF006Sta = entity.NavFF006Sta,
-                NavFF102 = entity.NavFF102?.ToDtoGet_Exibicao(),
-
+                NavFF006Sta = entity.NavFF006Sta
             };
         }
     }

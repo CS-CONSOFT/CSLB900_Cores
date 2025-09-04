@@ -50,6 +50,5 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF006
         public Dto_GetSY001Simples? NavSy001Solicitante { get; set; }
         public Dto_GetSY001Simples? NavSy001Resgate { get; set; }
         public OsusrE9aCsicpFf006Stum? NavFF006Sta { get; set; }
-        public DtoGetFF102_Exibicao? NavFF102 { get; set; }
     }
 }
