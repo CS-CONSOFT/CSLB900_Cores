@@ -24,7 +24,7 @@
             public const string Suspenso = "Suspenso";
         }
 
-        public static class CSICP_Statica
+        public static class CSICP_Statica_Labels
         {
             public const string Sim = "Sim";
             public const string Registro = "Registro";
