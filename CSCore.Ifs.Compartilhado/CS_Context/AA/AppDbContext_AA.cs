@@ -38,11 +38,11 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<CSICP_Aa041> OsusrE9aCsicpAa041s { get; set; }
 
         public DbSet<CSICP_Aa042> OsusrE9aCsicpAa042s { get; set; }
-        public DbSet<CSICP_AA043> CSICP_AA043 { get; set; }
+        public DbSet<CSICP_AA143> CSICP_AA143 { get; set; }
 
         partial void OnModelCreating_CSICP_AA(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CSICP_AA043>(entity =>
+            modelBuilder.Entity<CSICP_AA143>(entity =>
             {
                 entity.HasKey(e => e.Id);
 

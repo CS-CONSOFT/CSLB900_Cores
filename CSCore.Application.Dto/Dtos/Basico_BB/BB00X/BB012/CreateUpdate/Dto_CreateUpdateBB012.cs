@@ -54,10 +54,10 @@
 
         public int? Bb012Oricadastroid { get; set; } = 1;
 
-        //csicp_aa043
+        //csicp_aa143
         public string? bb012_LCEspecial_ID { get; set; }
 
-        //csicp_aa046_TpGov
+        //csicp_aa146_TpGov
         public int? bb012_TpGovId { get; set; }
     }
 }

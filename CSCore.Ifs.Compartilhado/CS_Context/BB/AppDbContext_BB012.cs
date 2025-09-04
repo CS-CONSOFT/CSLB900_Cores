@@ -89,6 +89,15 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Bb012Countappmcon)
                     .HasDefaultValue(0)
                     .HasColumnName("BB012_COUNTAPPMCON");
+
+                entity.Property(e => e.bb012_RFEspecial_ID)
+                   .HasColumnName("BB012_RFLCESPECIAL_ID");
+                entity.Property(e => e.bb012_TpGovId)
+                 .HasColumnName("BB012_TPGOVID");
+
+                entity.Property(e => e.Bb012Countappmcon)
+                   .HasDefaultValue(0)
+                   .HasColumnName("BB012_COUNTAPPMCON");
                 entity.Property(e => e.Bb012DataAniversario)
                     .HasDefaultValue(new DateTime(1900, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified))
                     .HasColumnType("datetime")
@@ -217,10 +226,10 @@ namespace CSCore.Ifs.CS_Context
                 entity.HasOne(d => d.Bb012IdIndicadorNavigation).WithOne()
                    .HasForeignKey<CSICP_BB012>(d => d.Bb012IdIndicador);
 
-                entity.HasOne(d => d.Nav_AA043).WithOne()
-                 .HasForeignKey<CSICP_BB012>(d => d.bb012_LCEspecial_ID);
+                entity.HasOne(d => d.Nav_AA143).WithOne()
+                 .HasForeignKey<CSICP_BB012>(d => d.bb012_RFEspecial_ID);
 
-                entity.HasOne(d => d.Nav_AA046_TP_GOV).WithOne()
+                entity.HasOne(d => d.Nav_AA146_TP_GOV).WithOne()
                 .HasForeignKey<CSICP_BB012>(d => d.bb012_TpGovId);
 
             });

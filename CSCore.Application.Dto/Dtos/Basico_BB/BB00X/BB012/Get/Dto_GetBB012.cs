@@ -64,14 +64,14 @@ namespace CSBS101._82Application.Dto.BB00X.BB012.Get
 
         public int? Bb012Oricadastroid { get; set; }
 
-        //csicp_aa043
+        //csicp_aa143
         public string? bb012_LCEspecial_ID { get; set; }
 
         //csicp_aa046_TpGov
         public int? bb012_TpGovId { get; set; }
 
         public DtoGetAA043? NavAA043 { get; set; }
-        public CSICP_AA046_TP_GOV? Nav_AA046_TP_GOV { get; set; }
+        public CSICP_AA146_TP_GOV? Nav_AA046_TP_GOV { get; set; }
         public Dto_GetBB012_Exibicao? NavBb012IdIndicadorNavigation { get; set; }
         public Dto_GetBB01201? NavGetBB1201 { get; set; }
         public Dto_GetBB01202? NavGetBB1202 { get; set; }
@@ -95,14 +95,14 @@ namespace CSBS101._82Application.Dto.BB00X.BB012.Get
 
         public string? Bb012NomeCliente { get; set; }
 
-        //csicp_aa043
+        //csicp_aa143
         public string? bb012_LCEspecial_ID { get; set; }
 
         //csicp_aa046_TpGov
         public int? bb012_TpGovId { get; set; }
 
         public DtoGetAA043? NavAA043 { get; set; }
-        public CSICP_AA046_TP_GOV? Nav_AA046_TP_GOV { get; set; }
+        public CSICP_AA146_TP_GOV? Nav_AA046_TP_GOV { get; set; }
     }
 }
 
