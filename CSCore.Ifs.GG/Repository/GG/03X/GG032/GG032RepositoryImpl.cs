@@ -153,7 +153,7 @@ namespace CSCore.Ifs.Repository.GG._03X
                                                 } : null,
                                                 NavGG032Tinventario = _tipoInventario ?? null
                                             };
-            return query.OrderByDescending(e => new {e.Gg032Datamovimento, e.Gg032Protocolnumber});
+            return query;
         }
 
 

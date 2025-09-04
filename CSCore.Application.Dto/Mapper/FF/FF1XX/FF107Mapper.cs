@@ -37,7 +37,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 Ff107Observacao = entity.Ff107Observacao,
                 Ff107Protocolnumber = entity.Ff107Protocolnumber,
                 NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
-                NavFF102 = entity.NavFF102?.ToDtoGet_Exibicao(),
+                NavFF102 = entity.Ff102Titulo?.ToDtoGet_Exibicao(),
                 NavSY001 = entity.NavSY001?.ToDtoGetSimples()
             };
         }
