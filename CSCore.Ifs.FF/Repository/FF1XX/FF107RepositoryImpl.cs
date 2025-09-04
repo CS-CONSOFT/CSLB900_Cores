@@ -47,11 +47,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff107.Ff107Filialid equals bb001.Id into bb001_join
                    from bb001 in bb001_join.DefaultIfEmpty()
 
-                   //ff102 (Título)
-                   join ff102 in _appDbContext.OsusrE9aCsicpFf102s
-                   on ff107.Ff102Tituloid equals ff102.Id into ff102_join
-                   from ff102 in ff102_join.DefaultIfEmpty()
-
                    //sy001 (Usuário)
                    join sy001 in _appDbContext.OsusrE9aCsicpSy001s
                    on ff107.Ff107Usuarioproprid equals sy001.Id into sy001_join
@@ -94,23 +89,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Id = bb001.Id,
                            Bb001Codigoempresa = bb001.Bb001Codigoempresa,
                            Bb001Razaosocial = bb001.Bb001Razaosocial,
-                       } : null,
-
-                       NavFF102 = ff102 != null ? new CSICP_FF102
-                       {
-                           TenantId = ff102.TenantId,
-                           Id = ff102.Id,
-                           Ff102Tiporegistro = ff102.Ff102Tiporegistro,
-                           Ff102Filialid = ff102.Ff102Filialid,
-                           Ff102Pfx = ff102.Ff102Pfx,
-                           Ff102NoTitulo = ff102.Ff102NoTitulo,
-                           Ff102Sfx = ff102.Ff102Sfx,
-                           Ff102Contaid = ff102.Ff102Contaid,
-                           Ff102DataEmissao = ff102.Ff102DataEmissao,
-                           Ff102DataVencimento = ff102.Ff102DataVencimento,
-                           Ff102ValorTitulo = ff102.Ff102ValorTitulo,
-                           Ff102Situacao = ff102.Ff102Situacao,
-                           Ff102Situacaoid = ff102.Ff102Situacaoid,
                        } : null,
 
                        NavSY001 = sy001 != null ? new Csicp_Sy001
