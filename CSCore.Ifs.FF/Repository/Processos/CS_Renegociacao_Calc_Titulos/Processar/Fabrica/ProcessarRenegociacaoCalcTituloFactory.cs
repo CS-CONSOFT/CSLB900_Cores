@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parametro;
+using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.CalculoAdicaoDataStrategy;
 using CSLB900.MSTools.GenerateId;
 using System;
 using System.Collections.Generic;
@@ -32,8 +33,8 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             else if (IsTipoParcelaDias(prmSimulacao, work_bb008))
             {
                 return new ProcessarParcelasTipoParcelaDiasOuMes(
-                    generateId, aux_condicaoPagtoDividida, work_qtd_parcelas, isParcelaMes: false,
-                    work_valor_entrada, appDbContext);
+                    generateId, aux_condicaoPagtoDividida, work_qtd_parcelas,
+                    work_valor_entrada, appDbContext, incrementarDataStrategy: new IncrementarDataPorDiaStrategy());
             }
 
             //tipo parcela mes
@@ -43,9 +44,9 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
                     generateId,
                     aux_condicaoPagtoDividida,
                     work_qtd_parcelas,
-                    isParcelaMes: true,
                     work_valor_entrada,
-                    appDbContext);
+                    appDbContext,
+                    incrementarDataStrategy: new IncrementarDataPorMesStrategy());
             }
 
             //a vista

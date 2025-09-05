@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parametro;
+using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.CalculoAdicaoDataStrategy;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.FinanciamentoCalculador;
 using CSLB900.MSTools.GenerateId;
 
@@ -11,24 +12,24 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
         private readonly ICS_GenerateId _generateId;
         private readonly string[] _aux_condicaoPagtoDividida;
         private readonly int _aux_qtd_parcelas;
-        private readonly bool _isParcelaMes;
         private readonly decimal _work_valor_entrada;
         private readonly AppDbContext _appDbContext;
+        private readonly IIncrementarDataStrategy _incrementarDataStrategy;
 
         public ProcessarParcelasTipoParcelaDiasOuMes(
             ICS_GenerateId generateId,
             string[] aux_condicaoPagtoDividida,
             int aux_qtd_parcelas,
-            bool isParcelaMes,
             decimal work_valor_entrada,
-            AppDbContext appDbContext)
+            AppDbContext appDbContext,
+            IIncrementarDataStrategy incrementarDataStrategy)
         {
             _generateId = generateId;
             _aux_condicaoPagtoDividida = aux_condicaoPagtoDividida;
             _aux_qtd_parcelas = aux_qtd_parcelas;
-            _isParcelaMes = isParcelaMes;
             _work_valor_entrada = work_valor_entrada;
             _appDbContext = appDbContext;
+            _incrementarDataStrategy = incrementarDataStrategy;
         }
 
         public async Task Processar(
@@ -54,12 +55,10 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
                         Ff999IdControle = in_Renegociacao_Calc_Titulos.in_renegociacaoID,
                         Ff999Valorparcela = in_Renegociacao_Calc_Titulos.in_valorEntrada + in_calculoFinanciamento.ValorRestoParcela,
                         Ff999Parcela = parcelaAtual,
-                        Ff999Datavencto = _isParcelaMes ?
-                   in_Renegociacao_Calc_Titulos.in_data.AddMonths(entrada)
-                   : in_Renegociacao_Calc_Titulos.in_data.AddDays(entrada)
+                        Ff999Datavencto = _incrementarDataStrategy.IncrementarData(in_Renegociacao_Calc_Titulos.in_data, entrada)
                     };
                     _appDbContext.Add(work_ff999);
-                
+
                     continue;
                 }
 
@@ -70,9 +69,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
                     Ff999IdControle = in_Renegociacao_Calc_Titulos.in_renegociacaoID,
                     Ff999Valorparcela = in_Renegociacao_Calc_Titulos.in_valorEntrada + in_calculoFinanciamento.ValorRestoParcela,
                     Ff999Parcela = parcelaAtual,
-                    Ff999Datavencto = _isParcelaMes ?
-                  in_Renegociacao_Calc_Titulos.in_data.AddMonths(ultimoIntervaloParcelaSalvo)
-                  : in_Renegociacao_Calc_Titulos.in_data.AddDays(ultimoIntervaloParcelaSalvo)
+                    Ff999Datavencto = _incrementarDataStrategy.IncrementarData(in_Renegociacao_Calc_Titulos.in_data, ultimoIntervaloParcelaSalvo)
                 };
 
                 work_ff999.Ff999Valorparcela =
@@ -80,7 +77,6 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
 
                 in_calculoFinanciamento.ValorRestoParcela = 0;
                 ultimoIntervaloParcelaSalvo += intervaloParcelas;
-
 
                 _appDbContext.Add(work_ff999);
             }
