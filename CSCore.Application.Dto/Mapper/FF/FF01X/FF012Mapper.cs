@@ -24,8 +24,8 @@ namespace CSCore.Application.Dto.Mapper.FF.FF01X
                 Ff012Grupopaiid = entity.Ff012Grupopaiid,
                 NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
                 NavSY001 = entity.NavSY001?.ToDtoGetSimples(),
-                NavFF014ComissaoSuper = entity.NavFF014ComissaoSuper?.ToDtoGet(),
-                NavFF014ComissaoCobrador = entity.NavFF014ComissaoCobrador?.ToDtoGet(),
+                NavFF014ComissaoSuper = entity.NavFF014ComissaoSuper?.ToDtoGetSimples(),
+                NavFF014ComissaoCobrador = entity.NavFF014ComissaoCobrador?.ToDtoGetSimples(),
                 NavFF012GrupoPai = entity.NavFF012GrupoPai?.ToDtoGetSimples()
             };
         }
