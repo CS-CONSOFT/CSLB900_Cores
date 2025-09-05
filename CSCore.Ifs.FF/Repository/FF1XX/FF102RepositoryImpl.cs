@@ -6,7 +6,6 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.LB900.Calculos;
 using CSCore.Ifs.LB900.Calculos.Parametros;
 using CSCore.Ifs.Repository;
-using CSLB900.MSTools.Calculos;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 using static CSCore.Domain.ComboTypes;
@@ -19,7 +18,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     {
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly ICalculoAtrasoMultaJurosTitulos _calculoAtrasoMultaJurosTitulos = calculoAtrasoMultaJurosTitulos;
-        public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int in_tipoRegistro)
+        public async Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int? in_tipoRegistro)
         {
             IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
             //1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar
@@ -36,28 +35,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         }
 
 
-        public async Task<(List<RepoDtoCSICP_FF102>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
-            string? in_estabelecimentoId,
-            int in_tipoRegistro,
-            string? in_prefixo,
-            decimal? in_titulo,
-            string? in_sufixo,
-            string? in_nomeConta,
-            int? in_situacaoId,
-            int? in_codigoConta,
-            int? in_TpCobranca,
-            decimal? in_NoTitulonoBanco,
-            string? in_serie,
-            decimal? in_numeroNotaf,
-            string? in_AgCobrador,
-            string? in_centroCusto,
-            DateTime? in_dataInicio,
-            DateTime? in_dataFinal,
-            QualDataFiltro? in_tipoDataFiltro)
+        public async Task<(List<RepoDtoCSICP_FF102>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize, string? in_estabelecimentoId, int? in_tipoRegistro, string? in_prefixo, decimal? in_titulo, string? in_sufixo, string? in_nomeConta, int? in_situacaoId, int? in_codigoConta, int? in_TpCobranca, decimal? in_NoTitulonoBanco, string? in_serie, decimal? in_numeroNotaf, string? in_AgCobrador, string? in_centroCusto, DateTime? in_dataInicio, DateTime? in_dataFinal, QualDataFiltro? in_tipoDataFiltro)
         {
             IQueryable<RepoDtoCSICP_FF102> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_estabelecimentoId, query,
-                in_tipoRegistro,
+                in_tipoRegistro ?? 0,
                 in_prefixo,
                 in_titulo,
                 in_sufixo,
@@ -301,8 +283,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    on ff102.Ff102TrilhaApiid equals ff120track.Id into ff120track_ff102_join
                    from ff120track in ff120track_ff102_join.DefaultIfEmpty()
 
-
-
                    where ff102.TenantId == in_tenant
                    select new RepoDtoCSICP_FF102
                    {
@@ -492,7 +472,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                        Ff102PixcobQrcode = ff102.Ff102PixcobQrcode,
                        Ff102PixcobStatus = ff102.Ff102PixcobStatus,
                        Ff102TrilhaApiid = ff102.Ff102TrilhaApiid,
-                      
+
 
                        NavBB001 = bb001 != null ? new CSICP_BB001
                        {
@@ -803,7 +783,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             DateTime? in_dataFinal,
             QualDataFiltro? in_tipoDataFiltro)
         {
-            
+
             if (in_estabelecimentoId != null)
                 query = query.Where(e => e.Ff102Filialid!.Equals(in_estabelecimentoId));
 
@@ -858,5 +838,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
             return query;
         }
+
+
     }
 }

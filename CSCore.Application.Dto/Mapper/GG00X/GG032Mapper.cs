@@ -1,4 +1,5 @@
 ﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG032;
+using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_GG;
 
 namespace CSCore.Application.Dto.Mapper.GG00X
@@ -31,7 +32,9 @@ namespace CSCore.Application.Dto.Mapper.GG00X
                 Gg032TipoinventarioId = entity.Gg032TipoinventarioId,
                 Gg032StatusId = entity.Gg032StatusId,
                 Gg032Protocolnumber = entity.Gg032Protocolnumber,
-
+                NavSy001Usuario = entity.NavSy001Usuario?.ToDtoGetSimples(),
+                NavGG032Status = entity.NavGG032Status,
+                NavGG032Tinventario = entity.NavGG032Tinventario
             };
         }
     }

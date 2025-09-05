@@ -9,12 +9,20 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strate
 {
     public class SemEntradaStrategy : IFinanciamentoStrategy
     {
-        public (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) Calcular(decimal faturaTotal, int qtdParcelas, int valorEntrada)
+        public RetornoFinanciamento Calcular(decimal faturaTotal, int qtdParcelas, decimal valorEntrada)
         {
             var valorFinanciado = faturaTotal;
-            var valorParcela = (valorFinanciado / qtdParcelas).Round(2);
-            var valorRestoParcela = valorFinanciado - (valorParcela * qtdParcelas);
-            return (valorParcela, valorRestoParcela, valorFinanciado);
+            var valorParcela = (valorFinanciado / qtdParcelas).Round(3);
+            var valorRestoParcela = Math.Abs(valorFinanciado - (valorParcela * qtdParcelas));
+
+            var retFinanciamento = new RetornoFinanciamento
+            {
+                ValorParcela = valorParcela,
+                ValorRestoParcela = valorRestoParcela,
+                ValorFinanciado = valorFinanciado
+            };
+
+            return retFinanciamento;
         }
     }
 }

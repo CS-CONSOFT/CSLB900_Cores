@@ -9,6 +9,11 @@
     {
         public static string PROCESSAR_BAIXA_ESTOQUE_GG073 = "PROCESSAR_BAIXA_ESTOQUE_GG073";
         public static string BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032 = "BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032";
+        public static string ANALISE_CREDITO = "ANALISE_CREDITO";
+        public static string GERA_PROTOCOLO_CI = "GERA_PROTOCOLO_CI";
+        public static string AJUSTE_PRECO_GG031 = "AJUSTE_PRECO_GG031";
+        public static string GERA_INVENTARIO_GG054 = "GERA_INVENTARIO_GG054";
+        public static string PROCESSA_BAIXA_GG071 = "PROCESSA_BAIXA_GG071";
         public static string PROCESSAR_INVENTARIO_GG032 = "PROCESSAR_INVENTARIO_GG032";
         public static string GERAR_INVENTARIO_EM_MASSA_GG032 = "GERAR_INVENTARIO_EM_MASSA_GG032";
     }

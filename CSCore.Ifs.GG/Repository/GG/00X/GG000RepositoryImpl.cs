@@ -35,12 +35,12 @@ namespace CSCore.Ifs.Repository.GG._00X
             return (await q1.ToListAsync(), count);
         }
 
-        public async Task<int> RecuperaUltimoCodigo(int tenant)
+        public async Task<CSICP_GG000?> RecuperaUltimoCodigo(int tenant)
         {
-            int? ultCodigo = await _appDbContext.OsusrE9aCsicpGg000s
+            var ultCodigo = await _appDbContext.OsusrE9aCsicpGg000s
                 .Where(e => e.TenantId == tenant)
-                .MaxAsync(e => e.Gg000Ultcodigo);
-            return ultCodigo ?? 0;
+                .FirstOrDefaultAsync();
+            return ultCodigo;
 
         }
     }

@@ -1,4 +1,5 @@
-﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG033;
+﻿using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG033;
 using CSCore.Domain.CS_Models.CSICP_GG;
 
 namespace CSCore.Application.Dto.Mapper.GG00X
@@ -39,8 +40,8 @@ namespace CSCore.Application.Dto.Mapper.GG00X
                 Gg033QuemcontouUserid = entity.Gg033QuemcontouUserid,
                 Gg033Posicao = entity.Gg033Posicao,
                 Gg033Codbarrasalfa = entity.Gg033Codbarrasalfa,
-                NavGG033_Saldo = entity.NavGG033_Saldo?.ToDtoGetSimples(),
-
+                NavBB001Simples = entity.NavBB001Estab?.ToDtoGetSimples(),
+                NavGG033_Saldo = entity.NavGG033_Saldo?.ToDtoGetSimplesComProdutoESemKardex(),
             };
         }
     }

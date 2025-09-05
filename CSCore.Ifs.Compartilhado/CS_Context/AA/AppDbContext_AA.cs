@@ -1,6 +1,7 @@
 ﻿
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_AA;
+using CSCore.Domain.CS_Models.Staticas.AA;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.CS_Context
@@ -38,13 +39,101 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<CSICP_Aa041> OsusrE9aCsicpAa041s { get; set; }
 
         public DbSet<CSICP_Aa042> OsusrE9aCsicpAa042s { get; set; }
-        public DbSet<CSICP_AA043> CSICP_AA043 { get; set; }
+        public DbSet<CSICP_AA143> CSICP_AA143 { get; set; }
+        public virtual DbSet<OsusrE9aCsicpAa144> OsusrE9aCsicpAa144s { get; set; }
+        public virtual DbSet<OsusrE9aCsicpAa147> OsusrE9aCsicpAa147s { get; set; }
+
+        public virtual DbSet<OsusrE9aCsicpAa148> OsusrE9aCsicpAa148s { get; set; }
+        public virtual DbSet<OsusrE9aCsicpAa145Tpdebcre> OsusrE9aCsicpAa145Tpdebcres { get; set; }
+
+        public virtual DbSet<OsusrE9aCsicpAa146Tpgov> OsusrE9aCsicpAa146Tpgovs { get; set; }
+
+
+
+        public virtual DbSet<OsusrE9aCsicpAa149Tpopgov> OsusrE9aCsicpAa149Tpopgovs { get; set; }
+
+        public virtual DbSet<OsusrE9aCsicpAa150Ccredpre> OsusrE9aCsicpAa150Ccredpres { get; set; }
 
         partial void OnModelCreating_CSICP_AA(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CSICP_AA043>(entity =>
+            modelBuilder.Entity<OsusrE9aCsicpAa144>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_AA144");
+
+                entity.ToTable("OSUSR_E9A_CSICP_AA144");
+
+                entity.HasIndex(e => new { e.CstibsCbs, e.Cclasstrib }, "OSIDX_OSUSR_E9A_CSICP_AA144_10CSTIBS_CBS_10CCLASSTRIB");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.Cclasstrib).HasColumnName("CCLASSTRIB");
+                entity.Property(e => e.CstibsCbs).HasColumnName("CSTIBS_CBS");
+                entity.Property(e => e.Descricaocclasstrib)
+                    .HasMaxLength(2000)
+                    .HasColumnName("DESCRICAOCCLASSTRIB");
+                entity.Property(e => e.DescricaocstibsCbs)
+                    .HasMaxLength(100)
+                    .HasColumnName("DESCRICAOCSTIBS_CBS");
+                entity.Property(e => e.Isactive).HasColumnName("ISACTIVE");
+            });
+
+            modelBuilder.Entity<OsusrE9aCsicpAa147>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_AA147");
+
+                entity.ToTable("OSUSR_E9A_CSICP_AA147");
+
+                entity.HasIndex(e => e.TenantId, "OSIDX_OSUSR_E9A_CSICP_AA147_9TENANT_ID");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID");
+                entity.Property(e => e.Aa047PrefcbsUniao)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("AA047_PREFCBS_UNIAO");
+                entity.Property(e => e.Aa047PrefibsEstadual)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("AA047_PREFIBS_ESTADUAL");
+                entity.Property(e => e.Aa047PrefibsMunicipal)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("AA047_PREFIBS_MUNICIPAL");
+                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+            });
+
+            modelBuilder.Entity<OsusrE9aCsicpAa148>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_AA148");
+
+                entity.ToTable("OSUSR_E9A_CSICP_AA148");
+
+                entity.HasIndex(e => new { e.Aa048UfId, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_AA148_11AA048_UF_ID_9TENANT_ID");
+
+                entity.HasIndex(e => new { e.Aa048MunicId, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_AA148_14AA048_MUNIC_ID_9TENANT_ID");
+
+                entity.HasIndex(e => e.TenantId, "OSIDX_OSUSR_E9A_CSICP_AA148_9TENANT_ID");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID");
+                entity.Property(e => e.Aa048MunicId)
+                    .HasMaxLength(36)
+                    .HasColumnName("AA048_MUNIC_ID");
+                entity.Property(e => e.Aa048PrefibsEstadual)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("AA048_PREFIBS_ESTADUAL");
+                entity.Property(e => e.Aa048PrefibsMunicipal)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("AA048_PREFIBS_MUNICIPAL");
+                entity.Property(e => e.Aa048UfId)
+                    .HasMaxLength(36)
+                    .HasColumnName("AA048_UF_ID");
+                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+            });
+
+            modelBuilder.Entity<CSICP_AA143>(entity =>
             {
                 entity.HasKey(e => e.Id);
+
+                entity.ToTable("OSUSR_E9A_CSICP_AA143");
 
                 entity.Property(e => e.Aa043Artigo)
                     .HasMaxLength(30)
@@ -58,7 +147,7 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Id)
                     .HasMaxLength(36)
                     .HasColumnName("ID");
-                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+       
             });
             modelBuilder.Entity<CSICP_AA001>(entity =>
             {

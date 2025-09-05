@@ -28,8 +28,8 @@ namespace CSCore.Ifs.Repository.Combo
                     .OrderBy(c => c.Aa029Descricao)
                     .Select(c => new { Title = c.Aa029Descricao + " - " + c.Aa029Cnae ?? "---", Id = c.Aa029Id }),
 
-                ComboTypeAA.Csicp_aa043 => _appDbContext.CSICP_AA043
-                .Where(c => c.TenantId == tenant)
+                ComboTypeAA.Csicp_aa143 => _appDbContext.CSICP_AA143
+  
                 .OrderBy(c => c.Aa043Artigo)
                 .Select(c => new { Title = c.Aa043Artigo + " - " + c.Aa043LcRedacao ?? "---", Id = c.Id }),
 
@@ -70,6 +70,12 @@ namespace CSCore.Ifs.Repository.Combo
                 .Where(c => c.TenantId == tenant)
                 .OrderBy(c => c.Ff003Descresumida)
                 .Select(c => new { Title = c.Ff003Descresumida ?? "---", c.Id }),
+
+                ComboTypeFF.Csicp_ff002 => _appDbContext.OsusrE9aCsicpFf002s
+               .Where(c => c.TenantId == tenant)
+               .OrderBy(c => c.Ff002Motivo)
+               .Select(c => new { Title = c.Ff002Motivo ?? "---", c.Id }),
+
 
 
                 _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")

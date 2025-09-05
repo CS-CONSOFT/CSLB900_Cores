@@ -1,4 +1,7 @@
-﻿namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG032
+﻿using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
+using CSCore.Domain.CS_Models.Staticas.GG;
+
+namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG032
 {
     public class DtoGetGG032
     {
@@ -45,5 +48,11 @@
         public int? Gg032StatusId { get; set; }
 
         public string? Gg032Protocolnumber { get; set; }
+        public OsusrE9aCsicpGg032Stum? NavGG032Status { get; set; }
+
+        public Dto_GetSY001Simples? NavSy001Usuario { get; set; }
+
+        public OsusrE9aCsicpGg032Tpinv? NavGG032Tinventario { get; set; }
+
     }
 }

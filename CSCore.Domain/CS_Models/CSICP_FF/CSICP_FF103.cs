@@ -121,5 +121,7 @@ public partial class CSICP_FF103
 
     public string? Ff103CtlMsg { get; set; }
 
-    public CSICP_FF102? NavFF102 { get; set; }
+    public RepoDtoCSICP_FF102? NavFF102 { get; set; }
+    public Csicp_Sy001? NavSY001 { get; set; }
+    public CSICP_Bb006? NavBB006 { get; set; }
 }

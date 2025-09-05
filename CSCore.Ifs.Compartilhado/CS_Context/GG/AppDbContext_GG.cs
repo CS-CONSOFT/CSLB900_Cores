@@ -1,5 +1,4 @@
-﻿using CSCore.Domain;
-using CSCore.Domain.CS_Models.CSICP_GG;
+﻿using CSCore.Domain.CS_Models.CSICP_GG;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.CS_Context
@@ -595,6 +594,10 @@ namespace CSCore.Ifs.CS_Context
                     .HasDefaultValueSql("(NULL)")
                     .HasColumnName("GG032_USUARIOID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+                entity.HasOne(e => e.NavSy001Usuario).WithOne().HasForeignKey<CSICP_GG032>(e => e.Gg032Usuarioid);
+                entity.HasOne(e => e.NavGG032Status).WithOne().HasForeignKey<CSICP_GG032>(e => e.Gg032StatusId);
+                entity.HasOne(e => e.NavGG032Tinventario).WithOne().HasForeignKey<CSICP_GG032>(e => e.Gg032TipoinventarioId);
             });
 
 
@@ -734,6 +737,7 @@ namespace CSCore.Ifs.CS_Context
 
 
                 entity.HasOne(e => e.NavGG033_Saldo).WithOne().HasForeignKey<CSICP_GG033>(e => e.Gg033Saldoid);
+                entity.HasOne(e => e.NavBB001Estab).WithOne().HasForeignKey<CSICP_GG033>(e => e.Gg033Filialid);
 
             });
 
@@ -1176,7 +1180,7 @@ namespace CSCore.Ifs.CS_Context
 
 
 
-      
+
 
                 entity.HasOne(d => d.Nav_Gg250Saldoent).WithOne()
                     .HasForeignKey<CSICP_GG046>(d => d.Gg046SaldoentId);

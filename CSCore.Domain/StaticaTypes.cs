@@ -187,7 +187,7 @@
             CSICP_AA038_Modsts,
             CSICP_AA039_Mp255s,
             CSICP_AA030_Regimes,
-            csicp_aa046_TpGov
+            csicp_aa146_TpGov
         }
 
         public enum StaticSpedType
@@ -271,7 +271,7 @@
         {
             Csicp_aa026,
             Csicp_aa029,
-            Csicp_aa043
+            Csicp_aa143
         }
 
         public enum ComboTypeGG
@@ -294,6 +294,7 @@
         public enum ComboTypeFF
         {
             Csicp_ff003,
+            Csicp_ff002,
         }
 
         public enum ComboTypeSYS

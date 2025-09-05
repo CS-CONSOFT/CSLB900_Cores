@@ -376,8 +376,8 @@ public partial class CSICP_DD040
 
     //---------------------Reforma Tributária---------------------//
 
-    [Column("W33_VIS", TypeName = "decimal(15,yes)")]
-    public decimal? W33_VIS { get; set; }
+    //[Column("W33_VIS", TypeName = "decimal(15,yes)")]
+    //public decimal? W33_VIS { get; set; }
 
     [Column("W35_VBCIBSCBS", TypeName = "decimal(15,yes)")]
     public decimal? W35_VBCIBSCBS { get; set; }
@@ -400,14 +400,14 @@ public partial class CSICP_DD040
     [Column("W46_VIBSMUN", TypeName = "decimal(15,yes)")]
     public decimal? W46_VIBSMUN { get; set; }
 
-    [Column("W47_VIBSTOT", TypeName = "decimal(15,yes)")]
-    public decimal? W47_VIBSTOT { get; set; }
+    //[Column("W47_VIBSTOT", TypeName = "decimal(15,yes)")]
+    //public decimal? W47_VIBSTOT { get; set; }
 
-    [Column("W48_VCREDPRES", TypeName = "decimal(15,yes)")]
-    public decimal? W48_VCREDPRES { get; set; }
+    //[Column("W48_VCREDPRES", TypeName = "decimal(15,yes)")]
+    //public decimal? W48_VCREDPRES { get; set; }
 
-    [Column("W49_VCREDPRESCONDSUS", TypeName = "decimal(15,yes)")]
-    public decimal? W49_VCREDPRESCONDSUS { get; set; }
+    //[Column("W49_VCREDPRESCONDSUS", TypeName = "decimal(15,yes)")]
+    //public decimal? W49_VCREDPRESCONDSUS { get; set; }
 
     [Column("W53_CBS_VDIF", TypeName = "decimal(15,yes)")]
     public decimal? W53_CBS_VDIF { get; set; }

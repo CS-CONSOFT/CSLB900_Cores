@@ -10,7 +10,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.Repository.BB.Conta
 {
-    public class BB012Repository(AppDbContext context, IVerificaSiteProperties verificaSiteProperties) : IBB012Repository
+    public class BB012Repository(
+        AppDbContext context,
+        IVerificaSiteProperties verificaSiteProperties) : IBB012Repository
     {
         private readonly AppDbContext _appDbContext = context;
         private readonly IVerificaSiteProperties _verificaSiteProperties = verificaSiteProperties;
@@ -417,8 +419,8 @@ namespace CSCore.Ifs.Repository.BB.Conta
             .Include(e => e.BB012_StatusConta)
             .Include(e => e.BB012_TipoConta)
             .Include(e => e.BB012_ModeloRelacao)
-            .Include(e => e.Nav_AA046_TP_GOV)
-            .Include(e => e.Nav_AA043)
+            .Include(e => e.Nav_AA146_TP_GOV)
+            .Include(e => e.Nav_AA143)
             .Include(e => e.BB012_ClasseConta)
 
             .Include(e => e.OsusrE9aCsicpBb01201)

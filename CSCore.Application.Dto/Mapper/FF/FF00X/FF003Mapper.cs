@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CSBS101._82Application.Mapper.BB00X;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF003;
 using CSCore.Application.Dto.Mapper.FF.FF00X;
@@ -34,7 +35,8 @@ namespace CSCore.Application.Dto.Mapper.FF.FF00X
                 Ff003Seqnrotitulo = entity.Ff003Seqnrotitulo,
                 NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
                 NavFF003TpEsp = entity.NavFF003TpEsp,
-                NavStatica = entity.NavStatica
+                NavStatica = entity.NavStatica,
+                NavBB005 = entity.NavBB005?.ToDtoGetBB005_Exibicao()
             };
         }
         public static Dto_GetFF003_Exibicao ToDtoGetExibicao(this CSICP_FF003 entity)

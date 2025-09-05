@@ -1,10 +1,11 @@
 ﻿
 using CSCore.Domain.CS_Models.CSICP_AA;
 using CSCore.Domain.CS_Models.Staticas.AA;
+using CSCore.Domain.DELETAR;
 
 namespace CSCore.Domain;
 
-public partial class CSICP_BB012
+public partial class CSICP_BB012 
 {
     public int TenantId { get; set; }
 
@@ -62,12 +63,11 @@ public partial class CSICP_BB012
 
     public int? Bb012Oricadastroid { get; set; }
 
-    //csicp_aa043
-    public string? bb012_LCEspecial_ID { get; set; }
+    //csicp_aa143
+    public string? bb012_RFEspecial_ID { get; set; }
 
-    //csicp_aa046_TpGov
+    //csicp_aa146_TpGov
     public int? bb012_TpGovId { get; set; }
-
     public CSICP_BB012? Bb012IdIndicadorNavigation { get; set; }
 
     public CSICP_BB01201? OsusrE9aCsicpBb01201 { get; set; }
@@ -85,6 +85,6 @@ public partial class CSICP_BB012
     public CSICP_Bb012Sitcta? BB012_SitConta { get; set; }
     public CSICP_Bb012Mcred? BB012_MCred { get; set; }
     public CSICP_BB001? BB012_EstabelecimentoCadastro { get; set; }
-    public CSICP_AA043? Nav_AA043 { get; set; }
-    public CSICP_AA046_TP_GOV? Nav_AA046_TP_GOV { get; set; }
+    public CSICP_AA143? Nav_AA143 { get; set; }
+    public CSICP_AA146_TP_GOV? Nav_AA146_TP_GOV { get; set; }
 }
