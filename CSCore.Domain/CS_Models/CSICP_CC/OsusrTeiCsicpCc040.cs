@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CSCore.Domain.DELETAR;
+namespace CSCore.Domain.CS_Models.CSICP_CC;
 
 public partial class OsusrTeiCsicpCc040
 {
@@ -222,7 +222,15 @@ public partial class OsusrTeiCsicpCc040
     public decimal? W06d1Qbcmonoret { get; set; }
 
     public decimal? W06eVicmsmonoret { get; set; }
-    // Removidos: W33Vbcis, W34Vis, W47IbsmunVibstot, W48IbsmunVcredpres, W49IbsmunVcredprescondsus, W51CbsVcredpres, W52CbsVcredprescondsus
+
+    // Removidos:
+    // W33Vbcis,
+    // W34Vis,
+    // W47IbsmunVibstot,
+    // W48IbsmunVcredpres,
+    // W49IbsmunVcredprescondsus,
+    // W51CbsVcredpres,
+    // W52CbsVcredprescondsus
 
     public decimal? W35Vbcibscbs { get; set; }
 
@@ -273,5 +281,4 @@ public partial class OsusrTeiCsicpCc040
     public decimal? B33Predutor { get; set; }
 
     public int? B34Tpopergovid { get; set; }
-    public virtual OsusrE9aCsicpBb012? Cc040Conta { get; set; }
 }

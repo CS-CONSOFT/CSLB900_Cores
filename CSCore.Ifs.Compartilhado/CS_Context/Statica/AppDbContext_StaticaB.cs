@@ -1094,6 +1094,44 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("BB027C_INDPRES");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
+                entity.Property(e => e.Bb027bRfclasstribId).HasColumnName("BB027B_RFCLASSTRIB_ID");
+                entity.Property(e => e.Bb027bRflcId)
+                    .HasMaxLength(36)
+                    .HasColumnName("BB027B_RFLC_ID");
+                entity.Property(e => e.Bb027bTpdebcreid).HasColumnName("BB027B_TPDEBCREID");
+                entity.Property(e => e.Bb027bPaliqefetregIbsUf)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("BB027B_PALIQEFETREG_IBS_UF");
+                entity.Property(e => e.Bb027bPaliqefetregIbsMun)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("BB027B_PALIQEFETREG_IBS_MUN");
+                entity.Property(e => e.Bb027bPcredpresIbsUf)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("BB027B_PCREDPRES_IBS_UF");
+                entity.Property(e => e.Bb027bPcredpresIbsMun)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("BB027B_PCREDPRES_IBS_MUN");
+                entity.Property(e => e.Bb027bPcredpresCbs)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("BB027B_PCREDPRES_CBS");
+                entity.Property(e => e.Bb027bPdifCbs)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("BB027B_PDIF_CBS");
+                entity.Property(e => e.Bb027bPaliqefetregCbs)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("BB027B_PALIQEFETREG_CBS");
+                entity.Property(e => e.Bb027bPdifIbs)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("BB027B_PDIF_IBS");
+                entity.Property(e => e.Bb027bIsRfclasstribId2).HasColumnName("BB027B_IS_RFCLASSTRIB_ID2");
+                entity.Property(e => e.Bb027bPreducaoibs)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("BB027B_PREDUCAOIBS");
+                entity.Property(e => e.Bb027bPreducaocbs)
+                    .HasColumnType("decimal(5, 2)")
+                    .HasColumnName("BB027B_PREDUCAOCBS");
+                entity.Property(e => e.Bb027bCcredpreid).HasColumnName("BB027B_CCREDPREID");
+
                 entity.HasOne(d => d.Bb027bFcalcicmsdes).WithMany(p => p.OsusrE9aCsicpBb027Imps)
                     .HasForeignKey(d => d.Bb027bFcalcicmsdesId)
                     .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_BB027_IMP_OSUSR_E9A_CSICP_BB027_FDESEN_BB027B_FCALCICMSDES_ID");

@@ -92,6 +92,7 @@ namespace CSCore.Ifs.CS_Context
 
                 entity.Property(e => e.bb012_RFEspecial_ID)
                    .HasColumnName("BB012_RFLCESPECIAL_ID");
+
                 entity.Property(e => e.bb012_TpGovId)
                  .HasColumnName("BB012_TPGOVID");
 

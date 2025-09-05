@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CSCore.Domain.DELETAR;
+namespace CSCore.Domain.CS_Models.Staticas.AA;
 
-public partial class OsusrE9aCsicpAa149Tpopgov
+public partial class OsusrE9aCsicpAa150Ccredpre
 {
     public int Id { get; set; }
 
