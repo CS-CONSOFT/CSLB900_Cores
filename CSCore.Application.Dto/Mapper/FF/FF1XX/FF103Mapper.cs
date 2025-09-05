@@ -1,4 +1,6 @@
-﻿using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF103;
+﻿using CSBS101._82Application.Mapper.BB00X;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF103;
+using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_FF;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF1XX
@@ -41,9 +43,9 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 Ff103Lctoctbbxid = ff103.Ff103Lctoctbbxid,
                 Ff103ObjBxLabel = ff103.Ff103ObjBxLabel,
                 Ff103ObjBxId = ff103.Ff103ObjBxId,
-                Ff103Baixado = ff103.Ff103Baixado,
-                Ff103Estornado = ff103.Ff103Estornado,
-                Ff103Cancelado = ff103.Ff103Cancelado,
+                Ff103Baixado = ff103.Ff103Baixado ?? false,
+                Ff103Estornado = ff103.Ff103Estornado ?? false,
+                Ff103Cancelado = ff103.Ff103Cancelado ?? false,
                 Ff103Dataregistro = ff103.Ff103Dataregistro,
                 Ff103Tpbaixaid = ff103.Ff103Tpbaixaid,
                 Ff103Flagregistro = ff103.Ff103Flagregistro,
@@ -59,15 +61,17 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 Ff103FpagtoId = ff103.Ff103FpagtoId,
                 Ff103VlCorrmonetaria = ff103.Ff103VlCorrmonetaria,
                 Ff103VlHonorarios = ff103.Ff103VlHonorarios,
-                Ff103CtlIscontabilizadoid = ff103.Ff103CtlIscontabilizadoid,
+                Ff103CtlIscontabilizadoid = ff103.Ff103CtlIscontabilizadoid ?? false,
                 Ff103CtlUsuarioid = ff103.Ff103CtlUsuarioid,
                 Ff103CtlDtregistro = ff103.Ff103CtlDtregistro,
-                Ff103CtlIsestornadoid = ff103.Ff103CtlIsestornadoid,
+                Ff103CtlIsestornadoid = ff103.Ff103CtlIsestornadoid ?? false,
                 Ff103CtlEstusuarioid = ff103.Ff103CtlEstusuarioid,
                 Ff103CtlEstdtreg = ff103.Ff103CtlEstdtreg,
                 Ff103CtlIdlancto = ff103.Ff103CtlIdlancto,
                 Ff103CtlMsg = ff103.Ff103CtlMsg,
-
+                NavBB006 = ff103.NavBB006?.ToDtoGetExibicao(),
+                NavFF102 = ff103.NavFF102?.ToDtoGet_ParaFF103(),
+                NavSY001 = ff103.NavSY001?.ToDtoGetSimples(),
             };
         }
     }

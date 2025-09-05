@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF006;
+using CSCore.Application.Dto.Mapper.FF.FF1XX;
+using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_FF;
+using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF006;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF00X
 {
     public static class FF006Mapper
     {
-        public static DtoGetFF006 ToDtoGet(this CSICP_FF006 entity)
+        public static DtoGetFF006 ToDtoGet(this RepoDtoCSICP_FF006 entity)
         {
             return new DtoGetFF006
             {
@@ -31,6 +34,9 @@ namespace CSCore.Application.Dto.Mapper.FF.FF00X
                 Ff006Chave = entity.Ff006Chave,
                 Ff006Tabela = entity.Ff006Tabela,
                 Ff102 = entity.Ff102,
+                NavSy001Solicitante = entity.NavSy001Solicitante?.ToDtoGetSimples(),
+                NavSy001Resgate = entity.NavSy001Resgate?.ToDtoGetSimples(),
+                NavFF006Sta = entity.NavFF006Sta
             };
         }
     }

@@ -3,12 +3,13 @@ using Serilog;
 
 namespace CSCore.RabbitMQ
 {
-    public class SendMsgToRabbit(ISendEndpointProvider sendEndpointProvider)
+    public interface ISendMsgToRabbit
+    {
+        Task SendMessage<T>(T message, string routingKey, string exchangeName);
+    }
+    public class SendMsgToRabbit(ISendEndpointProvider sendEndpointProvider) : ISendMsgToRabbit
     {
         private readonly ISendEndpointProvider _sendEndpointProvider = sendEndpointProvider;
-
-
-
 
         public async Task SendMessage<T>(T message, string routingKey, string exchangeName)
         {

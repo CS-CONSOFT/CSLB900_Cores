@@ -83,6 +83,24 @@ public partial class CSICP_Bb027Imp
 
     public decimal? Bb027bPpropocaodestino { get; set; }
 
+    public long? Bb027bRfclasstribId { get; set; }
+    public string? Bb027bRflcId { get; set; }
+    public int? Bb027bTpdebcreid { get; set; }
+    public decimal? Bb027bPaliqefetregIbsUf { get; set; }
+    public decimal? Bb027bPaliqefetregIbsMun { get; set; }
+    public decimal? Bb027bPcredpresIbsUf { get; set; }
+    public decimal? Bb027bPcredpresIbsMun { get; set; }
+    public decimal? Bb027bPcredpresCbs { get; set; }
+    public decimal? Bb027bPdifCbs { get; set; }
+    public decimal? Bb027bPaliqefetregCbs { get; set; }
+    public decimal? Bb027bPdifIbs { get; set; }
+    public long? Bb027bIsRfclasstribId2 { get; set; }
+    public decimal? Bb027bPreducaoibs { get; set; }
+    public decimal? Bb027bPreducaocbs { get; set; }
+    public int? Bb027bCcredpreid { get; set; }
+
+
+
     public CSICP_Bb027Fdesen? Bb027bFcalcicmsdes { get; set; }
 
     public CSICP_Bb027Modal? Bb027bModbc { get; set; }

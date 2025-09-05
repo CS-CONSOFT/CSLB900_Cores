@@ -209,7 +209,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
                                            Ff103CtlEstdtreg = ff103.Ff103CtlEstdtreg,
                                            Ff103CtlIdlancto = ff103.Ff103CtlIdlancto,
                                            Ff103CtlMsg = ff103.Ff103CtlMsg,
-                                           NavFF102 = ff102 != null ? new CSICP_FF102
+                                           NavFF102 = ff102 != null ? new RepoDtoCSICP_FF102
                                            {
                                                Ff102Situacaoid = ff102.Ff102Situacaoid,
                                                Ff102VlLiqTitulo = ff102.Ff102VlLiqTitulo,

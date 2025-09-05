@@ -1,25 +1,24 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Domain.Interfaces.Estatica;
-using CSCore.Domain.Interfaces.GG._03X;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.GG.Repository.GG._03X.GG032;
 using CSCore.RabbitMQ.Hub;
 using CSCore.RabbitMQ.Hub.Ax;
 using CSCore.RabbitMQ.PublishObjetos;
 using CSLB900.MSTools.Util;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 namespace CSCore.RabbitMQ.Bus
 {
     public class EvtBusBloquearDesbloquearInventarioGG032 : IConsumer<Rbt_CS_BloquearDesbloquearInventario_GG032>
     {
-        private readonly IGG032Repository _repository;
+        private readonly IBloquearDesbloquearInventario _repository;
         private readonly IStaticaLabelRepository _staticaLabelRepository;
         private readonly IHubContext<HubNotification> _hubContext;
 
         public EvtBusBloquearDesbloquearInventarioGG032(
-            IGG032Repository repository,
+            IBloquearDesbloquearInventario repository,
             IStaticaLabelRepository staticaLabelRepository,
             IHubContext<HubNotification> hubContext,
             AppDbContext context)
@@ -38,23 +37,23 @@ namespace CSCore.RabbitMQ.Bus
              context.Message.GetType().Name,
              context.Message);
 
-               
-                try
+
+            try
             {
                 int idGG032StaBloqueado = await _staticaLabelRepository.GetIDStaticaByLabel<OsusrE9aCsicpGg032Stum>("Bloqueado");
                 int idGG032StaSolicitado = await _staticaLabelRepository.GetIDStaticaByLabel<OsusrE9aCsicpGg032Stum>("Solicitado");
 
+                var prm = new PrmBloquearDesbloquearInventario
+                {
+                    InTenantID = context.Message.tenant,
+                    InInventarioID = context.Message.in_InventarioId,
+                    InTipoAcaoInventario = context.Message.in_tipoAcaoInventario,
+                    InSTIDCsicpGg032StaBloqueadoID = idGG032StaBloqueado,
+                    InSTIDCsicpGg032StaSolicitadoID = idGG032StaSolicitado,
+                };
+                await _repository.BloquearDesbloquearInventario(prm);
 
-                await _repository.CS_BloquearDesbloquearInventario(
-                    context.Message.tenant,
-                    context.Message.in_InventarioId,
-                    idGG032StaBloqueado,
-                    idGG032StaSolicitado,
-                    context.Message.in_tipoAcaoInventario);
-
-   
-
-                await _hubContext.Clients.Group("bloquear-desbloquear-inventario-"+ context.Message.in_usuarioID)
+                await _hubContext.Clients.Group("bloquear-desbloquear-inventario-" + context.Message.in_usuarioID)
                    .SendAsync(HubMethodNames.BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032, new
                    {
                        Success = true,
@@ -68,10 +67,13 @@ namespace CSCore.RabbitMQ.Bus
                  .SendAsync(HubMethodNames.BLOQUEAR_DESBLOQUEAR_INVENTARIO_GG032, new
                  {
                      Success = false,
-                     Message = context.Message.in_tipoAcaoInventario == 1 ? "Falha ao bloquear inventário!" : "Falha ao desbloquear inventário!",
+                     Message = context.Message.in_tipoAcaoInventario == 1
+                     ? "Falha ao bloquear inventário: " + HandlerExceptionMessage.CreateExceptionMessage(ex)
+                     : "Falha ao desbloquear inventário: " + HandlerExceptionMessage.CreateExceptionMessage(ex),
                      DetailsError = HandlerExceptionMessage.CreateExceptionMessage(ex),
                      Timestamp = DateTime.UtcNow
                  });
+                throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
             }
         }
     }

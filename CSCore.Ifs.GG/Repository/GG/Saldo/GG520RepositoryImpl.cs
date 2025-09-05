@@ -37,6 +37,7 @@ namespace CSCore.Ifs.GG.Repository.GG.Saldo
         }
 
 
+        //produto-por-codigo-barra
         public async Task<(IEnumerable<CSICP_GG520>, IEnumerable<CSICP_GG520>)> PesquisProdutoPorCodigo(
             int in_tenant, string in_almoxID, string? in_almoxIDSaida, string in_estabID, int n_codBarra)
         {

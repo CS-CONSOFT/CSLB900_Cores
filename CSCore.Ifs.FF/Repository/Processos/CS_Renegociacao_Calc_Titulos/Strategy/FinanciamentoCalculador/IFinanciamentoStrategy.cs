@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.FinanciamentoCalculador
 {
+    public class RetornoFinanciamento
+    {
+        public decimal ValorParcela { get; set; }
+        public decimal ValorRestoParcela { get; set; }
+        public decimal ValorFinanciado { get; set; }
+        public decimal ValorFaturaTotal { get; set; }
+    }
     public interface IFinanciamentoStrategy
     {
-        (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) Calcular(decimal faturaTotal, int qtdParcelas, int valorEntrada);
+        RetornoFinanciamento Calcular(decimal faturaTotal, int qtdParcelas, decimal valorEntrada);
     }
 }

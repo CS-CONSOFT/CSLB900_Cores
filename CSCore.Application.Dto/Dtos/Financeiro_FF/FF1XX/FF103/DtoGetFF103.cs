@@ -1,3 +1,7 @@
+using CSBS101._82Application.Dto.BB00X.BB006;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102;
+using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
+
 namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF103
 {
     public class DtoGetFF103
@@ -117,5 +121,10 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF103
         public long? Ff103CtlIdlancto { get; set; }
 
         public string? Ff103CtlMsg { get; set; }
+
+        public DtoGetFF102ParaFF103? NavFF102 { get; set; }
+        public Dto_GetBB006_Exibicao? NavBB006 { get; set; }
+        public Dto_GetSY001Simples? NavSY001 { get; set; }
+
     }
 }

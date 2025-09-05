@@ -1,5 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_Models.Staticas.GG;
+using CSCore.Domain.DELETAR;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.CS_Context
@@ -38,8 +39,45 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<CSICP_GG008p> OsusrE9aCsicpGg008ps { get; set; }
 
         public DbSet<CSICP_GG009> OsusrE9aCsicpGg009s { get; set; }
+        public DbSet<OsusrE9aCsicpGg008rftransacao> OsusrE9aCsicpGg008rftransacao { get; set; }
         partial void OnModelCreating_CSICP_GG001(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<OsusrE9aCsicpGg008rftransacao>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_GG008RFTRANSACAO");
+
+                entity.ToTable("OSUSR_E9A_CSICP_GG008RFTRANSACAO");
+
+                entity.HasIndex(e => new { e.Gg008tNcmId, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_GG008RFTRANSACAO_13GG008T_NCM_ID_9TENANT_ID");
+
+                entity.HasIndex(e => new { e.Gg008tFilialid, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_GG008RFTRANSACAO_15GG008T_FILIALID_9TENANT_ID");
+
+                entity.HasIndex(e => new { e.Gg008tKardexId, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_GG008RFTRANSACAO_16GG008T_KARDEX_ID_9TENANT_ID");
+
+                entity.HasIndex(e => new { e.Gg008tTransacaoid, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_GG008RFTRANSACAO_18GG008T_TRANSACAOID_9TENANT_ID");
+
+                entity.HasIndex(e => new { e.Gg008tTiporegistro, e.TenantId }, "OSIDX_OSUSR_E9A_CSICP_GG008RFTRANSACAO_19GG008T_TIPOREGISTRO_9TENANT_ID");
+
+                entity.HasIndex(e => e.TenantId, "OSIDX_OSUSR_E9A_CSICP_GG008RFTRANSACAO_9TENANT_ID");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID");
+                entity.Property(e => e.Gg008tFilialid)
+                    .HasMaxLength(36)
+                    .HasColumnName("GG008T_FILIALID");
+                entity.Property(e => e.Gg008tKardexId)
+                    .HasMaxLength(36)
+                    .HasColumnName("GG008T_KARDEX_ID");
+                entity.Property(e => e.Gg008tNcmId)
+                    .HasMaxLength(36)
+                    .HasColumnName("GG008T_NCM_ID");
+                entity.Property(e => e.Gg008tTiporegistro).HasColumnName("GG008T_TIPOREGISTRO");
+                entity.Property(e => e.Gg008tTransacaoid)
+                    .HasMaxLength(36)
+                    .HasColumnName("GG008T_TRANSACAOID");
+                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+            });
             modelBuilder.Entity<CSICP_GG001>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_GG001");

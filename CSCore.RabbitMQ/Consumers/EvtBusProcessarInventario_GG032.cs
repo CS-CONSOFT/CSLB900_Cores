@@ -1,7 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Domain.EstaticasLabel.GG;
 using CSCore.Domain.Interfaces.Estatica;
-using CSCore.Domain.Interfaces.GG._03X;
+using CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario;
 using CSCore.RabbitMQ.Hub;
 using CSCore.RabbitMQ.Hub.Ax;
 using CSCore.RabbitMQ.PublishObjetos;
@@ -13,13 +13,13 @@ namespace CSCore.RabbitMQ.Bus
 {
     public class EvtBusProcessarInventario_GG032 : IConsumer<Rbt_CS_ProcessarInventario_GG032>
     {
-        private readonly IGG032Repository _repository;
+        private readonly IProcessarInventarioGG032 _repository;
         private readonly IStaticaLabelRepository _staticaLabelRepository;
         private readonly IHubContext<HubNotification> _hubContext;
 
-        public EvtBusProcessarInventario_GG032(IGG032Repository repository,
+        public EvtBusProcessarInventario_GG032(IProcessarInventarioGG032 repository,
             IStaticaLabelRepository staticaLabelRepository,
-            IHubContext<HubNotification> hubContext )
+            IHubContext<HubNotification> hubContext)
         {
             _repository = repository;
             _staticaLabelRepository = staticaLabelRepository;
@@ -45,15 +45,18 @@ namespace CSCore.RabbitMQ.Bus
                     _staticaLabelRepository
                     .GetIDStaticaByLabel<OsusrE9aCsicpGg028Nat>(Entities.GG028Nat.Inventario);
 
-              
-                await _repository.CS_InventarioProcessar(
-                    context.Message.tenant,
-                    context.Message.in_InventarioId,
-                    idGG032StaBloqueado,
-                    idGG032StaConcluido,
-                    idGG028EntSai_Saida,
-                    idGG028EntSai_Entrada,
-                    idGG028Nat_Inventario);
+
+                var prm = new PrmProcessarInventarioGG032
+                {
+                    InTenant = context.Message.tenant,
+                    InInventarioId = context.Message.in_InventarioId,
+                    InStIDGG032StaBloqueadoID = idGG032StaBloqueado,
+                    InStIDGG032StaConcluidoID = idGG032StaConcluido,
+                    InStIDGG028EntSaidaSaidaID = idGG028EntSai_Saida,
+                    InStIDGG028EntSaidaEntradaID = idGG028EntSai_Entrada,
+                    InStIDGG028NatInventarioID = idGG028Nat_Inventario
+                };
+                await _repository.ProcessarInventario(prm);
 
 
                 await _hubContext.Clients.Group("processar-inventario-" + context.Message.in_usuarioID)
@@ -61,7 +64,6 @@ namespace CSCore.RabbitMQ.Bus
                    {
                        Success = true,
                        Message = "Inventário processado com sucesso!",
-                       DetailsError = "",
                        Timestamp = DateTime.UtcNow
                    });
 
@@ -72,10 +74,10 @@ namespace CSCore.RabbitMQ.Bus
                  .SendAsync(HubMethodNames.PROCESSAR_INVENTARIO_GG032, new
                  {
                      Success = false,
-                     Message = "Falha ao processar inventário",
-                     DetailsError = HandlerExceptionMessage.CreateExceptionMessage(ex),
+                     Message = HandlerExceptionMessage.CreateExceptionMessage(ex),
                      Timestamp = DateTime.UtcNow
                  });
+                throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
             }
         }
     }

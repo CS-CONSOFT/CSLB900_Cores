@@ -66,6 +66,10 @@ namespace CSCore.Ifs.FF.Repository.FF00X
                    on ff003.Ff003Provisao equals ff003Static.Id into ff003Static_ff003_join
                    from ff003Static in ff003Static_ff003_join.DefaultIfEmpty()
 
+                   join bb005 in _appDbContext.OsusrE9aCsicpBb005s
+                   on ff003.Ff003Ccustoid equals bb005.Id into bb005_ff003_join
+                   from bb005 in bb005_ff003_join.DefaultIfEmpty()
+
                    where ff003.TenantId == tenant
 
                    select new CSICP_FF003
@@ -157,6 +161,14 @@ namespace CSCore.Ifs.FF.Repository.FF00X
                            Label = ff003Static.Label,
                            Tiporegistro = ff003Static.Tiporegistro,
                            Order = ff003Static.Order,
+                       } : null,
+
+                       NavBB005 = bb005 != null ? new CSICP_Bb005
+                       {
+                           TenantId = bb005.TenantId,
+                           Id = bb005.Id,
+                           Bb005Codigo = bb005.Bb005Codigo,
+                           Bb005Nomeccusto = bb005.Bb005Nomeccusto
                        } : null
                    };
         }

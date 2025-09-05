@@ -29,5 +29,7 @@ namespace CSCore.Application.Dto.Mapper.GG00X
                 Gg054StatusNavigation = entity.Gg054StatusNavigation,
             };
         }
+
+
     }
 }

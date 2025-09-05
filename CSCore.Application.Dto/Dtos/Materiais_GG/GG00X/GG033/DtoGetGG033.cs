@@ -1,4 +1,5 @@
-﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520;
+﻿using CSBS101.C82Application.Dto.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG033
 {
@@ -65,5 +66,6 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG033
         public string? Gg033Codbarrasalfa { get; set; }
 
         public DtoGetGG520SimplesComProdutoSemKardex? NavGG033_Saldo { get; set; }
+        public Dto_GetBB001Simples? NavBB001Simples { get; set; }
     }
 }

@@ -9,11 +9,17 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strate
 {
     public class ParcelaUnicaStrategy : IFinanciamentoStrategy
     {
-        public (decimal ValorParcela, decimal ValorRestoParcela, decimal ValorFinanciado) Calcular(decimal faturaTotal, int qtdParcelas, int valorEntrada)
+        public RetornoFinanciamento Calcular(decimal faturaTotal, int qtdParcelas, decimal valorEntrada)
         {
             var valorFinanciado = faturaTotal;
-            var valorParcela = valorFinanciado.Round(2);
-            return (valorParcela, 0, valorFinanciado);
+            var valorParcela = (valorFinanciado/qtdParcelas).Round(2);
+            var retFinanciamento = new RetornoFinanciamento
+            {
+                ValorParcela = valorParcela,
+                ValorRestoParcela = 0,
+                ValorFinanciado = valorFinanciado
+            };
+            return retFinanciamento;
         }
     }
 }

@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
 {
-    public class PrmMovtoTituloBaixarKernel
+    public class PrmMovtoTituloBaixarKernel : PrmMovtoTituloBaixarKernelController
     {
-        public string InFF103ID { get; set; } = string.Empty;
-        public string InSY001UsuarioID { get; set; } = string.Empty;
         public int InTenantID { get; set; }
         public int InSTIDff102SitLiquidado { get; set; }
         public int InSTIDff102SitCancelado { get; set; }
@@ -22,7 +20,12 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
         public int InSTIDFF103TpBaiCancelamento_tituloCalcBaixa { get; set; }
         public int InSTIDFF103TpBaiDevolucao_tituloCalcBaixa { get; set; }
         public int InSTIDFF103TpBaiDoacao_tituloCalcBaixa { get; set; }
-        public string InEstabID_tituloCalcBaixa { get; set; } = string.Empty;
+    }
 
+    public class PrmMovtoTituloBaixarKernelController
+    {
+        public string InFF103ID { get; set; } = string.Empty;
+        public string InSY001UsuarioID { get; set; } = string.Empty;
+        public string InEstabID_tituloCalcBaixa { get; set; } = string.Empty;
     }
 }
