@@ -2439,9 +2439,46 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF10_FPAGTO_ID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                //entity.HasOne(e => e.NavBB012Conta).WithOne().HasForeignKey<CSICP_FF102>(e => e.Ff102Contaid);
-                //entity.HasOne(e => e.NavFF102Situacao).WithOne().HasForeignKey<CSICP_FF102>(e => e.Ff102Situacaoid);
-                
+                entity.HasOne(e => e.NavBB001).WithMany().HasForeignKey(e => e.Ff102Filialid);
+                entity.HasOne(e => e.NavBB005).WithMany().HasForeignKey(e => e.Ff102Ccustoid);
+                entity.HasOne(e => e.NavBB006).WithMany().HasForeignKey(e => e.Ff102Agcobradorid);
+                entity.HasOne(e => e.NavBB007).WithMany().HasForeignKey(e => e.Ff102Responsavelid);
+                entity.HasOne(e => e.NavBB008).WithMany().HasForeignKey(e => e.Ff102Condicaoid);
+                entity.HasOne(e => e.NavBB009).WithMany().HasForeignKey(e => e.Ff102Tipocobrancaid);
+                entity.HasOne(e => e.NavBB019).WithMany().HasForeignKey(e => e.Ff102Administradoraid);
+                entity.HasOne(e => e.NavBB012).WithMany().HasForeignKey(e => e.Ff102Moedaid);
+  
+                entity.HasOne(e => e.NavBB012ContaID).WithMany().HasForeignKey(e => e.Ff102Contaid);
+                entity.HasOne(e => e.NavBB012ContaRealID).WithMany().HasForeignKey(e => e.Ff102Contarealid);
+                entity.HasOne(e => e.NavBB012AvalistaID).WithMany().HasForeignKey(e => e.Ff102AvalistaId);
+                entity.HasOne(e => e.NavBB01201Jur).WithMany().HasForeignKey(e => e.Ff102SitespecialId);
+                entity.HasOne(e => e.NavBB026).WithMany().HasForeignKey(e => e.Ff10FpagtoId);
+
+                entity.HasOne(e => e.NavFF003).WithMany().HasForeignKey(e => e.Ff102Especieid);
+                entity.HasOne(e => e.NavFF102C021).WithMany().HasForeignKey(e => e.Ff102CnabCodDesconto);
+                entity.HasOne(e => e.NavFF102Des).WithMany().HasForeignKey(e => e.Ff102TipoDesconto);
+                entity.HasOne(e => e.NavFF102Ent).WithMany().HasForeignKey(e => e.Ff102Tipoparcelaid);
+                entity.HasOne(e => e.NavFF102Sit).WithMany().HasForeignKey(e => e.Ff102Situacaoid);
+                entity.HasOne(e => e.NavFF102C018).WithMany().HasForeignKey(e => e.Ff102CnabCodJurosMora);
+                entity.HasOne(e => e.NavFF102G073).WithMany().HasForeignKey(e => e.Ff102CnabCodMulta);
+                entity.HasOne(e => e.NavFF102Cob).WithMany().HasForeignKey(e => e.Ff102Tpcobranca);
+                entity.HasOne(e => e.NavFF102Aut).WithMany().HasForeignKey(e => e.Ff102cpPagtoautorizadoId);
+                entity.HasOne(e => e.NavFF102ApiBanco).WithMany().HasForeignKey(e => e.Ff102ApiId);
+                entity.HasOne(e => e.NavFF102Adt).WithMany().HasForeignKey(e => e.Ff102AdtoId);
+                entity.HasOne(e => e.NavFF112ApiOcorrencium).WithMany().HasForeignKey(e => e.Ff102OcorrenciaApi);
+                entity.HasOne(e => e.NavFF112ApiLiquidacao).WithMany().HasForeignKey(e => e.Ff102LiqApi);
+                entity.HasOne(e => e.NavFF112ApiBaixa).WithMany().HasForeignKey(e => e.Ff102BaixaApi);
+                entity.HasOne(e => e.NavFF120Trackapi).WithMany().HasForeignKey(e => e.Ff102TrilhaApiid);
+                entity.HasOne(e => e.NavSy001Usuario).WithMany().HasForeignKey(e => e.Ff102Usuarioproprieid);
+                entity.HasOne(e => e.NavSy001CodCobrador).WithMany().HasForeignKey(e => e.Ff102Codcobrador);
+                entity.HasOne(e => e.NavSy001Aprovador).WithMany().HasForeignKey(e => e.Ff102cpAprovadorid);
+                entity.HasOne(e => e.NavSy001CTBUsuarioID).WithMany().HasForeignKey(e => e.Ff102CtbUsuarioid);
+                entity.HasOne(e => e.NavSy001CTBEstUsuarioID).WithMany().HasForeignKey(e => e.Ff102CtbEstusuarioid);
+                entity.HasOne(e => e.NavSy001CTLUsuarioID).WithMany().HasForeignKey(e => e.Ff102CtlUsuarioid);
+                entity.HasOne(e => e.NavSy001CTLEstUsuarioID).WithMany().HasForeignKey(e => e.Ff102CtlEstusuarioid);
+                entity.HasOne(e => e.NavStaticaFluxoCaixa).WithMany().HasForeignKey(e => e.Ff102FluxoCaixa);
+                entity.HasOne(e => e.NavStaticaConfirmadoID).WithMany().HasForeignKey(e => e.Ff102cpConfirmadoId);
+
             });
 
             modelBuilder.Entity<CSICP_FF102b>(entity =>

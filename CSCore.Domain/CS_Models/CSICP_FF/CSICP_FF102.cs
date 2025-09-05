@@ -379,12 +379,6 @@ public partial class CSICP_FF102
 
     public int? Ff102TrilhaApiid { get; set; }
 
-}
-
-public class RepoDtoCSICP_FF102
-{
-    public CSICP_FF102 CSICP_FF102 { get; set; } = null!;
-
     [NotMapped]
     public int? CSDiasAtraso { get; set; } = default;
     [NotMapped]
@@ -406,7 +400,6 @@ public class RepoDtoCSICP_FF102
     [NotMapped]
     public decimal? CSPercentualHonorarioConfig { get; set; }
 
-
     public CSICP_BB001? NavBB001 { get; set; }
     public CSICP_Bb005? NavBB005 { get; set; }
     public CSICP_Bb006? NavBB006 { get; set; }
@@ -420,6 +413,7 @@ public class RepoDtoCSICP_FF102
     public CSICP_BB012? NavBB012AvalistaID { get; set; }
     public CSICP_Bb01201Jur? NavBB01201Jur { get; set; }
     public CSICP_Bb026? NavBB026 { get; set; }
+    [NotMapped]
     public CSICP_FF000? NavFF000 { get; set; }
     public CSICP_FF003? NavFF003 { get; set; }
     public CSICP_FF102_C021? NavFF102C021 { get; set; }
