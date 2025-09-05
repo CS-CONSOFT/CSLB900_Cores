@@ -225,6 +225,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
         {
             if (in_estabId != null)
                 query = query.Where(e => e.Id!.Equals(in_estabId));
+
             if (in_dataInicial != null)
                 query = query.Where(e => e.Ff017DataRenegociacao >= in_dataInicial);
             if (in_dataFinal != null)
