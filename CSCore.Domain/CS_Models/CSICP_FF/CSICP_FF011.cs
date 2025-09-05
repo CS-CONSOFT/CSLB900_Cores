@@ -35,8 +35,8 @@ public partial class CSICP_FF011
 
         public CSICP_FF998? NavFF998SitCobrancaEnt { get; set; }    
 
-        public CSICP_BB012? NavBB012Ent { get; set; }
+        public CSICP_Bb012Sitcta? NavBB012SitEnt { get; set; }
 
-        public CSICP_BB012? NavBB012Sai { get; set; }
+        public CSICP_Bb012Sitcta? NavBB012SitSai { get; set; }
     }
 }

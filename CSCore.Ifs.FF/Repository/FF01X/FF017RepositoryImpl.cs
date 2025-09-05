@@ -19,7 +19,9 @@ namespace CSCore.Ifs.FF.Repository.FF01X
         public async Task<RepoDtoCSICP_FF017?> GetByIdAsync(int in_tenant, string in_ff017Id)
         {
             IQueryable<RepoDtoCSICP_FF017> query = GetQueryBase(in_tenant);
-            RepoDtoCSICP_FF017? cSICP_FF017 = await query.AsNoTrackingWithIdentityResolution().FirstOrDefaultAsync(e => e.Id == in_ff017Id);
+            RepoDtoCSICP_FF017? cSICP_FF017 = await query
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id == in_ff017Id);
             return cSICP_FF017;
         }
 
@@ -209,10 +211,11 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                    };
         }
 
-        public async Task<(List<RepoDtoCSICP_FF017>, int)> GetListAsync(int in_tenant, string in_estabId, DateTime? in_dataInicial, DateTime? in_dataFinal, int in_page, int in_pageSize)
+        public async Task<(List<RepoDtoCSICP_FF017>, int)> GetListAsync(int in_tenant, string in_estabId,
+            string? in_nomeCliente, DateTime? in_dataInicial, DateTime? in_dataFinal, int in_page, int in_pageSize)
         {
             IQueryable<RepoDtoCSICP_FF017> query = GetQueryBase(in_tenant);
-            query = FiltraQuandoExisteFiltro(in_estabId, in_dataInicial, in_dataFinal, query);
+            query = FiltraQuandoExisteFiltro(in_estabId, in_nomeCliente, in_dataInicial, in_dataFinal, query);
 
             var queryCount = query;
             var count = queryCount.Count();
@@ -221,11 +224,13 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF017> FiltraQuandoExisteFiltro(string in_estabId, DateTime? in_dataInicial, DateTime? in_dataFinal, IQueryable<RepoDtoCSICP_FF017> query)
+        private IQueryable<RepoDtoCSICP_FF017> FiltraQuandoExisteFiltro(string in_estabId, string? in_nomeCliente,
+            DateTime? in_dataInicial, DateTime? in_dataFinal, IQueryable<RepoDtoCSICP_FF017> query)
         {
             if (in_estabId != null)
                 query = query.Where(e => e.Id!.Equals(in_estabId));
-
+            if (!string.IsNullOrEmpty(in_nomeCliente))
+                query = query.Where(e => e.NavBB012.Bb012NomeCliente.Contains(in_nomeCliente));
             if (in_dataInicial != null)
                 query = query.Where(e => e.Ff017DataRenegociacao >= in_dataInicial);
             if (in_dataFinal != null)

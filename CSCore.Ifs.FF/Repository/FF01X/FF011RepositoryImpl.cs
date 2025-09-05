@@ -22,7 +22,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
         }
 
         public async Task<(List<RepoDtoCSICP_FF011>, int)> GetListAsync(int in_tenantID, int in_pageNumber, int in_pageSize, 
-            string? in_tipoCobrancaID, int? in_categoriaID)
+            string? in_tipoCobrancaID, string? in_categoriaID)
         {
             IQueryable<RepoDtoCSICP_FF011> query = GetQueryBase(in_tenantID);
             query = FiltraQuandoExisteFiltro(in_tipoCobrancaID, in_categoriaID, query);
@@ -34,13 +34,13 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF011> FiltraQuandoExisteFiltro(string? in_tipoCobrancaID, int? in_categoriaID, IQueryable<RepoDtoCSICP_FF011> query)
+        private IQueryable<RepoDtoCSICP_FF011> FiltraQuandoExisteFiltro(string? in_tipoCobrancaID, string? in_categoriaID, IQueryable<RepoDtoCSICP_FF011> query)
         {
             if (!string.IsNullOrEmpty(in_tipoCobrancaID))
                 query = query.Where(e => e.Ff011Tipocobrancaid == in_tipoCobrancaID);
 
-            if (in_categoriaID.HasValue)
-                query = query.Where(e => e.Ff011Categoriaid == in_categoriaID.ToString());
+            if (!string.IsNullOrEmpty(in_categoriaID))
+                query = query.Where(e => e.Ff011Categoriaid == in_categoriaID);
 
             return query;
         }
@@ -62,13 +62,13 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                    on ff011.Ff011SitcobrancaentId equals ff998.Id into ff998_join
                    from ff998 in ff998_join.DefaultIfEmpty()
 
-                   /*join bb012Ent in _appDbContext.OsusrE9aCsicpBb012s
-                   on ff011.Ff011SitcobrancaentId equals bb012Ent.Id into bb012Ent_join
+                   join bb012Ent in _appDbContext.OsusrE9aCsicpBb012Sitcta
+                   on ff011.Ff011SituacaoentId equals bb012Ent.Id into bb012Ent_join
                    from bb012Ent in bb012Ent_join.DefaultIfEmpty()
 
-                   join bb012Sai in _appDbContext.OsusrE9aCsicpBb012s
+                   join bb012Sai in _appDbContext.OsusrE9aCsicpBb012Sitcta
                    on ff011.Ff011SituacaosaiId equals bb012Sai.Id into bb012Sai_join
-                   from bb012Sai in bb012Sai_join.DefaultIfEmpty()*/
+                   from bb012Sai in bb012Sai_join.DefaultIfEmpty()
 
                    where ff011.TenantId == in_tenantID
                    select new RepoDtoCSICP_FF011
@@ -112,17 +112,23 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                            Codgcs = ff998.Codgcs
                        } : null,
 
-                       /*NavBB012Ent = bb012Ent != null ? new CSICP_BB012
+                       NavBB012SitEnt = bb012Ent != null ? new CSICP_Bb012Sitcta
                        {
-                           Id = bb012Ent.Id,
-                           Bb012Descricao = bb012Ent.Bb012Descricao
+                            Id = bb012Ent.Id,
+                            Label = bb012Ent.Label,
+                            Order = bb012Ent.Order,
+                            IsActive = bb012Ent.IsActive,
+                            Codgcs = bb012Ent.Codgcs
                        } : null,
 
-                       NavBB012Sai = bb012Sai != null ? new CSICP_BB012
+                       NavBB012SitSai = bb012Sai != null ? new CSICP_Bb012Sitcta
                        {
-                           Id = bb012Sai.Id,
-                           Bb012Descricao = bb012Sai.Bb012Descricao
-                       } : null*/
+                            Id = bb012Sai.Id,
+                            Label = bb012Sai.Label,
+                            Order = bb012Sai.Order,
+                            IsActive = bb012Sai.IsActive,
+                            Codgcs = bb012Sai.Codgcs
+                       } : null
                    };
         }
     }

@@ -24,4 +24,10 @@ public partial class CSICP_FF014
     public decimal? Ff014Perccomissao { get; set; }
 
     public virtual CSICP_FF014? Ff014Comissao { get; set; }
+
+    public class RepoDtoCSICP_FF014 : CSICP_FF014
+    {
+        public CSICP_BB001? NavBB001 { get; set; }
+        public CSICP_FF014? NavFF014ComissaoPai { get; set; }
+    }
 }

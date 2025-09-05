@@ -30,8 +30,8 @@ namespace CSCore.Application.Dto.Mapper.FF.FF01X
                 NavBB009 = entity.NavBB009?.ToDtoGetBB009_Exibicao(),
                 NavBB029 = entity.NavBB029?.ToDtoGet(),
                 NavFF998SitCobrancaEnt = entity.NavFF998SitCobrancaEnt,
-                NavBB012Ent = entity.NavBB012Ent?.ToDtoGetExibSimples(),
-                NavBB012Sai = entity.NavBB012Sai?.ToDtoGetExibSimples()
+                NavBB012SitEnt = entity.NavBB012SitEnt,
+                NavBB012SitSai = entity.NavBB012SitSai
             };
         }
     }
