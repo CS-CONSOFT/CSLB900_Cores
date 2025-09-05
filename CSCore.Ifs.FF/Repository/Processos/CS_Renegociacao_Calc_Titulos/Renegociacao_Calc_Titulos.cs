@@ -51,19 +51,18 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
                     valorEntrada: prmSimulacao.in_valorEntrada);
 
 
-                IAuxProcessarCalculoTitulo processarCalculoTitulo
-                    = ProcessarRenegociacaoCalcTituloFactory
-                    .Create(
-                        prmSimulacao: prmSimulacao,
-                        work_bb008: work_bb008,
-                        appDbContext: _appDbContext,
-                        generateId: _generateId,
-                        work_qtd_parcelas: work_qtd_parcelas,
-                        aux_condicaoPagtoDividida: work_condicaoPagtoDividida,
-                        work_valor_entrada: prmSimulacao.in_valorEntrada);
-                
+                var prm = new PrmRenegociacaoCalcTituloFactory
+                {
+                    prmSimulacao = prmSimulacao,
+                    work_bb008 = work_bb008,
+                    appDbContext = _appDbContext,
+                    generateId = _generateId,
+                    aux_condicaoPagtoDividida = work_condicaoPagtoDividida,
+                    workQtdParcelas = work_qtd_parcelas,
+                    work_valor_entrada = prmSimulacao.in_valorEntrada,
+                };
 
-
+                IAuxProcessarCalculoTitulo processarCalculoTitulo = ProcessarRenegociacaoCalcTituloFactory.Create(prm);
                 await processarCalculoTitulo.Processar(prmSimulacao, calculoFinanciamento);
 
                 await transaction.CommitAsync();

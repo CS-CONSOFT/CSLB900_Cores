@@ -11,6 +11,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strate
         public decimal ValorParcela { get; set; }
         public decimal ValorRestoParcela { get; set; }
         public decimal ValorFinanciado { get; set; }
+        public decimal ValorFaturaTotal { get; set; }
     }
     public interface IFinanciamentoStrategy
     {

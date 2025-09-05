@@ -27,7 +27,7 @@ namespace CSCore.Tests.Geral.Financeiro.RenegociacaoCalcTitulo
             public Renegociacao_Calc_TitulosTests()
             {
                 var config = new ConfigurationBuilder()
-                .AddUserSecrets<InadimplenciaServiceTests>()
+                .AddUserSecrets<Renegociacao_Calc_TitulosTests>()
                 .Build();
                     var connectionString = config.GetConnectionString("DefaultConnection");
                     _connectionString = connectionString;

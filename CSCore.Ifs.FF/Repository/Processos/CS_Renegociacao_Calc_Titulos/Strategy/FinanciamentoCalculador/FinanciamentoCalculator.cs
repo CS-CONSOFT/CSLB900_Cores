@@ -24,7 +24,9 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strate
             else
                 strategy = new SemEntradaStrategy();
 
-            return strategy.Calcular(faturaTotal, qtdParcelas, valorEntrada);
+            var result = strategy.Calcular(faturaTotal, qtdParcelas, valorEntrada);
+            result.ValorFaturaTotal = faturaTotal;
+            return result;
         }
     }
 }

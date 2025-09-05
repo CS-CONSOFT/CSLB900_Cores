@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.CalculoAdicaoDataStrategy
+namespace CSLB900.MSTools.CalculoAdicaoDataStrategy
 {
-    public class IncrementarDataPorDiaStrategy : IIncrementarDataStrategy
+    public class IncrementarDataTipoParcelaDiaStrategy : IIncrementarDataStrategy
     {
         public DateTime IncrementarData(DateTime Data, int intervaloParaAdicao)
         {
