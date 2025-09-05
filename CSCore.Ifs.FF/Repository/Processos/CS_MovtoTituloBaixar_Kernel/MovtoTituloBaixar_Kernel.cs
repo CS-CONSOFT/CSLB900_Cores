@@ -103,14 +103,14 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
                 (
                     //caso a situacao id nao seja nula, verifica se é uma das situações que não permitem baixa
                     //criando uma lista auxiliar de situações que não permitem baixa e chegando se a situação do título está nessa lista
-                    WorkBaixa.NavFF102?.Ff102Situacaoid is not null &&
+                    WorkBaixa.NavFF102?.CSICP_FF102.Ff102Situacaoid is not null &&
                     new[]
                     {
                         InPrmMovtoTituloBaixarKernel.InSTIDff102SitLiquidado,
                         InPrmMovtoTituloBaixarKernel.InSTIDff102SitCancelado,
                         InPrmMovtoTituloBaixarKernel.InSTIDff102SitRenegociado,
                         InPrmMovtoTituloBaixarKernel.InSTIDff102SitProvisao
-                    }.Contains(WorkBaixa.NavFF102.Ff102Situacaoid),
+                    }.Contains(WorkBaixa.NavFF102.CSICP_FF102.Ff102Situacaoid),
                     "Não é possivel a baixa. Título já liquidado, cancelado, renegociado ou em provisão!"
                 ),
 
@@ -121,7 +121,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
                      (WorkBaixa.Ff103ValorTarifas ?? 0) +
                      (WorkBaixa.Ff103ValorJuros ?? 0) -
                      (WorkBaixa.Ff103ValorDesconto ?? 0) +
-                     (WorkBaixa.NavFF102?.Ff102VlLiqTitulo ?? 0)) +
+                     (WorkBaixa.NavFF102?.CSICP_FF102.Ff102VlLiqTitulo ?? 0)) +
                      (WorkBaixa.Ff103VlHonorarios ?? 0) +
                      (WorkBaixa.Ff103VlCorrmonetaria ?? 0),
                     "Valor pago é superior ao valor calculado do título."
@@ -211,8 +211,11 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
                                            Ff103CtlMsg = ff103.Ff103CtlMsg,
                                            NavFF102 = ff102 != null ? new RepoDtoCSICP_FF102
                                            {
-                                               Ff102Situacaoid = ff102.Ff102Situacaoid,
-                                               Ff102VlLiqTitulo = ff102.Ff102VlLiqTitulo,
+                                               CSICP_FF102 = new CSICP_FF102
+                                               {
+                                                   Ff102Situacaoid = ff102.Ff102Situacaoid,
+                                                   Ff102VlLiqTitulo = ff102.Ff102VlLiqTitulo,
+                                               }
                                            } : null,
 
 

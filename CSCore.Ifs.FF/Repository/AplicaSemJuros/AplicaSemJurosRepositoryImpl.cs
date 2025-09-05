@@ -57,7 +57,7 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
                     Ff102Tituloid = prmsAnaliseSJuros.InFF102TituloID, 
                     Ff116Datavencto = null,
                     Ff116Protocolnumber = protocolNumber.ToString(),
-                    Ff116Msg = $"Aplica não cobrança de juros - Motivo: {prmsAnaliseSJuros.InMsgMotivo}"
+                    Ff116Msg = $"Aplica não cobrança de juros - Motivo: {prmsAnaliseSJuros.InMsgMotivo}".Substring(0, 100)
                 };
 
                 // Grava ocorrência

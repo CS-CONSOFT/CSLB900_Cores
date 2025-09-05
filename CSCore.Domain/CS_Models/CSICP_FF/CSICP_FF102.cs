@@ -1,5 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.Interfaces.Dashboard;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
 
@@ -380,22 +381,29 @@ public partial class CSICP_FF102
 
 }
 
-public class RepoDtoCSICP_FF102 : CSICP_FF102
+public class RepoDtoCSICP_FF102
 {
+    public CSICP_FF102 CSICP_FF102 { get; set; } = null!;
+
+    [NotMapped]
     public int? CSDiasAtraso { get; set; } = default;
-
+    [NotMapped]
     public decimal? CSValorCorrecaoMonetaria { get; set; } = default;
-
+    [NotMapped]
     public decimal? CSValorMulta { get; set; } = default;
-
+    [NotMapped]
     public decimal? CSValorHonorarios { get; set; } = default;
-
+    [NotMapped]
     public decimal? CSValorJuros { get; set; } = default;
-
+    [NotMapped]
     public decimal? CSValorAPagar { get; set; } = default;
+    [NotMapped]
     public decimal? CSPercentualJurosConfig { get; set; }
+    [NotMapped]
     public decimal? CSPercentualMultaConfig { get; set; }
+    [NotMapped]
     public decimal? CSPercentualCorrecaoMonetariaConfig { get; set; }
+    [NotMapped]
     public decimal? CSPercentualHonorarioConfig { get; set; }
 
 

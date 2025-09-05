@@ -2441,7 +2441,7 @@ namespace CSCore.Ifs.CS_Context
 
                 //entity.HasOne(e => e.NavBB012Conta).WithOne().HasForeignKey<CSICP_FF102>(e => e.Ff102Contaid);
                 //entity.HasOne(e => e.NavFF102Situacao).WithOne().HasForeignKey<CSICP_FF102>(e => e.Ff102Situacaoid);
-
+                
             });
 
             modelBuilder.Entity<CSICP_FF102b>(entity =>

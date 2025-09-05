@@ -81,10 +81,10 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
                     in_tipoRegistro) ?? throw new KeyNotFoundException("RepoDtoCSICP_FF102 não encontrado");
 
                 //pega o cnab
-                ReturnCnab returnCnab = await CS_Ret_CfgCNAB(getTitulo.Ff102Agcobradorid ?? "");
+                ReturnCnab returnCnab = await CS_Ret_CfgCNAB(getTitulo.CSICP_FF102.Ff102Agcobradorid ?? "");
 
                 //atualiza parte da ff102
-                CS_Atualiza_Titulos(getTitulo, returnCnab);
+                CS_Atualiza_Titulos(getTitulo.CSICP_FF102, returnCnab);
 
                 //atualiza a ff112 faixa nro remessa
                 decimal? seqRemessa = CS51_At_Seq_Remessa(returnCnab.CSICP_FF112Faixa);
@@ -118,12 +118,12 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
 
                 PrmAtualizaTitulo prmAtualizaTitulo = new PrmAtualizaTitulo
                 {
-                    in_ff102ForUpdate = getTitulo,
+                    in_ff102ForUpdate = getTitulo.CSICP_FF102,
                     in_retornoCriaBoleto = in_retornoCriaBoleto,
-                    in_hashFF102 = getTitulo.Ff102HashId ?? "",
-                    in_valorJuros = getTitulo.Ff102cpValorJurosDia ?? 0,
-                    in_valorMulta = getTitulo.Ff102cpValorMulta ?? 0,
-                    in_tipoCobrancaID = getTitulo.Ff102Tipocobrancaid,
+                    in_hashFF102 = getTitulo.CSICP_FF102.Ff102HashId ?? "",
+                    in_valorJuros = getTitulo.CSICP_FF102.Ff102cpValorJurosDia ?? 0,
+                    in_valorMulta = getTitulo.CSICP_FF102.Ff102cpValorMulta ?? 0,
+                    in_tipoCobrancaID = getTitulo.CSICP_FF102.Ff102Tipocobrancaid,
                     in_apiID = returnCnab.CSICP_BB006Banco.CSICP_BB006Banco?.Bb006ApiId ?? 0,
                     in_StID_csicp_ff120_trackApi_FinalizadoEnvio = in_StID_csicp_ff120_trackApi_FinalizadoEnvio
                 };
@@ -167,12 +167,12 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
                 CodigoModalidade = int.Parse(returnCnab.CSICP_FF112Completo.Ff112_C006?.Conteudo ?? "0"),
 
                 DataEmissao = StringUtils.FormatarDataCustom(
-                        getTitulo.Ff102DataEmissao, Prm_Separador: ".", Prm_Tam_Ano: 4),
+                        getTitulo.CSICP_FF102.Ff102DataEmissao, Prm_Separador: ".", Prm_Tam_Ano: 4),
 
                 DataVencimento = StringUtils.FormatarDataCustom(
-                        getTitulo.Ff102DataEmissao, Prm_Separador: ".", Prm_Tam_Ano: 4),
+                        getTitulo.CSICP_FF102.Ff102DataEmissao, Prm_Separador: ".", Prm_Tam_Ano: 4),
 
-                ValorOriginal = getTitulo.Ff102VlLiqTitulo,
+                ValorOriginal = getTitulo.CSICP_FF102.Ff102VlLiqTitulo,
                 ValorAbatimento = 0,
 
                 QuantidadeDiasProtesto = ObterPrazoProtestoOuZero(
@@ -194,7 +194,7 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
 
                 CampoUtilizacaoBeneficiario = StringUtils.FixaTamanhoValor(
                         valor: getTitulo.NavBB001?.Bb001Codigoempresa.ToString(),
-                        lengthMax: 3) + "" + getTitulo.Ff102Pfx + "" + getTitulo.Ff102NoTitulo + "" + getTitulo.Ff102Sfx,
+                        lengthMax: 3) + "" + getTitulo.CSICP_FF102.Ff102Pfx + "" + getTitulo.CSICP_FF102.Ff102NoTitulo + "" + getTitulo.CSICP_FF102.Ff102Sfx,
 
 
                 NumeroTituloCliente = "000" + returnCnab.CSICP_FF112Completo.Ff112.Ff112Convenio + "" +
@@ -236,7 +236,7 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
                             : 0,
 
                     Data = StringUtils.FormatarDataCustom(
-                            getTitulo.Ff102DataVencimento.AddDays(1), Prm_Separador: ".", Prm_Tam_Ano: 4)
+                            getTitulo.CSICP_FF102.Ff102DataVencimento.AddDays(1), Prm_Separador: ".", Prm_Tam_Ano: 4)
                 },
                 Pagador = new Pagador
                 {
