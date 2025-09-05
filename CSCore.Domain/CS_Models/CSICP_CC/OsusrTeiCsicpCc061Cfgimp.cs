@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CSCore.Domain.DELETAR;
+namespace CSCore.Domain.CS_Models.CSICP_CC;
 
 public partial class OsusrTeiCsicpCc061Cfgimp
 {
@@ -74,5 +74,4 @@ public partial class OsusrTeiCsicpCc061Cfgimp
     public long? Ub13ub14RfclasstribId { get; set; }
     public long? Ub03IsRfclasstribId { get; set; }
     public long? Ub6970RfclasstribregId { get; set; }
-    public virtual OsusrE9aCsicpBb027Imp? Cc061Bb027bCfgimp { get; set; }
 }
