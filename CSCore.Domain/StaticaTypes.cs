@@ -294,6 +294,7 @@
         public enum ComboTypeFF
         {
             Csicp_ff003,
+            Csicp_ff002,
         }
 
         public enum ComboTypeSYS

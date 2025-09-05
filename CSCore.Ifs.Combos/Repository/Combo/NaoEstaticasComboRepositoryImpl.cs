@@ -71,6 +71,12 @@ namespace CSCore.Ifs.Repository.Combo
                 .OrderBy(c => c.Ff003Descresumida)
                 .Select(c => new { Title = c.Ff003Descresumida ?? "---", c.Id }),
 
+                ComboTypeFF.Csicp_ff002 => _appDbContext.OsusrE9aCsicpFf002s
+               .Where(c => c.TenantId == tenant)
+               .OrderBy(c => c.Ff002Motivo)
+               .Select(c => new { Title = c.Ff002Motivo ?? "---", c.Id }),
+
+
 
                 _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
 
