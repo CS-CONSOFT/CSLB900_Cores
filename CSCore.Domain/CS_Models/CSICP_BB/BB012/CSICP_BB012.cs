@@ -86,5 +86,5 @@ public partial class CSICP_BB012
     public CSICP_Bb012Mcred? BB012_MCred { get; set; }
     public CSICP_BB001? BB012_EstabelecimentoCadastro { get; set; }
     public CSICP_AA143? Nav_AA143 { get; set; }
-    public CSICP_AA146_TP_GOV? Nav_AA146_TP_GOV { get; set; }
+    public OsusrE9aCsicpAa146Tpgov? Nav_AA146_TP_GOV { get; set; }
 }

@@ -26,7 +26,7 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<CSICP_AA39Mp255> E9ACSICP_AA039Mp255s { get; set; }
 
         public DbSet<CSICP_AA030Regime> E9ACSICP_AA030Regimes { get; set; }
-        public DbSet<CSICP_AA146_TP_GOV> CSICP_AA146_TP_GOV { get; set; }
+  
 
         partial void OnModelCreatingStaticaAA(ModelBuilder modelBuilder)
         {
@@ -104,23 +104,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("LABEL");
                 entity.Property(e => e.Order).HasColumnName("ORDER");
             });
-            modelBuilder.Entity<CSICP_AA146_TP_GOV>(entity =>
-            {
-                entity
-                    .HasKey(e => e.Id);
-
-                entity.ToTable("OSUSR_E9A_CSICP_AA046_TPGOV");
-
-                entity.Property(e => e.Id).HasColumnName("ID");
-                entity.Property(e => e.IsActive).HasColumnName("IS_ACTIVE");
-                entity.Property(e => e.Label)
-                    .HasMaxLength(50)
-                    .HasColumnName("LABEL");
-                entity.Property(e => e.Order).HasColumnName("ORDER");
-                entity.Property(e => e.Tpcompragov)
-                    .HasMaxLength(1)
-                    .HasColumnName("TPCOMPRAGOV");
-            });
+ 
             modelBuilder.Entity<CSICP_AA030Regime>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_AA030_REGIME");
