@@ -285,5 +285,10 @@
             public const string VlrAlterado = "Vlr Alterado";
             public const string AtrJurosNCob = "Atribuído Juros Não Cobrados";
         }
+
+        public static class Csicp_bb1201_jur
+        {
+            public const string NCobraJuros = "Juros/Multa não cobrados";
+        }
     }
 }

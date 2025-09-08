@@ -1,5 +1,4 @@
 using CSCore.Domain.CS_Models.CSICP_FF;
-using CSCore.Domain.Interfaces.Estatica;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.FF.Repository.GravaOcorrencia;
@@ -43,9 +42,12 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
                 ValidaSituacao(titulo, InprmsAltDataVenc);
 
                 // Gera protocolo
-                var protocolNumber = await _generateProtocolo.Fcn_Protocolo10(
+                /*var protocolNumber = await _generateProtocolo.Fcn_Protocolo10(
                     InprmsAltDataVenc.InFilialID ?? string.Empty,
-                    "O_CR");
+                    "O_CR");*/
+
+                var protocolNumber = await _generateProtocolo
+                    .Fcn_ProtocoloGeral(InprmsAltDataVenc.InFilialID ?? string.Empty);
 
                 var ocorrencia = new CSICP_FF116
                 {
@@ -87,12 +89,14 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
         {
             ArgumentNullException.ThrowIfNull(InprmsAltDataVenc);
 
+            if (InprmsAltDataVenc.InTenantID <= 0)
+                throw new ArgumentException("ID do tenant deve ser maior que zero", nameof(InprmsAltDataVenc.InTenantID));
+
             if (string.IsNullOrEmpty(InprmsAltDataVenc.InFF102TituloID))
                 throw new ArgumentException("ID do título é obrigatório", nameof(InprmsAltDataVenc.InFF102TituloID));
 
             if (string.IsNullOrEmpty(InprmsAltDataVenc.InUsuarioPropID))
                 throw new ArgumentException("ID do usuário é obrigatório", nameof(InprmsAltDataVenc.InUsuarioPropID));
-
         }
 
         private async Task<CSICP_FF102> BuscarTitulo(PrmsAlteracaoDataVencimentoRepository InprmsAltDataVenc)

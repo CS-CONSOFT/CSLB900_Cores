@@ -121,6 +121,7 @@ namespace CSCore.Ifs.Eventos.Repository
             {
                 AA006_Entity = HandleCIAndDateUpdate(isCircular, AA006_Entity);
                 AA006_Entity.Aa006Dataultcaptura = DateTime.Today;
+                _appDbContext.Update(AA006_Entity);
             }
             else
             {
@@ -131,14 +132,15 @@ namespace CSCore.Ifs.Eventos.Repository
                     Id = ID,
                     Aa006Arquivo = arquivo,
                     Aa006Filial = codigoEmpresa,
-                    Aa006Filialid = empresaID,
+                    Aa006Filialid = empresaID == "" ? null : empresaID,
                     Aa006Circular = StaticaSIMNAO.Id,
                     Aa006Ci = 1,
                     Aa006Maxcircular = maxCircularValue,
                     Aa006Dataultcaptura = DateTime.Today
                 };
+                _appDbContext.Add(AA006_Entity);
             }
-            _appDbContext.Update(AA006_Entity);
+
             await _appDbContext.SaveChangesAsync();
             return AA006_Entity;
         }

@@ -74,7 +74,7 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
             try
             {
                 //pega o titulo
-                RepoDtoCSICP_FF102 getTitulo =
+                CSICP_FF102 getTitulo =
                     await _iFF102Repository.GetByIdAsync(
                     in_tenantID,
                     in_ff102ID,
@@ -149,7 +149,7 @@ namespace CSCore.Ifs.FF.External.BancoDoBrasil
 
 
         private async Task<CriaBoletoRequest> MontaParametrosCriaBoletoReq(
-            RepoDtoCSICP_FF102 getTitulo,
+            CSICP_FF102 getTitulo,
             ReturnCnab returnCnab,
             decimal? seqRemessa)
         {

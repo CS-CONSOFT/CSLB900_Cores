@@ -1,4 +1,5 @@
-﻿using CSCore.Domain.CS_Models.CSICP_FF;
+﻿using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102.RepoDto;
+using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.Interfaces.V2;
 using static CSCore.Domain.ComboTypes;
 
@@ -7,7 +8,7 @@ namespace CSCore.Domain.Interfaces.FF._1XX
 {
     public interface IFF102Repository : IRepositorioBase<CSICP_FF102>
     {
-        Task<(List<RepoDtoCSICP_FF102>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
+        Task<(List<CSICP_FF102>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
             string? in_estabelecimentoId,
             int? in_tipoRegistro,
             string? in_prefixo,
@@ -27,6 +28,6 @@ namespace CSCore.Domain.Interfaces.FF._1XX
             QualDataFiltro? in_tipoDataFiltro
             );
 
-        Task<RepoDtoCSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int? in_tipoRegistro);
+        Task<CSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int? in_tipoRegistro);
     }
 }

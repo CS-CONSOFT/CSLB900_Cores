@@ -36,7 +36,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
             return query;
         }
-
+        
         private IQueryable<RepoDtoCSICP_FF107> GetQueryBase(int in_tenant)
         {
             return from ff107 in _appDbContext.OsusrE9aCsicpFf107s
@@ -56,6 +56,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    join ff002 in _appDbContext.OsusrE9aCsicpFf002s
                    on ff107.Ff107Motivoid equals ff002.Id into ff002_join
                    from ff002 in ff002_join.DefaultIfEmpty()
+
+                   //ff102 (Título)
+                   join ff102 in _appDbContext.OsusrE9aCsicpFf102s
+                   on ff107.Ff102Tituloid equals ff102.Id into ff102_join
+                   from ff102 in ff102_join.DefaultIfEmpty()
 
                    where ff107.TenantId == in_tenant
 
@@ -106,7 +111,20 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Ff002Tiporegistro = ff002.Ff002Tiporegistro,
                            Ff002Codigo = ff002.Ff002Codigo,
                            Ff002Motivo = ff002.Ff002Motivo,
-                       } : null
+                       } : null,
+
+                       NavFF102 = ff102 != null ? new CSICP_FF102
+                          {
+                           TenantId = ff102.TenantId,
+                           Id = ff102.Id,
+                           Ff102Tiporegistro = ff102.Ff102Tiporegistro,
+                           Ff102Filialid = ff102.Ff102Filialid,
+                           Ff102Pfx = ff102.Ff102Pfx,
+                           Ff102NoTitulo = ff102.Ff102NoTitulo,
+                           Ff102Sfx = ff102.Ff102Sfx,
+                           Ff102Contaid = ff102.Ff102Contaid,
+                           Ff102Contarealid = ff102.Ff102Contarealid,
+                       } : null,
                    };
         }
     }
