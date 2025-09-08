@@ -1,10 +1,11 @@
 ﻿using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Factory.Template;
 using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy.Template;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy
 {
-    public class ExportarArquivoExcelBloco0200 : ExportarArquivoTemplate, IExportarArquivo
+    public class ExportarArquivoExcelBloco0200 : ExportarArquivoTemplateExcel, IExportarArquivo
     {
         private readonly AppDbContext _appDbContext;
 

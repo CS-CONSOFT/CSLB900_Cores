@@ -57,7 +57,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
         XLSX
     }
 
-    public abstract class ExportarArquivoTemplate
+    public class ExportarArquivoTemplate
     {
         protected virtual async Task<(List<DtoArquivosFiscaisExcelGetInventario> produtos, string? protocolo)> GetInventario(
             string InGG032ID, int InTenantID, AppDbContext _appDbContext)
@@ -166,16 +166,6 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
             return stream.ToArray();
         }
 
-        public virtual void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet)
-        {
-            throw new NotImplementedException("Método deve ser implementado na classe filha.");
-        }
-
-
-        public virtual bool TemICMS(DtoArquivosFiscaisExcelGetInventario produto)
-        {
-            return produto.Gg520Saldo > 0 && produto.GG021_Perc_ICMS > 0 || produto.AliqICMS > 0;
-        }
 
         public virtual string FormatarRegistroH005(DtoArquivosFiscaisExcelGetInventario produto)
         {

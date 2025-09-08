@@ -1,4 +1,5 @@
-﻿using CSCore.Ifs.CS_Context;
+﻿using ClosedXML.Excel;
+using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy.Template;
 using NPOI.HPSF;
 using System.Text;

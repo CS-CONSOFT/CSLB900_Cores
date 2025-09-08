@@ -1,4 +1,5 @@
 ﻿using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Factory.Template;
 using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy.Template;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy
 {
-    public class ExportarArquivoExcelSISPRO : ExportarArquivoTemplate, IExportarArquivo
+    public class ExportarArquivoExcelSISPRO : ExportarArquivoTemplateExcel, IExportarArquivo
     {
         private readonly AppDbContext _appDbContext;
 
