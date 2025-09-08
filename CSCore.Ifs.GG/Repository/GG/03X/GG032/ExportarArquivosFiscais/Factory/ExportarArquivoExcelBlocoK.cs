@@ -47,7 +47,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
 
 
 
-        public override void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet)
+        protected override void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet)
         {
             // Criação das colunas na primeira linha
             worksheet.Cell(1, 1).Value = "Estabelecimento";
