@@ -9,6 +9,6 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Factory
 {
     public abstract class ExportarArquivoTemplateExcel : ExportarArquivoTemplate
     {
-        public abstract void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet);
+        protected abstract void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet);
     }
 }

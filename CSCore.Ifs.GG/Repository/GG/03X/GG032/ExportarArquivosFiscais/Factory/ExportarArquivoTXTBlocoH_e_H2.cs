@@ -62,5 +62,62 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
             return (textBytes, fileName);
         }
 
+        public virtual string FormatarRegistroH005(DtoArquivosFiscaisExcelGetInventario produto)
+        {
+            // Baseado nas propriedades visíveis no workflow
+            var dtInv = produto.Gg032Datamovimento?.ToString("ddMMyyyy") ?? "";
+            var vlInv = FormatarDecimal(produto.TotalCusto, 2);
+            var motInv = "02"; // Motivo do inventário
+
+            return $"|H005|{dtInv}|{vlInv}|{motInv}|";
+        }
+
+        public virtual string FormatarRegistroH010(DtoArquivosFiscaisExcelGetInventario produto)
+        {
+            // Baseado nas propriedades do workflow
+            var codItem = produto.Gg033Produto.ToString() ?? "";
+            var unid = produto.Unidade ?? "";
+            var qtd = FormatarDecimal(produto.QtdInventario, 3);
+            var vlUnit = FormatarDecimal(produto.PrecoCusto, 2);
+            var vlItem = FormatarDecimal(produto.PrecoCusto * produto.QtdInventario, 2);
+            var indProp = "0"; // Indicador de propriedade
+            var codPart = ""; // Código do participante
+            var txtCompl = produto.Gg033DescricaoProduto; // Texto complementar
+            var codCta = "13100400ACLASSIF"; // Código da conta contábil
+            var vlItemIR = "0"; // Código da conta contábil
+
+            return $"|H010|{codItem}|{unid}|{qtd}|{vlUnit}|{vlItem}|{indProp}|{codPart}|{txtCompl}|{codCta}|{vlItemIR}|";
+        }
+
+        public virtual string FormatarRegistroH020(DtoArquivosFiscaisExcelGetInventario produto)
+        {
+            // Definir WorkpICMS baseado na lógica condicional
+            var WorkpICMS = produto.AliqICMS > 0 ? produto.AliqICMS : produto.AliqICMS;
+
+            // Baseado nas propriedades do workflow
+            var cstIcms = "060"; // CST do ICMS
+            var bcIcms = FormatarDecimal(produto.PrecoVendaVarejo * produto.Gg520Saldo, 2);
+            var vlIcms = FormatarDecimal(((produto.PrecoVendaVarejo * produto.Gg520Saldo) * WorkpICMS) / 100, 2);
+
+            return $"|H020|{cstIcms}|{bcIcms}|{vlIcms}|";
+        }
+
+
+        public virtual int ContarLinhasBloco(List<DtoArquivosFiscaisExcelGetInventario> produtos)
+        {
+            // Conta H005 (1) + H010 (1 por produto) + H020 (1 por produto) + H990 (1)
+            return 1 + (produtos.Count * 2) + 1;
+        }
+
+
+        public virtual string FormatarDecimal(decimal? valor, int casasDecimais)
+        {
+            if (!valor.HasValue) return "0".PadLeft(casasDecimais + 1, '0');
+
+            var valorFormatado = valor.Value.ToString($"F{casasDecimais}").Replace(",", "").Replace(".", "");
+            return valorFormatado;
+        }
+
+
     }
 }
