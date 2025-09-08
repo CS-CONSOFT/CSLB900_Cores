@@ -47,7 +47,7 @@ namespace CSCore.Ifs.Repository.Combo
                 StaticTypeAA.CSICP_AA030_Regimes => _appDbContext.E9ACSICP_AA030Regimes
                 .AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
 
-                StaticTypeAA.csicp_aa146_TpGov => _appDbContext.CSICP_AA146_TP_GOV
+                StaticTypeAA.csicp_aa146_TpGov => _appDbContext.OsusrE9aCsicpAa146Tpgovs
                 .AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
                 _ => throw new ArgumentOutOfRangeException(nameof(staticTypeAA), "Tipo estático inválido")
             };
