@@ -14,10 +14,10 @@ namespace CSCore.Ifs.FF.Repository.FF01X
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<(List<RepoDtoCSICP_FF013>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
+        public async Task<(List<CSICP_FF013>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
             string? in_ff012Id)
         {
-            IQueryable<RepoDtoCSICP_FF013> query = GetQueryBase(in_tenant);
+            IQueryable<CSICP_FF013> query = GetQueryBase(in_tenant);
 
             // Aplicar filtros
             if (!string.IsNullOrEmpty(in_ff012Id))
@@ -27,17 +27,17 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             var count = queryCount.Count();
             query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
 
-            List<RepoDtoCSICP_FF013> result = await query.ToListAsync();
+            List<CSICP_FF013> result = await query.ToListAsync();
             return (result, count);
         }
 
-        public async Task<RepoDtoCSICP_FF013?> GetByIdAsync(int in_tenant, string in_ff013Id)
+        public async Task<CSICP_FF013?> GetByIdAsync(int in_tenant, string in_ff013Id)
         {
-            IQueryable<RepoDtoCSICP_FF013> query = GetQueryBase(in_tenant);
+            IQueryable<CSICP_FF013> query = GetQueryBase(in_tenant);
             return await query.FirstOrDefaultAsync(e => e.Id == in_ff013Id);
         }
 
-        private IQueryable<RepoDtoCSICP_FF013> GetQueryBase(int in_tenant)
+        private IQueryable<CSICP_FF013> GetQueryBase(int in_tenant)
         {
             return from ff013 in _appDbContext.OsusrE9aCsicpFf013s
 
@@ -66,9 +66,24 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                    on ff013.Ff013Contaid equals bb012.Id into bb012_join
                    from bb012 in bb012_join.DefaultIfEmpty()
 
+                   //bb006 agente cobrador
+                   join bb006 in _appDbContext.OsusrE9aCsicpBb006s
+                   on bb010.Bb010Banco01Id equals bb006.Id into bb006_join
+                   from bb006 in bb006_join.DefaultIfEmpty()
+
+
+
+                   join bb006_2 in _appDbContext.OsusrE9aCsicpBb006s
+                   on bb010.Bb010Banco02Id equals bb006_2.Id into bb006_2_join
+                   from bb006_2 in bb006_2_join.DefaultIfEmpty()
+
+                   join bb006_3 in _appDbContext.OsusrE9aCsicpBb006s
+                    on bb010.Bb010Banco03Id equals bb006_3.Id into bb006_3_join
+                   from bb006_3 in bb006_3_join.DefaultIfEmpty()
+
                    where ff013.TenantId == in_tenant
 
-                   select new RepoDtoCSICP_FF013
+                   select new CSICP_FF013
                    {
                        TenantId = ff013.TenantId,
                        Id = ff013.Id,
@@ -131,6 +146,30 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                            Bb010Isactive = bb010.Bb010Isactive,
                            Bb010Tiporotaid = bb010.Bb010Tiporotaid,
                            Bb010Cidadeid = bb010.Bb010Cidadeid,
+                           Bb010Banco01 = bb006 != null ? new CSICP_Bb006
+                           {
+                               TenantId = bb006.TenantId,
+                               Id = bb006.Id,
+                               Bb006Codgbanco = bb006.Bb006Codgbanco,
+                               Bb006Nomereduzido = bb006.Bb006Nomereduzido,
+                               Bb006Nobanco = bb006.Bb006Nobanco,
+                           } : null,
+                           Bb010Banco02 = bb006_2 != null ? new CSICP_Bb006
+                           {
+                               TenantId = bb006_2.TenantId,
+                               Id = bb006_2.Id,
+                               Bb006Codgbanco = bb006_2.Bb006Codgbanco,
+                               Bb006Nomereduzido = bb006_2.Bb006Nomereduzido,
+                               Bb006Nobanco = bb006_2.Bb006Nobanco,
+                           } : null,
+                           Bb010Banco03 = bb006_3 != null ? new CSICP_Bb006
+                           {
+                               TenantId = bb006_3.TenantId,
+                               Id = bb006_3.Id,
+                               Bb006Codgbanco = bb006_3.Bb006Codgbanco,
+                               Bb006Nomereduzido = bb006_3.Bb006Nomereduzido,
+                               Bb006Nobanco = bb006_3.Bb006Nobanco,
+                           } : null,
                        } : null,
 
                        NavBB012 = bb012 != null ? new CSICP_BB012

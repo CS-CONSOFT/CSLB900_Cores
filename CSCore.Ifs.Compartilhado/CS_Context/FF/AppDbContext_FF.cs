@@ -669,6 +669,31 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
 
+                entity
+                   .HasOne(x => x.NavBB001)
+                   .WithMany()
+                   .HasForeignKey(x => x.Ff013Filialid);
+
+                entity
+                    .HasOne(x => x.NavFF012)
+                    .WithMany()
+                    .HasForeignKey(x => x.Ff013Grupocobrancaid);
+
+                entity
+                    .HasOne(x => x.NavSY001)
+                    .WithMany()
+                    .HasForeignKey(x => x.Ff013Cobradorid);
+
+                entity
+                    .HasOne(x => x.NavBB010)
+                    .WithMany()
+                    .HasForeignKey(x => x.Ff013Zonaid);
+
+                entity
+                    .HasOne(x => x.NavBB012)
+                    .WithMany()
+                    .HasForeignKey(x => x.Ff013Contaid);
+
             });
 
             modelBuilder.Entity<CSICP_FF014>(entity =>
