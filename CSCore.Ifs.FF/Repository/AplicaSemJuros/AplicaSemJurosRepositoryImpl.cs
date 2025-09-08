@@ -1,5 +1,4 @@
 using CSCore.Domain.CS_Models.CSICP_FF;
-using CSCore.Domain.Interfaces.Estatica;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.FF.Repository.GravaOcorrencia;
@@ -47,17 +46,19 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
                     prmsAnaliseSJuros.InFilialID ?? string.Empty,
                     "O_CR");
 
+                var msgMotivo = $"Aplica não cobrança de juros - Motivo: {prmsAnaliseSJuros.InMsgMotivo}";
+
                 var ocorrencia = new CSICP_FF116
                 {
                     Id = _generateId.GenerateUuId(),
                     TenantId = prmsAnaliseSJuros.InTenantID, 
-                    Ff116Tipomovto = prmsAnaliseSJuros.InStIDNCobraJuros,
+                    Ff116Tipomovto = prmsAnaliseSJuros.InStIDAtrJurosNCobra,
                     Ff116Filialid = titulo.Ff102Filialid,
                     Ff116Usuariopropid = prmsAnaliseSJuros.InUsuarioPropID,
                     Ff102Tituloid = prmsAnaliseSJuros.InFF102TituloID, 
                     Ff116Datavencto = null,
                     Ff116Protocolnumber = protocolNumber.ToString(),
-                    Ff116Msg = $"Aplica não cobrança de juros - Motivo: {prmsAnaliseSJuros.InMsgMotivo}".Substring(0, 100)
+                    Ff116Msg = msgMotivo.Substring(0, Math.Min(msgMotivo.Length, 100))
                 };
 
                 // Grava ocorrência

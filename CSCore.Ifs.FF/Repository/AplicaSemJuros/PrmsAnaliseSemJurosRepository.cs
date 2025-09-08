@@ -14,6 +14,7 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
         public string InUsuarioPropID { get; set; } = string.Empty;
         public string InMsgMotivo { get; set; } = string.Empty;
         public int InStIDNCobraJuros { get; set; }
+        public int InStIDAtrJurosNCobra { get; set; }
         public int InStIDFF102SitAberto { get; set; }
         public int InStIDFF102SitBxParcial { get; set; }
     }
