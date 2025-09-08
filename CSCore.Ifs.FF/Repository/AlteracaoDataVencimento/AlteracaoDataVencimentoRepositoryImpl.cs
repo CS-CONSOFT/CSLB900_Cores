@@ -47,7 +47,7 @@ namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
                     "O_CR");*/
 
                 var protocolNumber = await _generateProtocolo
-                    .Fcn_ProtocoloGeral(InprmsAltDataVenc.InFilialID ?? string.Empty);
+                    .Fcn_ProtocoloGeral(InprmsAltDataVenc.InFilialID ?? string.Empty, InprmsAltDataVenc.InTenantID);
 
                 var ocorrencia = new CSICP_FF116
                 {

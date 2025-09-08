@@ -44,7 +44,7 @@ namespace CSCore.Ifs.FF.Repository.AplicaSemJuros
 
                 var protocolNumber = await _generateProtocolo.Fcn_Protocolo10(
                     prmsAnaliseSJuros.InFilialID ?? string.Empty,
-                    "O_CR");
+                    "O_CR", prmsAnaliseSJuros.InTenantID);
 
                 var msgMotivo = $"Aplica não cobrança de juros - Motivo: {prmsAnaliseSJuros.InMsgMotivo}";
 

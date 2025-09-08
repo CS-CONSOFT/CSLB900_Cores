@@ -81,7 +81,7 @@ namespace CSCore.Ifs.Repository.GG._05X
                     if (MovimentoInventarioIdTaVazio(prm.Prm_GG032_Prt))
                     {
                         decimal protocolo = await _generateProtocolo
-                            .Fcn_ProtocoloGeral(bb001_filialID);
+                            .Fcn_ProtocoloGeral(bb001_filialID, prm.tenant);
                         CSICP_GG032 entidadeParaSalvar = new CSICP_GG032
                         {
                             Id = v_GG032_ID,

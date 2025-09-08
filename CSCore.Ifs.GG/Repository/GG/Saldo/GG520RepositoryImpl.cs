@@ -358,7 +358,7 @@ namespace CSCore.Ifs.GG.Repository.GG.Saldo
 
             if (gG520GeraSaldoParametros.prmNumeroSerie is null || gG520GeraSaldoParametros.prmNumeroSerie == 0)
             {
-                decimal protocolo = await _generateProtocolo.Fcn_Protocolo15(gG520GeraSaldoParametros.bb001_filialID, "NS");
+                decimal protocolo = await _generateProtocolo.Fcn_Protocolo15(gG520GeraSaldoParametros.bb001_filialID, "NS",gG520GeraSaldoParametros.Tenant_ID);
                 gG520GeraSaldoParametros.prmNumeroSerie = protocolo;
             }
 

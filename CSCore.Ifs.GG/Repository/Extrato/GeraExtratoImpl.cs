@@ -52,7 +52,7 @@ namespace CSCore.Ifs.GG.Repository.Extrato
         {
             CSICP_GG520? saldoEncontrado = await GetSaldoParaExtrato(parametroGeraExtrato.GG520_ID, tenant);
 
-            decimal protocolo = await _generateProtocolo.Fcn_ProtocoloGeral(saldoEncontrado.Gg520Filialid!);
+            decimal protocolo = await _generateProtocolo.Fcn_ProtocoloGeral(saldoEncontrado.Gg520Filialid!, tenant);
 
             CSICP_GG028 gg028 = new()
             {
@@ -106,7 +106,7 @@ namespace CSCore.Ifs.GG.Repository.Extrato
             int? inNatureza_ID)
         {
             CSICP_GG520 saldoEncontrado = await GetSaldoParaExtrato(inGG028_SALDOID ?? "", inTenant);
-            decimal protocolo = await _generateProtocolo.Fcn_ProtocoloGeral(saldoEncontrado.Gg520Filialid!);
+            decimal protocolo = await _generateProtocolo.Fcn_ProtocoloGeral(saldoEncontrado.Gg520Filialid!, inTenant);
             CSICP_GG028 gg028 = new()
             {
                 TenantId = inTenant,

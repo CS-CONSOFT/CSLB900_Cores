@@ -15,30 +15,30 @@ namespace CSCore.Ifs.Eventos.Repository
         private readonly ICS_GenerateId? _generateId = generateId;
 
 
-        public async Task<decimal> Fcn_ProtocoloGeral(string empresaID)
+        public async Task<decimal> Fcn_ProtocoloGeral(string empresaID, int InTenantID)
         {
-            decimal protocolo = await CS_Protocolo_Kernel_InternalAsync(empresaID, "PTL", 1);
+            decimal protocolo = await CS_Protocolo_Kernel_InternalAsync(empresaID, "PTL", tipoProtocolo: 1, inTenantID: InTenantID);
             return protocolo;
         }
 
 
-        public async Task<decimal> Fcn_Protocolo10(string empresaID, string arquivo)
+        public async Task<decimal> Fcn_Protocolo10(string empresaID, string arquivo, int InTenantID)
         {
-            decimal protocolo = await CS_Protocolo_Kernel_InternalAsync(empresaID, arquivo, 2);
+            decimal protocolo = await CS_Protocolo_Kernel_InternalAsync(empresaID, arquivo, tipoProtocolo: 2, inTenantID: InTenantID);
             return protocolo;
         }
 
 
-        public async Task<decimal> Fcn_Protocolo15(string empresaID, string arquivo)
+        public async Task<decimal> Fcn_Protocolo15(string empresaID, string arquivo, int InTenantID)
         {
-            decimal protocolo = await CS_Protocolo_Kernel_InternalAsync(empresaID, arquivo, 5);
+            decimal protocolo = await CS_Protocolo_Kernel_InternalAsync(empresaID, arquivo, tipoProtocolo: 5, inTenantID: InTenantID);
             return protocolo;
         }
 
-        public async Task<decimal> Fcn_Protocolo(string empresaID, string arquivo, string textName)
+        public async Task<decimal> Fcn_Protocolo(string empresaID, string arquivo, string textName, int InTenantID)
         {
             var uuid = _generateId.GenerateUuId();
-            decimal protocolo = await CS_Protocolo_Kernel_InternalAsync(empresaID, arquivo, 2);
+            decimal protocolo = await CS_Protocolo_Kernel_InternalAsync(empresaID, arquivo, tipoProtocolo: 2, inTenantID: InTenantID);
 
             Csicp_Sy996 csicp_Sy996 = new()
             {
@@ -78,9 +78,12 @@ namespace CSCore.Ifs.Eventos.Repository
 
 
         private async Task<decimal> CS_Protocolo_Kernel_InternalAsync
-           (string empresaID,
+           (string? empresaID,
            string arquivo,
-           int tipoProtocolo, decimal maxCircularValue = 9999, bool isCircular = false)
+           int tipoProtocolo,
+           int inTenantID,
+           decimal maxCircularValue = 9999,
+           bool isCircular = false)
         {
             int codigoEmpresa = 1;
             if (empresaID != null)
@@ -93,9 +96,11 @@ namespace CSCore.Ifs.Eventos.Repository
                 if (BB001_Entity != null)
                 {
                     codigoEmpresa = BB001_Entity.Bb001Codigoempresa!.Value;
+                    empresaID = BB001_Entity.Id;
                 }
             }
-            CSICP_AA006 AA006_Entity = await MotandoESalvandoAA006Async(empresaID, arquivo, maxCircularValue, isCircular, codigoEmpresa);
+
+            CSICP_AA006 AA006_Entity = await MotandoESalvandoAA006Async(empresaID, arquivo, maxCircularValue, isCircular, codigoEmpresa, inTenantID);
             decimal? result = tipoProtocolo switch
             {
                 1 => ProtocolType1(codigoEmpresa, AA006_Entity),
@@ -109,7 +114,8 @@ namespace CSCore.Ifs.Eventos.Repository
             return result!.Value;
         }
 
-        private async Task<CSICP_AA006> MotandoESalvandoAA006Async(string? empresaID, string arquivo, decimal maxCircularValue, bool isCircular, int codigoEmpresa)
+        private async Task<CSICP_AA006> MotandoESalvandoAA006Async(
+            string? empresaID, string arquivo, decimal maxCircularValue, bool isCircular, int codigoEmpresa, int InTenantID)
         {
             //recupera AA006
             CSICP_AA006? AA006_Entity = await _appDbContext.OsusrE9aCsicpAa006s
@@ -130,9 +136,10 @@ namespace CSCore.Ifs.Eventos.Repository
                 AA006_Entity = new CSICP_AA006
                 {
                     Id = ID,
+                    TenantId = InTenantID,
                     Aa006Arquivo = arquivo,
                     Aa006Filial = codigoEmpresa,
-                    Aa006Filialid = empresaID == "" ? null : empresaID,
+                    Aa006Filialid = empresaID,
                     Aa006Circular = StaticaSIMNAO.Id,
                     Aa006Ci = 1,
                     Aa006Maxcircular = maxCircularValue,
