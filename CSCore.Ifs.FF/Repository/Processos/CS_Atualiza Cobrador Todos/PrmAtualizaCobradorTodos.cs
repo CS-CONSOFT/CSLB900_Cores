@@ -11,7 +11,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Atualiza_Cobrador_Todos
         public int InTenantID { get; set; }
         public string InBB012_ID  { get; set; } = string.Empty;
         public string InBB006_CobradorID  { get; set; } = string.Empty;
-        public string InBB006_CodigoCobrador  { get; set; } = string.Empty;
+        public string InSY001_ID  { get; set; } = string.Empty;
         public int InStIDFF102_Cob_Cobranca { get; set; }
         public int InStIDFF102_Sit_Aberto { get; set; }
         public int InStIDFF102_Sit_BxParcial { get; set; }

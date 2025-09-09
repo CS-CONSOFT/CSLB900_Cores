@@ -24,40 +24,19 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Atualiza_Cobrador_Todos
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
             {
-                CSICP_FF011 WorkFF011 = await _appDbContext.OsusrE9aCsicpFf011s.AsNoTracking().FirstOrDefaultAsync() ?? throw new KeyNotFoundException("FF011 não encontrada");
+                int WorkFf011DiasAtrasosDe = await RecuperaDiasAtrasoDeDaFF011();
+                List<CSICP_FF102> listaFF102 = await GetListFF102(InPrm, WorkFf011DiasAtrasosDe);
 
-                // Parâmetros de exemplo
-                DateTime qepCurrdate = DateTime.Today;
-
-
-                var resultado = await (from ff102 in _appDbContext.OsusrE9aCsicpFf102s
-
-                                       join bb001 in _appDbContext.E9ACSICP_BB001s on ff102.Ff102Filialid equals bb001.Id into bb001Join
-                                       from bb001 in bb001Join.DefaultIfEmpty()
-
-                                       join ff102Sit in _appDbContext.OsusrE9aCsicpFf102Sits on ff102.Ff102Situacaoid equals ff102Sit.Id into sitJoin
-                                       from ff102Sit in sitJoin.DefaultIfEmpty()
-
-                                       join ff104 in _appDbContext.OsusrE9aCsicpFf104s on ff102.Id equals ff104.Ff102Id into ff104Join
-                                       from ff104 in ff104Join.DefaultIfEmpty()
-
-                                       join sy001 in _appDbContext.OsusrE9aCsicpSy001s on ff102.Ff102Codcobrador equals sy001.Id into sy001Join
-                                       from sy001 in sy001Join.DefaultIfEmpty()
-
-                                       where ff102.Ff102Contaid == InPrm.InBB012_ID
-                                          && ff102.Ff102Tpcobranca == InPrm.InStIDFF102_Cob_Cobranca
-                                          && EF.Functions.DateDiffDay(ff102.Ff102DataVencimento, qepCurrdate) >= WorkFF011.Ff011DiasAtrasosDe
-                                          && (ff102.Ff102Situacaoid == InPrm.InStIDFF102_Sit_Aberto || ff102.Ff102Situacaoid == InPrm.InStIDFF102_Sit_BxParcial)
-                                       orderby ff102.Ff102DataVencimento ascending
-
-                                       select ff102).ToListAsync();
-
-
-                foreach (var item in resultado)
+                foreach (var ff102Corrente in listaFF102)
                 {
-                    item.Ff102Agcobradorid = InPrm.InBB006_CobradorID;
-                    item.Ff102Codcobrador = InPrm.InBB006_CodigoCobrador;
+                    ff102Corrente.Ff102Agcobradorid = InPrm.InBB006_CobradorID;
+                    ff102Corrente.Ff102Codcobrador = InPrm.InSY001_ID;
                 }
+                CSICP_FF125 WorkFF125 = await RecuperaFF125ParaUpdate(InPrm);
+
+                WorkFF125.Ff125AgcobradorId = InPrm.InBB006_CobradorID;
+                WorkFF125.Ff125Cobradorid = InPrm.InSY001_ID;
+
                 await _appDbContext.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
@@ -68,5 +47,29 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Atualiza_Cobrador_Todos
             }
         }
 
+        private async Task<CSICP_FF125> RecuperaFF125ParaUpdate(PrmAtualizaCobradorTodos InPrm)
+        {
+            return await _appDbContext.OsusrE9aCsicpFf125s
+                .Where(e => e.Ff125ContaId!.Equals(InPrm.InBB012_ID)).FirstOrDefaultAsync() ?? throw new KeyNotFoundException("WorkFF125 não encontrada!");
+        }
+
+        private async Task<int> RecuperaDiasAtrasoDeDaFF011()
+        {
+            return await _appDbContext.OsusrE9aCsicpFf011s.AsNoTracking().Select(e => e.Ff011DiasAtrasosDe).FirstOrDefaultAsync() ?? throw new KeyNotFoundException("FF011 não encontrada");
+        }
+
+        private async Task<List<CSICP_FF102>> GetListFF102(PrmAtualizaCobradorTodos InPrm, int IntFf011DiasAtrasosDe)
+        {
+            return await (from ff102 in _appDbContext.OsusrE9aCsicpFf102s
+
+ 
+                          where ff102.Ff102Contaid == InPrm.InBB012_ID
+                             && ff102.Ff102Tpcobranca == InPrm.InStIDFF102_Cob_Cobranca
+                             && EF.Functions.DateDiffDay(ff102.Ff102DataVencimento, DateTime.Today) >= IntFf011DiasAtrasosDe
+                             && (ff102.Ff102Situacaoid == InPrm.InStIDFF102_Sit_Aberto || ff102.Ff102Situacaoid == InPrm.InStIDFF102_Sit_BxParcial)
+                          orderby ff102.Ff102DataVencimento ascending
+
+                          select ff102).ToListAsync();
+        }
     }
 }
