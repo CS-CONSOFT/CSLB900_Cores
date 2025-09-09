@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSCore.Ifs.FF.Repository.TotalizadorCobranca
+namespace CSCore.Ifs.FF.Repository.TotalizadorConta
 {
-    public class DtoTotalizadorCobranca
+    public class DtoTotalizadorConta
     {
         public decimal Vl_Liq_TituloSum { get; set; }
         public int MaiorAtrasoMax { get; set; }

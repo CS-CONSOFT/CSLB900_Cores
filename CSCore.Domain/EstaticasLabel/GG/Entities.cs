@@ -1,4 +1,6 @@
-﻿namespace CSCore.Domain.EstaticasLabel.GG
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
+namespace CSCore.Domain.EstaticasLabel.GG
 {
     public static class Entities
     {
@@ -261,6 +263,12 @@
             public const string Publicado = "Publicado";
             public const string Encerrado = "Encerrado";
             public const string Aberto = "Aberto";
+        }
+
+        public static class Csicp_ff102_cob
+        {
+            public const string Cobranca = "Cobrança";
+            public const string Normal = "Normal";
         }
 
         public static class Csicp_ff102_Situacao
