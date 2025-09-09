@@ -694,6 +694,8 @@ namespace CSCore.Ifs.CS_Context
                     .WithMany()
                     .HasForeignKey(x => x.Ff013Contaid);
 
+
+
             });
 
             modelBuilder.Entity<CSICP_FF014>(entity =>

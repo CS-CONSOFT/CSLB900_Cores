@@ -21,7 +21,7 @@ public partial class CSICP_FF013
 
     public int? Ff013Tpregistro { get; set; }
 
-    public virtual CSICP_FF012? Ff013Grupocobranca { get; set; }
+
 
     // Navs
     public CSICP_BB001? NavBB001 { get; set; }
