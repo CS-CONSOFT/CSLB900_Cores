@@ -36,8 +36,8 @@ namespace CSCore.Ifs.FF.Repository.FF01X
 
         private IQueryable<RepoDtoCSICP_FF011> FiltraQuandoExisteFiltro(string in_estabID, string? in_tipoCobrancaID, string? in_categoriaID, IQueryable<RepoDtoCSICP_FF011> query)
         {
-            if (!string.IsNullOrEmpty(in_estabID))
-                query = query.Where(e => e.Id == in_estabID);
+            //if (!string.IsNullOrEmpty(in_estabID))
+            //    query = query.Where(e => e.Id == in_estabID);
 
             if (!string.IsNullOrEmpty(in_tipoCobrancaID))
                 query = query.Where(e => e.Ff011Tipocobrancaid == in_tipoCobrancaID);
