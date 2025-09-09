@@ -14,8 +14,4 @@
 	  <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repository\FF1XX\NovaPasta\" />
-  </ItemGroup>
-
 </Project>
