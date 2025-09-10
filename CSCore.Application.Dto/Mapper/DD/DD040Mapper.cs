@@ -18,7 +18,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
 {
     public static class DD040Mapper
     {
-        public static DtoGetDD040 ToDtoGet(this RepoDtoCSICP_DD040 entity)
+        public static DtoGetDD040 ToDtoGet(this CSICP_DD040 entity)
         {
             return new DtoGetDD040
             {
@@ -208,13 +208,12 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 Dd040Origemregpv = entity.Dd040Origemregpv,
                 Dd040Keyecommerce = entity.Dd040Keyecommerce,
                 NavBB001 = entity.NavBB001?.ToDtoGetBB001ListSimples(),
-                NavBB012Conta = entity.NavBB012Conta?.ToDtoGet(),
-                NavAA028byBB001 = entity.NavAA028byBB001?.ToDtoGet(),
-                NavAA027byBB001 = entity.NavAA027byBB001?.ToDtoGet(),
-                NavAA025byBB001 = entity.NavAA025byBB001?.ToDtoGet(),
+                NavAA028byBB001 = entity.NavBB001?.Cidade?.ToDtoGet(),
+                NavAA027byBB001 = entity.NavBB001?.Bb001Uf?.ToDtoGet(),
+                NavAA025byBB001 = entity.NavBB001?.Bb001Pais?.ToDtoGet(),
                 NavDD040Tnt = entity.NavDD040Tnt,
-                NavBB001Cfgfi = entity.NavBB001Cfgfi,
-                NavAA030Regime = entity.NavAA030Regime,
+                NavBB001Cfgfi = entity.NavBB001?.NavBB001Cfgfi,
+                NavAA030Regime = entity.NavBB001?.NavBB001Cfgfi?.Bb001Regimetributario,
                 NavSpedIcm = entity.NavSpedIcm,
                 NavDD909 = entity.NavDD909,
                 NavDD040Ipre = entity.NavDD040Ipre,
@@ -242,13 +241,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 W59D_VCBSMONORET = entity.W59D_VCBSMONORET,
                 W60_VTOTNF = entity.W60_VTOTNF,
                 B33_PREDUTOR = entity.B33_PREDUTOR,
-                B34_TPOPERGOVID = entity.B34_TPOPERGOVID,
-                NavListBB001AXML = entity.NavListBB001AXML.Select(e => e.ToDtoGet()).ToList(),
-                NavListDD041 = entity.NavListDD041.Select(e => e.ToDtoGetDD041()).ToList(),
-                NavListDD042 = entity.NavListDD042.Select(e => e.ToDtoGetDD042()).ToList(),
-                NavListDD044 = entity.NavListDD044.Select(e => e.ToDtoGetDD044()).ToList(),
-                NavListDD045 = entity.NavListDD045.Select(e => e.ToDtoGetDD045()).ToList(),
-                NavListDD048 = entity.NavListDD048.Select(e => e.ToDtoGetDD048()).ToList(),
+                B34_TPOPERGOVID = entity.B34_TPOPERGOVID
             };
         }
     }
