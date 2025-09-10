@@ -20,62 +20,111 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125.ContadorCobrancaConsulta
         }
 
 
-        public async Task<IEnumerable<RepoDtoContadorCobrancaConsulta>> CalcularContadorCobrancaConsulta(string InSY001_ID, int InTenantID)
+        public async Task<ListRepoDtoContadorCobrancaConsulta> CalcularContadorCobrancaConsulta(int InTenantID)
         {
+            var resultAgCobrador = await ContarPorAgenteCobradorEBanco(InTenantID);
+
+            var resultSitConta = await ContarPorSituacaoConta(InTenantID);
+
+            var resultZona = await ContarPorZona(InTenantID);
 
 
+            var listaresultAgCobradorProjedada = resultAgCobrador.Select(e => new RepoDtoContadorCobrancaConsulta
+            {
+                NomeTabela = "AGENTE_COBRADOR",
+                Contador = e.Contador,
+                TenantID = InTenantID,
+                Id = e.AgCobradorId,
+                Label = e.Banco
+            });
 
 
-            int WorkCountAgenteCobrador = await _appDbContext.OsusrE9aCsicpBb006s
-               .Where(e => e.Bb006Isactive == true && e.TenantId == InTenantID)
-               .CountAsync();
+            var listaresultSitContaProjedada = resultSitConta.Select(e => new RepoDtoContadorCobrancaConsulta
+            {
+                NomeTabela = "SIT_CTA",
+                Contador = e.Contador,
+                TenantID = InTenantID,
+                Id = e.SituacaoID.ToString(),
+                Label = e.SituacaoLabel
+            });
 
-            var WorkFf012UsuarioSuperId = await (from ff012 in _appDbContext.OsusrE9aCsicpFf012s
-                                           where ff012.Ff012Usuariosuperid == InSY001_ID
-                                           select ff012.Id).FirstOrDefaultAsync();
 
-            int WorkCountZona = await (from bb010 in _appDbContext.OsusrE9aCsicpBb010s
+            var listaresultZonaProjedada = resultZona.Select(e => new RepoDtoContadorCobrancaConsulta
+            {
+                NomeTabela = "ZONA",
+                Contador = e.Contador,
+                TenantID = InTenantID,
+                Id = e.ZonaID,
+                Label = e.Zona
+            });
 
-                                       join ff013 in _appDbContext.OsusrE9aCsicpFf013s
-                                       on bb010.Id equals ff013.Ff013Zonaid into ff013_joined
-                                       from ff013 in ff013_joined.DefaultIfEmpty()
-
-                                     
-
-                                       where bb010.Bb010Isactive == true
-                                       where bb010.TenantId == InTenantID
-                                       where ff013.Ff013Grupocobrancaid != null && ff013.Ff013Grupocobrancaid == WorkFf012UsuarioSuperId
-
-                                       select bb010)
-                                       .AsNoTracking()
-                                       .AsSplitQuery()
-                                       .CountAsync();
-
-            int WorkCountSitConta = await _appDbContext.OsusrE9aCsicpBb012Sitcta.CountAsync();
-
-            return
-            [
-                new RepoDtoContadorCobrancaConsulta
-                {
-                    NomeTabela = "AGENTE_COBRADOR",
-                    Contador = WorkCountAgenteCobrador,
-                    TenantID = InTenantID
-                },
-                new RepoDtoContadorCobrancaConsulta
-                {
-                   NomeTabela = "ZONA",
-                    Contador = WorkCountZona,
-                    TenantID = InTenantID
-                },
-                new RepoDtoContadorCobrancaConsulta
-                {
-                    NomeTabela = "SITUACAO CONTA",
-                    Contador = WorkCountSitConta,
-                    TenantID = InTenantID
-                }
-            ];
-
+            return new ListRepoDtoContadorCobrancaConsulta
+            {
+                ListaCountAgCobrador = listaresultAgCobradorProjedada,
+                ListaCountSitCta = listaresultSitContaProjedada,
+                ListaCountZona = listaresultZonaProjedada
+            };
         }
 
+
+
+        // Query 2: Contagem por agente cobrador e banco
+        public async Task<IEnumerable<(string AgCobradorId, string Banco, int Contador)>> ContarPorAgenteCobradorEBanco(int tenantId)
+        {
+            return await (from ff125 in _appDbContext.OsusrE9aCsicpFf125s
+                          join bb006 in _appDbContext.OsusrE9aCsicpBb006s
+                          on ff125.Ff125AgcobradorId equals bb006.Id
+                          where ff125.TenantId == tenantId && ff125.Ff125Isactive == true
+                          group ff125 by new { ff125.Ff125AgcobradorId, bb006.Bb006Banco } into g
+                          orderby g.Key.Bb006Banco
+                          select new ValueTuple<string, string, int>(
+                              g.Key.Ff125AgcobradorId,
+                              g.Key.Bb006Banco,
+                              g.Count()
+                          )).ToListAsync();
+        }
+
+        // Query 3: Contagem por situação da conta
+        public async Task<IEnumerable<(int SituacaoID, string SituacaoLabel, int Contador)>> ContarPorSituacaoConta(int tenantId)
+        {
+            return await (from ff125 in _appDbContext.OsusrE9aCsicpFf125s
+
+                          join bb012 in _appDbContext.OsusrE9aCsicpBb012s
+                          on ff125.Ff125ContaId equals bb012.Id
+
+                          join sitCta in _appDbContext.OsusrE9aCsicpBb012Sitcta
+                          on bb012.Bb012SitContaId equals (int?)sitCta.Id
+
+                          where ff125.TenantId == tenantId && ff125.Ff125Isactive == true
+
+                          group ff125 by new { sitCta.Id, sitCta.Label } into g
+
+                          orderby g.Key.Id, g.Key.Label
+                          select new ValueTuple<int, string, int>(
+                              g.Key.Id,
+                              g.Key.Label ?? string.Empty,
+                              g.Count()
+                          )).ToListAsync();
+        }
+
+        // Query 4: Contagem por zona
+        public async Task<IEnumerable<(string ZonaID, string Zona, int Contador)>> ContarPorZona(int tenantId)
+        {
+            return await (from ff125 in _appDbContext.OsusrE9aCsicpFf125s
+                          join bb012 in _appDbContext.OsusrE9aCsicpBb012s
+                          on ff125.Ff125ContaId equals bb012.Id
+                          join bb01201 in _appDbContext.OsusrE9aCsicpBb01201s
+                          on bb012.Id equals bb01201.Id
+                          join bb010 in _appDbContext.OsusrE9aCsicpBb010s
+                          on bb01201.Bb012Zonaid equals bb010.Id
+                          where ff125.TenantId == tenantId && ff125.Ff125Isactive == true
+                          group ff125 by new { bb010.Id, bb010.Bb010Zona } into g
+                          orderby g.Key.Id, g.Key.Bb010Zona
+                          select new ValueTuple<string, string, int>(
+                              g.Key.Id,
+                              g.Key.Bb010Zona ?? string.Empty,
+                              g.Count()
+                          )).ToListAsync();
+        }
     }
 }
