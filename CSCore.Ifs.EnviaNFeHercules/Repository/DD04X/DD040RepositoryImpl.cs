@@ -499,7 +499,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                         && dd041.Dd040Id == in_dd040Id
 
                         join bb012Trasportadora in _appDbContext.OsusrE9aCsicpBb012s
-                        on dd041.Dd041ContaId equals bb012Trasportadora.Id into bb012Trasportadora_join
+                        on dd041.Dd041TransportadoraId equals bb012Trasportadora.Id into bb012Trasportadora_join
                         from bb012Trasportadora in bb012Trasportadora_join.DefaultIfEmpty()
 
                         join aa025pais in _appDbContext.OsusrE9aCsicpAa025s
