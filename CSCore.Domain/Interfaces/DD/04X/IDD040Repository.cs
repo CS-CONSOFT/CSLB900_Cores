@@ -9,7 +9,6 @@ namespace CSCore.Domain.Interfaces.DD._04X
         Task<List<RepoCSICP_DD042>> GetListAsyncDD042(int in_tenant, string in_dd040Id);
 
         Task<List<CSICP_DD041>> GetListAsyncDD041(int in_tenant, string in_dd040Id);
-        Task<List<RepoCSICP_DD042>> GetListAsyncDD042(int in_tenant, string in_dd040Id);
         Task<List<CSICP_DD044>> GetListAsyncDD044InfoAdicionais(int in_tenant, string in_dd040Id);
         Task<List<CSICP_DD045>> GetListAsyncDD045Observacoes(int in_tenant, string in_dd040Id);
         Task<List<CSICP_DD048>> GetListAsyncDD048NotasReferenciadas(int in_tenant, string in_dd040Id);
