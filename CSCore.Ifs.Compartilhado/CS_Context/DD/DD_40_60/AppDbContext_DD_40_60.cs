@@ -623,15 +623,50 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnType("decimal(15, 2)")
                     .HasColumnName("W06E_VICMSMONORET");
 
-                //entity.HasOne(d => d.Dd040SituacaoNavigation).WithMany(p => p.OsusrTeiCsicpDd040s)
-                //    .HasForeignKey(d => d.Dd040Situacao)
-                //    .HasConstraintName("OSFRK_OSUSR_TEI_CSICP_DD040_OSUSR_TEI_CSICP_DD040_SIT_DD040_SITUACAO");
+                // CSICP_DD040 -> CSICP_BB001
+                modelBuilder.Entity<CSICP_DD040>()
+                    .HasOne(e => e.NavBB001)
+                    .WithMany()
+                    .HasForeignKey(e => e.Dd040Empresaid)
+                    .HasPrincipalKey(b => b.Id);
 
 
-                //entity.HasOne(d => d.Dd040Tiponota).WithMany(p => p.OsusrTeiCsicpDd040s)
-                //    .HasForeignKey(d => d.Dd040TiponotaId)
-                //    .HasConstraintName("OSFRK_OSUSR_TEI_CSICP_DD040_OSUSR_TEI_CSICP_DD040_TNT_DD040_TIPONOTA_ID");
 
+                // CSICP_DD040 -> CSICP_DD040Tnt
+                modelBuilder.Entity<CSICP_DD040>()
+                    .HasOne(e => e.NavDD040Tnt)
+                    .WithMany()
+                    .HasForeignKey(e => e.Dd040TiponotaId)
+                    .HasPrincipalKey(t => t.Id);
+
+
+                // CSICP_DD040 -> OsusrNnxSpedInDocIcm
+                modelBuilder.Entity<CSICP_DD040>()
+                    .HasOne(e => e.NavSpedIcm)
+                    .WithMany()
+                    .HasForeignKey(e => e.Dd040ModId)
+                    .HasPrincipalKey(i => i.Id);
+
+                // CSICP_DD040 -> CSICP_DD909
+                modelBuilder.Entity<CSICP_DD040>()
+                    .HasOne(e => e.NavDD909)
+                    .WithMany()
+                    .HasForeignKey(e => e.Dd040Tpemis)
+                    .HasPrincipalKey(d => d.Id);
+
+                // CSICP_DD040 -> CSICP_DD040Ipre
+                modelBuilder.Entity<CSICP_DD040>()
+                    .HasOne(e => e.NavDD040Ipre)
+                    .WithMany()
+                    .HasForeignKey(e => e.Dd040Indpres)
+                    .HasPrincipalKey(i => i.Id);
+
+                // CSICP_DD040 -> CSICP_DD041Frete
+                modelBuilder.Entity<CSICP_DD040>()
+                    .HasOne(e => e.NavDD041Frete)
+                    .WithMany()
+                    .HasForeignKey(e => e.Dd040Modalidadefrete)
+                    .HasPrincipalKey(f => f.Id);
             });
 
             modelBuilder.Entity<CSICP_DD040Estq>(entity =>
