@@ -47,6 +47,7 @@ namespace CSBS101._82Application.Dto.AA00X
 
         public string? Aa028Cidade { get; set; }
 
+        public int? Aa028Codgibge { get; set; }
 
     }
 }

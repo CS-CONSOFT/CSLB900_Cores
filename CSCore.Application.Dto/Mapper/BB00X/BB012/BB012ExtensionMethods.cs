@@ -16,6 +16,7 @@ using CSBS101._82Application.Mapper.AA00X.AA025;
 using CSBS101._82Application.Mapper.AA00X.AA027;
 using CSBS101._82Application.Mapper.AA00X.AA028;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSBS101.C82Application.Dto.BB00X.BB012.Get;
 using CSBS101.C82Application.Dto.BB00X.BB012.Get.BB1207;
 using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get;
 using CSCore.Domain;
@@ -924,17 +925,42 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
             };
         }
 
-
+        public static Dto_GetBB012Convenio ToDtoGet(this CSICP_BB012 entity)
+        {
+            return new Dto_GetBB012Convenio
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Bb012Codigo = entity.Bb012Codigo,
+                Bb012NomeCliente = entity.Bb012NomeCliente,
+                Bb012NomeFantasia = entity.Bb012NomeFantasia,
+                Bb012DataAniversario = entity.Bb012DataAniversario,
+                Bb012DataCadastro = entity.Bb012DataCadastro,
+                Bb012Telefone = entity.Bb012Telefone,
+                Bb012Faxcelular = entity.Bb012Faxcelular,
+                Bb012HomePage = entity.Bb012HomePage,
+                Bb012Email = entity.Bb012Email,
+                Bb012DataEntradaSit = entity.Bb012DataEntradaSit,
+                Bb012DataSaidaSit = entity.Bb012DataSaidaSit,
+                Bb012Descricao = entity.Bb012Descricao,
+                Bb012IsActive = entity.Bb012IsActive,
+                Bb012TipoContaId = entity.Bb012TipoContaId,
+                Bb012GrupocontaId = entity.Bb012GrupocontaId,
+                Bb012ClassecontaId = entity.Bb012ClassecontaId,
+                Bb012StatuscontaId = entity.Bb012StatuscontaId,
+                Bb012SitContaId = entity.Bb012SitContaId,
+                Bb012ModrelacaoId = entity.Bb012ModrelacaoId,
+                Bb012Sequence = entity.Bb012Sequence,
+                Bb012Dultalteracao = entity.Bb012Dultalteracao,
+                Bb012Estabcadid = entity.Bb012Estabcadid,
+                Bb012Keyacess = entity.Bb012Keyacess,
+                Bb012IdIndicador = entity.Bb012IdIndicador,
+                Bb012Countappmcon = entity.Bb012Countappmcon,
+                Bb012Oricadastroid = entity.Bb012Oricadastroid
+            };
+        }
     }
 }
-
-
-
-
-
-
-
-
 
 
 
