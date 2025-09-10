@@ -39,7 +39,7 @@ namespace CSBS101._82Application.Mapper.AA00X.AA028
                 TenantId = entity.TenantId,
                 Id = entity.Id,
                 Aa028Cidade = entity.Aa028Cidade,
-
+                Aa028Codgibge = entity.Aa028Codgibge
             };
         }
 
