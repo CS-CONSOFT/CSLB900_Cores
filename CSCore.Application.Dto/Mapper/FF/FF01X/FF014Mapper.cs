@@ -7,7 +7,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF01X
 {
     public static class FF014Mapper
     {
-        public static DtoGetFF014 ToDtoGet(this RepoDtoCSICP_FF014 entity)
+        public static DtoGetFF014 ToDtoGet(this CSICP_FF014 entity)
         {
             return new DtoGetFF014
             {
@@ -21,7 +21,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF01X
                 Ff014Diasate = entity.Ff014Diasate,
                 Ff014Perccomissao = entity.Ff014Perccomissao,
                 NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
-                NavFF014ComissaoPai = entity.NavFF014ComissaoPai?.ToDtoGetSimples()
+                NavFF014ComissaoFilho = entity.NavFF014ComissaoFilho?.ToDtoGetSimples()
             };
         }
 
