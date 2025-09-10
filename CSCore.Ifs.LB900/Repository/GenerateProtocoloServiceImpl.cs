@@ -78,7 +78,7 @@ namespace CSCore.Ifs.Eventos.Repository
 
 
         private async Task<decimal> CS_Protocolo_Kernel_InternalAsync
-           (string? empresaID,
+           (string empresaID,
            string arquivo,
            int tipoProtocolo,
            int inTenantID,
@@ -115,12 +115,13 @@ namespace CSCore.Ifs.Eventos.Repository
         }
 
         private async Task<CSICP_AA006> MotandoESalvandoAA006Async(
-            string? empresaID, string arquivo, decimal maxCircularValue, bool isCircular, int codigoEmpresa, int InTenantID)
+            string empresaID, string arquivo, decimal maxCircularValue, bool isCircular, int codigoEmpresa, int InTenantID)
         {
             //recupera AA006
             CSICP_AA006? AA006_Entity = await _appDbContext.OsusrE9aCsicpAa006s
                 .Where(e => e.Aa006Filialid == empresaID)
                 .Where(e => e.Aa006Arquivo == arquivo)
+                .Where(e => e.TenantId == InTenantID) 
                 .FirstOrDefaultAsync();
 
             if (AA006_Entity != null)
@@ -139,7 +140,7 @@ namespace CSCore.Ifs.Eventos.Repository
                     TenantId = InTenantID,
                     Aa006Arquivo = arquivo,
                     Aa006Filial = codigoEmpresa,
-                    Aa006Filialid = empresaID == "" ? null : empresaID,
+                    Aa006Filialid = empresaID, // Melhor tratamento para string vazia
                     Aa006Circular = StaticaSIMNAO.Id,
                     Aa006Ci = 1,
                     Aa006Maxcircular = maxCircularValue,
