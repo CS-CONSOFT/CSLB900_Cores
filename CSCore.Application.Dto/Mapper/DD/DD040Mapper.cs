@@ -2,6 +2,8 @@
 using CSBS101._82Application.Mapper.AA00X.AA027;
 using CSBS101._82Application.Mapper.AA00X.AA028;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSBS101._82Application.Mapper.BB00X.BB012;
+using CSCore.Application.Dto.Mapper.DD;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using EnviaNFeHercules.C82Application.Dto.DD.DD040;
 using EnviaNFeHercules.C82Application.Mapper.DD00X;
@@ -206,6 +208,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 Dd040Origemregpv = entity.Dd040Origemregpv,
                 Dd040Keyecommerce = entity.Dd040Keyecommerce,
                 NavBB001 = entity.NavBB001?.ToDtoGetBB001ListSimples(),
+                NavBB012Conta = entity.NavBB012Conta?.ToDtoGet(),
                 NavAA028byBB001 = entity.NavAA028byBB001?.ToDtoGet(),
                 NavAA027byBB001 = entity.NavAA027byBB001?.ToDtoGet(),
                 NavAA025byBB001 = entity.NavAA025byBB001?.ToDtoGet(),
@@ -241,6 +244,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 B33_PREDUTOR = entity.B33_PREDUTOR,
                 B34_TPOPERGOVID = entity.B34_TPOPERGOVID,
                 NavListBB001AXML = entity.NavListBB001AXML.Select(e => e.ToDtoGet()).ToList(),
+                NavListDD041 = entity.NavListDD041.Select(e => e.ToDtoGetDD041()).ToList(),
                 NavListDD042 = entity.NavListDD042.Select(e => e.ToDtoGetDD042()).ToList(),
                 NavListDD044 = entity.NavListDD044.Select(e => e.ToDtoGetDD044()).ToList(),
                 NavListDD045 = entity.NavListDD045.Select(e => e.ToDtoGetDD045()).ToList(),

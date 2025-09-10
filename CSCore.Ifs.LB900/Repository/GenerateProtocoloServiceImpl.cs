@@ -139,7 +139,7 @@ namespace CSCore.Ifs.Eventos.Repository
                     TenantId = InTenantID,
                     Aa006Arquivo = arquivo,
                     Aa006Filial = codigoEmpresa,
-                    Aa006Filialid = empresaID,
+                    Aa006Filialid = empresaID == "" ? null : empresaID,
                     Aa006Circular = StaticaSIMNAO.Id,
                     Aa006Ci = 1,
                     Aa006Maxcircular = maxCircularValue,

@@ -1,7 +1,9 @@
 ﻿using CSBS101._82Application.Dto.AA00X;
 using CSBS101._82Application.Dto.BB00X.BB001;
 using CSBS101._82Application.Dto.BB00X.BB001.BB001Xml;
+using CSBS101.C82Application.Dto.BB00X.BB012.Get;
 using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Dtos.DD.DD041;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using EnviaNFeHercules.C82Application.Dto.DD.DD042;
@@ -419,6 +421,8 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD040
 
         //------------------------------------------------------------//
         public Dto_GetBB001ListSimples? NavBB001 { get; set; }
+        public Dto_GetBB012Convenio? NavBB012Conta { get; set; }
+
         public Dto_GetAA028? NavAA028byBB001 { get; set; }
         public Dto_GetAA027? NavAA027byBB001 { get; set; }
         public Dto_GetAA025? NavAA025byBB001 { get; set; }
@@ -429,6 +433,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD040
         public CSICP_DD909? NavDD909 { get; set; }
         public CSICP_DD040Ipre? NavDD040Ipre { get; set; }
         public CSICP_DD041Frete? NavDD041Frete { get; set; }
+        public List<DtoGetDD041> NavListDD041 { get; set; } = new List<DtoGetDD041>();
         public List<DtoGetDD044> NavListDD044 { get; set; } = new List<DtoGetDD044>();
         public List<DtoGetDD045> NavListDD045 { get; set; } = new List<DtoGetDD045>();
         public List<DtoGetDD048> NavListDD048 { get; set; } = new List<DtoGetDD048>();

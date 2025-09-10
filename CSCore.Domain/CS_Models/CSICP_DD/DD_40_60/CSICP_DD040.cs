@@ -456,7 +456,7 @@ public partial class CSICP_DD040
 public class RepoDtoCSICP_DD040 : CSICP_DD040
 {
     public CSICP_BB001? NavBB001 { get; set; }
-
+    public CSICP_BB012? NavBB012Conta { get; set; }
     public CSICP_Aa028? NavAA028byBB001 { get; set; }
     public CSICP_Aa027? NavAA027byBB001 { get; set; }
     public CSICP_Aa025? NavAA025byBB001 { get; set; }
@@ -467,6 +467,7 @@ public class RepoDtoCSICP_DD040 : CSICP_DD040
     public CSICP_DD909? NavDD909 { get; set; }
     public CSICP_DD040Ipre? NavDD040Ipre { get; set; }
     public CSICP_DD041Frete? NavDD041Frete { get; set; }
+    public List<CSICP_DD041> NavListDD041 { get; set; } = new List<CSICP_DD041>();
     public List<CSICP_DD044> NavListDD044 { get; set; } = new List<CSICP_DD044>();
     public List<CSICP_DD045> NavListDD045 { get; set; } = new List<CSICP_DD045>();
     public List<CSICP_DD048> NavListDD048 { get; set; } = new List<CSICP_DD048>();

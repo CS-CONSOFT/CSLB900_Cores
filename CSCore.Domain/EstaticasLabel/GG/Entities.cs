@@ -137,6 +137,12 @@ namespace CSCore.Domain.EstaticasLabel.GG
             public const string Saida = "Saida";
         }
 
+        public static class FF102_Cob
+        {
+            public const string Normal = "Normal";
+            public const string Cobranca = "Cobrança";
+        }
+
         public static class BB01201_Con
         {
             public const string AVista = "A Vista";
