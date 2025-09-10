@@ -517,6 +517,12 @@ namespace CSCore.Ifs.CS_Context
                     .HasMaxLength(36)
                     .HasColumnName("FF102_ID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+
+                entity.HasOne(e => e.NavSy001Solicitante).WithMany().HasForeignKey(e => e.Ff006Usuariosolicid);
+                entity.HasOne(e => e.NavSy001Resgate).WithMany().HasForeignKey(e => e.Ff006Usuarioresgid);
+                entity.HasOne(e => e.NavFF006Sta).WithMany().HasForeignKey(e => e.Ff006Statusid);
+
             });
 
             modelBuilder.Entity<CSICP_FF007>(entity =>
