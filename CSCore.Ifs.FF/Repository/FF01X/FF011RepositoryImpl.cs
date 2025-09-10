@@ -21,11 +21,10 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return CSICP_FF011;
         }
 
-        public async Task<(List<RepoDtoCSICP_FF011>, int)> GetListAsync(int in_tenantID, int in_pageNumber, int in_pageSize, 
-            string in_estabID, string? in_tipoCobrancaID, string? in_categoriaID)
+        public async Task<(List<RepoDtoCSICP_FF011>, int)> GetListAsync(int in_tenantID, int in_pageNumber, int in_pageSize, string? in_tipoCobrancaID, string? in_categoriaID)
         {
             IQueryable<RepoDtoCSICP_FF011> query = GetQueryBase(in_tenantID);
-            query = FiltraQuandoExisteFiltro(in_estabID, in_tipoCobrancaID, in_categoriaID, query);
+            query = FiltraQuandoExisteFiltro(in_tipoCobrancaID, in_categoriaID, query);
 
             var queryCount = query;
             var count = queryCount.Count();
@@ -34,11 +33,8 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF011> FiltraQuandoExisteFiltro(string in_estabID, string? in_tipoCobrancaID, string? in_categoriaID, IQueryable<RepoDtoCSICP_FF011> query)
+        private IQueryable<RepoDtoCSICP_FF011> FiltraQuandoExisteFiltro(string? in_tipoCobrancaID, string? in_categoriaID, IQueryable<RepoDtoCSICP_FF011> query)
         {
-            //if (!string.IsNullOrEmpty(in_estabID))
-            //    query = query.Where(e => e.Id == in_estabID);
-
             if (!string.IsNullOrEmpty(in_tipoCobrancaID))
                 query = query.Where(e => e.Ff011Tipocobrancaid == in_tipoCobrancaID);
 
