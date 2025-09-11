@@ -1,4 +1,6 @@
-﻿using CSCore.Domain.CS_Models.Staticas.GG;
+﻿using CSCore.Domain.CS_Models.CSICP_GG;
+using CSCore.Domain.CS_Models.Staticas.GG;
+using GG104Materiais.C82Application.Dto.GG00X.GG001;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG054
 {
@@ -39,5 +41,8 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG054
         public bool? Gg054Ismarcado { get; set; }
 
         public OsusrE9aCsicpGg054Stum? Gg054StatusNavigation { get; set; }
+
+
+        public DtoGetGG001Simples? NavGG001Almox { get; set; }
     }
 }

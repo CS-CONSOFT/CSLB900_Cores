@@ -107,7 +107,8 @@ namespace CSCore.Ifs.Repository.GG._05X
                                                                            where _CSICP_GG032.TenantId == prm.tenant
                                                                            where _CSICP_GG032.Gg032Protocolnumber == prm.Prm_GG032_Prt
                                                                            select _CSICP_GG032;
-                        CSICP_GG032? GG032Corrente = await queryProdutosColetaGG032.FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Movimento do inventário não encontrado");
+                        CSICP_GG032? GG032Corrente = await queryProdutosColetaGG032.FirstOrDefaultAsync() 
+                            ?? throw new KeyNotFoundException("Movimento do inventário não encontrado");
                         v_GG032_ID = GG032Corrente.Id;
                         if (GG032Corrente.Gg032StatusId == prm.csicp_gg032_Sta_SolicitadoID)
                         {
@@ -255,6 +256,10 @@ namespace CSCore.Ifs.Repository.GG._05X
 
             IQueryable<CSICP_GG054> query = from _CSICP_GG054 in _appDbContext.OsusrE9aCsicpGg054s
                                             where _CSICP_GG054.TenantId == tenant
+
+                                            
+
+
                                             select new CSICP_GG054
                                             {
 
@@ -276,6 +281,10 @@ namespace CSCore.Ifs.Repository.GG._05X
                                                 Gg054DocInvent = _CSICP_GG054.Gg054DocInvent,
                                                 Gg054Ismarcado = _CSICP_GG054.Gg054Ismarcado,
                                             };
+
+            query.Include(e => e.Gg054StatusNavigation);
+            query.Include(e => e.NavGG001Almox);
+
             return query;
         }
 

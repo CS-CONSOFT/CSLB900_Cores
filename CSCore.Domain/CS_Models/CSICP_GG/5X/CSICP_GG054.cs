@@ -40,5 +40,7 @@ public partial class CSICP_GG054
 
     public OsusrE9aCsicpGg054Stum? Gg054StatusNavigation { get; set; }
 
+    public CSICP_GG001? NavGG001Almox { get; set; }
+
     public CSICP_GG055? NavProdutosColetaGG055 { get; set; }
 }
