@@ -544,6 +544,9 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnType("decimal(6, 2)")
                     .HasColumnName("FF007_PDESCONTO");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+                entity.HasOne(e => e.NavBB001).WithMany().HasForeignKey(e => e.Ff007Estabid);
+
             });
 
             modelBuilder.Entity<CSICP_FF011>(entity =>
@@ -626,10 +629,11 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF014_COMISSAOSUPERID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-
-
-
-
+                entity.HasOne(e => e.NavBB001).WithMany().HasForeignKey(e => e.Ff012Filialid);
+                entity.HasOne(e => e.NavSY001).WithMany().HasForeignKey(e => e.Ff012Usuariosuperid);
+                entity.HasOne(e => e.NavFF014ComissaoSuper).WithMany().HasForeignKey(e => e.Ff014Comissaosuperid);
+                entity.HasOne(e => e.NavFF014ComissaoCobrador).WithMany().HasForeignKey(e => e.Ff014Comissaocobradorid);
+                entity.HasOne(e => e.NavFF012GrupoPai).WithMany().HasForeignKey(e => e.Ff012Grupopaiid);
 
             });
 
@@ -3628,10 +3632,12 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("NN015_BXTESOURARIAID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-
-
-
-
+                entity.HasOne(e => e.NavBB001).WithMany().HasForeignKey(e => e.Ff113Filialid);
+                entity.HasOne(e => e.NavFF112).WithMany().HasForeignKey(e => e.Ff113RefConfBanco);
+                entity.HasOne(e => e.NavFF113Tipo).WithMany().HasForeignKey(e => e.Ff113Tipo);
+                entity.HasOne(e => e.NavSy001).WithMany().HasForeignKey(e => e.Ff113Usuariopropr);
+                entity.HasOne(e => e.NavFF105).WithMany().HasForeignKey(e => e.Ff113Borderoid);
+                entity.HasOne(e => e.NavFF112C004).WithMany().HasForeignKey(e => e.Ff113Codgmovtoremessa);
 
             });
 
@@ -3812,6 +3818,12 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnType("decimal(37, 8)")
                     .HasColumnName("FF116_VVALORANTERIOR");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+                entity.HasOne(e => e.NavBB001).WithMany().HasForeignKey(e => e.Ff116Filialid);
+                entity.HasOne(e => e.NavFF116TMov).WithMany().HasForeignKey(e => e.Ff116Tipomovto);
+                entity.HasOne(e => e.NavSY001).WithMany().HasForeignKey(e => e.Ff116Usuariopropid);
+                entity.HasOne(e => e.NavFF102).WithMany().HasForeignKey(e => e.Ff102Tituloid);
+
 
             });
 

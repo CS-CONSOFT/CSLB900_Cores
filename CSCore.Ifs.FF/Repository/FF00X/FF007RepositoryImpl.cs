@@ -17,16 +17,16 @@ namespace CSCore.Ifs.FF.Repository.FF00X
         : RepositorioBaseImpl<CSICP_FF007>(appDbContext, "Ff007Id"), IFF007Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task<RepoDtoCSICP_FF007?> GetByIdAsync(int tenant, long id)
+        public async Task<CSICP_FF007?> GetByIdAsync(int tenant, long id)
         {
-            IQueryable<RepoDtoCSICP_FF007> query = GetQueryBase(tenant);
-            RepoDtoCSICP_FF007? cSICP_FF007 = await query.FirstOrDefaultAsync(e => e.Ff007Id == id);
+            IQueryable<CSICP_FF007> query = GetQueryBase(tenant);
+            CSICP_FF007? cSICP_FF007 = await query.FirstOrDefaultAsync(e => e.Ff007Id == id);
             return cSICP_FF007;
         }
 
-        public async Task<(List<RepoDtoCSICP_FF007>, int)> GetListAsync(int tenant, string? estabelecimentoId, int page, int pageSize)
+        public async Task<(List<CSICP_FF007>, int)> GetListAsync(int tenant, string? estabelecimentoId, int page, int pageSize)
         {
-            IQueryable<RepoDtoCSICP_FF007> query = GetQueryBase(tenant);
+            IQueryable<CSICP_FF007> query = GetQueryBase(tenant);
             query = FiltraQuandoExisteFiltro(estabelecimentoId, query);
 
             var queryCount = query;
@@ -35,14 +35,14 @@ namespace CSCore.Ifs.FF.Repository.FF00X
             return (await query.ToListAsync(), count);
         }
 
-        private static IQueryable<RepoDtoCSICP_FF007> FiltraQuandoExisteFiltro(string? estabelecimentoId, IQueryable<RepoDtoCSICP_FF007> query)
+        private static IQueryable<CSICP_FF007> FiltraQuandoExisteFiltro(string? estabelecimentoId, IQueryable<CSICP_FF007> query)
         {
             if (estabelecimentoId != null)
                 query = query.Where(e => e.Ff007Estabid!.Equals(estabelecimentoId));
             return query;
         }
 
-        private IQueryable<RepoDtoCSICP_FF007> GetQueryBase(int tenant)
+        private IQueryable<CSICP_FF007> GetQueryBase(int tenant)
         {
             return from ff007 in _appDbContext.OsusrE9aCsicpFf007s
 
@@ -52,7 +52,7 @@ namespace CSCore.Ifs.FF.Repository.FF00X
 
                    where ff007.TenantId == tenant
 
-                   select new RepoDtoCSICP_FF007
+                   select new CSICP_FF007
                    {
                        TenantId = ff007.TenantId,
                        Ff007Id = ff007.Ff007Id,
