@@ -16,16 +16,16 @@ namespace CSCore.Ifs.FF.Repository.FF01X
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<RepoDtoCSICP_FF017?> GetByIdAsync(int in_tenant, string in_ff017Id)
+        public async Task<CSICP_FF017?> GetByIdAsync(int in_tenant, string in_ff017Id)
         {
-            IQueryable<RepoDtoCSICP_FF017> query = GetQueryBase(in_tenant);
-            RepoDtoCSICP_FF017? cSICP_FF017 = await query
+            IQueryable<CSICP_FF017> query = GetQueryBase(in_tenant);
+            CSICP_FF017? cSICP_FF017 = await query
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == in_ff017Id);
             return cSICP_FF017;
         }
 
-        private IQueryable<RepoDtoCSICP_FF017> GetQueryBase(int in_tenant)
+        private IQueryable<CSICP_FF017> GetQueryBase(int in_tenant)
         {
             return from ff017 in _appDbContext.OsusrE9aCsicpFf017s
                    .AsNoTracking()
@@ -75,7 +75,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                    from sy001 in sy001_ff017_join.DefaultIfEmpty()
 
                    where ff017.TenantId == in_tenant
-                   select new RepoDtoCSICP_FF017
+                   select new CSICP_FF017
                    {
                        TenantId = ff017.TenantId,
                        Id = ff017.Id,
@@ -211,10 +211,10 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                    };
         }
 
-        public async Task<(List<RepoDtoCSICP_FF017>, int)> GetListAsync(int in_tenant, string in_estabId,
+        public async Task<(List<CSICP_FF017>, int)> GetListAsync(int in_tenant, string in_estabId,
             string? in_nomeCliente, DateTime? in_dataInicial, DateTime? in_dataFinal, int in_page, int in_pageSize)
         {
-            IQueryable<RepoDtoCSICP_FF017> query = GetQueryBase(in_tenant);
+            IQueryable<CSICP_FF017> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_estabId, in_nomeCliente, in_dataInicial, in_dataFinal, query);
 
             var queryCount = query;
@@ -224,8 +224,8 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF017> FiltraQuandoExisteFiltro(string in_estabId, string? in_nomeCliente,
-            DateTime? in_dataInicial, DateTime? in_dataFinal, IQueryable<RepoDtoCSICP_FF017> query)
+        private IQueryable<CSICP_FF017> FiltraQuandoExisteFiltro(string in_estabId, string? in_nomeCliente,
+            DateTime? in_dataInicial, DateTime? in_dataFinal, IQueryable<CSICP_FF017> query)
         {
             if (in_estabId != null)
                 query = query.Where(e => e.Id!.Equals(in_estabId));
