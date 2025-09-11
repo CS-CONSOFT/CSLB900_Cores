@@ -2066,6 +2066,10 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
 
+
+
+
+
             });
 
             modelBuilder.Entity<CSICP_DD060Estq>(entity =>
