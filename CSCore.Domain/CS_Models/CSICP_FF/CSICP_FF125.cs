@@ -49,7 +49,6 @@ public partial class CSICP_FF125
 
     public decimal? Ff125Longitude { get; set; }
 
-    public virtual CSICP_FF002? Ff125Motivo { get; set; }
-
-    public virtual CSICP_FF998? Ff125Sitcobent { get; set; }
+    public CSICP_BB012? NavBB012Conta { get; set; }
+    public CSICP_FF002? NavFF002Motivo { get; set; }
 }

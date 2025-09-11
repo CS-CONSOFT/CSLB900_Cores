@@ -4199,7 +4199,8 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF125_TOTALABERTO");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-
+                entity.HasOne(e => e.NavBB012Conta).WithMany().HasForeignKey(e => e.Ff125ContaId);
+                entity.HasOne(e => e.NavFF002Motivo).WithMany().HasForeignKey(e => e.Ff125Motivoid);
 
 
             });
