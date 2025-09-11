@@ -16,7 +16,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
             _appDbContext = appDbContext;
         }
 
-        public async Task<List<CSICP_FF125>> GetListAsync(int InTenantID, PrmFiltrosFF125 InPrmFiltrosFF125)
+        public async Task<(List<CSICP_FF125>, int)> GetListAsync(int InTenantID, PrmFiltrosFF125 InPrmFiltrosFF125)
         {
             var query = _appDbContext.OsusrE9aCsicpFf125s
                 .Include(e => e.NavBB012Conta)
@@ -26,9 +26,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
                 .Where(e => e.TenantId == InTenantID);
 
             query = FiltraQuandoExisteFiltro(query, InPrmFiltrosFF125);
+            var queryCount = query;
+            var count = queryCount.Count();
             query = query.PaginacaoNoBanco(InPrmFiltrosFF125.PageNumber, InPrmFiltrosFF125.PageSize);
 
-            return await query.ToListAsync();
+            return (await query.ToListAsync(), count);
         }
 
         private IQueryable<CSICP_FF125> FiltraQuandoExisteFiltro(IQueryable<CSICP_FF125> query, PrmFiltrosFF125 InPrmFiltrosFF125)

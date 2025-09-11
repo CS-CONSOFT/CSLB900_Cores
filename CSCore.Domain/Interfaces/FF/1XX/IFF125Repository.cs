@@ -11,7 +11,7 @@ namespace CSCore.Domain.Interfaces.FF._1XX
     
     public interface IFF125Repository
     {
-        Task<List<CSICP_FF125>> GetListAsync(int InTenantID,PrmFiltrosFF125 InPrmFiltrosFF125);
+        Task<(List<CSICP_FF125>, int)> GetListAsync(int InTenantID,PrmFiltrosFF125 InPrmFiltrosFF125);
     }
 
   
