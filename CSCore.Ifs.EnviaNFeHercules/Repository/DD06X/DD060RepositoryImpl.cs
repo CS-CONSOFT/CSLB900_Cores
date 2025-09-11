@@ -15,7 +15,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<(List<RepoDtoCSICP_DD060>, int)> GetListAsync(
+        public async Task<(List<CSICP_DD060>, int)> GetListAsync(
             int in_tenant,string in_dd040id, int in_page, int in_pageSize)
         {
             var query = from dd060 in _appDbContext.OsusrTeiCsicpDd060s
@@ -221,7 +221,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                                                   where dd060CombLa01.TenantId == in_tenant && dd060CombLa01.Dd060Id == dd060.Dd060Id
                                                   select dd060CombLa01).ToList()
 
-                        select new RepoDtoCSICP_DD060
+                        select new CSICP_DD060
                         {
                             TenantId = dd060.TenantId,
                             Dd060Id = dd060.Dd060Id,
