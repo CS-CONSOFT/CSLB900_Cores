@@ -4,7 +4,6 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF132;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX
 {
@@ -13,10 +12,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<(List<RepoDtoCSICP_FF132>, int)> GetListAsync
+        public async Task<(List<CSICP_FF132>, int)> GetListAsync
             (int in_tenant, long in_ff131Id, int in_pageNumber, int in_pageSize)
         {
-            IQueryable<RepoDtoCSICP_FF132> query = GetQueryBase(in_tenant);
+            IQueryable<CSICP_FF132> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_ff131Id, query);
 
             var queryCount = query;
@@ -26,8 +25,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF132> FiltraQuandoExisteFiltro
-            (long? in_ff131Id, IQueryable<RepoDtoCSICP_FF132> query)
+        private IQueryable<CSICP_FF132> FiltraQuandoExisteFiltro
+            (long? in_ff131Id, IQueryable<CSICP_FF132> query)
         {
             if (in_ff131Id != null)
                 query = query.Where(e => e.Ff131Id == in_ff131Id);
@@ -38,7 +37,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return query;
         }
 
-        private IQueryable<RepoDtoCSICP_FF132> GetQueryBase(int in_tenant)
+        private IQueryable<CSICP_FF132> GetQueryBase(int in_tenant)
         {
             return from ff132 in _appDbContext.OsusrE9aCsicpFf132s
                    .AsNoTracking()
@@ -53,7 +52,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
                    where ff132.TenantId == in_tenant
 
-                   select new RepoDtoCSICP_FF132
+                   select new CSICP_FF132
                    {
                        TenantId = ff132.TenantId,
                        Ff132Id = ff132.Ff132Id,

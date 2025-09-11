@@ -14,10 +14,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<(List<RepoDtoCSICP_FF116>, int)> GetListAsync(
+        public async Task<(List<CSICP_FF116>, int)> GetListAsync(
             int in_tenant, string in_ff102Id, int in_pageNumber, int in_pageSize)
         {
-            IQueryable<RepoDtoCSICP_FF116> query = GetQueryBase(in_tenant, in_ff102Id);
+            IQueryable<CSICP_FF116> query = GetQueryBase(in_tenant, in_ff102Id);
             
             var queryCount = query;
             var count = queryCount.Count();
@@ -26,7 +26,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF116> GetQueryBase(int in_tenant, string in_ff102Id)
+        private IQueryable<CSICP_FF116> GetQueryBase(int in_tenant, string in_ff102Id)
         {
             return from ff116 in _appDbContext.OsusrE9aCsicpFf116s
                    .AsNoTracking()
@@ -50,8 +50,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    where ff116.TenantId == in_tenant
                          && ff116.Ff102Tituloid == in_ff102Id 
 
-
-                   select new RepoDtoCSICP_FF116
+                   select new CSICP_FF116
                    {
                        TenantId = ff116.TenantId,
                        Id = ff116.Id,

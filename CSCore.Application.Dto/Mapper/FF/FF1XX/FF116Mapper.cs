@@ -7,7 +7,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
 {
     public static class FF116Mapper
     {
-        public static DtoGetFF116 ToDtoGet(this RepoDtoCSICP_FF116 entity)
+        public static DtoGetFF116 ToDtoGet(this CSICP_FF116 entity)
         {
             return new DtoGetFF116
             {

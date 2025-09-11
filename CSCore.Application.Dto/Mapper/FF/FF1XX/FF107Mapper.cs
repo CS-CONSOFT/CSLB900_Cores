@@ -1,17 +1,14 @@
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF107;
-using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF002;
-using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102;
 using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_FF;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF107;
 using CSCore.Application.Dto.Mapper.FF.FF00X;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF1XX
 {
     public static class FF107Mapper
     {
-        public static DtoGetFF107 ToDtoGet(this RepoDtoCSICP_FF107 entity)
+        public static DtoGetFF107 ToDtoGet(this CSICP_FF107 entity)
         {
             return new DtoGetFF107
             {

@@ -32,11 +32,8 @@ public partial class CSICP_FF116
 
     public string? Ff116Msg { get; set; }
 
-    public virtual CSICP_FF102? Ff102Titulo { get; set; }
-}
 
-public class RepoDtoCSICP_FF116 : CSICP_FF116
-{
+    // Navegações movidas do RepoDtoCSICP_FF116
     public CSICP_BB001? NavBB001 { get; set; }
     public OsusrE9aCsicpFf116Tmov? NavFF116TMov { get; set; }
     public Csicp_Sy001? NavSY001 { get; set; }
