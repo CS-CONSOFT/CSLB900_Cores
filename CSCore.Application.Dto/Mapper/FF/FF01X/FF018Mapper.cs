@@ -6,13 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF018;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF01X
 {
     public static class FF018Mapper
     {
-        public static DtoGetFF018 ToDtoGet(this RepoDtoCSICP_FF018 entity)
+        public static DtoGetFF018 ToDtoGet(this CSICP_FF018 entity)
         {
             return new DtoGetFF018
             {

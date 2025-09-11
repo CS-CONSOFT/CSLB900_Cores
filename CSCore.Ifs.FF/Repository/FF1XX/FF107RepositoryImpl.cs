@@ -5,7 +5,6 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF107;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX
 {
@@ -14,22 +13,22 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<(List<RepoDtoCSICP_FF107>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
+        public async Task<(List<CSICP_FF107>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
             string in_ff102Id)
         {
-            IQueryable<RepoDtoCSICP_FF107> query = GetQueryBase(in_tenant);
+            IQueryable<CSICP_FF107> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_ff102Id, query);
 
             var queryCount = query;
             var count = queryCount.Count();
             query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
 
-            List<RepoDtoCSICP_FF107> result = await query.ToListAsync();
+            List<CSICP_FF107> result = await query.ToListAsync();
             return (result, count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF107> FiltraQuandoExisteFiltro(
-            string in_ff102Id, IQueryable<RepoDtoCSICP_FF107> query)
+        private IQueryable<CSICP_FF107> FiltraQuandoExisteFiltro(
+            string in_ff102Id, IQueryable<CSICP_FF107> query)
         {
             if (!string.IsNullOrEmpty(in_ff102Id))
                 query = query.Where(e => e.Ff102Tituloid == in_ff102Id);
@@ -37,7 +36,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return query;
         }
         
-        private IQueryable<RepoDtoCSICP_FF107> GetQueryBase(int in_tenant)
+        private IQueryable<CSICP_FF107> GetQueryBase(int in_tenant)
         {
             return from ff107 in _appDbContext.OsusrE9aCsicpFf107s
                    .AsNoTracking()
@@ -64,7 +63,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
 
                    where ff107.TenantId == in_tenant
 
-                   select new RepoDtoCSICP_FF107
+                   select new CSICP_FF107
                    {
                        TenantId = ff107.TenantId,
                        Id = ff107.Id,

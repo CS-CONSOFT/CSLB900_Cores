@@ -5,12 +5,6 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
-using NPOI.OpenXmlFormats.Wordprocessing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF131;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX
 {
@@ -19,14 +13,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<RepoDtoCSICP_FF131?> GetByIdAsync(int in_tenant, long in_ff131Id)
+        public async Task<CSICP_FF131?> GetByIdAsync(int in_tenant, long in_ff131Id)
         {
-            IQueryable<RepoDtoCSICP_FF131> query = GetQueryBase(in_tenant);
-            RepoDtoCSICP_FF131? cSICP_FF131 = await query.FirstOrDefaultAsync(e => e.Ff131Id == in_ff131Id);
+            IQueryable<CSICP_FF131> query = GetQueryBase(in_tenant);
+            CSICP_FF131? cSICP_FF131 = await query.FirstOrDefaultAsync(e => e.Ff131Id == in_ff131Id);
             return cSICP_FF131;
         }
 
-        private IQueryable<RepoDtoCSICP_FF131> GetQueryBase(int in_tenant)
+        private IQueryable<CSICP_FF131> GetQueryBase(int in_tenant)
         {
             return from ff131 in _appDbContext.OsusrE9aCsicpFf131s
                    .AsNoTracking()
@@ -48,7 +42,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    from sy001 in sy001_ff131_join.DefaultIfEmpty()
 
                    where ff131.TenantId == in_tenant
-                   select new RepoDtoCSICP_FF131
+                   select new CSICP_FF131
                    {
                        TenantId = ff131.TenantId,
                        Ff131Id = ff131.Ff131Id,
@@ -95,10 +89,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    };
         }
 
-        public async Task<(List<RepoDtoCSICP_FF131>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize, 
+        public async Task<(List<CSICP_FF131>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize, 
             string? in_estabId, DateTime? in_periodoInicial, DateTime? in_periodoFinal, string? in_protocolo, string? in_nomeContaCliente)
         {
-            IQueryable<RepoDtoCSICP_FF131> query = GetQueryBase(in_tenant);
+            IQueryable<CSICP_FF131> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_estabId, in_periodoInicial, in_periodoFinal, in_protocolo, in_nomeContaCliente, query);
 
             var queryCount = query;
@@ -108,8 +102,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF131> FiltraQuandoExisteFiltro(string? in_estabId, DateTime? in_periodoInicial,
-            DateTime? in_periodoFinal, string? in_protocolo, string? in_nomeContaCliente, IQueryable<RepoDtoCSICP_FF131> query)
+        private IQueryable<CSICP_FF131> FiltraQuandoExisteFiltro(string? in_estabId, DateTime? in_periodoInicial,
+            DateTime? in_periodoFinal, string? in_protocolo, string? in_nomeContaCliente, IQueryable<CSICP_FF131> query)
         {
             if (!string.IsNullOrEmpty(in_estabId))
                 query = query.Where(e => e.Ff131Filialid == in_estabId);
