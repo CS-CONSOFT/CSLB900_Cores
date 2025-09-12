@@ -3,6 +3,7 @@ using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Domain.Interfaces.PrmFiltros.FF125;
 using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.FF.Repository.FF1XX.FF125.IncludesFF125List;
 using CSLB900.MSTools.CS_QueryFilters;
 using CSLB900.MSTools.Extensao;
 using GG104Materiais.C82Application.Service.FF1XX.FF125;
@@ -22,21 +23,29 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
         public async Task<(List<CSICP_FF125>, int)> GetListAsync(int InTenantID, PrmFiltrosFF125 InPrmFiltrosFF125)
         {
             var query = _appDbContext.OsusrE9aCsicpFf125s
-                .Include(e => e.NavBB012Conta)
-                .Include(e => e.NavFF002Motivo)
                 .AsNoTracking()
                 .AsSplitQuery()
                 .Where(e => e.TenantId == InTenantID);
 
-            query = FiltraQuandoExisteFiltro(query, InPrmFiltrosFF125,GetFiltrosParaAplicar(InPrmFiltrosFF125));
+            query = AplicaIncludes(query, GetIncludesParaAplicar());
+            query = FiltraQuandoExisteFiltro(query, InPrmFiltrosFF125, GetFiltrosParaAplicar(InPrmFiltrosFF125));
+
             var queryCount = query;
             var count = queryCount.Count();
+
             query = query.PaginacaoNoBanco(InPrmFiltrosFF125.PageNumber, InPrmFiltrosFF125.PageSize);
 
             return (await query.ToListAsync(), count);
         }
 
-
+        private ICSInclude<CSICP_FF125>[] GetIncludesParaAplicar()
+        {
+            return
+            [
+                new IncludeNavBB012Conta(),
+                new IncludeNavFF002Motivo(),
+            ];
+        }   
 
         private ICSFilter<CSICP_FF125>[] GetFiltrosParaAplicar(PrmFiltrosFF125 InPrmFiltrosFF125)
         {
@@ -45,7 +54,16 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
                 new SitCtaIdFiltro(InPrmFiltrosFF125.InBB012_SitCtaId),
             ];
         }
-        
+
+        private IQueryable<CSICP_FF125> AplicaIncludes(IQueryable<CSICP_FF125> query, params ICSInclude<CSICP_FF125>[] InIncludes)
+        {
+            foreach (var include in InIncludes)
+            {
+                query = include.ApplyIncludes(query);
+            }
+            return query;
+        }
+
         private IQueryable<CSICP_FF125> FiltraQuandoExisteFiltro(IQueryable<CSICP_FF125> query, PrmFiltrosFF125 InPrmFiltrosFF125, params ICSFilter<CSICP_FF125>[] InFiltros)
         {
             foreach (var filtro in InFiltros)
