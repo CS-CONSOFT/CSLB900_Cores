@@ -6,13 +6,7 @@ using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF002;
 using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
 using CSCore.Application.Dto.Mapper.FF.FF00X;
 using CSCore.Application.Dto.Mapper.Sistema;
-using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_FF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX
 {

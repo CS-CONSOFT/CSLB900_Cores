@@ -3,6 +3,8 @@ using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520;
 using CSCore.Application.Dto.Mapper.GG00X;
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_Models.Staticas.GG;
+using GG104Materiais.C82Application.Dto.GG00X.GG001;
+using GG104Materiais.C82Application.Dto.GG00X.GG008;
 using GG104Materiais.C82Application.Mapper.GG008;
 using System;
 using System.Collections.Generic;
@@ -39,7 +41,7 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG055
                 Gg055HoraAlt = entity.Gg055HoraAlt;
                 Gg055Criarexcid = entity.Gg055Criarexcid;
                 Nav_Gg008Kdx = entity.Nav_Gg008Kdx?.ToDtoGetSimples();
-            Nav_GG520Saldo = entity.Nav_GG520Saldo?.ToDtoGetSimples();
+                Nav_GG520Saldo = entity.Nav_GG520Saldo?.ToDtoGetSimples();
         }
 
         public int TenantId { get; set; }
@@ -90,5 +92,9 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG055
         public DtoGetGG008Kdx_Simples? Nav_Gg008Kdx { get; set; }
 
         public DtoGetGG520Simples? Nav_GG520Saldo { get; set; }
+
+        public DtoGetGG001Simples? Nav_GG001Almox { get; set; }
+
+        public DtoGetGG008_Exibicao_Simples? Nav_GG008Produto { get; set; }
     }
 }
