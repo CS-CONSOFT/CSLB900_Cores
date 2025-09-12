@@ -20,7 +20,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
             _appDbContext = appDbContext;
         }
 
-        public async Task<(List<CSICP_FF125>, int)> GetListAsync(int InTenantID, PrmFiltrosFF125 InPrmFiltrosFF125)
+        public async Task<(List<CSICP_FF125>, int)> GetListAsync(int InTenantID, PrmFiltrosFF125Repo InPrmFiltrosFF125)
         {
             var query = _appDbContext.OsusrE9aCsicpFf125s
                 .AsNoTracking()
@@ -47,11 +47,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
             ];
         }   
 
-        private ICSFilter<CSICP_FF125>[] GetFiltrosParaAplicar(PrmFiltrosFF125 InPrmFiltrosFF125)
+        private ICSFilter<CSICP_FF125>[] GetFiltrosParaAplicar(PrmFiltrosFF125Repo InPrmFiltrosFF125)
         {
             return
             [
-                new SitCtaIdFiltro(InPrmFiltrosFF125.InBB012_SitCtaId),
+                new FiltroSitCtaIdFF127(InPrmFiltrosFF125.InBB012_SitCtaId),
             ];
         }
 
@@ -64,7 +64,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
             return query;
         }
 
-        private IQueryable<CSICP_FF125> FiltraQuandoExisteFiltro(IQueryable<CSICP_FF125> query, PrmFiltrosFF125 InPrmFiltrosFF125, params ICSFilter<CSICP_FF125>[] InFiltros)
+        
+
+        private IQueryable<CSICP_FF125> FiltraQuandoExisteFiltro(IQueryable<CSICP_FF125> query, PrmFiltrosFF125Repo InPrmFiltrosFF125, params ICSFilter<CSICP_FF125>[] InFiltros)
         {
             foreach (var filtro in InFiltros)
             {

@@ -2,8 +2,8 @@
 
 namespace CSCore.Domain.Interfaces.V2
 {
-    public interface IGetListBase<T> 
+    public interface IGetListBase<TEntity, TFilters> where TEntity : class where TFilters : ParametrosBaseFiltro
     {
-        Task<(List<T>, int)> GetListAsync(int InTenantID, ParametrosBaseFiltro parametros,params ICSFilter<T>[] InFiltros);
+        Task<(List<TEntity>, int)> GetListAsync(int InTenantID, TFilters parametros);
     }
 }

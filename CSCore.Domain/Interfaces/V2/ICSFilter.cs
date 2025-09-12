@@ -1,7 +1,7 @@
 ﻿namespace CSCore.Domain.Interfaces.V2
 {
-    public interface ICSFilter<T>
+    public interface ICSFilter<TEntity>
     {
-        IQueryable<T> Apply(IQueryable<T> query);
+        IQueryable<TEntity> Apply(IQueryable<TEntity> query);
     }
 }

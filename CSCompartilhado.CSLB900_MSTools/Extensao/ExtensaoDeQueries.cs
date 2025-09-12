@@ -2,7 +2,7 @@
 {
     public static class ExtensaoDeQueries
     {
-        public static IQueryable<T> PaginacaoNoBanco<T>(this IQueryable<T> query, int page, int pageSize)
+        public static IQueryable<TEntity> PaginacaoNoBanco<TEntity>(this IQueryable<TEntity> query, int page, int pageSize)
         {
             if (query == null)
             {

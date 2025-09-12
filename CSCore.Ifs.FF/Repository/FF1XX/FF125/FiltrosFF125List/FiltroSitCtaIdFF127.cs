@@ -3,10 +3,10 @@ using CSCore.Domain.Interfaces.V2;
 
 namespace GG104Materiais.C82Application.Service.FF1XX.FF125
 {
-    internal class SitCtaIdFiltro : ICSFilter<CSICP_FF125>
+    internal class FiltroSitCtaIdFF127 : ICSFilter<CSICP_FF125>
     {
         private readonly int? _sitCtaId;
-        public SitCtaIdFiltro(int? sitCtaId)
+        public FiltroSitCtaIdFF127(int? sitCtaId)
         {
             _sitCtaId = sitCtaId;
         }

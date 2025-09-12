@@ -1,7 +1,7 @@
 ﻿namespace CSCore.Domain.Interfaces.V2
 {
-    public interface ICSInclude<T>
+    public interface ICSInclude<TEntity>
     {
-        IQueryable<T> ApplyIncludes(IQueryable<T> query);
+        IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query);
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.Domain.Interfaces.PrmFiltros.FF125
 {
-    public class PrmFiltrosFF125 : ParametrosBaseFiltro
+    public class PrmFiltrosFF125Repo : ParametrosBaseFiltro
     {
         public int? InBB012_SitCtaId { get; set; }
         public string? InBB010_ZonaCobrancaId { get; set; }
