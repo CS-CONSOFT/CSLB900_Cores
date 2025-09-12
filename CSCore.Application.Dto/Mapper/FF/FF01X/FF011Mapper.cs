@@ -2,18 +2,18 @@
 using CSBS101._82Application.Mapper.BB00X.BB009;
 using CSBS101._82Application.Mapper.BB00X.BB012;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF011;
+using CSCore.Domain.CS_Models.CSICP_FF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF011;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF01X
 {
     public static class FF011Mapper
     {
-        public static DtoGetFF011 ToDtoGet(this RepoDtoCSICP_FF011 entity)
+        public static DtoGetFF011 ToDtoGet(this CSICP_FF011 entity)
         {
             return new DtoGetFF011
             {

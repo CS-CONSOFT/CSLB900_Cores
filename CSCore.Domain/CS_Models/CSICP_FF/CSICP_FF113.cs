@@ -35,18 +35,11 @@ public partial class CSICP_FF113
 
     public int? Ff113Codgmovtoremessa { get; set; }
 
-    public virtual CSICP_FF105? Ff113Bordero { get; set; }
-
-    public virtual CSICP_FF113? Ff113Retorno { get; set; }
-    public class RepoDtoCSICP_FF113 : CSICP_FF113
-    {
-        public CSICP_BB001? NavBB001 { get; set; }
-        public CSICP_FF112? NavFF112 { get; set; }
-        public OsusrE9aCsicpFf113Tipo? NavFF113Tipo { get; set; }
-        public Csicp_Sy001? NavSy001 { get; set; }
-        public CSICP_FF105? NavFF105 { get; set; }
-        public OsusrE9aCsicpFf112C004? NavFF112C004 { get; set; }
-        //public CSICP_FF113? NavFF113Retorno { get; set; }
-
-    }
+    public CSICP_BB001? NavBB001 { get; set; }
+    public CSICP_FF112? NavFF112 { get; set; }
+    public OsusrE9aCsicpFf113Tipo? NavFF113Tipo { get; set; }
+    public Csicp_Sy001? NavSy001 { get; set; }
+    public CSICP_FF105? NavFF105 { get; set; }
+    public OsusrE9aCsicpFf112C004? NavFF112C004 { get; set; }
+    //public CSICP_FF113? NavFF113Retorno { get; set; }
 }

@@ -11,7 +11,7 @@ namespace CSCore.Domain.Interfaces.FF
 {
     public interface IFF007Repository : IRepositorioBase<CSICP_FF007>
     {
-        Task<(List<RepoDtoCSICP_FF007>, int)> GetListAsync(int tenant, string? estabelecimentoId, int page, int pageSize);
-        Task<RepoDtoCSICP_FF007?> GetByIdAsync(int tenant, long id);
+        Task<(List<CSICP_FF007>, int)> GetListAsync(int tenant, string? estabelecimentoId, int page, int pageSize);
+        Task<CSICP_FF007?> GetByIdAsync(int tenant, long id);
     }
 }

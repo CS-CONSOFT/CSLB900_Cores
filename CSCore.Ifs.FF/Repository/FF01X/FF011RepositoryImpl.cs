@@ -5,7 +5,6 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF011;
 
 namespace CSCore.Ifs.FF.Repository.FF01X
 {
@@ -14,16 +13,16 @@ namespace CSCore.Ifs.FF.Repository.FF01X
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<RepoDtoCSICP_FF011?> GetByIdAsync(int in_tenantID, string in_ff011ID)
+        public async Task<CSICP_FF011?> GetByIdAsync(int in_tenantID, string in_ff011ID)
         {
-            IQueryable<RepoDtoCSICP_FF011> query = GetQueryBase(in_tenantID);
-            RepoDtoCSICP_FF011? CSICP_FF011 = await query.FirstOrDefaultAsync(e => e.Id == in_ff011ID);
+            IQueryable<CSICP_FF011> query = GetQueryBase(in_tenantID);
+            CSICP_FF011? CSICP_FF011 = await query.FirstOrDefaultAsync(e => e.Id == in_ff011ID);
             return CSICP_FF011;
         }
 
-        public async Task<(List<RepoDtoCSICP_FF011>, int)> GetListAsync(int in_tenantID, int in_pageNumber, int in_pageSize, string? in_tipoCobrancaID, string? in_categoriaID)
+        public async Task<(List<CSICP_FF011>, int)> GetListAsync(int in_tenantID, int in_pageNumber, int in_pageSize, string? in_tipoCobrancaID, string? in_categoriaID)
         {
-            IQueryable<RepoDtoCSICP_FF011> query = GetQueryBase(in_tenantID);
+            IQueryable<CSICP_FF011> query = GetQueryBase(in_tenantID);
             query = FiltraQuandoExisteFiltro(in_tipoCobrancaID, in_categoriaID, query);
 
             var queryCount = query;
@@ -33,7 +32,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF011> FiltraQuandoExisteFiltro(string? in_tipoCobrancaID, string? in_categoriaID, IQueryable<RepoDtoCSICP_FF011> query)
+        private IQueryable<CSICP_FF011> FiltraQuandoExisteFiltro(string? in_tipoCobrancaID, string? in_categoriaID, IQueryable<CSICP_FF011> query)
         {
             if (!string.IsNullOrEmpty(in_tipoCobrancaID))
                 query = query.Where(e => e.Ff011Tipocobrancaid == in_tipoCobrancaID);
@@ -44,7 +43,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return query;
         }
 
-        private IQueryable<RepoDtoCSICP_FF011> GetQueryBase(int in_tenantID)
+        private IQueryable<CSICP_FF011> GetQueryBase(int in_tenantID)
         {
             return from ff011 in _appDbContext.OsusrE9aCsicpFf011s
                    .AsNoTracking()
@@ -70,7 +69,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                    from bb012Sai in bb012Sai_join.DefaultIfEmpty()
 
                    where ff011.TenantId == in_tenantID
-                   select new RepoDtoCSICP_FF011
+                   select new CSICP_FF011
                    {
                        TenantId = ff011.TenantId,
                        Id = ff011.Id,

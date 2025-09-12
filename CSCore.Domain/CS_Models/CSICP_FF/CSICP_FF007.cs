@@ -14,9 +14,6 @@ public partial class CSICP_FF007
     public int? Ff007Diasate { get; set; }
 
     public decimal? Ff007Pdesconto { get; set; }
+    public CSICP_BB001? NavBB001 { get; set; }
 
-    public class RepoDtoCSICP_FF007 : CSICP_FF007
-    {
-        public CSICP_BB001? NavBB001 { get; set; }
-    }
 }

@@ -50,9 +50,7 @@ public partial class CSICP_FF018
 
     public virtual CSICP_FF102? Ff102Titulo { get; set; }
 
-    public class RepoDtoCSICP_FF018 : CSICP_FF018
-    {
-        public CSICP_FF102? NavFF102 { get; set; }
-        public CSICP_FF102Sit? NavFF102Sit { get; set; }
-    }
+    // Propriedades de navegação movidas do RepoDtoCSICP_FF018
+    public CSICP_FF102? NavFF102 { get; set; }
+    public CSICP_FF102Sit? NavFF102Sit { get; set; }
 }

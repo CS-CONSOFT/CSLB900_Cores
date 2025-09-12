@@ -27,16 +27,10 @@ public partial class CSICP_FF011
 
     public virtual CSICP_FF998? Ff011Sitcobrancaent { get; set; }
 
-    public class RepoDtoCSICP_FF011 : CSICP_FF011
-    {
-        public CSICP_Bb009? NavBB009 { get; set; }
-
-        public CSICP_Bb029? NavBB029 { get; set; }
-
-        public CSICP_FF998? NavFF998SitCobrancaEnt { get; set; }    
-
-        public CSICP_Bb012Sitcta? NavBB012SitEnt { get; set; }
-
-        public CSICP_Bb012Sitcta? NavBB012SitSai { get; set; }
-    }
+    // Propriedades de navegação movidas do RepoDtoCSICP_FF011
+    public CSICP_Bb009? NavBB009 { get; set; }
+    public CSICP_Bb029? NavBB029 { get; set; }
+    public CSICP_FF998? NavFF998SitCobrancaEnt { get; set; }
+    public CSICP_Bb012Sitcta? NavBB012SitEnt { get; set; }
+    public CSICP_Bb012Sitcta? NavBB012SitSai { get; set; }
 }
