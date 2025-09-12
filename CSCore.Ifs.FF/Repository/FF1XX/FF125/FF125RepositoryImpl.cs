@@ -1,8 +1,11 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Domain.Interfaces.PrmFiltros.FF125;
+using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
+using CSLB900.MSTools.CS_QueryFilters;
 using CSLB900.MSTools.Extensao;
+using GG104Materiais.C82Application.Service.FF1XX.FF125;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
@@ -25,7 +28,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
                 .AsSplitQuery()
                 .Where(e => e.TenantId == InTenantID);
 
-            query = FiltraQuandoExisteFiltro(query, InPrmFiltrosFF125);
+            query = FiltraQuandoExisteFiltro(query, InPrmFiltrosFF125,GetFiltrosParaAplicar(InPrmFiltrosFF125));
             var queryCount = query;
             var count = queryCount.Count();
             query = query.PaginacaoNoBanco(InPrmFiltrosFF125.PageNumber, InPrmFiltrosFF125.PageSize);
@@ -33,10 +36,22 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<CSICP_FF125> FiltraQuandoExisteFiltro(IQueryable<CSICP_FF125> query, PrmFiltrosFF125 InPrmFiltrosFF125)
+
+
+        private ICSFilter<CSICP_FF125>[] GetFiltrosParaAplicar(PrmFiltrosFF125 InPrmFiltrosFF125)
         {
-            if (InPrmFiltrosFF125.InBB012_SitCtaId.HasValue)
-                query = query.Where(e => e.Ff125Sitcobranca == InPrmFiltrosFF125.InBB012_SitCtaId.Value);
+            return
+            [
+                new SitCtaIdFiltro(InPrmFiltrosFF125.InBB012_SitCtaId),
+            ];
+        }
+        
+        private IQueryable<CSICP_FF125> FiltraQuandoExisteFiltro(IQueryable<CSICP_FF125> query, PrmFiltrosFF125 InPrmFiltrosFF125, params ICSFilter<CSICP_FF125>[] InFiltros)
+        {
+            foreach (var filtro in InFiltros)
+            {
+                query = filtro.Apply(query);
+            }
 
             if (InPrmFiltrosFF125.InBB010_ZonaCobrancaId != "" || InPrmFiltrosFF125.InBB010_ZonaCobrancaId != null)
             {
@@ -47,10 +62,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
                         select ff125;
             }
 
-            if(!string.IsNullOrEmpty(InPrmFiltrosFF125.InBB006_CobradorID))
+            if (!string.IsNullOrEmpty(InPrmFiltrosFF125.InBB006_CobradorID))
                 query = query.Where(e => e.Ff125AgcobradorId == InPrmFiltrosFF125.InBB006_CobradorID);
 
-            if(InPrmFiltrosFF125.InDataPrevisaoInicial.HasValue && InPrmFiltrosFF125.InDataPrevisaoFinal.HasValue)
+            if (InPrmFiltrosFF125.InDataPrevisaoInicial.HasValue && InPrmFiltrosFF125.InDataPrevisaoFinal.HasValue)
             {
                 query = query.Where(e => e.Ff125Dtprevisaogeral >= InPrmFiltrosFF125.InDataPrevisaoInicial.Value
                 && e.Ff125Dtprevisaogeral <= InPrmFiltrosFF125.InDataPrevisaoFinal.Value);
@@ -71,7 +86,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
                         select ff125;
             }
 
-            if(InPrmFiltrosFF125.InRegistroCobrado.HasValue && InPrmFiltrosFF125.InRegistroCobrado.Value != EnumRegistroCobradoFF125.Nenhum)
+            if (InPrmFiltrosFF125.InRegistroCobrado.HasValue && InPrmFiltrosFF125.InRegistroCobrado.Value != EnumRegistroCobradoFF125.Nenhum)
                 query = query.Where(e => e.Ff125Iscobrado == (InPrmFiltrosFF125.InRegistroCobrado == EnumRegistroCobradoFF125.Cobrado));
 
             return query;
