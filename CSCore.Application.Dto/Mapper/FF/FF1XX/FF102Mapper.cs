@@ -228,7 +228,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 NavBB008 = entity.NavBB008?.ToDtoGetSimples(),
                 NavBB009 = entity.NavBB009?.ToDtoGetBB009_Exibicao(),
                 NavBB019 = entity.NavBB019?.ToDtoGetBB019Exibicao(),
-                NavBB012ContaID = entity.NavBB012ContaID?.ToDtoBB012_Exibicao(),
+                NavBB012ContaID = entity.NavBB012?.ToDtoBB012_Exibicao(),
                 NavBB012ContaRealID = entity.NavBB012ContaRealID?.ToDtoBB012_Exibicao(),
                 NavBB012AvalistaID = entity.NavBB012AvalistaID?.ToDtoBB012_Exibicao(),
                 NavBB01201Jur = entity.NavBB01201Jur,

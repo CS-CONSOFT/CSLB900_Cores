@@ -1,5 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
+using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.FF.Repository.FF1XX.FF102;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,10 +15,12 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Atualiza_Cobrador_Todos
     public class AtualizaCobradorTodosFF102 : IAtualizaCobradorTodosFF102
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IFF102Repository fF102Repository;
 
-        public AtualizaCobradorTodosFF102(AppDbContext appDbContext)
+        public AtualizaCobradorTodosFF102(AppDbContext appDbContext, IFF102Repository fF102Repository)
         {
             _appDbContext = appDbContext;
+            this.fF102Repository = fF102Repository;
         }
 
         public async Task Atualiza_Cobrador_Todos(PrmAtualizaCobradorTodos InPrm)
@@ -25,10 +29,24 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Atualiza_Cobrador_Todos
             try
             {
                 int WorkFf011DiasAtrasosDe = await RecuperaDiasAtrasoDeDaFF011();
-                List<CSICP_FF102> listaFF102 = await GetListFF102(InPrm, WorkFf011DiasAtrasosDe);
+
+                var prm = new PrmGetListTitulosEmCobrancaRepo(
+                    InPrm.InTenantID,
+                    InPrm.InBB012_ID,
+                    InPrm.InStIDFF102_Cob_Cobranca,
+                    InPrm.InStIDFF102_Sit_Aberto,
+                    InPrm.InStIDFF102_Sit_BxParcial);
+
+                prm.PageNumber = 1;
+                prm.PageSize = int.MaxValue;
+                prm.DeveExcederOMaxPageSize = true;
+
+                (List<CSICP_FF102> listaFF102, int count) = await fF102Repository.GetListTitulosEmCobrancaAsync(prm);
 
                 foreach (var ff102Corrente in listaFF102)
                 {
+                    string id = ff102Corrente.Id;
+                    bool estaRastreado = _appDbContext.Entry(ff102Corrente).State != EntityState.Detached;
                     ff102Corrente.Ff102Agcobradorid = InPrm.InBB006_CobradorID;
                     ff102Corrente.Ff102Codcobrador = InPrm.InSY001_ID;
                 }
@@ -58,18 +76,6 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Atualiza_Cobrador_Todos
             return await _appDbContext.OsusrE9aCsicpFf011s.AsNoTracking().Select(e => e.Ff011DiasAtrasosDe).FirstOrDefaultAsync() ?? throw new KeyNotFoundException("FF011 não encontrada");
         }
 
-        private async Task<List<CSICP_FF102>> GetListFF102(PrmAtualizaCobradorTodos InPrm, int IntFf011DiasAtrasosDe)
-        {
-            return await (from ff102 in _appDbContext.OsusrE9aCsicpFf102s
-
- 
-                          where ff102.Ff102Contaid == InPrm.InBB012_ID
-                             && ff102.Ff102Tpcobranca == InPrm.InStIDFF102_Cob_Cobranca
-                             && EF.Functions.DateDiffDay(ff102.Ff102DataVencimento, DateTime.Today) >= IntFf011DiasAtrasosDe
-                             && (ff102.Ff102Situacaoid == InPrm.InStIDFF102_Sit_Aberto || ff102.Ff102Situacaoid == InPrm.InStIDFF102_Sit_BxParcial)
-                          orderby ff102.Ff102DataVencimento ascending
-
-                          select ff102).ToListAsync();
-        }
+   
     }
 }

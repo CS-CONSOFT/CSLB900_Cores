@@ -3,15 +3,17 @@ using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.FF.Repository.Processos.CS_Atualiza_Cobrador_Todos;
 using CSCore.Ifs.LB900.Calculos;
 using CSCore.Ifs.LB900.Calculos.Parametros;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
+using MathNet.Numerics.Providers.LinearAlgebra;
 using Microsoft.EntityFrameworkCore;
 using static CSCore.Domain.ComboTypes;
 
 
-namespace CSCore.Ifs.FF.Repository.FF1XX
+namespace CSCore.Ifs.FF.Repository.FF1XX.FF102
 {
     public class FF102RepositoryImpl(AppDbContext appDbContext, ICalculoAtrasoMultaJurosTitulos calculoAtrasoMultaJurosTitulos)
         : RepositorioBaseImpl<CSICP_FF102>(appDbContext, "Id"), IFF102Repository
@@ -529,7 +531,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Bb019Administradora = bb019.Bb019Administradora,
                        } : null,
 
-                       NavBB012ContaID = bb012conta != null ? new CSICP_BB012
+                       NavBB012 = bb012conta != null ? new CSICP_BB012
                        {
                            TenantId = bb012conta.TenantId,
                            Id = bb012conta.Id,
@@ -799,13 +801,13 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                 query = query.Where(e => e.Ff102Sfx!.Equals(in_sufixo));
 
             if (in_nomeConta != null)
-                query = query.Where(e => e.NavBB012ContaID!.Bb012NomeCliente!.Contains(in_nomeConta));
+                query = query.Where(e => e.NavBB012!.Bb012NomeCliente!.Contains(in_nomeConta));
 
             if (in_situacaoId != null)
                 query = query.Where(e => e.Ff102Situacaoid!.Equals(in_situacaoId));
 
             if (in_codigoConta != null)
-                query = query.Where(e => e.NavBB012ContaID!.Bb012Codigo.Equals(in_codigoConta));
+                query = query.Where(e => e.NavBB012!.Bb012Codigo.Equals(in_codigoConta));
 
             if (in_TpCobranca != null)
                 query = query.Where(e => e.Ff102Tpcobranca!.Equals(in_TpCobranca));
@@ -839,5 +841,52 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         }
 
 
+
+
+        /*
+         --- ATENÇÃO ---
+         Essa rotina é usada tanto para retornar a lista para tela de títulos em cobrança
+         Quanto na rotina Atualiza_Cobrador_Todos na classe AtualizaCobradorTodosFF102
+         Qualquer mudança aqui, deve ser analisada para ambos os casos.
+         Se houver necessidade futura, deve-se criar uma rotina específica para cada caso.
+         Valter - 13/09/2025
+         */
+        public async Task<(List<CSICP_FF102>, int)> GetListTitulosEmCobrancaAsync(PrmGetListTitulosEmCobrancaRepo InPrm)
+        {
+            var WorkGet_Config_Cobranca = await _appDbContext.OsusrE9aCsicpFf011s
+            .OrderBy(e => e.Ff011DiasAtrasosDe)
+            .Select(e => new
+            {
+                e.Id,
+                e.Ff011DiasAtrasosDe
+            }).AsNoTracking()
+            .FirstOrDefaultAsync() ?? throw new KeyNotFoundException();
+
+
+            // Nao usar as no tracking aqui, pois pode dar problema na atualização posterior
+            var query = _appDbContext.OsusrE9aCsicpFf102s
+                .Include(e => e.NavBB001)
+                .Include(e => e.NavFF102Sit)
+                .Include(e => e.NavBB006)
+                .Include(e => e.NavFF104)
+                .Include(e => e.NavSy001CodCobrador)
+                .Include(e => e.NavBB012)
+                .OrderBy(e => e.Ff102DataVencimento)
+                .Where(e => e.Ff102Contaid == InPrm.InBB012_ID
+                    && e.TenantId == InPrm.InTenantID
+                    && e.Ff102Tpcobranca == InPrm.InStIDFF102_Cob_Cobranca
+                    && EF.Functions.DateDiffDay(e.Ff102DataVencimento, DateTime.Today) >= WorkGet_Config_Cobranca.Ff011DiasAtrasosDe
+                    && (e.Ff102Situacaoid == InPrm.InStIDFF102_Sit_Aberto || e.Ff102Situacaoid == InPrm.InStIDFF102_Sit_BxParcial));
+
+            var queryCount = query;
+            var totalCount = await queryCount.CountAsync();
+
+            if (InPrm.DeveExcederOMaxPageSize == false)
+                query = query.PaginacaoNoBanco(InPrm.PageNumber, InPrm.PageSize);
+
+
+            return (await query.ToListAsync(), totalCount);
+        }
     }
+    
 }
