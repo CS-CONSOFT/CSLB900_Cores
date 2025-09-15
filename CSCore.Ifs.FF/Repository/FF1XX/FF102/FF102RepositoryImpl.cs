@@ -881,11 +881,21 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102
             var queryCount = query;
             var totalCount = await queryCount.CountAsync();
 
+            var CSICP_FF102List = await query.ToListAsync();
             if (InPrm.DeveExcederOMaxPageSize == false)
+            {
                 query = query.PaginacaoNoBanco(InPrm.PageNumber, InPrm.PageSize);
+                foreach (var current in CSICP_FF102List)
+                {
+                    await CalcularValoresAtrasoReceberAsync(current);
+                }
+            }
+            
 
+            
+            
 
-            return (await query.ToListAsync(), totalCount);
+            return (CSICP_FF102List, totalCount);
         }
     }
     
