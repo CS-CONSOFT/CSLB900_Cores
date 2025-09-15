@@ -350,6 +350,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 Bb012Oricadastroid = entity.Bb012Oricadastroid,
                 bb012_LCEspecial_ID = entity.bb012_RFEspecial_ID,
                 bb012_TpGovId = entity.bb012_TpGovId,
+                NavEnderecoSimples = entity.NavBB01206?.ToDtoBB01206Simples(),
             };
         }
 
