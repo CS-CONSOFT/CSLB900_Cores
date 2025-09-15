@@ -59,6 +59,9 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
 
     public class ExportarArquivoTemplate
     {
+
+
+
         protected virtual async Task<(List<DtoArquivosFiscaisExcelGetInventario> produtos, string? protocolo)> GetInventario(
             string InGG032ID, int InTenantID, AppDbContext _appDbContext)
         {
