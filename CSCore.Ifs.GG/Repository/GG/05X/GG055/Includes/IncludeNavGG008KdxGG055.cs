@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.GG.Repository.GG._05X.GG055.Includes
 {
-    internal class IncludeNavGG520SaldoGG055 : ICSInclude<CSICP_GG055>
+    internal class IncludeNavGG008KdxGG055 : ICSInclude<CSICP_GG055>
     {
         public IQueryable<CSICP_GG055> ApplyIncludes(IQueryable<CSICP_GG055> query)
         {
-            return query.Include(e => e.Nav_GG520Saldo);
+            return query.Include(e => e.Nav_Gg008Kdx);
         }
     }
 }
