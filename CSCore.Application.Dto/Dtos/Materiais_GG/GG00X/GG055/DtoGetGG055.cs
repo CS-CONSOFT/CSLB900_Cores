@@ -14,36 +14,8 @@ using System.Threading.Tasks;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG055
 {
-    public class DtoGet_CSICP_GG055
+    public class DtoGetGG055
     {
-        public DtoGet_CSICP_GG055(CSICP_GG055 entity)
-        {
-            TenantId = entity.TenantId;
-            Gg055Id = entity.Gg055Id;
-                Gg054Id = entity.Gg054Id;
-                Gg055Codgproduto = entity.Gg055Codgproduto;
-                Gg055Codgbarras = entity.Gg055Codgbarras;
-                Gg055ProdutoId = entity.Gg055ProdutoId;
-                Gg055Saldoid = entity.Gg055Saldoid;
-                Gg055KdxId = entity.Gg055KdxId;
-                Gg055Unidade = entity.Gg055Unidade;
-                Gg055Gradelinhaid = entity.Gg055Gradelinhaid;
-                Gg055Gradecolunaid = entity.Gg055Gradecolunaid;
-                Gg055Lote = entity.Gg055Lote;
-                Gg055Sublote = entity.Gg055Sublote;
-                Gg055Quantidade = entity.Gg055Quantidade;
-                Gg055Status = entity.Gg055Status;
-                Gg055UsuarioId = entity.Gg055UsuarioId;
-                Gg055DataInc = entity.Gg055DataInc;
-                Gg055HoraInc = entity.Gg055HoraInc;
-                Gg055UsuarioAlt = entity.Gg055UsuarioAlt;
-                Gg055DataAlt = entity.Gg055DataAlt;
-                Gg055HoraAlt = entity.Gg055HoraAlt;
-                Gg055Criarexcid = entity.Gg055Criarexcid;
-                Nav_Gg008Kdx = entity.Nav_Gg008Kdx?.ToDtoGetSimples();
-                Nav_GG520Saldo = entity.Nav_GG520Saldo?.ToDtoGetSimples();
-        }
-
         public int TenantId { get; set; }
 
         public long Gg055Id { get; set; }
