@@ -5,9 +5,9 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG054
 {
     public class DtoGetCompararColeta
     {
-        public List<DtoGetGG055> ProdutosSoNaColeta01 { get; set; } = [];
-        public List<DtoGetGG055> ProdutosSoNaColeta02 { get; set; } = [];
-        public List<DtoGetGG055> ProdutosComQuantidadeDiferente { get; set; } = [];
-        public List<DtoGetGG055> TodosOsProdutos { get; set; } = [];
+        public List<DtoGet_CSICP_GG055> ProdutosSoNaColeta01 { get; set; } = [];
+        public List<DtoGet_CSICP_GG055> ProdutosSoNaColeta02 { get; set; } = [];
+        public List<DtoGet_CSICP_GG055> ProdutosComQuantidadeDiferente { get; set; } = [];
+        public List<DtoGet_CSICP_GG055> TodosOsProdutos { get; set; } = [];
     }
 }

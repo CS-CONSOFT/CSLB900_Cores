@@ -44,12 +44,7 @@ namespace CSCore.Ifs.GG.Repository.GG._05X.GG055
 
         protected override ICSInclude<CSICP_GG055>[] GetIncludesParaAplicar()
         {
-            return [
-                new IncludeNavGG520SaldoGG055(), 
-                new IncludeNavGG008KdxGG055(),
-                new IncludeNavGG008ProdutoGG055(),
-                new IncludeNavGG001AlmoxGG055()
-            ];
+            return [new IncludeNavGG520SaldoGG055()];
         }
     }
 }
