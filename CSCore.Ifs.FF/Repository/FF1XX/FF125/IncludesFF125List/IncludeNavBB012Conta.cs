@@ -13,7 +13,15 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125.IncludesFF125List
     {
         public IQueryable<CSICP_FF125> ApplyIncludes(IQueryable<CSICP_FF125> query)
         {
-            return query.Include(e => e.NavBB012Conta);
+            return query.Include(e => e.NavBB012Conta)
+                .ThenInclude(e => e!.NavBB01206)
+                    .ThenInclude(e => e.AA027_UF)
+                .Include(e => e.NavBB012Conta)
+                    .ThenInclude(e => e!.NavBB01206)
+                    .ThenInclude(e => e.AA028_Cidade)
+                .Include(e => e.NavBB012Conta)
+                    .ThenInclude(e => e!.NavBB01206)
+                    .ThenInclude(e => e.AA025_Pais);
         }
     }
 }

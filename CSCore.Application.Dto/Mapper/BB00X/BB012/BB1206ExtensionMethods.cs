@@ -35,6 +35,8 @@ namespace CSCore.Application.Dto.Mapper.BB00X.BB012
                 Bb012Email = dto.Bb012Email,
             };
         }
+
+
     }
 }
 

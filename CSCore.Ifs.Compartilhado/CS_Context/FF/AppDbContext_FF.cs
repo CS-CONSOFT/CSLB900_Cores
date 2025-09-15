@@ -4230,6 +4230,13 @@ namespace CSCore.Ifs.CS_Context
 
                 entity.HasOne(e => e.NavBB012Conta).WithMany().HasForeignKey(e => e.Ff125ContaId);
                 entity.HasOne(e => e.NavFF002Motivo).WithMany().HasForeignKey(e => e.Ff125Motivoid);
+                entity.HasOne(e => e.NavFF998SitCob).WithMany().HasForeignKey(e => e.Ff125SitcobentId);
+                entity.HasOne(e => e.NavBB012SitCta).WithMany().HasForeignKey(e => e.Ff125Sitcobranca);
+                entity.HasOne(e => e.NavFF125Status).WithMany().HasForeignKey(e => e.Ff125StatusId);
+                entity.HasOne(e => e.NavSY001Cobrador).WithMany().HasForeignKey(e => e.Ff125Cobradorid);
+                entity.HasOne(e => e.NavBB006AgCobrador).WithMany().HasForeignKey(e => e.Ff125AgcobradorId);
+                entity.HasOne(e => e.NavBB029Categoria).WithMany().HasForeignKey(e => e.Ff125Categoriaid);
+                
 
 
             });
