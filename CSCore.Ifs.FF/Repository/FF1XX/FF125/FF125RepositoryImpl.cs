@@ -29,6 +29,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
 
             query = AplicaIncludes(query, GetIncludesParaAplicar());
             query = FiltraQuandoExisteFiltro(query, InPrmFiltrosFF125, GetFiltrosParaAplicar(InPrmFiltrosFF125));
+            query = query.Include(e => e.NavBB029Categoria);   
+            query = query.Include(e => e.NavBB012SitCta);   
+            query = query.Include(e => e.NavFF125Status);   
+            query = query.Include(e => e.NavFF998SitCob);   
 
             var queryCount = query;
             var count = queryCount.Count();
@@ -44,6 +48,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
             [
                 new IncludeNavBB012Conta(),
                 new IncludeNavFF002Motivo(),
+                new IncludeNavBB006AgCobrador(),
+                new IncludeNavSY001Cobrador()
             ];
         }   
 

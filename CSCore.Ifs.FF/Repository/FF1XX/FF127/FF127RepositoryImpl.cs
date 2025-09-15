@@ -6,16 +6,17 @@ using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.FF1XX.FF127.Filtros;
 using CSCore.Ifs.FF.Repository.FF1XX.FF127.Includes;
+using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
 {
-    public class FF127RepositoryImpl : GetListFiltrosBaseImplementacaoAbstract<CSICP_FF127, PrmFiltrosFF127Repo>, IFF127Repository
+    public class FF127RepositoryImpl : RepositorioBaseImpl<CSICP_FF127>, IFF127Repository
     {
         private readonly AppDbContext _appDbContext;
 
-        public FF127RepositoryImpl(AppDbContext appDbContext)
+        public FF127RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
         {
             _appDbContext = appDbContext;
         }
@@ -35,11 +36,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
             return (await query.ToListAsync(), count);
         }
 
-        protected override ICSFilter<CSICP_FF127>[] GetOutrosFiltros(int TenantId, PrmFiltrosFF127Repo Filtros)
+        protected override ICSFilter<CSICP_FF127>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)
         {
-           return [
-                new FiltroBB012ContaIdFF127(Filtros.InBB012_ContaID),
-                new FiltroBB006AgCobradorFF127(Filtros.InCobradorID_BB006)
+            var filtros = Filtros as PrmFiltrosFF127Repo;
+            if (filtros == null)
+                throw new ArgumentNullException(nameof(Filtros), "Parâmetros de filtro inválidos.");
+            return [
+                new FiltroBB012ContaIdFF127(filtros.InBB012_ContaID),
+                new FiltroBB006AgCobradorFF127(filtros.InCobradorID_BB006)
                ];
         }
 

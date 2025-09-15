@@ -350,6 +350,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 Bb012Oricadastroid = entity.Bb012Oricadastroid,
                 bb012_LCEspecial_ID = entity.bb012_RFEspecial_ID,
                 bb012_TpGovId = entity.bb012_TpGovId,
+                NavEnderecoSimples = entity.NavBB01206?.ToDtoBB01206Simples(),
             };
         }
 
@@ -892,6 +893,28 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 NavAA028_Cidade = entity.AA028_Cidade?.ToDtoGet(),
                 NavAA027_UF = entity.AA027_UF?.ToDtoGet(),
                 NavAA025_Pais = entity.AA025_Pais?.ToDtoGet(),
+            };
+        }
+
+        public static Dto_GetBB01206Simples ToDtoBB01206Simples(this CSICP_BB01206 entity)
+        {
+            return new Dto_GetBB01206Simples
+            {
+
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Bb012Id = entity.Bb012Id,
+                Bb012jEnderecoid = entity.Bb012jEnderecoid,
+                Bb012Logradouro = entity.Bb012Logradouro,
+                Bb012Numero = entity.Bb012Numero,
+                Bb012Complemento = entity.Bb012Complemento,
+                Bb012Codgbairro = entity.Bb012Codgbairro,
+                Bb012Bairro = entity.Bb012Bairro,
+                UF_Aa027Sigla = entity.AA027_UF?.Aa027Sigla,
+                UF_Descricao = entity.AA027_UF?.Descricao,
+                Pais_Aa025Codigopais = entity.AA025_Pais?.Aa025Codigopais,
+                Pais_Aa025Descricao = entity.AA025_Pais?.Aa025Descricao,
+               
             };
         }
 
