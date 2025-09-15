@@ -402,13 +402,13 @@ public partial class CSICP_FF102
 
     public CSICP_BB001? NavBB001 { get; set; }
     public CSICP_Bb005? NavBB005 { get; set; }
+    public CSICP_Bb003? NavBB003 { get; set; }
     public CSICP_Bb006? NavBB006 { get; set; }
     public CSICP_BB007? NavBB007 { get; set; }
     public CSICP_Bb008? NavBB008 { get; set; }
     public CSICP_Bb009? NavBB009 { get; set; }
     public CSICP_Bb019? NavBB019 { get; set; }
     public CSICP_BB012? NavBB012 { get; set; }
-    public CSICP_BB012? NavBB012ContaID { get; set; }
     public CSICP_BB012? NavBB012ContaRealID { get; set; }
     public CSICP_BB012? NavBB012AvalistaID { get; set; }
     public CSICP_Bb01201Jur? NavBB01201Jur { get; set; }
@@ -416,6 +416,8 @@ public partial class CSICP_FF102
     [NotMapped]
     public CSICP_FF000? NavFF000 { get; set; }
     public CSICP_FF003? NavFF003 { get; set; }
+    public CSICP_FF104? NavFF104 { get; set; }
+    public CSICP_FF126? NavFF126 { get; set; }
     public CSICP_FF102_C021? NavFF102C021 { get; set; }
     public CSICP_FF102Des? NavFF102Des { get; set; }
     public CSICP_FF102Ent? NavFF102Ent { get; set; }

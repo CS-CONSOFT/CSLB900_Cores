@@ -2549,9 +2549,10 @@ namespace CSCore.Ifs.CS_Context
                 entity.HasOne(e => e.NavBB008).WithMany().HasForeignKey(e => e.Ff102Condicaoid);
                 entity.HasOne(e => e.NavBB009).WithMany().HasForeignKey(e => e.Ff102Tipocobrancaid);
                 entity.HasOne(e => e.NavBB019).WithMany().HasForeignKey(e => e.Ff102Administradoraid);
-                entity.HasOne(e => e.NavBB012).WithMany().HasForeignKey(e => e.Ff102Moedaid);
+                entity.HasOne(e => e.NavBB003).WithMany().HasForeignKey(e => e.Ff102Moedaid);
   
-                entity.HasOne(e => e.NavBB012ContaID).WithMany().HasForeignKey(e => e.Ff102Contaid);
+        
+                entity.HasOne(e => e.NavBB012).WithMany().HasForeignKey(e => e.Ff102Contaid);
                 entity.HasOne(e => e.NavBB012ContaRealID).WithMany().HasForeignKey(e => e.Ff102Contarealid);
                 entity.HasOne(e => e.NavBB012AvalistaID).WithMany().HasForeignKey(e => e.Ff102AvalistaId);
                 entity.HasOne(e => e.NavBB01201Jur).WithMany().HasForeignKey(e => e.Ff102SitespecialId);
@@ -2562,6 +2563,7 @@ namespace CSCore.Ifs.CS_Context
                 entity.HasOne(e => e.NavFF102Des).WithMany().HasForeignKey(e => e.Ff102TipoDesconto);
                 entity.HasOne(e => e.NavFF102Ent).WithMany().HasForeignKey(e => e.Ff102Tipoparcelaid);
                 entity.HasOne(e => e.NavFF102Sit).WithMany().HasForeignKey(e => e.Ff102Situacaoid);
+               
                 entity.HasOne(e => e.NavFF102C018).WithMany().HasForeignKey(e => e.Ff102CnabCodJurosMora);
                 entity.HasOne(e => e.NavFF102G073).WithMany().HasForeignKey(e => e.Ff102CnabCodMulta);
                 entity.HasOne(e => e.NavFF102Cob).WithMany().HasForeignKey(e => e.Ff102Tpcobranca);
@@ -3019,7 +3021,9 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
 
-
+                entity.HasOne(ff104 => ff104.Ff102)
+                    .WithOne(ff102 => ff102.NavFF104)
+                    .HasForeignKey<CSICP_FF104>(ff104 => ff104.Ff102Id);
 
 
 
@@ -4287,7 +4291,9 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF126_TITULO_ID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-
+                entity.HasOne(e => e.Ff126Titulo)
+                 .WithOne(ff102 => ff102.NavFF126)
+                 .HasForeignKey<CSICP_FF126>(e => e.Ff126TituloId);
 
             });
 

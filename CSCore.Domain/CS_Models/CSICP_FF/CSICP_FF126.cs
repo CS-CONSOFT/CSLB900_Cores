@@ -41,7 +41,6 @@ public partial class CSICP_FF126
 
     public DateTime? Ff126Horaregistro { get; set; }
 
-    public virtual CSICP_FF998? Ff126SitcobrancaEnt { get; set; }
 
-    public virtual CSICP_FF102? Ff126Titulo { get; set; }
+    public CSICP_FF102? Ff126Titulo { get; set; }
 }
