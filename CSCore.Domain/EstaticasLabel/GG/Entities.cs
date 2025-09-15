@@ -1,4 +1,6 @@
-﻿namespace CSCore.Domain.EstaticasLabel.GG
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
+namespace CSCore.Domain.EstaticasLabel.GG
 {
     public static class Entities
     {
@@ -15,6 +17,36 @@
              Cancelado
              Erro
              */
+        }
+
+        public static class FF102_AUT
+        {
+            public const string Autorizado = "Autorizado";
+            public const string NaoAutorizado = "Não Autorizado";
+            public const string Suspenso = "Suspenso";
+        }
+
+        public static class CSICP_Statica_Labels
+        {
+            public const string Sim = "Sim";
+            public const string Registro = "Registro";
+            public const string Servico = "Serviço";
+            public const string Rotina = "Rotina";
+            public const string Ativo = "Ativo";
+            public const string UsuarioSemAcesso = "Usuário Sem Acesso";
+            public const string ErroInterno = "Erro Interno";
+            public const string Industria = "Indústria";
+            public const string DeleteRegistro = "DeleteRegistro";
+            public const string LoginErro = "Login ERRO";
+            public const string UsuarioBloqueado = "Usuário Bloqueado";
+            public const string Acesso = "Acesso";
+            public const string Nao = "Não";
+            public const string Comercio = "Comércio";
+            public const string Login = "Login";
+            public const string Logout = "Logout";
+            public const string Relatorio = "Relatório";
+            public const string Inativo = "Inativo";
+            public const string SomentePraCima = "Somente Pra Cima";
         }
 
 
@@ -89,10 +121,26 @@
         }
 
 
+        public static class FF103_TpBai
+        {
+            public const string Cancelamento = "Cancelamento";
+            public const string Devolucao = "Devolução";
+            public const string Baixa = "Baixa";
+            public const string Doacao = "Doação";
+            public const string BaixaAdto = "Baixa Adto";
+        }
+
+
         public static class GG028EntSaida
         {
             public const string Entrada = "Entrada";
             public const string Saida = "Saida";
+        }
+
+        public static class FF102_Cob
+        {
+            public const string Normal = "Normal";
+            public const string Cobranca = "Cobrança";
         }
 
         public static class BB01201_Con
@@ -223,6 +271,12 @@
             public const string Aberto = "Aberto";
         }
 
+        public static class Csicp_ff102_cob
+        {
+            public const string Cobranca = "Cobrança";
+            public const string Normal = "Normal";
+        }
+
         public static class Csicp_ff102_Situacao
         {
             public const string Aberto = "Aberto";
@@ -235,6 +289,20 @@
             public const string Canc_Sistema = "Cancelado Sistema";
             public const string Devolvido = "Devolvido";
             public const string Permutado = "Permutado";
+        }
+
+        public static class Csicp_ff116_Label 
+        {
+            public const string Prorrogar = "Prorrogado";
+            public const string Aprovar = "Solicitado Aprovação";
+            public const string Confirmar = "Confirmado";
+            public const string VlrAlterado = "Vlr Alterado";
+            public const string AtrJurosNCob = "Atribuído Juros Não Cobrados";
+        }
+
+        public static class Csicp_bb1201_jur
+        {
+            public const string NCobraJuros = "Juros/Multa não cobrados";
         }
     }
 }

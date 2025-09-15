@@ -48,7 +48,7 @@ namespace CSCore.Ifs.GG
                     foreach (var currentMovimentoGG074 in listaGG074)
                     {
                         decimal protocolo = await _generateProtocolo
-                           .Fcn_ProtocoloGeral(context.Message.ParametrosBaixaSaldo.BB001_ID!);
+                           .Fcn_ProtocoloGeral(context.Message.ParametrosBaixaSaldo.BB001_ID!, context.Message.Tenant_ID);
 
                         context.Message.ParametrosBaixaSaldo.GG520_ID = currentMovimentoGG074.Gg074Saldoid;
                         context.Message.ParametrosBaixaSaldo.QuantidadeASerBaixada = currentMovimentoGG074.Gg074Qtd;

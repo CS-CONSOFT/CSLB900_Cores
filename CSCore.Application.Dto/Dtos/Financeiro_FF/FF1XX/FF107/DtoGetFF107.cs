@@ -4,6 +4,7 @@ using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF002;
 using CSCore.Application.Dto.Dtos.Sistema;
 using CSBS101._82Application.Dto.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
+using CSBS101._82Application.Dto.BB00X.BB002;
 
 namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF107
 {

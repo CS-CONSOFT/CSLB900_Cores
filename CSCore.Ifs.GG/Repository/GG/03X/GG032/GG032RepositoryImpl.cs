@@ -48,13 +48,14 @@ namespace CSCore.Ifs.Repository.GG._03X
              string? search,
              int? codigo,
              int? GG032Status_ID,
+             int? GG032TipoInventario,
              DateTime DataInicial,
              DateTime DataFinal
             )
         {
             IQueryable<CSICP_GG032> query = CriaQueryBase(tenant);
 
-            query = FiltraQuandoExisteFiltros(query, search, GG032Status_ID, DataInicial, DataFinal);
+            query = FiltraQuandoExisteFiltros(query, search, GG032Status_ID, GG032TipoInventario, DataInicial, DataFinal);
 
             if (codigo is not null)
             {
@@ -62,8 +63,6 @@ namespace CSCore.Ifs.Repository.GG._03X
             }
 
             query = query.PaginacaoNoBanco(page, pageSize);
-
-
 
             int count = query.GetCountTotal();
 
@@ -76,6 +75,7 @@ namespace CSCore.Ifs.Repository.GG._03X
            (IQueryable<CSICP_GG032> query,
            string? search,
            int? GG032Status_ID,
+           int? GG032TipoInventario,
            DateTime DataInicial,
            DateTime DataFinal
            )
@@ -92,6 +92,9 @@ namespace CSCore.Ifs.Repository.GG._03X
 
             if (GG032Status_ID is not null)
                 query = query.Where(e => e.Gg032StatusId == GG032Status_ID);
+
+            if (GG032TipoInventario is not null)
+                query = query.Where(e => e.Gg032TipoinventarioId == GG032TipoInventario);
 
 
             return query;

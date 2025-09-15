@@ -5,7 +5,6 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF119;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX
 {
@@ -13,16 +12,16 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         : RepositorioBaseImpl<CSICP_FF119>(appDbContext, "Ff119Id"), IFF119Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task<RepoDtoCSICP_FF119?> GetByIdAsync(int in_tenant, long in_ff119Id)
+        public async Task<CSICP_FF119?> GetByIdAsync(int in_tenant, long in_ff119Id)
         {
-            IQueryable<RepoDtoCSICP_FF119> query = GetQueryBase(in_tenant);
-            RepoDtoCSICP_FF119? cSICP_FF119 = await query.FirstOrDefaultAsync(e => e.Ff119Id == in_ff119Id);
+            IQueryable<CSICP_FF119> query = GetQueryBase(in_tenant);
+            CSICP_FF119? cSICP_FF119 = await query.FirstOrDefaultAsync(e => e.Ff119Id == in_ff119Id);
             return cSICP_FF119;
         }
 
-        public async Task<(List<RepoDtoCSICP_FF119>, int)> GetListAsync(int in_tenant, string in_ff112Id, int in_pageNumber, int in_pageSize)
+        public async Task<(List<CSICP_FF119>, int)> GetListAsync(int in_tenant, string in_ff112Id, int in_pageNumber, int in_pageSize)
         {
-            IQueryable<RepoDtoCSICP_FF119> query = GetQueryBase(in_tenant);
+            IQueryable<CSICP_FF119> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_ff112Id, query);
 
             var queryCount = query;
@@ -32,7 +31,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF119> FiltraQuandoExisteFiltro(string in_ff112Id, IQueryable<RepoDtoCSICP_FF119> query)
+        private IQueryable<CSICP_FF119> FiltraQuandoExisteFiltro(string in_ff112Id, IQueryable<CSICP_FF119> query)
         {
             if (in_ff112Id != null)
                 query = query.Where(e => e.Ff112Id == in_ff112Id);
@@ -40,7 +39,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return query;
         }
 
-        private IQueryable<RepoDtoCSICP_FF119> GetQueryBase(int in_tenant)
+        private IQueryable<CSICP_FF119> GetQueryBase(int in_tenant)
         {
             return from ff119 in _appDbContext.OsusrE9aCsicpFf119s
                    .AsNoTracking()
@@ -50,7 +49,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    from ff112Reg in ff112Reg_join.DefaultIfEmpty()
 
                    where ff119.TenantId == in_tenant
-                   select new RepoDtoCSICP_FF119
+                   select new CSICP_FF119
                    {
                        Ff119Id = ff119.Ff119Id,
                        TenantId = ff119.TenantId,

@@ -737,6 +737,7 @@ namespace CSCore.Ifs.CS_Context
 
 
                 entity.HasOne(e => e.NavGG033_Saldo).WithOne().HasForeignKey<CSICP_GG033>(e => e.Gg033Saldoid);
+                entity.HasOne(e => e.NavBB001Estab).WithOne().HasForeignKey<CSICP_GG033>(e => e.Gg033Filialid);
 
             });
 
@@ -1280,6 +1281,9 @@ namespace CSCore.Ifs.CS_Context
                     .HasDefaultValueSql("(NULL)")
                     .HasColumnName("GG054_USUARIO_ID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+                entity.HasOne(d => d.NavGG001Almox).WithMany().HasForeignKey(d => d.Gg054Almox);
+                entity.HasOne(d => d.Gg054StatusNavigation).WithMany().HasForeignKey(d => d.Gg054Status);
 
             });
 

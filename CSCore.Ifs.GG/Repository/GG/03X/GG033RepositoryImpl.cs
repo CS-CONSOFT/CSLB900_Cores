@@ -49,9 +49,18 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
             IQueryable<CSICP_GG033> query = from _CSICP_GG033 in _appDbContext.OsusrE9aCsicpGg033s
                                             where _CSICP_GG033.TenantId == tenant
 
+
+                                            join bb001 in _appDbContext.E9ACSICP_BB001s
+                                            on _CSICP_GG033.Gg033Filialid equals bb001.Id into bb001Join
+                                            from bb001 in bb001Join.DefaultIfEmpty()
+
                                             join gg520 in _appDbContext.OsusrE9aCsicpGg520s
                                             on _CSICP_GG033.Gg033Saldoid equals gg520.Id into gg520Join
                                             from gg520 in gg520Join.DefaultIfEmpty()
+
+                                            join gg001 in _appDbContext.CSICP_GG001s
+                                            on gg520.Gg520Almoxid equals gg001.Id into gg001Join
+                                            from gg001 in gg001Join.DefaultIfEmpty()
 
                                             join gg008kdx in _appDbContext.OsusrE9aCsicpGg008Kdxes
                                             on gg520.Gg520KardexId equals gg008kdx.Gg008Kardexid into gg008kdxJoin
@@ -93,6 +102,15 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
                                                 Gg033QuemcontouUserid = _CSICP_GG033.Gg033QuemcontouUserid,
                                                 Gg033Posicao = _CSICP_GG033.Gg033Posicao,
                                                 Gg033Codbarrasalfa = _CSICP_GG033.Gg033Codbarrasalfa,
+                                                NavBB001Estab = bb001 != null ? new CSICP_BB001
+                                                {
+                                                    TenantId = bb001.TenantId,
+                                                    Id = bb001.Id,
+                                                    Bb001Nomefantasia = bb001.Bb001Nomefantasia,
+                                                    Bb001Codigoempresa = bb001.Bb001Codigoempresa,
+                                                    Bb001Razaosocial = bb001.Bb001Razaosocial,
+                                                    BB001_IsRegimeRegular = bb001.BB001_IsRegimeRegular
+                                                } : null,
                                                 NavGG033_Saldo = gg520 != null ? new CSICP_GG520
                                                 {
                                                     TenantId = gg520.TenantId,
@@ -155,6 +173,13 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
                                                     Gg520Ispdv = gg520.Gg520Ispdv,
                                                     Gg520Vicmssubstituto = gg520.Gg520Vicmssubstituto,
                                                     Gg520VfuturaSaldoid = gg520.Gg520VfuturaSaldoid,
+                                                    NavGG001Almox = gg001 != null ? new CSICP_GG001
+                                                    {
+                                                        TenantId = gg001.TenantId,
+                                                        Id = gg001.Id,
+                                                        Gg001Codigoalmox = gg001.Gg001Codigoalmox,
+                                                        Gg001Descalmox = gg001.Gg001Descalmox
+                                                    } : null,
                                                     Nav_GG008Kardex = gg008kdx != null ? new CSICP_GG008Kdx
                                                     {
                                                         TenantId = gg008kdx.TenantId,

@@ -21,15 +21,12 @@ public partial class CSICP_FF013
 
     public int? Ff013Tpregistro { get; set; }
 
-    public virtual CSICP_FF012? Ff013Grupocobranca { get; set; }
 
-    public class RepoDtoCSICP_FF013 : CSICP_FF013
-    {
-        // Navs
-        public CSICP_BB001? NavBB001 { get; set; }
-        public CSICP_FF012? NavFF012 { get; set; }
-        public Csicp_Sy001? NavSY001 { get; set; }
-        public CSICP_Bb010? NavBB010 { get; set; }
-        public CSICP_BB012? NavBB012 { get; set; }
-    }
+
+    // Navs
+    public CSICP_BB001? NavBB001 { get; set; }
+    public CSICP_FF012? NavFF012 { get; set; }
+    public Csicp_Sy001? NavSY001 { get; set; }
+    public CSICP_Bb010? NavBB010 { get; set; }
+    public CSICP_BB012? NavBB012 { get; set; }
 }

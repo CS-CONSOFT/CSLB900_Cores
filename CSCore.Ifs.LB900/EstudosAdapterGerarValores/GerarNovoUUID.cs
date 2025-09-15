@@ -16,7 +16,7 @@ namespace CSCore.Ifs.LB900.AdapterGerarValores
             this.cS_GenerateId = cS_GenerateId;
         }
 
-        public async Task<string> Generate(string _, string __, string ___)
+        public async Task<string> Generate(string _, string __, string ___, int ____)
         {
             return cS_GenerateId.GenerateUuId();
         }

@@ -16,9 +16,12 @@ using CSBS101._82Application.Mapper.AA00X.AA025;
 using CSBS101._82Application.Mapper.AA00X.AA027;
 using CSBS101._82Application.Mapper.AA00X.AA028;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSBS101.C82Application.Dto.BB00X.BB012.Get;
 using CSBS101.C82Application.Dto.BB00X.BB012.Get.BB1207;
+using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get;
 using CSCore.Domain;
 using CSLB900.MSTools.Extensao;
+using Microsoft.Identity.Client;
 
 namespace CSBS101._82Application.Mapper.BB00X.BB012
 {
@@ -56,7 +59,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 Bb012IdIndicador = dto.Bb012.Bb012IdIndicador,
                 Bb012Countappmcon = dto.Bb012.Bb012Countappmcon,
                 Bb012Oricadastroid = dto.Bb012.Bb012Oricadastroid,
-                bb012_LCEspecial_ID = dto.Bb012.bb012_LCEspecial_ID,
+                bb012_RFEspecial_ID = dto.Bb012.bb012_LCEspecial_ID,
                 bb012_TpGovId = dto.Bb012.bb012_TpGovId,
             };
             entity.ConverteValoresPadraoParaNulo();
@@ -274,17 +277,17 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 NavBB012_SitConta = entity.BB012_SitConta,
                 NavBB012_MCred = entity.BB012_MCred,
                 NavBB012_EstabelecimentoCadastro = entity.BB012_EstabelecimentoCadastro?.ToDtoGetExibicao(),
-                bb012_LCEspecial_ID = entity.bb012_LCEspecial_ID,
+                bb012_LCEspecial_ID = entity.bb012_RFEspecial_ID,
                 bb012_TpGovId = entity.bb012_TpGovId,
                 NavAA043 = new CSCore.Application.Dto.Dtos.Basico_AA.AA00X.DtoGetAA043
                 {
                     TenantId = entity.TenantId,
-                    Id = entity?.Nav_AA043?.Id ?? string.Empty,
-                    Aa043Artigo = entity?.Nav_AA043?.Aa043Artigo ?? string.Empty,
-                    Aa043LcRedacao = entity?.Nav_AA043?.Aa043LcRedacao ?? string.Empty,
-                    Aa043Ec = entity?.Nav_AA043?.Aa043Ec ?? string.Empty,
+                    Id = entity?.Nav_AA143?.Id ?? string.Empty,
+                    Aa043Artigo = entity?.Nav_AA143?.Aa043Artigo ?? string.Empty,
+                    Aa043LcRedacao = entity?.Nav_AA143?.Aa043LcRedacao ?? string.Empty,
+                    Aa043Ec = entity?.Nav_AA143?.Aa043Ec ?? string.Empty,
                 },
-                Nav_AA046_TP_GOV = entity?.Nav_AA046_TP_GOV,
+                Nav_AA046_TP_GOV = entity?.Nav_AA146_TP_GOV,
             };
         }
 
@@ -296,17 +299,17 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 Id = entity.Id,
                 Bb012Codigo = entity.Bb012Codigo,
                 Bb012NomeCliente = entity.Bb012NomeCliente,
-                bb012_LCEspecial_ID = entity.bb012_LCEspecial_ID,
+                bb012_LCEspecial_ID = entity.bb012_RFEspecial_ID,
                 bb012_TpGovId = entity.bb012_TpGovId,
                 NavAA043 = new CSCore.Application.Dto.Dtos.Basico_AA.AA00X.DtoGetAA043
                 {
                     TenantId = entity.TenantId,
-                    Id = entity?.Nav_AA043?.Id ?? string.Empty,
-                    Aa043Artigo = entity?.Nav_AA043?.Aa043Artigo ?? string.Empty,
-                    Aa043LcRedacao = entity?.Nav_AA043?.Aa043LcRedacao ?? string.Empty,
-                    Aa043Ec = entity?.Nav_AA043?.Aa043Ec ?? string.Empty,
+                    Id = entity?.Nav_AA143?.Id ?? string.Empty,
+                    Aa043Artigo = entity?.Nav_AA143?.Aa043Artigo ?? string.Empty,
+                    Aa043LcRedacao = entity?.Nav_AA143?.Aa043LcRedacao ?? string.Empty,
+                    Aa043Ec = entity?.Nav_AA143?.Aa043Ec ?? string.Empty,
                 },
-                Nav_AA046_TP_GOV = entity?.Nav_AA046_TP_GOV,
+                Nav_AA046_TP_GOV = entity?.Nav_AA146_TP_GOV,
             };
         }
 
@@ -345,7 +348,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 Bb012IdIndicador = entity.Bb012IdIndicador,
                 Bb012Countappmcon = entity.Bb012Countappmcon,
                 Bb012Oricadastroid = entity.Bb012Oricadastroid,
-                bb012_LCEspecial_ID = entity.bb012_LCEspecial_ID,
+                bb012_LCEspecial_ID = entity.bb012_RFEspecial_ID,
                 bb012_TpGovId = entity.bb012_TpGovId,
             };
         }
@@ -358,17 +361,17 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 Id = entity.Id,
                 Bb012Codigo = entity.Bb012Codigo,
                 Bb012NomeCliente = entity.Bb012NomeCliente,
-                bb012_LCEspecial_ID = entity.bb012_LCEspecial_ID,
+                bb012_LCEspecial_ID = entity.bb012_RFEspecial_ID,
                 bb012_TpGovId = entity.bb012_TpGovId,
                 NavAA043 = new CSCore.Application.Dto.Dtos.Basico_AA.AA00X.DtoGetAA043
                 {
                     TenantId = entity.TenantId,
-                    Id = entity?.Nav_AA043?.Id ?? string.Empty,
-                    Aa043Artigo = entity?.Nav_AA043?.Aa043Artigo ?? string.Empty,
-                    Aa043LcRedacao = entity?.Nav_AA043?.Aa043LcRedacao ?? string.Empty,
-                    Aa043Ec = entity?.Nav_AA043?.Aa043Ec ?? string.Empty,
+                    Id = entity?.Nav_AA143?.Id ?? string.Empty,
+                    Aa043Artigo = entity?.Nav_AA143?.Aa043Artigo ?? string.Empty,
+                    Aa043LcRedacao = entity?.Nav_AA143?.Aa043LcRedacao ?? string.Empty,
+                    Aa043Ec = entity?.Nav_AA143?.Aa043Ec ?? string.Empty,
                 },
-                Nav_AA046_TP_GOV = entity?.Nav_AA046_TP_GOV,
+                Nav_AA046_TP_GOV = entity?.Nav_AA146_TP_GOV,
 
             };
         }
@@ -417,17 +420,17 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 NavBB012_SitConta = entity.BB012_SitConta,
                 NavBB012_MCred = entity.BB012_MCred,
                 NavBB012_EstabelecimentoCadastro = entity.BB012_EstabelecimentoCadastro?.ToDtoGetExibicao(),
-                bb012_LCEspecial_ID = entity.bb012_LCEspecial_ID,
+                bb012_LCEspecial_ID = entity.bb012_RFEspecial_ID,
                 bb012_TpGovId = entity.bb012_TpGovId,
                 NavAA043 = new CSCore.Application.Dto.Dtos.Basico_AA.AA00X.DtoGetAA043
                 {
                     TenantId = entity.TenantId,
-                    Id = entity?.Nav_AA043?.Id ?? string.Empty,
-                    Aa043Artigo = entity?.Nav_AA043?.Aa043Artigo ?? string.Empty,
-                    Aa043LcRedacao = entity?.Nav_AA043?.Aa043LcRedacao ?? string.Empty,
-                    Aa043Ec = entity?.Nav_AA043?.Aa043Ec ?? string.Empty,
+                    Id = entity?.Nav_AA143?.Id ?? string.Empty,
+                    Aa043Artigo = entity?.Nav_AA143?.Aa043Artigo ?? string.Empty,
+                    Aa043LcRedacao = entity?.Nav_AA143?.Aa043LcRedacao ?? string.Empty,
+                    Aa043Ec = entity?.Nav_AA143?.Aa043Ec ?? string.Empty,
                 },
-                Nav_AA046_TP_GOV = entity?.Nav_AA046_TP_GOV,
+                Nav_AA046_TP_GOV = entity?.Nav_AA146_TP_GOV,
             };
         }
 
@@ -477,17 +480,17 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 NavBB012_SitConta = entity.BB012_SitConta,
                 NavBB012_MCred = entity.BB012_MCred,
                 NavBB012_EstabelecimentoCadastro = entity.BB012_EstabelecimentoCadastro?.ToDtoGetExibicao(),
-                bb012_LCEspecial_ID = entity.bb012_LCEspecial_ID,
+                bb012_LCEspecial_ID = entity.bb012_RFEspecial_ID,
                 bb012_TpGovId = entity.bb012_TpGovId,
                 NavAA043 = new CSCore.Application.Dto.Dtos.Basico_AA.AA00X.DtoGetAA043
                 {
                     TenantId = entity.TenantId,
-                    Id = entity?.Nav_AA043?.Id ?? string.Empty,
-                    Aa043Artigo = entity?.Nav_AA043?.Aa043Artigo ?? string.Empty,
-                    Aa043LcRedacao = entity?.Nav_AA043?.Aa043LcRedacao ?? string.Empty,
-                    Aa043Ec = entity?.Nav_AA043?.Aa043Ec ?? string.Empty,
+                    Id = entity?.Nav_AA143?.Id ?? string.Empty,
+                    Aa043Artigo = entity?.Nav_AA143?.Aa043Artigo ?? string.Empty,
+                    Aa043LcRedacao = entity?.Nav_AA143?.Aa043LcRedacao ?? string.Empty,
+                    Aa043Ec = entity?.Nav_AA143?.Aa043Ec ?? string.Empty,
                 },
-                Nav_AA046_TP_GOV = entity?.Nav_AA046_TP_GOV,
+                Nav_AA046_TP_GOV = entity?.Nav_AA146_TP_GOV,
                 //O RESTANTE É COMPLETADO NA CLASSE DE SERVIÇO, APÓS A CHAMADA DO MÉTODO
             };
         }
@@ -892,6 +895,28 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
             };
         }
 
+        public static Dto_GetBB01206Simples ToDtoBB01206Simples(this CSICP_BB01206 entity)
+        {
+            return new Dto_GetBB01206Simples
+            {
+
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Bb012Id = entity.Bb012Id,
+                Bb012jEnderecoid = entity.Bb012jEnderecoid,
+                Bb012Logradouro = entity.Bb012Logradouro,
+                Bb012Numero = entity.Bb012Numero,
+                Bb012Complemento = entity.Bb012Complemento,
+                Bb012Codgbairro = entity.Bb012Codgbairro,
+                Bb012Bairro = entity.Bb012Bairro,
+                UF_Aa027Sigla = entity.AA027_UF?.Aa027Sigla,
+                UF_Descricao = entity.AA027_UF?.Descricao,
+                Pais_Aa025Codigopais = entity.AA025_Pais?.Aa025Codigopais,
+                Pais_Aa025Descricao = entity.AA025_Pais?.Aa025Descricao,
+               
+            };
+        }
+
         public static Dto_GetBB01203 ToGetDtoBB01203(this CSICP_BB01203 entity)
         {
             return new Dto_GetBB01203
@@ -910,15 +935,54 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 Bb01203IsActive = entity.Bb01203IsActive,
             };
         }
+
+        public static Dto_GetBB012_ExibSimples ToDtoGetExibSimples(this CSICP_BB012 entity)
+        {
+            return new Dto_GetBB012_ExibSimples
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Bb012Codigo = entity.Bb012Codigo,
+                Bb012NomeCliente = entity.Bb012NomeCliente,
+            };
+        }
+
+        public static Dto_GetBB012Convenio ToDtoGet(this CSICP_BB012 entity)
+        {
+            return new Dto_GetBB012Convenio
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Bb012Codigo = entity.Bb012Codigo,
+                Bb012NomeCliente = entity.Bb012NomeCliente,
+                Bb012NomeFantasia = entity.Bb012NomeFantasia,
+                Bb012DataAniversario = entity.Bb012DataAniversario,
+                Bb012DataCadastro = entity.Bb012DataCadastro,
+                Bb012Telefone = entity.Bb012Telefone,
+                Bb012Faxcelular = entity.Bb012Faxcelular,
+                Bb012HomePage = entity.Bb012HomePage,
+                Bb012Email = entity.Bb012Email,
+                Bb012DataEntradaSit = entity.Bb012DataEntradaSit,
+                Bb012DataSaidaSit = entity.Bb012DataSaidaSit,
+                Bb012Descricao = entity.Bb012Descricao,
+                Bb012IsActive = entity.Bb012IsActive,
+                Bb012TipoContaId = entity.Bb012TipoContaId,
+                Bb012GrupocontaId = entity.Bb012GrupocontaId,
+                Bb012ClassecontaId = entity.Bb012ClassecontaId,
+                Bb012StatuscontaId = entity.Bb012StatuscontaId,
+                Bb012SitContaId = entity.Bb012SitContaId,
+                Bb012ModrelacaoId = entity.Bb012ModrelacaoId,
+                Bb012Sequence = entity.Bb012Sequence,
+                Bb012Dultalteracao = entity.Bb012Dultalteracao,
+                Bb012Estabcadid = entity.Bb012Estabcadid,
+                Bb012Keyacess = entity.Bb012Keyacess,
+                Bb012IdIndicador = entity.Bb012IdIndicador,
+                Bb012Countappmcon = entity.Bb012Countappmcon,
+                Bb012Oricadastroid = entity.Bb012Oricadastroid
+            };
+        }
     }
 }
-
-
-
-
-
-
-
 
 
 

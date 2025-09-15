@@ -26,18 +26,41 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<CSICP_AA39Mp255> E9ACSICP_AA039Mp255s { get; set; }
 
         public DbSet<CSICP_AA030Regime> E9ACSICP_AA030Regimes { get; set; }
-        public DbSet<CSICP_AA046_TP_GOV> CSICP_AA046_TP_GOV { get; set; }
+  
 
         partial void OnModelCreatingStaticaAA(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CSICP_AA046_TP_GOV>(entity =>
+            modelBuilder.Entity<OsusrE9aCsicpAa145Tpdebcre>(entity =>
             {
-                entity
-                    .HasKey(e => e.Id);
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_AA145_TPDEBCRE");
 
-                entity.ToTable("OSUSR_E9A_CSICP_AA046_TPGOV");
+                entity.ToTable("OSUSR_E9A_CSICP_AA145_TPDEBCRE");
 
-                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+                entity.Property(e => e.Debcre)
+                    .HasMaxLength(1)
+                    .HasColumnName("DEBCRE");
+                entity.Property(e => e.IsActive).HasColumnName("IS_ACTIVE");
+                entity.Property(e => e.Label)
+                    .HasMaxLength(100)
+                    .HasColumnName("LABEL");
+                entity.Property(e => e.Order).HasColumnName("ORDER");
+                entity.Property(e => e.Tiponotacredeb)
+                    .HasMaxLength(2)
+                    .HasColumnName("TIPONOTACREDEB");
+            });
+
+            modelBuilder.Entity<OsusrE9aCsicpAa146Tpgov>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_AA146_TPGOV");
+
+                entity.ToTable("OSUSR_E9A_CSICP_AA146_TPGOV");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
                 entity.Property(e => e.IsActive).HasColumnName("IS_ACTIVE");
                 entity.Property(e => e.Label)
                     .HasMaxLength(50)
@@ -47,6 +70,41 @@ namespace CSCore.Ifs.CS_Context
                     .HasMaxLength(1)
                     .HasColumnName("TPCOMPRAGOV");
             });
+
+            modelBuilder.Entity<OsusrE9aCsicpAa149Tpopgov>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_AA149_TPOPGOV");
+
+                entity.ToTable("OSUSR_E9A_CSICP_AA149_TPOPGOV");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+                entity.Property(e => e.CodgCs).HasColumnName("CODG_CS");
+                entity.Property(e => e.IsActive).HasColumnName("IS_ACTIVE");
+                entity.Property(e => e.Label)
+                    .HasMaxLength(100)
+                    .HasColumnName("LABEL");
+                entity.Property(e => e.Order).HasColumnName("ORDER");
+            });
+
+            modelBuilder.Entity<OsusrE9aCsicpAa150Ccredpre>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_AA150_CCREDPRES");
+
+                entity.ToTable("OSUSR_E9A_CSICP_AA150_CCREDPRES");
+
+                entity.Property(e => e.Id)
+                    .ValueGeneratedNever()
+                    .HasColumnName("ID");
+                entity.Property(e => e.CodgCs).HasColumnName("CODG_CS");
+                entity.Property(e => e.IsActive).HasColumnName("IS_ACTIVE");
+                entity.Property(e => e.Label)
+                    .HasMaxLength(100)
+                    .HasColumnName("LABEL");
+                entity.Property(e => e.Order).HasColumnName("ORDER");
+            });
+ 
             modelBuilder.Entity<CSICP_AA030Regime>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_AA030_REGIME");

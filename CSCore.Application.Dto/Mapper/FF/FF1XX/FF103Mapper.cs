@@ -1,4 +1,6 @@
-﻿using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF103;
+﻿using CSBS101._82Application.Mapper.BB00X;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF103;
+using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_FF;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF1XX
@@ -67,7 +69,9 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 Ff103CtlEstdtreg = ff103.Ff103CtlEstdtreg,
                 Ff103CtlIdlancto = ff103.Ff103CtlIdlancto,
                 Ff103CtlMsg = ff103.Ff103CtlMsg,
-
+                NavBB006 = ff103.NavBB006?.ToDtoGetExibicao(),
+                NavFF102 = ff103.NavFF102?.ToDtoGet_ParaFF103(),
+                NavSY001 = ff103.NavSY001?.ToDtoGetSimples(),
             };
         }
     }

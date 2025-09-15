@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102.RepoDto;
+using System;
 using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
@@ -122,4 +123,6 @@ public partial class CSICP_FF103
     public string? Ff103CtlMsg { get; set; }
 
     public CSICP_FF102? NavFF102 { get; set; }
+    public Csicp_Sy001? NavSY001 { get; set; }
+    public CSICP_Bb006? NavBB006 { get; set; }
 }

@@ -1,4 +1,5 @@
 ﻿using CSBS101._82Application.Dto.AA00X;
+using CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA027;
 using CSCore.Domain;
 using CSLB900.MSTools.Extensao;
 
@@ -57,6 +58,27 @@ namespace CSBS101._82Application.Mapper.AA00X.AA027
             };
             entity.ConverteValoresPadraoParaNulo();
             return entity;
+        }
+
+        public static DtoGetAA027_Simples ToDtoGetAA027SASimples(this CSICP_Aa027 entity)
+        {
+            return new DtoGetAA027_Simples
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Aa027Sigla = entity.Aa027Sigla,
+                Descricao = entity.Descricao,
+                Aa027Percicmscontrib = entity.Aa027Percicmscontrib,
+                Aa027Percicmsncontrib = entity.Aa027Percicmsncontrib,
+                Aa027Percsubsttribut = entity.Aa027Percsubsttribut,
+                Aa027Mascinsestadual = entity.Aa027Mascinsestadual,
+                Aa027Percicmsentrada = entity.Aa027Percicmsentrada,
+                Aa027Mascieimpressao = entity.Aa027Mascieimpressao,
+                Aa027Codigoibge = entity.Aa027Codigoibge,
+                Paisid = entity.Paisid,
+                Regiaoid = entity.Regiaoid,
+                Aa027Naturalidade = entity.Aa027Naturalidade,
+            };
         }
     }
 }

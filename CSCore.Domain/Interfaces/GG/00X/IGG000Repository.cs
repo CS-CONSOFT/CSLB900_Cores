@@ -7,6 +7,6 @@ namespace CSCore.Domain.Interfaces.GG._00X
     {
         Task<(IEnumerable<CSICP_GG000>, int)> GetListAsync(int tenant, int pageSize, int page);
         Task<CSICP_GG000?> GetByIdAsync(long id, int tenant);
-        Task<int> RecuperaUltimoCodigo(int tenant);
+        Task<CSICP_GG000?> RecuperaUltimoCodigo(int tenant);
     }
 }

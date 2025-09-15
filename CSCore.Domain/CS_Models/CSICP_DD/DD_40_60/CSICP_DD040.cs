@@ -374,10 +374,27 @@ public partial class CSICP_DD040
 
     public string? Dd040Keyecommerce { get; set; }
 
+
+    //NAV
+    public CSICP_BB001? NavBB001 { get; set; }
+    public CSICP_DD040Tnt? NavDD040Tnt { get; set; }
+    public OsusrNnxSpedInDocIcm? NavSpedIcm { get; set; }
+    public CSICP_DD909? NavDD909 { get; set; }
+    public CSICP_DD040Ipre? NavDD040Ipre { get; set; }
+    public CSICP_DD041Frete? NavDD041Frete { get; set; }
+    //public List<CSICP_DD044> NavListDD044 { get; set; } = new List<CSICP_DD044>();
+    //public List<CSICP_DD045> NavListDD045 { get; set; } = new List<CSICP_DD045>();
+    //public List<CSICP_DD048> NavListDD048 { get; set; } = new List<CSICP_DD048>();
+    //public List<CSICP_BB001_AXML> NavListBB001AXML { get; set; } = new List<CSICP_BB001_AXML>();
+    //public List<RepoCSICP_DD042> NavListDD042 { get; set; } = new List<RepoCSICP_DD042>();
+
+
+
+
     //---------------------Reforma Tributária---------------------//
 
-    [Column("W33_VIS", TypeName = "decimal(15,yes)")]
-    public decimal? W33_VIS { get; set; }
+    //[Column("W33_VIS", TypeName = "decimal(15,yes)")]
+    //public decimal? W33_VIS { get; set; }
 
     [Column("W35_VBCIBSCBS", TypeName = "decimal(15,yes)")]
     public decimal? W35_VBCIBSCBS { get; set; }
@@ -400,14 +417,14 @@ public partial class CSICP_DD040
     [Column("W46_VIBSMUN", TypeName = "decimal(15,yes)")]
     public decimal? W46_VIBSMUN { get; set; }
 
-    [Column("W47_VIBSTOT", TypeName = "decimal(15,yes)")]
-    public decimal? W47_VIBSTOT { get; set; }
+    //[Column("W47_VIBSTOT", TypeName = "decimal(15,yes)")]
+    //public decimal? W47_VIBSTOT { get; set; }
 
-    [Column("W48_VCREDPRES", TypeName = "decimal(15,yes)")]
-    public decimal? W48_VCREDPRES { get; set; }
+    //[Column("W48_VCREDPRES", TypeName = "decimal(15,yes)")]
+    //public decimal? W48_VCREDPRES { get; set; }
 
-    [Column("W49_VCREDPRESCONDSUS", TypeName = "decimal(15,yes)")]
-    public decimal? W49_VCREDPRESCONDSUS { get; set; }
+    //[Column("W49_VCREDPRESCONDSUS", TypeName = "decimal(15,yes)")]
+    //public decimal? W49_VCREDPRESCONDSUS { get; set; }
 
     [Column("W53_CBS_VDIF", TypeName = "decimal(15,yes)")]
     public decimal? W53_CBS_VDIF { get; set; }
@@ -451,25 +468,3 @@ public partial class CSICP_DD040
     //-------------------------------------------------------//
 }
 
-
-
-public class RepoDtoCSICP_DD040 : CSICP_DD040
-{
-    public CSICP_BB001? NavBB001 { get; set; }
-
-    public CSICP_Aa028? NavAA028byBB001 { get; set; }
-    public CSICP_Aa027? NavAA027byBB001 { get; set; }
-    public CSICP_Aa025? NavAA025byBB001 { get; set; }
-    public CSICP_DD040Tnt? NavDD040Tnt { get; set; }
-    public CSICP_BB001Cfgfi? NavBB001Cfgfi { get; set; }
-    public CSICP_AA030Regime? NavAA030Regime { get; set; }
-    public OsusrNnxSpedInDocIcm? NavSpedIcm { get; set; }
-    public CSICP_DD909? NavDD909 { get; set; }
-    public CSICP_DD040Ipre? NavDD040Ipre { get; set; }
-    public CSICP_DD041Frete? NavDD041Frete { get; set; }
-    public List<CSICP_DD044> NavListDD044 { get; set; } = new List<CSICP_DD044>();
-    public List<CSICP_DD045> NavListDD045 { get; set; } = new List<CSICP_DD045>();
-    public List<CSICP_DD048> NavListDD048 { get; set; } = new List<CSICP_DD048>();
-    public List<CSICP_BB001_AXML> NavListBB001AXML { get; set; } = new List<CSICP_BB001_AXML>();
-    public List<RepoCSICP_DD042> NavListDD042 { get; set; } = new List<RepoCSICP_DD042>();
-}

@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF119;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF1XX
 {
     public static class FF119Mapper
     {
-        public static DtoGetFF119 ToDtoGet(this RepoDtoCSICP_FF119 entity)
+        public static DtoGetFF119 ToDtoGet(this CSICP_FF119 entity)
         {
             return new DtoGetFF119
             {

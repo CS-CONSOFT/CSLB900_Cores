@@ -11,16 +11,19 @@ namespace CSCore.Ifs.Repository.GG
         RepositorioBaseComMudaAtivoImpl<CSICP_GG001>(appDbContext), IGG001Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task<CSICP_GG001> CreateAsync(CSICP_GG001 gg001)
+
+        public override CSICP_GG001 Create(CSICP_GG001 gg001)
         {
             int novoCodigo = IncrementarCodigo
-            .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_GG001>
-            (_appDbContext, gg001.Gg001Codigoalmox, null, "Gg011CodigoQualidade", "Id");
+          .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_GG001>
+          (_appDbContext, gg001.Gg001Codigoalmox, null, "Gg001Codigoalmox", "Id");
+
             gg001.Gg001Codigoalmox = novoCodigo;
             _appDbContext.Add(gg001);
-            await _appDbContext.SaveChangesAsync();
+
             return gg001;
         }
+
         public async Task<CSICP_GG001?> GetByIdAsync(string id, int tenant)
         {
             return await _appDbContext.CSICP_GG001s

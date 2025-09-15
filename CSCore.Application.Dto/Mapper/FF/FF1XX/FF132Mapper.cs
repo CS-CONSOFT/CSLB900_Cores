@@ -1,11 +1,11 @@
 ﻿using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF132;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF132;
+using CSCore.Domain.CS_Models.CSICP_FF;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF1XX
 {
     public static class FF132Mapper
     {
-        public static DtoGetFF132 ToDtoGetFF132(this RepoDtoCSICP_FF132 entity)
+        public static DtoGetFF132 ToDtoGet(this CSICP_FF132 entity)
         {
             return new DtoGetFF132
             {

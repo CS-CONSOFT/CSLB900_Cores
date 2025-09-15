@@ -36,4 +36,5 @@ public partial class CSICP_BB001Cfgfi
     public CSICP_BB001_ATPJS? Bb001Tpatividade { get; set; }
 
     public CSICP_BB001TpTri? Bb001Tptributacao { get; set; }
+
 }

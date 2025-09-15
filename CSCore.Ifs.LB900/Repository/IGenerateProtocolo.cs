@@ -2,9 +2,9 @@
 {
     public interface IGenerateProtocolo
     {
-        public Task<decimal> Fcn_Protocolo(string empresaID, string arquivo, string textName);
-        public Task<decimal> Fcn_Protocolo15(string empresaID, string arquivo);
-        public Task<decimal> Fcn_Protocolo10(string empresaID, string arquivo);
-        public Task<decimal> Fcn_ProtocoloGeral(string empresaID);
+        public Task<decimal> Fcn_Protocolo(string empresaID, string arquivo, string textName, int inTenantID);
+        public Task<decimal> Fcn_Protocolo15(string empresaID, string arquivo, int inTenantID);
+        public Task<decimal> Fcn_Protocolo10(string empresaID, string arquivo, int InTenantID);
+        public Task<decimal> Fcn_ProtocoloGeral(string empresaID, int InTenantID);
     }
 }

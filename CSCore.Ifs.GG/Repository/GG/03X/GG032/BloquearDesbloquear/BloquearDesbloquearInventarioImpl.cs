@@ -2,6 +2,7 @@
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository.GG._03X;
 using CSLB900.MSTools.Util;
+using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.GG.Repository.GG._03X.GG032
 {
@@ -38,13 +39,15 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032
                 List<CSICP_GG033> listgg033 =
                     await GetInventarioProdutosAsync(InPrmBloqDesbloq.InTenantID, gg032inventario.Id, _appDbContext);
 
+                var saldoIds = listgg033.Select(x => x.Gg033Saldoid).Where(id => !string.IsNullOrEmpty(id)).Distinct().ToList();
+                var saldos = await _appDbContext.OsusrE9aCsicpGg520s
+                    .Where(s => saldoIds.Contains(s.Id))
+                    .ToDictionaryAsync(s => s.Id);
+
                 foreach (var gg033item in listgg033)
                 {
-                    CSICP_GG520? saldoEncontrado =
-                        await GetSaldoParaTrabalhoAsync(InPrmBloqDesbloq.InTenantID, gg033item.Gg033Saldoid ?? "", _appDbContext);
-
-                    if (saldoEncontrado == null) continue;
-
+                    if (string.IsNullOrEmpty(gg033item.Gg033Saldoid)) continue;
+                    if (!saldos.TryGetValue(gg033item.Gg033Saldoid, out var saldoEncontrado)) continue;
 
                     saldoEncontrado.Gg520ItemEmContagem = EhAcaoBloquear(InPrmBloqDesbloq.InTipoAcaoInventario);
                     gg033item.Gg033Saldoestoque = saldoEncontrado.Gg520Saldo;

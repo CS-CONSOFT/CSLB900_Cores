@@ -47,15 +47,9 @@ public partial class CSICP_FF107
 
     public string? Ff107Protocolnumber { get; set; }
 
-    public virtual CSICP_FF102? Ff102Titulo { get; set; }
-
-    public virtual CSICP_FF002? Ff107Motivo { get; set; }
-
-    public class RepoDtoCSICP_FF107 : CSICP_FF107
-    {
-        public CSICP_BB001? NavBB001 { get; set; }
-        public CSICP_FF102? NavFF102 { get; set; }
-        public Csicp_Sy001? NavSY001 { get; set; }
-        public CSICP_FF002? NavFF002 { get; set; }
-    }
+    // Propriedades de navegação movidas do RepoDtoCSICP_FF107
+    public CSICP_BB001? NavBB001 { get; set; }
+    public Csicp_Sy001? NavSY001 { get; set; }
+    public CSICP_FF002? NavFF002 { get; set; }
+    public CSICP_FF102? NavFF102 { get; set; }
 }

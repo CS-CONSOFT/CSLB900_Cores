@@ -5,7 +5,6 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF012;
 
 namespace CSCore.Ifs.FF.Repository.FF01X
 {
@@ -14,10 +13,10 @@ namespace CSCore.Ifs.FF.Repository.FF01X
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<(List<RepoDtoCSICP_FF012>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
+        public async Task<(List<CSICP_FF012>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize,
             string? in_estabId, int? in_codigoGrupo)
         {
-            IQueryable<RepoDtoCSICP_FF012> query = GetQueryBase(in_tenant);
+            IQueryable<CSICP_FF012> query = GetQueryBase(in_tenant);
 
             // Aplicar filtros
             if (!string.IsNullOrEmpty(in_estabId))
@@ -30,17 +29,17 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             var count = queryCount.Count();
             query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
 
-            List<RepoDtoCSICP_FF012> result = await query.ToListAsync();
+            List<CSICP_FF012> result = await query.ToListAsync();
             return (result, count);
         }
 
-        public async Task<RepoDtoCSICP_FF012?> GetByIdAsync(int in_tenant, string in_ff012Id)
+        public async Task<CSICP_FF012?> GetByIdAsync(int in_tenant, string in_ff012Id)
         {
-            IQueryable<RepoDtoCSICP_FF012> query = GetQueryBase(in_tenant);
+            IQueryable<CSICP_FF012> query = GetQueryBase(in_tenant);
             return await query.FirstOrDefaultAsync(e => e.Id == in_ff012Id);
         }
 
-        private IQueryable<RepoDtoCSICP_FF012> GetQueryBase(int in_tenant)
+        private IQueryable<CSICP_FF012> GetQueryBase(int in_tenant)
         {
             return from ff012 in _appDbContext.OsusrE9aCsicpFf012s
 
@@ -71,7 +70,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
 
                    where ff012.TenantId == in_tenant
 
-                   select new RepoDtoCSICP_FF012
+                   select new CSICP_FF012
                    {
                        TenantId = ff012.TenantId,
                        Id = ff012.Id,

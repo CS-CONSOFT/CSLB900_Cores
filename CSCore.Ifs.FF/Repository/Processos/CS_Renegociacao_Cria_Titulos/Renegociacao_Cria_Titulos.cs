@@ -37,7 +37,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos
 
                 if (!Work_GetMemoriaCalculo.Any()) throw new Exception("Memória de cálculo não encontrada!");
 
-                decimal protocolo = await _generateProtocolo.Fcn_Protocolo10(InPrmCriaTitulo.InBB001FilialID, "CPAGAR");
+                decimal protocolo = await _generateProtocolo.Fcn_Protocolo10(InPrmCriaTitulo.InBB001FilialID, "CPAGAR", InPrmCriaTitulo.InTenantID);
 
                 bool AuxIsConfAprovAutomatico = await Verifica_ConfirmAutomatico(InPrmCriaTitulo.InBB001FilialID, InPrmCriaTitulo.InTenantID);
 
@@ -66,7 +66,13 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos
                 foreach (var current in Work_GetMemoriaCalculo)
                 {
                     string? Ff102SfxValue = current.Ff999Parcela?.ToString().PadLeft(2, '0');
-                    CSICP_FF102 AuxFF102ParaInserir = CriarEntidadeFF102(InPrmCriaTitulo, WorkFF017, Work_GetMemoriaCalculo, protocolo, AuxIsConfAprovAutomatico, Work_GetEspecie, Work_AgenteCobrador.Bb006CodcobradorId, current, Ff102SfxValue);
+
+                    CSICP_FF102 AuxFF102ParaInserir 
+                        = CriarEntidadeFF102(InPrmCriaTitulo,
+                        WorkFF017, Work_GetMemoriaCalculo,
+                        protocolo, AuxIsConfAprovAutomatico,
+                        Work_GetEspecie, Work_AgenteCobrador.Bb006CodcobradorId, current, Ff102SfxValue);
+
                     FF102EntidadesParaInserir.Add(AuxFF102ParaInserir);
 
                     CSICP_FF104 AuxFF104ParaInserir = CriaEntidadeFF104(InPrmCriaTitulo, WorkFF017, AuxFF102ParaInserir);
@@ -81,10 +87,17 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos
                         FF103EntidadesParaInserir.Add(AuxFF103ParaInserir);
                     }
                 }
+
                 // Atualiza os campos da renegociação
                 WorkFF017.Ff017Aberto = false;
                 List<CSICP_FF102> FF102EntidadesParaAtualizar = await GetTitulosParaAtualizar(InPrmCriaTitulo, WorkFF017);
-                await PersistirRenegociacaoTitulos(WorkFF017, FF102EntidadesParaInserir, FF103EntidadesParaInserir, FF104EntidadesParaInserir, FF999EntidadesParaDeletar, FF102EntidadesParaAtualizar);
+                await PersistirRenegociacaoTitulos(
+                    WorkFF017,
+                    FF102EntidadesParaInserir,
+                    FF103EntidadesParaInserir,
+                    FF104EntidadesParaInserir,
+                    FF999EntidadesParaDeletar,
+                    FF102EntidadesParaAtualizar);
                 await transaction.CommitAsync();
                 return true;
             }
@@ -113,7 +126,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos
                 Ff103ValorPago = AuxFF102ParaInserir.Ff102ValorTitulo,
                 Ff103Usuarioproprid = AuxFF102ParaInserir.Ff102Usuarioproprieid,
                 Ff103Cobradorid = AuxFF102ParaInserir.Ff102Agcobradorid,
-                Ff103Tpbaixaid = InPrmCriaTitulo.InSTIDFf103TpBaiAutPgtoNaoAutorizado,
+                Ff103Tpbaixaid = InPrmCriaTitulo.InSTIDFf103TpBai,
                 Ff103FpagtoId = AuxFF102ParaInserir.Ff10FpagtoId,
                 Ff103Historico = "Bx via Vale Crédito da Renegociação",
                 Ff103ObjBxLabel = "BXRENEG",

@@ -7,6 +7,8 @@ using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF005;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain;
+using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSBS101._82Application.Mapper.BB00X.BB012;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF00X
 {
@@ -30,6 +32,8 @@ namespace CSCore.Application.Dto.Mapper.FF.FF00X
                 NavFF003 = entity.NavFF003?.ToDtoGetExibicao(),
                 NavFF003TpEsp = entity.NavFF003TpEsp,
                 NavAA037Imp = entity.NavAA037Imp,
+                NavBB001Filial = entity.NavBB001Filial?.ToDtoGetExibicao(),
+                NavBB012ContaFornecedor = entity.NavBB012ContaFornecedor?.ToDtoGetExibSimples()
             };
         }
     }

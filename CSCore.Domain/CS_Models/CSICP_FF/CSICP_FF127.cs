@@ -37,5 +37,8 @@ public partial class CSICP_FF127
 
     public string? Ff127Motivoid { get; set; }
 
-    public virtual CSICP_FF002? Ff127Motivo { get; set; }
+    public CSICP_FF002? NavFF002Motivo { get; set; }
+    public CSICP_BB012? NavBB012Conta { get; set; }
+    public CSICP_Bb006? NavBB006AgCobrador { get; set; }
+    public Csicp_Sy001? NavSY001Cobrador { get; set; }
 }
