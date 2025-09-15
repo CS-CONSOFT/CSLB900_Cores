@@ -6,15 +6,16 @@ using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.GG.Repository.GG._05X.GG055.Filtros;
 using CSCore.Ifs.GG.Repository.GG._05X.GG055.Includes;
+using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.GG.Repository.GG._05X.GG055
 {
-    public class GG055RepositoryImpl : GetListFiltrosBaseImplementacaoAbstract<CSICP_GG055, PrmFiltrosGG055Repo>, IGG055Repository
+    public class GG055RepositoryImpl : RepositorioBaseImpl<CSICP_GG055>, IGG055Repository
     {
         private readonly AppDbContext _appDbContext;
-        public GG055RepositoryImpl(AppDbContext appDbContext)
+        public GG055RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
         {
             _appDbContext = appDbContext;
         }
@@ -31,10 +32,13 @@ namespace CSCore.Ifs.GG.Repository.GG._05X.GG055
             return (await query.ToListAsync(), count);
         }
 
-        protected override ICSFilter<CSICP_GG055>[] GetOutrosFiltros(int TenantId, PrmFiltrosGG055Repo Filtros)
+        protected override ICSFilter<CSICP_GG055>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)
         {
-              return [
-                 new FiltroGG054IdGG055(Filtros.InIDGG054)
+            var filtros = Filtros as PrmFiltrosGG055Repo;
+            if (filtros == null)
+                throw new ArgumentNullException(nameof(filtros), "Os filtros fornecidos não são do tipo esperado PrmFiltrosGG055Repo.");
+            return [
+                 new FiltroGG054IdGG055(filtros.InIDGG054)
                 ];
         }
 
