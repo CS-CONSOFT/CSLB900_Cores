@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy
 {
-    public class ExportarArquivoExcelSISPRO : ExportarArquivoTemplateExcel, IExportarArquivo
+    internal class ExportarArquivoExcelSISPRO : ExportarArquivoTemplateExcel, IExportarArquivo
     {
         private readonly AppDbContext _appDbContext;
 

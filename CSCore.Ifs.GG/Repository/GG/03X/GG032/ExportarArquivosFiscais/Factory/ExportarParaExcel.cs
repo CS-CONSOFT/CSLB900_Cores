@@ -5,7 +5,7 @@ using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy.Te
 
 namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais
 {
-    public class ExportarParaExcel : ExportarArquivoTemplateExcel, IExportarArquivo
+    internal class ExportarParaExcel : ExportarArquivoTemplateExcel, IExportarArquivo
     {
         private readonly AppDbContext _appDbContext;
 

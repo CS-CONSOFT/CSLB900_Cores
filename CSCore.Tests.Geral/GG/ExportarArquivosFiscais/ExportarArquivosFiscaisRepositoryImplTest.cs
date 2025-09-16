@@ -48,7 +48,7 @@ namespace CSCore.Tests.Geral.GG.ExportarArquivosFiscais
             // Act
             await
                 _repository
-                .Exportar(CSEnumTipoExportacaoArquivo.XLS_BLC_0200, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
+                .Exportar(CSEnumTipoExportacaoArquivo.TXT_BLC_0200, InGG032_ID: "zzz0198f71244ad7a589036e300632ab183", InTenantID: 135);
         }
 
         [Fact]

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy
 {
-    public class ExportarArquivoTXTBlocoH_e_H2 : ExportarArquivoTemplate, IExportarArquivo
+    internal class ExportarArquivoTXTBlocoH_e_H2 : ExportarArquivoTemplate, IExportarArquivo
     {
         private readonly AppDbContext _appDbContext;
         private Func<DtoArquivosFiscaisExcelGetInventario, bool> _InFuncIf;
@@ -17,7 +17,9 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
         /// 
         /// </summary>
         /// <param name="appDbContext"></param>
-        /// <param name="InFuncIf">O FuncIf é uma função de filtro, passada como parâmetro para a estratégia de exportação, que determina dinamicamente quais produtos do inventário devem ser incluídos em determinados registros do arquivo fiscal, conforme regras específicas de cada bloco (H ou H2).</param>
+        /// <param name="InFuncIf">O FuncIf é uma função de filtro, passada como parâmetro para a estratégia de exportação, 
+        /// que determina dinamicamente quais produtos do inventário devem ser incluídos em determinados registros do arquivo fiscal, 
+        /// conforme regras específicas de cada bloco (H ou H2).</param>
         public ExportarArquivoTXTBlocoH_e_H2(AppDbContext appDbContext,
             Func<DtoArquivosFiscaisExcelGetInventario, bool> InFuncIf, string NomeArquivo)
         {
@@ -34,10 +36,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
 
             var arqText = new StringBuilder();
 
-            // Registro H990 - Cabeçalho do bloco
-            var qtdLinhasH = ContarLinhasBloco(produtosInventario);
-            arqText.AppendLine($"|H990|{qtdLinhasH}|");
-
+         
             // H005 - Totais do inventário
             var h005 = FormatarRegistroH005(produtosInventario[0]);
             arqText.AppendLine(h005);
@@ -56,6 +55,11 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
                 var h020 = FormatarRegistroH020(produto);
                 arqText.AppendLine(h020);
             }
+
+            // Registro H990 - Cabeçalho do bloco
+            var qtdLinhasH = ContarLinhasBloco(produtosInventario);
+            arqText.AppendLine($"|H990|{qtdLinhasH}|");
+
             // Converter texto para bytes usando MemoryStream
             var fileName = GetFilename(protocolo ?? "", _NomeArquivo, ExtensaoArquivo.TXT);
             var textBytes = Encoding.UTF8.GetBytes(arqText.ToString());
