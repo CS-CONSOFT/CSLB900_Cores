@@ -1,10 +1,8 @@
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.FF.Repository.FF1XX.FF126;
+using CSCore.Ifs.FF.Repository.FF1XX.FF127;
 using CSCore.Tests.Geral.Financeiro.RenegociacaoCalcTitulo.CSCore.Ifs.FF.Tests.Repository.Processos.CS_Renegociacao_Calc_Titulos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace CSCore.Tests.Geral.Financeiro.FF126
 {
@@ -29,9 +27,9 @@ namespace CSCore.Tests.Geral.Financeiro.FF126
         public async Task Atualiza_FF126_Funcional()
         {
             var dbContext = CreateDbContext();
-            var repo = new AtualizaFF126Repository(dbContext);
-            var prm = PrmAtualizaFF126RepositoryFactory.Create();
-            var responde = await repo.Atualiza_FF126(prm);
+            var repo = new AtualizaFF127Repository(dbContext);
+            var prm = await PrmAtualizaFF126RepositoryFactory.Create(dbContext);
+            var responde = await repo.Atualiza_FF127(prm);
             Assert.True(responde);
         }
     }

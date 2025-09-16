@@ -4,7 +4,7 @@ using CSCore.Ifs.CS_Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace CSCore.Ifs.FF.Repository.FF1XX.FF126
+namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
 {
     class InternalGetTitulos
     {
@@ -13,16 +13,16 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF126
         public CSICP_FF126 ff126 { get; set; } = null!;
         public CSICP_Bb006 bb006 { get; set; } = null!;
     }
-    public class AtualizaFF126Repository
+    public class AtualizaFF127Repository : IAtualizarFF127Repository
     {
         private readonly AppDbContext _appDbContext;
 
-        public AtualizaFF126Repository(AppDbContext appDbContext)
+        public AtualizaFF127Repository(AppDbContext appDbContext)
         {
             this._appDbContext = appDbContext;
         }
 
-        public async Task<bool> Atualiza_FF126(PrmAtualizaFF126Repository prmAtualizaFF126Repository)
+        public async Task<bool> Atualiza_FF127(PrmAtualizaFF127Repository prmAtualizaFF126Repository)
         {
             using var transaction = await _appDbContext.Database.BeginTransactionAsync();
             try
@@ -53,7 +53,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF126
             }
         }
 
-        private async Task CriaHistoricoFF128(PrmAtualizaFF126Repository prmAtualizaFF126Repository, List<InternalGetTitulos> WorkGetTitulos, string novoIdFF127)
+        private async Task CriaHistoricoFF128(PrmAtualizaFF127Repository prmAtualizaFF126Repository, List<InternalGetTitulos> WorkGetTitulos, string novoIdFF127)
         {
             var WorkAddFF128 = CSICP_FF128.Create(
                 prmAtualizaFF126Repository.InCS_GenerateID.GenerateUuId(),
@@ -71,7 +71,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF126
             await _appDbContext.SaveChangesAsync();
         }
 
-        private async Task AtualizaDadosTitulos(PrmAtualizaFF126Repository prmAtualizaFF126Repository,
+        private async Task AtualizaDadosTitulos(PrmAtualizaFF127Repository prmAtualizaFF126Repository,
             List<InternalGetTitulos> WorkGetTitulos)
         {
             foreach (var currentTitulo in WorkGetTitulos)
@@ -95,7 +95,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF126
             await _appDbContext.SaveChangesAsync();
         }
 
-        private async Task<CSICP_FF011?> GetWorkFF011(PrmAtualizaFF126Repository prmAtualizaFF126Repository)
+        private async Task<CSICP_FF011?> GetWorkFF011(PrmAtualizaFF127Repository prmAtualizaFF126Repository)
         {
             return await _appDbContext.OsusrE9aCsicpFf011s
                 .Where(e => e.TenantId == prmAtualizaFF126Repository.InTenantID)
@@ -103,7 +103,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF126
                 .FirstOrDefaultAsync();
         }
 
-        private IQueryable<CSICP_FF127> GetQueryWorkFF127(PrmAtualizaFF126Repository prmAtualizaFF126Repository)
+        private IQueryable<CSICP_FF127> GetQueryWorkFF127(PrmAtualizaFF127Repository prmAtualizaFF126Repository)
         {
             return _appDbContext.OsusrE9aCsicpFf127s
                             .Where(x => x.TenantId == prmAtualizaFF126Repository.InTenantID
@@ -111,7 +111,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF126
                             && x.Ff127ContaId == prmAtualizaFF126Repository.InBB012_ID);
         }
 
-        private async Task<string> CriaHistoricoFF127(PrmAtualizaFF126Repository prm, CSICP_Bb006? InBB006)
+        private async Task<string> CriaHistoricoFF127(PrmAtualizaFF127Repository prm, CSICP_Bb006? InBB006)
         {
             string novoId = prm.InCS_GenerateID.GenerateUuId();
             var WorkNewFF127 = CSICP_FF127.CreateInstance(
@@ -132,7 +132,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF126
             return novoId;
         }
 
-        private async Task InativaHistorico(PrmAtualizaFF126Repository prmAtualizaFF126Repository)
+        private async Task InativaHistorico(PrmAtualizaFF127Repository prmAtualizaFF126Repository)
         {
             var WorkFF127List = await GetQueryWorkFF127(prmAtualizaFF126Repository)
                 .ToListAsync();
@@ -162,7 +162,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF126
             await _appDbContext.SaveChangesAsync();
         }
 
-        private async Task<List<InternalGetTitulos>> GetTitulos(PrmAtualizaFF126Repository prm, int FF011_Dias_Atrasos_De)
+        private async Task<List<InternalGetTitulos>> GetTitulos(PrmAtualizaFF127Repository prm, int FF011_Dias_Atrasos_De)
         {
             var result = await (from ff125 in _appDbContext.OsusrE9aCsicpFf125s
                           join ff102 in _appDbContext.OsusrE9aCsicpFf102s on ff125.Ff125ContaId equals ff102.Ff102Contaid
