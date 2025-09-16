@@ -47,7 +47,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                ];
         }
 
-        
         protected override ICSInclude<CSICP_FF127>[] GetIncludesParaAplicar()
         {
             return [

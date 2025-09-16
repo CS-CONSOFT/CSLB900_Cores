@@ -304,5 +304,11 @@ namespace CSCore.Domain.EstaticasLabel.GG
         {
             public const string NCobraJuros = "Juros/Multa não cobrados";
         }
+
+        public static class Csicp_gg055_status
+        {
+            public const string Aberto = "Aberto";
+            public const string Transferido = "Transferido";
+        }
     }
 }

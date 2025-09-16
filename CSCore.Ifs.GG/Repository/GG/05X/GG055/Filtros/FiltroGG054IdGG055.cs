@@ -18,7 +18,7 @@ namespace CSCore.Ifs.GG.Repository.GG._05X.GG055.Filtros
         }
         public IQueryable<CSICP_GG055> Apply(IQueryable<CSICP_GG055> query)
         {
-            if (_gg054Id.HasValue) //perguntar ao Valter como funciona essa validação
+            if (_gg054Id.HasValue)
             {
                 query = query.Where(e => e.Gg054Id == _gg054Id.Value);
             }
