@@ -24,15 +24,6 @@ namespace CSCore.Ifs.GG.Repository.GG._05X.GG055
             return produtos.FirstOrDefault();
         }
 
-        private async Task<CSICP_GG055> BuscarTabelaGG055(int InTenantID, PrmsColetaBipagem prmsColeta)
-        {
-            var entityGG055 = await _appDbContext.OsusrE9aCsicpGg055s
-                .FirstOrDefaultAsync(e => e.TenantId == InTenantID
-                                        && e.Gg054Id == prmsColeta.GG054_ID);
-
-            return entityGG055 ?? throw new KeyNotFoundException("Registro pai GG054 não encontrado");
-        }
-
         private async Task<List<DtoColetaBipagem>> GetProdutosColeta(int InTenantID, PrmsColetaBipagem prmsColeta)
         {
             var query = from gg008 in _appDbContext.OsusrE9aCsicpGg008s // Ajustar nomes conforme seu contexto
