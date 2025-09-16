@@ -45,8 +45,6 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Atualiza_Cobrador_Todos
 
                 foreach (var ff102Corrente in listaFF102)
                 {
-                    string id = ff102Corrente.Id;
-                    bool estaRastreado = _appDbContext.Entry(ff102Corrente).State != EntityState.Detached;
                     ff102Corrente.Ff102Agcobradorid = InPrm.InBB006_CobradorID;
                     ff102Corrente.Ff102Codcobrador = InPrm.InSY001_ID;
                 }

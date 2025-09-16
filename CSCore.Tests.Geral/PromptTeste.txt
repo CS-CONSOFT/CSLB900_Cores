@@ -1,0 +1,1 @@
+CSCore.Tests.Geral nesse projeto crie testes untiários para testar essa classe. usando a conexao real com o banco de dados, a string de conexao está nos segredos. Faça os testes focando em funcionalidade e tambem em estresse, fazendo benchmark
