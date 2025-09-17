@@ -36,7 +36,7 @@ namespace CSCore.Ifs.GG.Repository.GG._05X.GG055
         {
             var filtros = Filtros as PrmFiltrosGG055Repo;
             if (filtros == null)
-                throw new ArgumentNullException(nameof(filtros), "Os filtros fornecidos não são do tipo esperado PrmFiltrosGG055Repo.");
+                throw new ArgumentNullException(nameof(filtros), "Os filtros fornecidos não são do tipo esperado.");
             return [
                  new FiltroGG054IdGG055(filtros.InIDGG054)
                 ];
@@ -48,7 +48,6 @@ namespace CSCore.Ifs.GG.Repository.GG._05X.GG055
                 new IncludeNavGG520SaldoGG055(),
                 new IncludeNavGG008KdxGG055(),
                 new IncludeNavGG008ProdutoGG055(),
-                new IncludeNavGG001AlmoxGG055()
             ];
 
         }

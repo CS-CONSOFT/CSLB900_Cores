@@ -164,4 +164,29 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520
         public DtoGetGG001Simples? NavGG001Almox { get; set; }
         public DtoGetGG008Kdx_Exibicao? NavGG008Kardex { get; set; }
     }
+
+    public class DtoGetGG520ParaGG055
+    {
+        public int TenantId { get; set; }
+
+        public string Id { get; set; } = null!;
+
+        public string? Gg520Filialid { get; set; }
+
+        public string? Gg520KardexId { get; set; }
+
+        public string? Gg520Almoxid { get; set; }
+
+        public decimal? Gg520NsNumerosaldo { get; set; }
+
+        public string? Gg520Descricaosaldo { get; set; }
+
+        public int? Gg520Filial { get; set; }
+
+        public int? Gg520Codalmoxarifado { get; set; }
+
+        public int? Gg520Produto { get; set; }
+
+        public DtoGetGG001Simples? NavGG001Almox { get; set; }
+    }
 }

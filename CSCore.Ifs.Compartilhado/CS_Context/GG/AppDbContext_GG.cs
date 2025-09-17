@@ -1393,6 +1393,18 @@ namespace CSCore.Ifs.CS_Context
                     .HasDefaultValueSql("(NULL)")
                     .HasColumnName("GG055_USUARIO_ID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+                entity.HasOne(e => e.Nav_Gg008Kdx)
+                      .WithMany()
+                      .HasForeignKey(e => e.Gg055KdxId);
+
+                entity.HasOne(e => e.Nav_GG008Produto)
+                      .WithMany()
+                      .HasForeignKey(e => e.Gg055ProdutoId);
+
+                entity.HasOne(e => e.Nav_GG520Saldo)
+                      .WithMany()
+                      .HasForeignKey(e => e.Gg055Saldoid);
             });
 
 

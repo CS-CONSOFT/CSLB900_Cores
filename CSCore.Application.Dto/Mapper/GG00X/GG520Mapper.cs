@@ -349,6 +349,24 @@ namespace CSCore.Application.Dto.Mapper.GG00X
             };
         }
 
+        public static DtoGetGG520ParaGG055 ToDtoGetGG520ParaGG055(this CSICP_GG520 entity)
+        {
+            return new DtoGetGG520ParaGG055
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Gg520Filialid = entity.Gg520Filialid,
+                Gg520KardexId = entity.Gg520KardexId,
+                Gg520Almoxid = entity.Gg520Almoxid,
+                Gg520NsNumerosaldo = entity.Gg520NsNumerosaldo,
+                Gg520Descricaosaldo = entity.Gg520Descricaosaldo,
+                Gg520Filial = entity.Gg520Filial,
+                Gg520Codalmoxarifado = entity.Gg520Codalmoxarifado,
+                Gg520Produto = entity.Gg520Produto,
+                NavGG001Almox = entity.NavGG001Almox?.ToDtoGetSimples(),
+            };
+        }
+
         public static DtoGetSaldoGG520 ToDtoGetSaldo520(this CSICP_GG520 entity)
         {
             return new DtoGetSaldoGG520

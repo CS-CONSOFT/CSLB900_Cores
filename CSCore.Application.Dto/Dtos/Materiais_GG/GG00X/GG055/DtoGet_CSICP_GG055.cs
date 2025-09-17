@@ -42,8 +42,7 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG055
             Gg055HoraAlt = entity.Gg055HoraAlt;
             Gg055Criarexcid = entity.Gg055Criarexcid;
             Nav_Gg008Kdx = entity.Nav_Gg008Kdx?.ToDtoGetSimples();
-            Nav_GG520Saldo = entity.Nav_GG520Saldo?.ToDtoGetSimples();
-            Nav_GG001Almox = entity.Nav_GG001Almox?.ToDtoGetSimples();
+            Nav_GG520Saldo = entity.Nav_GG520Saldo?.ToDtoGetGG520ParaGG055();
             Nav_GG008Produto = entity.Nav_GG008Produto?.ToDtoGetExibicaoSimples();
         }
 
@@ -94,9 +93,7 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG055
 
         public DtoGetGG008Kdx_Simples? Nav_Gg008Kdx { get; set; }
 
-        public DtoGetGG520Simples? Nav_GG520Saldo { get; set; }
-
-        public DtoGetGG001Simples? Nav_GG001Almox { get; set; }
+        public DtoGetGG520ParaGG055? Nav_GG520Saldo { get; set; }
 
         public DtoGetGG008_Exibicao_Simples? Nav_GG008Produto { get; set; }
     }
