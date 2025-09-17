@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CSCompartilhado.CSLB900_MSTools\CSLB900.MSTools.csproj" />
+    <ProjectReference Include="..\CSCore.Ifs.Estatica\CSCore.Ifs.Estatica.csproj" />
     <ProjectReference Include="..\CSCore.Ifs.FF\CSCore.Ifs.FF.csproj" />
     <ProjectReference Include="..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />
     <ProjectReference Include="..\CSCore.Domain\CSCore.Domain.csproj" />
