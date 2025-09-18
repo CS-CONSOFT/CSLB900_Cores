@@ -15,7 +15,7 @@ using static CSCore.Domain.ComboTypes;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX.FF102
 {
-    public class FF102RepositoryImpl(AppDbContext appDbContext, ICalculoAtrasoMultaJurosTitulos calculoAtrasoMultaJurosTitulos)
+    public partial class FF102RepositoryImpl(AppDbContext appDbContext, ICalculoAtrasoMultaJurosTitulos calculoAtrasoMultaJurosTitulos)
         : RepositorioBaseImpl<CSICP_FF102>(appDbContext, "Id"), IFF102Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;

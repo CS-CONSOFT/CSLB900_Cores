@@ -10,7 +10,7 @@ public partial class CSICP_FF125
 
     public string Ff125Id { get; set; } = null!;
 
-    public string? Ff125ContaId { get; set; }
+    public string Ff125ContaId { get; set; } = string.Empty;
 
     public DateTime? Ff125Dtregistro { get; set; }
 

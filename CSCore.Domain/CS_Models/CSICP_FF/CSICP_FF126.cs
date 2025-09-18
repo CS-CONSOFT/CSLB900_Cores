@@ -11,7 +11,7 @@ public partial class CSICP_FF126
 
     public DateTime? Ff126Dtregistro { get; set; }
 
-    public string? Ff126TituloId { get; set; }
+    public string Ff126TituloId { get; set; } = string.Empty;
 
     public int? Ff126Diasatrasoent { get; set; }
 
@@ -21,7 +21,7 @@ public partial class CSICP_FF126
 
     public int? Ff126SituacaosaiId { get; set; }
 
-    public string? Ff126Mensagem { get; set; }
+    public string Ff126Mensagem { get; set; } = string.Empty;
 
     public string? Ff126Propid { get; set; }
 

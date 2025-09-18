@@ -40,5 +40,7 @@ namespace CSCore.Domain.Interfaces.FF._1XX
         Task<(List<CSICP_FF102>, int)> GetListTitulosEmCobrancaAsync(PrmGetListTitulosEmCobrancaRepo prmGetListTitulosEmCobrancaRepo);
 
         Task<CSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int? in_tipoRegistro);
+
+        Task AtualizaCobradorFF102(int InTenantID, string InTituloID,string InNovoCobradorSY001);
     }
 }
