@@ -21,7 +21,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF01X
                 Ff014Diasate = entity.Ff014Diasate,
                 Ff014Perccomissao = entity.Ff014Perccomissao,
                 NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
-                NavFF014ComissaoFilho = entity.NavFF014ComissaoFilho?.ToDtoGetSimples()
+                NavFF014ComissaoFilho = entity.NavFF014ComissaoFilho?.Select(e => e.ToDtoGetSimples()).ToList()
             };
         }
 

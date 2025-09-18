@@ -24,5 +24,5 @@ public partial class CSICP_FF014
     public decimal? Ff014Perccomissao { get; set; }
 
     public CSICP_BB001? NavBB001 { get; set; }
-    public CSICP_FF014? NavFF014ComissaoFilho { get; set; }
+    public IEnumerable<CSICP_FF014>? NavFF014ComissaoFilho { get; set; }
 }
