@@ -14,13 +14,13 @@ namespace CSCore.Ifs.FF.Repository.Processos.Agenda_de_Cobranca
             this.appDbContext = appDbContext;
         }
 
-        public async Task AtualizaBB012SitParaSPC(int InTenantID,int InStIDCsicp_bb012_SitCta_CIS, string InBB012_ID_DaFF125)
+        public async Task AtualizaBB012SitParaSPC(int InTenantID, int? InStIDCsicp_bb012_SitCta_CIS, string InBB012_ID_DaFF125)
         {
             CSICP_BB012 WorkBB012 = await ObterRegistroBB012ParaSPC(InTenantID, InBB012_ID_DaFF125);
             WorkBB012.Bb012SitContaId = InStIDCsicp_bb012_SitCta_CIS;
         }
 
-        public async Task<CSICP_FF125> AtualizaFF125SitParaSPC(int InTenantID, int InStIDCsicp_bb012_SitCta_CIS, string InFF102Titulo_Da_FF126)
+        public async Task<CSICP_FF125> AtualizaFF125SitParaSPC(int InTenantID, int? InStIDCsicp_bb012_SitCta_CIS, string InFF102Titulo_Da_FF126)
         {
             CSICP_FF125 WorkFF125 = await ObterRegistroFF102_FF125ParaSPC(InTenantID, InFF102Titulo_Da_FF126);
             WorkFF125.Ff125Sitcobranca = InStIDCsicp_bb012_SitCta_CIS;
@@ -31,12 +31,14 @@ namespace CSCore.Ifs.FF.Repository.Processos.Agenda_de_Cobranca
         {
             CSICP_FF126 WorkFF126 = await ObterRegistroFF126ParaSPC(prm);
 
-            WorkFF126.Ff126Dtregistro = prm.InFf126_DtRegistro;
+            WorkFF126.Ff126Dtregistro = prm.InFf126_DtRegistro; 
             WorkFF126.Ff126Registrarspc = prm.InFf126Registrarspc;
             WorkFF126.Ff126Mensagem = prm.InFf126_Mensagem;
             WorkFF126.Ff126Propid = prm.InSY001_ID;
             WorkFF126.Ff126Sitcobranca = prm.InStIDCsicp_bb012_SitCta_CIS;
-         
+            WorkFF126.Ff126SitcobrancaEntId = prm.InFf126SitcobrancaEntId;
+            WorkFF126.Ff126SituacaosaiId = prm.InFf126SituacaoSaiID;
+
             return WorkFF126;
         }
 
@@ -48,7 +50,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.Agenda_de_Cobranca
                 .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("BB012 não encontrada!");
         }
 
-        private async Task<CSICP_FF125> ObterRegistroFF102_FF125ParaSPC(int InTenantID, string InFF102Titulo_Da_FF126)
+        public async Task<CSICP_FF125> ObterRegistroFF102_FF125ParaSPC(int InTenantID, string InFF102Titulo_Da_FF126)
         {
             return await (
                  from ff102 in appDbContext.OsusrE9aCsicpFf102s

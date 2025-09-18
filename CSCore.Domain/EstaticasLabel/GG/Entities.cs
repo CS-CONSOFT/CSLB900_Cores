@@ -157,6 +157,12 @@ namespace CSCore.Domain.EstaticasLabel.GG
         public static class BB012_SitCTA
         {
             public const string SPC = "SPC";
+            public const string Retirado = "Retirado SPC";
+        }
+
+        public static class CSICP_FF998
+        {
+            public const string CIS = "82-Incluir SPC";
         }
 
         public static class BB062_Sta
