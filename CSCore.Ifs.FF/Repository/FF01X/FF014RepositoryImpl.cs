@@ -21,31 +21,29 @@ namespace CSCore.Ifs.FF.Repository.FF01X
         }
 
         public async Task<(List<CSICP_FF014>, int)> GetListAsync(int in_tenantID, int in_pageNumber, int in_pageSize, 
-            string? in_filialID, string? in_descricao, string? in_comissaoID)
+            string in_filialID, string? in_descricao)
         {
             IQueryable<CSICP_FF014> query = GetQueryBase(in_tenantID);
-            query = FiltraQuandoExisteFiltro(in_filialID, in_descricao, in_comissaoID, query);
+            query = FiltraQuandoExisteFiltro(in_filialID, in_descricao, query);
 
             query = query.Where(e => e.Ff014Comissaoid == null); // Somente comissões pai
 
             var queryCount = query;
             var count = queryCount.Count();
+
+            query = query.OrderBy(e => e.Id);
             query = query.PaginacaoNoBanco(in_pageNumber, in_pageSize);
 
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<CSICP_FF014> FiltraQuandoExisteFiltro(string? in_filialID, string? in_descricao, 
-            string? in_comissaoID, IQueryable<CSICP_FF014> query)
+        private IQueryable<CSICP_FF014> FiltraQuandoExisteFiltro(string in_filialID, string? in_descricao, IQueryable<CSICP_FF014> query)
         {
             if (!string.IsNullOrEmpty(in_filialID))
                 query = query.Where(e => e.Ff014Filialid == in_filialID);
 
             if (!string.IsNullOrEmpty(in_descricao))
                 query = query.Where(e => e.Ff014Descricao != null && e.Ff014Descricao.Contains(in_descricao));
-
-            if (!string.IsNullOrEmpty(in_comissaoID))
-                query = query.Where(e => e.Ff014Comissaoid == in_comissaoID);
 
             return query;
         }

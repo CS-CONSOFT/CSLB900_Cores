@@ -7,6 +7,6 @@ namespace CSCore.Domain.Interfaces.FF._01X
     {
         Task<CSICP_FF014?> GetByIdAsync(int in_tenantID, string in_ff014ID);
         Task<(List<CSICP_FF014>, int)> GetListAsync(int in_tenantID, int in_pageNumber, int in_pageSize, 
-            string? in_filialID, string? in_descricao, string? in_comissaoID);
+            string in_filialID, string? in_descricao);
     }
 }

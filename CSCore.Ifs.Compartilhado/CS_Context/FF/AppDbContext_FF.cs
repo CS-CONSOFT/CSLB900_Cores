@@ -746,7 +746,7 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
                 entity.HasOne(e => e.NavBB001).WithMany().HasForeignKey(e => e.Ff014Filialid);
-                entity.HasOne(e => e.NavFF014ComissaoFilho).WithOne().HasForeignKey<CSICP_FF014>(e => e.Ff014Comissaoid);
+                entity.HasMany(e => e.NavFF014ComissaoFilho).WithOne().HasForeignKey(e => e.Ff014Comissaoid);
 
             });
 

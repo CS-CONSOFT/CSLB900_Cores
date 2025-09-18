@@ -15,7 +15,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF014
         public decimal? Ff014Perccomissao { get; set; }
 
         public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
-        public DtoGetFF014Simples? NavFF014ComissaoFilho { get; set; }
+        public List<DtoGetFF014Simples>? NavFF014ComissaoFilho { get; set; }
     }
 
     public class DtoGetFF014Simples
