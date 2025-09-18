@@ -47,12 +47,12 @@ public partial class CSICP_FF128
     public static CSICP_FF128 Create(
         string id,
         string tituloID,
-        DateTime dataPrevisao,
+        DateTime? dataPrevisao,
         string mensagem,
         string novoIdFF127,
-        int diasAtrasoEnt,
-        int sitCobranca,
-        int situacaoSaiId,
+        int? diasAtrasoEnt,
+        int? sitCobranca,
+        int? situacaoSaiId,
         string? cobradorId,
         string? agCobradorId
         )
