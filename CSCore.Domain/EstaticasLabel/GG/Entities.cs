@@ -154,6 +154,11 @@ namespace CSCore.Domain.EstaticasLabel.GG
             public const string CartaoExterno = "Cartão Externo";
         }
 
+        public static class BB012_SitCTA
+        {
+            public const string SPC = "SPC";
+        }
+
         public static class BB062_Sta
         {
             public const string Aberto = "Aberto";

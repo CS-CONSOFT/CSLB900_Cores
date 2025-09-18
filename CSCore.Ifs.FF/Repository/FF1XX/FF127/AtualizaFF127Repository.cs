@@ -39,10 +39,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                 if (WorkFF127 != null && !TemPrevisao(WorkFF127))
                     await InativaHistorico(prmAtualizaFF126Repository);
 
-                var novoIdFF127 = await CriaHistoricoFF127(prmAtualizaFF126Repository, WorkGetTitulos[0].bb006);
-                await AtualizaDadosTitulos(prmAtualizaFF126Repository, WorkGetTitulos);
-                await CriaHistoricoFF128(prmAtualizaFF126Repository, WorkGetTitulos, novoIdFF127);
-                //await transaction.CommitAsync();
+                var novoIdFF127 = CriaHistoricoFF127(prmAtualizaFF126Repository, WorkGetTitulos[0].bb006);
+                AtualizaDadosTitulos(prmAtualizaFF126Repository, WorkGetTitulos);
+                CriaHistoricoFF128(prmAtualizaFF126Repository, WorkGetTitulos, novoIdFF127);
+
                 return true;
             }
             catch(Exception ex)
@@ -53,7 +53,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
             }
         }
 
-        private async Task CriaHistoricoFF128(PrmAtualizaFF127Repository prmAtualizaFF126Repository, List<InternalGetTitulos> WorkGetTitulos, string novoIdFF127)
+        private  void CriaHistoricoFF128(PrmAtualizaFF127Repository prmAtualizaFF126Repository, List<InternalGetTitulos> WorkGetTitulos, string novoIdFF127)
         {
             var WorkAddFF128 = CSICP_FF128.Create(
                 prmAtualizaFF126Repository.InCS_GenerateID.GenerateUuId(),
@@ -68,10 +68,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                 WorkGetTitulos[0].bb006?.Id);
 
             _appDbContext.OsusrE9aCsicpFf128s.Add(WorkAddFF128);
-            await _appDbContext.SaveChangesAsync();
+
         }
 
-        private async Task AtualizaDadosTitulos(PrmAtualizaFF127Repository prmAtualizaFF126Repository,
+        private void AtualizaDadosTitulos(PrmAtualizaFF127Repository prmAtualizaFF126Repository,
             List<InternalGetTitulos> WorkGetTitulos)
         {
             foreach (var currentTitulo in WorkGetTitulos)
@@ -92,7 +92,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                 _appDbContext.Entry(currentTitulo.ff125).Property(e => e.Ff125Motivoid).IsModified = true;
             }
 
-            await _appDbContext.SaveChangesAsync();
+
         }
 
         private async Task<CSICP_FF011?> GetWorkFF011(PrmAtualizaFF127Repository prmAtualizaFF126Repository)
@@ -111,7 +111,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                             && x.Ff127ContaId == prmAtualizaFF126Repository.InBB012_ID);
         }
 
-        private async Task<string> CriaHistoricoFF127(PrmAtualizaFF127Repository prm, CSICP_Bb006? InBB006)
+        private string CriaHistoricoFF127(PrmAtualizaFF127Repository prm, CSICP_Bb006? InBB006)
         {
             string novoId = prm.InCS_GenerateID.GenerateUuId();
             var WorkNewFF127 = CSICP_FF127.CreateInstance(
@@ -128,7 +128,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                     prm.InFF002_ID_Motivo);
             
             _appDbContext.OsusrE9aCsicpFf127s.Add(WorkNewFF127);
-            await _appDbContext.SaveChangesAsync();
+
             return novoId;
         }
 
@@ -159,7 +159,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                 }
             }
 
-            await _appDbContext.SaveChangesAsync();
+
         }
 
         private async Task<List<InternalGetTitulos>> GetTitulos(PrmAtualizaFF127Repository prm, int FF011_Dias_Atrasos_De)
