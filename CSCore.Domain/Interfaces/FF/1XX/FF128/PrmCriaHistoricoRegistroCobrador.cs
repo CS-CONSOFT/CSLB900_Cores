@@ -5,6 +5,7 @@
         public string InNovoId { get; set; } = null!;
         public string InFF102TituloId { get; set; } = string.Empty;
         public DateTime? InDataPrevisao { get; set; }
+        public DateTime? InDataLimitePrevisao { get; set; }
         public string InFF128Mensagem { get; set; } = string.Empty;
         public string InFF127Id { get; set; } = string.Empty;
         public int? InDiasAtrasoEnt { get; set; }

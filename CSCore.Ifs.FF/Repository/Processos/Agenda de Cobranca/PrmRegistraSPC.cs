@@ -10,7 +10,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.Agenda_de_Cobranca
     {
         public int InTenantId { get; set; }
         public string InFF126_ID { get; set; } = string.Empty;
-        public int? InStIDCsicp_bb012_SitCta_CIS { get; set; }
+        public int? InSituacaoCtaID { get; set; }
         public DateTime InFf126_DtRegistro { get; set; }
         public string InFf126_Mensagem { get; set; } = string.Empty;
         public string InSY001_ID { get; set; } = string.Empty;
@@ -21,7 +21,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.Agenda_de_Cobranca
         public PrmRegistraSPC(
             int inTenantId,
             string inFF126_ID,
-            int? inStIDCsicp_bb012_SitCta_CIS,
+            int? InSituacaoCtaID,
             DateTime inFf126_DtRegistro,
             string inFf126_Mensagem,
             string inSY001_ID,
@@ -31,7 +31,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.Agenda_de_Cobranca
         {
             InTenantId = inTenantId;
             InFF126_ID = inFF126_ID;
-            InStIDCsicp_bb012_SitCta_CIS = inStIDCsicp_bb012_SitCta_CIS;
+            this.InSituacaoCtaID = InSituacaoCtaID;
             InFf126_DtRegistro = inFf126_DtRegistro;
             InFf126_Mensagem = inFf126_Mensagem;
             InSY001_ID = inSY001_ID;

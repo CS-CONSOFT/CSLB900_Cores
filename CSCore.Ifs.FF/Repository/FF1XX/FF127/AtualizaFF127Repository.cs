@@ -2,8 +2,10 @@
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.Util;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
@@ -24,36 +26,33 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
             this._appDbContext = appDbContext;
         }
 
+
         public async Task<bool> Atualiza_FF127(PrmAtualizaFF127Repository prmAtualizaFF126Repository)
         {
-            using var transaction = await _appDbContext.Database.BeginTransactionAsync();
-            try
+            CSICP_FF011? WorkFF011 = await GetWorkFF011(prmAtualizaFF126Repository);
+
+            var WorkGetTitulos = await GetTitulos125_102(prmAtualizaFF126Repository, WorkFF011?.Ff011DiasAtrasosDe ?? 0);
+            if(WorkGetTitulos.Count == 0)
+                throw new KeyNotFoundException("Nenhum título encontrado para o cobrador informado.");
+
+            var WorkFF127 = await GetQueryWorkFF127(prmAtualizaFF126Repository.InTenantID, prmAtualizaFF126Repository.InBB012_ID)
+                .AsNoTracking()
+                .Where(e => e.Ff127AgcobradorId != null)
+                .FirstOrDefaultAsync();
+
+            if(WorkFF127 != null)
             {
-                CSICP_FF011? WorkFF011 = await GetWorkFF011(prmAtualizaFF126Repository);
-
-                var WorkGetTitulos = await GetTitulos(prmAtualizaFF126Repository, WorkFF011?.Ff011DiasAtrasosDe ?? 0);
-
-                var WorkFF127 = await GetQueryWorkFF127(prmAtualizaFF126Repository.InTenantID, prmAtualizaFF126Repository.InBB012_ID)
-                    .AsNoTracking()
-                    .Where(e => e.Ff127AgcobradorId != null)
-                    .FirstOrDefaultAsync() ?? throw new KeyNotFoundException(HandlerReturnMessages.ENTITY_NOT_FOUND);
-
-
                 if (DataPrevisaoEhMaiorOuIgualDoQueHoje(WorkFF127))
                     await InativaHistorico(prmAtualizaFF126Repository);
-
-                var novoIdFF127 = CriaHistoricoFF127(prmAtualizaFF126Repository, WorkGetTitulos[0].bb006);
-                AtualizaDadosTitulos(prmAtualizaFF126Repository, WorkGetTitulos);
-                CriaHistoricoFF128(prmAtualizaFF126Repository, WorkGetTitulos, novoIdFF127);
-
-                return true;
             }
-            catch (Exception ex)
+
+            foreach (var current in WorkGetTitulos)
             {
-                await transaction.RollbackAsync();
-                
-                throw new Exception($"Erro ao atualizar FF126: {ex.Message}", ex);
+                var novoIdFF127 = CriaHistoricoFF127(prmAtualizaFF126Repository, current.bb006);
+                AtualizaDadosTitulos(prmAtualizaFF126Repository, WorkGetTitulos);
+                CriaHistoricoFF128(prmAtualizaFF126Repository, current, novoIdFF127);
             }
+            return true;
         }
 
         private static bool DataPrevisaoEhMaiorOuIgualDoQueHoje(CSICP_FF127 WorkFF127)
@@ -63,22 +62,24 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
 
         private  void CriaHistoricoFF128(
             PrmAtualizaFF127Repository prmAtualizaFF126Repository,
-            List<InternalGetTitulos> WorkGetTitulos,
+            InternalGetTitulos WorkGetTitulos,
             string novoIdFF127)
         {
             var WorkAddFF128 = CSICP_FF128.Create(
                 prmAtualizaFF126Repository.InCS_GenerateID.GenerateUuId(),
-                WorkGetTitulos[0].ff126.Ff126TituloId ?? string.Empty,
+                WorkGetTitulos.ff126.Ff126TituloId ?? string.Empty,
                 prmAtualizaFF126Repository.InDataPrevisao,
+                prmAtualizaFF126Repository.InDataVisita,
                 prmAtualizaFF126Repository.InMensagem,
                 novoIdFF127,
-                WorkGetTitulos[0].ff126.Ff126Diasatrasoent ?? 0,
-                WorkGetTitulos[0].ff126.Ff126Sitcobranca ?? 0,
-                WorkGetTitulos[0].ff126.Ff126SituacaosaiId ?? 0,
+                WorkGetTitulos.ff126.Ff126Diasatrasoent,
+                WorkGetTitulos.ff126.Ff126Sitcobranca,
+                WorkGetTitulos.ff126.Ff126SituacaosaiId,
                 prmAtualizaFF126Repository.InSY001Id,
-                WorkGetTitulos[0].bb006?.Id);
+                WorkGetTitulos.bb006?.Id,
+                prmAtualizaFF126Repository.InTenantID);
 
-            _appDbContext.OsusrE9aCsicpFf128s.Add(WorkAddFF128);
+            _appDbContext.Add(WorkAddFF128);
 
         }
 
@@ -137,7 +138,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                     prm.InSY001Id,
                     prm.InFF002_ID_Motivo);
             
-            _appDbContext.OsusrE9aCsicpFf127s.Add(WorkNewFF127);
+            _appDbContext.Add(WorkNewFF127);
 
             return novoId;
         }
@@ -193,8 +194,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                     && x.Ff128Isactive == true)
                 .ToListAsync();
 
-            // Crie um dicionário para lookup rápido dos FF128 por Ff128Id (que corresponde ao Ff127Id)
-            var WorkDictionaryFF128 = WorkFF128List.ToDictionary(x => x.Ff127Id);
+            var WorkDictionaryFF128 = WorkFF128List
+             .GroupBy(x => x.Ff127Id)
+             .ToDictionary(g => g.Key, g => g.First());
 
             foreach (var currentFF127 in WorkFF127List)
             {
@@ -214,7 +216,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
             InFF127.Ff127Mensagem = InFF126Mensagem;
         }
 
-        private async Task<List<InternalGetTitulos>> GetTitulos(PrmAtualizaFF127Repository prm, int FF011_Dias_Atrasos_De)
+        private async Task<List<InternalGetTitulos>> GetTitulos125_102(PrmAtualizaFF127Repository prm, int FF011_Dias_Atrasos_De)
         {
             var result = await (from ff125 in _appDbContext.OsusrE9aCsicpFf125s
                           join ff102 in _appDbContext.OsusrE9aCsicpFf102s on ff125.Ff125ContaId equals ff102.Ff102Contaid
@@ -240,5 +242,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
         {
             return WorkFF127.Ff127Dtprevisao >= DateTime.UtcNow;
         }
+
+
+        
     }
 }

@@ -66,7 +66,7 @@ public partial class CSICP_FF127
             Ff127Isactive = true,
             Ff127CobradorId = sy001ID,
             Ff127AgcobradorId = agCobradorId,
-            Ff127Isvisitado = !mensagem.IsNullOrEmpty(),
+            Ff127Isvisitado = !(mensagem == "" || mensagem == null),
             Ff127Dtvisita = dataVisita,
             Ff127HoraRegistro = DateTime.UtcNow.ToLocalTime(),
             Ff127UsuarioInc = sy001ID,

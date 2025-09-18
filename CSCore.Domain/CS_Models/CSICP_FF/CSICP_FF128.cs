@@ -48,19 +48,23 @@ public partial class CSICP_FF128
         string id,
         string tituloID,
         DateTime? dataPrevisao,
+        DateTime? dataLimiteVisita,
         string mensagem,
         string novoIdFF127,
         int? diasAtrasoEnt,
         int? sitCobranca,
         int? situacaoSaiId,
         string? cobradorId,
-        string? agCobradorId
+        string? agCobradorId,
+        int tenantID
         )
     {
         var obj = new CSICP_FF128()
         {
             Ff128Id = id,
+            TenantId = tenantID,
             Ff128Dtregistro = DateTime.UtcNow.ToLocalTime(),
+            Ff128Dtlimitevisita = dataLimiteVisita,
             Ff128Tituloid = tituloID,
             Ff128Dtprevisao = dataPrevisao,
             Ff128Mensagem = mensagem,

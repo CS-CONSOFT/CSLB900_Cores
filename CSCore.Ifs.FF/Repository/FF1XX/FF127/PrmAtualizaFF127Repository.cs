@@ -22,9 +22,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
         public int InSTIDFF102SitBxParcial { get; set; } = 0;
         public string InBB012_ID { get; set; } = string.Empty;
         public string InMensagem { get; set; } = string.Empty;
-        public DateTime InDataPrevisao { get; set; } = DateTime.MinValue;
-        public DateTime InDataVisita { get; set; } = DateTime.MinValue;
-        public string InFF002_ID_Motivo { get; set; } = string.Empty;
+        public DateTime? InDataPrevisao { get; set; } = default;
+        public DateTime? InDataVisita { get; set; } = default;
+        public string? InFF002_ID_Motivo { get; set; } = string.Empty;
 
         public static async Task<PrmAtualizaFF127Repository> CreateInstanceAsync(
             IStaticaLabelRepository staticaLabelRepository,
@@ -35,9 +35,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
             int inTenantID,
             string inBB012_ID,
             string inMensagem,
-            DateTime inDataPrevisao,
-            DateTime inDataVisita,
-            string inFF002_ID_Motivo
+            DateTime? inDataPrevisao,
+            DateTime? inDataVisita,
+            string? inFF002_ID_Motivo
             )
         {
             var idBxParcial = await staticaLabelRepository.GetIDStaticaByLabel<CSICP_FF102Sit>(Entities.FF102_Sit.BxParcial);

@@ -14,13 +14,14 @@ namespace CSCore.Ifs.FF.Repository.Processos.Agenda_de_Cobranca
             this.appDbContext = appDbContext;
         }
 
-        public async Task AtualizaBB012SitParaSPC(int InTenantID, int? InStIDCsicp_bb012_SitCta_CIS, string InBB012_ID_DaFF125)
+
+        public async Task AtualizaBB012SitParaSPC(int InTenantID, int InStIDCsicp_bb012_SitCta_CIS, string InBB012_ID_DaFF125)
         {
             CSICP_BB012 WorkBB012 = await ObterRegistroBB012ParaSPC(InTenantID, InBB012_ID_DaFF125);
             WorkBB012.Bb012SitContaId = InStIDCsicp_bb012_SitCta_CIS;
         }
 
-        public async Task<CSICP_FF125> AtualizaFF125SitParaSPC(int InTenantID, int? InStIDCsicp_bb012_SitCta_CIS, string InFF102Titulo_Da_FF126)
+        public async Task<CSICP_FF125> AtualizaFF125SitParaSPC(int InTenantID, int InStIDCsicp_bb012_SitCta_CIS, string InFF102Titulo_Da_FF126)
         {
             CSICP_FF125 WorkFF125 = await ObterRegistroFF102_FF125ParaSPC(InTenantID, InFF102Titulo_Da_FF126);
             WorkFF125.Ff125Sitcobranca = InStIDCsicp_bb012_SitCta_CIS;
@@ -35,7 +36,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.Agenda_de_Cobranca
             WorkFF126.Ff126Registrarspc = prm.InFf126Registrarspc;
             WorkFF126.Ff126Mensagem = prm.InFf126_Mensagem;
             WorkFF126.Ff126Propid = prm.InSY001_ID;
-            WorkFF126.Ff126Sitcobranca = prm.InStIDCsicp_bb012_SitCta_CIS;
+            WorkFF126.Ff126Sitcobranca = prm.InSituacaoCtaID;
             WorkFF126.Ff126SitcobrancaEntId = prm.InFf126SitcobrancaEntId;
             WorkFF126.Ff126SituacaosaiId = prm.InFf126SituacaoSaiID;
 
@@ -67,10 +68,11 @@ namespace CSCore.Ifs.FF.Repository.Processos.Agenda_de_Cobranca
         {
             return await appDbContext.OsusrE9aCsicpFf126s
                 .Where(e => e.TenantId == prm.InTenantId
-                && e.Ff126Id == prm.InFF126_ID
-                && e.Ff126Sitcobranca == prm.InStIDCsicp_bb012_SitCta_CIS)
+                && e.Ff126Id == prm.InFF126_ID)
                 .FirstOrDefaultAsync()
                 ?? throw new KeyNotFoundException("Entidade não encontrada ou registro não é Incluir SPC!");
         }
+
+ 
     }
 }

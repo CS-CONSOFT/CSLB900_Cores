@@ -9,6 +9,6 @@ namespace CSCore.Domain.Interfaces.FF._1XX.FF128
 {
     public interface IFF128Repository
     {
-        void CriaHistoricoRegistroCobrador(PrmCriaHistoricoRegistroCobrador prm);
+        void CriaHistoricoRegistroCobrador(PrmCriaHistoricoRegistroCobrador prm, int InTenant);
     }
 }
