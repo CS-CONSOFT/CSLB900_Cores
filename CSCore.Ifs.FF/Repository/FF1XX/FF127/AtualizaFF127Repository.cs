@@ -68,8 +68,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
             var WorkAddFF128 = CSICP_FF128.Create(
                 prmAtualizaFF126Repository.InCS_GenerateID.GenerateUuId(),
                 WorkGetTitulos.ff126.Ff126TituloId ?? string.Empty,
-                prmAtualizaFF126Repository.InDataPrevisao,
-                prmAtualizaFF126Repository.InDataVisita,
+                dataPrevisao: prmAtualizaFF126Repository.InDataPrevisao,
+                dataLimiteVisita: prmAtualizaFF126Repository.InDataVisita,
                 prmAtualizaFF126Repository.InMensagem,
                 novoIdFF127,
                 WorkGetTitulos.ff126.Ff126Diasatrasoent,
@@ -133,9 +133,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                     prm.InBB012_ID,
                     prm.InDataPrevisao,
                     prm.InMensagem,
-                    InBB006?.Id ?? "",
+                    InBB006?.Id,
                     prm.InDataVisita,
-                    prm.InSY001Id,
+                     prm.InSY001Id,
                     prm.InFF002_ID_Motivo);
             
             _appDbContext.Add(WorkNewFF127);
