@@ -75,7 +75,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                 WorkGetTitulos.ff126.Ff126Diasatrasoent,
                 WorkGetTitulos.ff126.Ff126Sitcobranca,
                 WorkGetTitulos.ff126.Ff126SituacaosaiId,
-                prmAtualizaFF126Repository.InSY001Id,
+                 WorkGetTitulos.bb006?.Bb006CodcobradorId,
                 WorkGetTitulos.bb006?.Id,
                 prmAtualizaFF126Repository.InTenantID);
 
@@ -123,25 +123,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                             && x.Ff127ContaId == InContaID);
         }
 
-        private string CriaHistoricoFF127(PrmAtualizaFF127Repository prm, CSICP_Bb006? InBB006)
-        {
-            string novoId = prm.InCS_GenerateID.GenerateUuId();
-            var WorkNewFF127 = CSICP_FF127.CreateInstance(
-                    prm.InTenantID,
-                    novoId,
-                    prm.InNovoProtocoloFF127,
-                    prm.InBB012_ID,
-                    prm.InDataPrevisao,
-                    prm.InMensagem,
-                    InBB006?.Id,
-                    prm.InDataVisita,
-                     prm.InSY001Id,
-                    prm.InFF002_ID_Motivo);
-            
-            _appDbContext.Add(WorkNewFF127);
-
-            return novoId;
-        }
+     
 
 
         /*FLUXO USADO FORA DO METODO Atualiza_FF127, É USADO EM UMA VARIACAO DE wb_Atualiza_reg_SPC*/
@@ -150,7 +132,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
             CSICP_FF126 InFF126,
             string InNovoIDFF127,
             string? InSY001ID,
-            string InNovoProtocoloFF127)
+            string InNovoProtocoloFF127,
+            string? InBB006CobradorID)
         {
             var WorkFF127 = await GetQueryWorkFF127(InFF125.TenantId, InFF125.Ff125ContaId)
                   .Where(e => e.Ff127AgcobradorId != null)
@@ -169,6 +152,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
                         agCobradorId: null,
                         dataVisita: null,
                         InSY001ID,
+                        bb006CobradorID: InBB006CobradorID,
                         ff001IdMotivo: null
                     );
                 _appDbContext.OsusrE9aCsicpFf127s.Add(novoFF127);
@@ -181,6 +165,27 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
             return WorkFF127!.Ff127Id;
         }
 
+
+        private string CriaHistoricoFF127(PrmAtualizaFF127Repository prm, CSICP_Bb006? InBB006)
+        {
+            string novoId = prm.InCS_GenerateID.GenerateUuId();
+            var WorkNewFF127 = CSICP_FF127.CreateInstance(
+                    prm.InTenantID,
+                    novoId,
+                    prm.InNovoProtocoloFF127,
+                    prm.InBB012_ID,
+                    prm.InDataPrevisao,
+                    prm.InMensagem,
+                    InBB006?.Id,
+                    prm.InDataVisita,
+                    sy001ID: prm.InSY001Id,
+                    prm.InFF002_ID_Motivo,
+                    bb006CobradorID: InBB006?.Bb006CodcobradorId);
+
+            _appDbContext.Add(WorkNewFF127);
+
+            return novoId;
+        }
         private async Task InativaHistorico(PrmAtualizaFF127Repository prmAtualizaFF126Repository)
         {
             var WorkFF127List = await GetQueryWorkFF127(prmAtualizaFF126Repository.InTenantID, prmAtualizaFF126Repository.InBB012_ID)

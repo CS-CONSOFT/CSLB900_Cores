@@ -50,8 +50,13 @@ public partial class CSICP_FF127
         string id,
         string protocolo,
         string contaID,
-        DateTime? dataPrevisao, string mensagem, string? agCobradorId, DateTime? dataVisita,
-        string? sy001ID, string? ff001IdMotivo)
+        DateTime? dataPrevisao,
+        string mensagem,
+        string? agCobradorId,
+        DateTime? dataVisita,
+        string? sy001ID,
+        string? ff001IdMotivo,
+        string? bb006CobradorID)
     {
         return new CSICP_FF127
         {
@@ -64,7 +69,7 @@ public partial class CSICP_FF127
             Ff127Mensagem = mensagem,
             Ff127Ispago = false,
             Ff127Isactive = true,
-            Ff127CobradorId = sy001ID,
+            Ff127CobradorId = bb006CobradorID,
             Ff127AgcobradorId = agCobradorId,
             Ff127Isvisitado = !(mensagem == "" || mensagem == null),
             Ff127Dtvisita = dataVisita,
