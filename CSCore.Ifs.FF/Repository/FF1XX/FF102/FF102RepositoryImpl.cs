@@ -72,8 +72,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102
         }
 
 
-        private async Task CalcularValoresAtrasoReceberAsync(CSICP_FF102 retFF102)
+        private async Task CalcularValoresAtrasoReceberAsync(CSICP_FF102? retFF102)
         {
+            if (retFF102 is null) return;
             PrmEntradaContasAReceber prmEntradaContasAReceber = new PrmEntradaContasAReceber
             {
                 InTenantID = retFF102.TenantId,
@@ -274,12 +275,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102
                    join ff102Adt in _appDbContext.OsusrE9aCsicpFf102Adts
                    on ff102.Ff102AdtoId equals ff102Adt.Id into ff102Adt_ff102_join
                    from ff102Adt in ff102Adt_ff102_join.DefaultIfEmpty()
-
-                       //join of001 in _appDbContext.OsusrE9aCsicpOf001s CPCodgRFederal
-
-                       //join of002 in _appDbContext.OsusrE9aCsicpOf002tpgs CPTPagtoId
-
-                       //join of002 in _appDbContext.OsusrE9aCsicpOf002prds CPTpProdutoBBID
 
                    join ff120track in _appDbContext.OsusrE9aCsicpFf120Trackapis
                    on ff102.Ff102TrilhaApiid equals ff120track.Id into ff120track_ff102_join

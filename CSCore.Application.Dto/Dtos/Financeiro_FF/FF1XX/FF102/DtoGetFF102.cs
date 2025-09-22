@@ -13,7 +13,8 @@ using CSCore.Domain.CS_Models.Staticas.FF;
 
 namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
 {
-    public class DtoGetFF102
+    public class 
+        DtoGetFF102
     {
         public int TenantId { get; set; }
 
@@ -403,6 +404,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
         public decimal? CSPercentualCorrecaoMonetariaConfig { get; set; }
         public decimal? CSPercentualHonorarioConfig { get; set; }
 
+        public string? CSFF126IDRelacionada { get; set; }
         public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
         public Dto_GetBB005_Exibicao? NavBB005 { get; set; } 
         public Dto_GetBB006_Exibicao? NavBB006 { get; set; }
