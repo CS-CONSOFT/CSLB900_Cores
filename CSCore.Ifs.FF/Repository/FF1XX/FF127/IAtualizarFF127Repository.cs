@@ -16,6 +16,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
             CSICP_FF126 InFF126,
             string InNovoIDFF127,
             string? InSY001ID,
-            string InProtocoloFF127);
+            string InProtocoloFF127,
+            string? InBB006CobradorID);
     }
 }
