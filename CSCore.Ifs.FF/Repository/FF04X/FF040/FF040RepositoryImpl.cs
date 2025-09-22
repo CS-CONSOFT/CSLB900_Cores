@@ -14,10 +14,15 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.FF.Repository.FF04X.FF040
 {
-    public class FF040RepositoryImpl(AppDbContext appDbContext)
-        : RepositorioBaseImpl<CSICP_FF040>(appDbContext, "Ff040Id"), IFF040Repository
+    public class FF040RepositoryImpl : RepositorioBaseImpl<CSICP_FF040>, IFF040Repository
     {
-        private readonly AppDbContext _appDbContext = appDbContext;
+        private readonly AppDbContext _appDbContext;
+
+        public FF040RepositoryImpl(AppDbContext appDbContext)
+            : base(appDbContext)
+        {
+            _appDbContext = appDbContext;
+        }
 
         public async Task<CSICP_FF040?> GetByIdAsync(int InTenantID, long InIDFF040)
         {
@@ -39,8 +44,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
 
             var queryCount = query;
             var count = queryCount.Count();
-
-            query = query.OrderBy(e => e.Ff040Id); // Ordenação obrigatória para paginação
+            query = query.OrderBy(e => e.Ff040Id);
             query = query.PaginacaoNoBanco(parametros.PageNumber, parametros.PageSize);
 
             return (await query.ToListAsync(), count);
