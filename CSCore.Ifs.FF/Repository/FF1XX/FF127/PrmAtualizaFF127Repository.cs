@@ -42,7 +42,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
         {
             var idBxParcial = await staticaLabelRepository.GetIDStaticaByLabel<CSICP_FF102Sit>(Entities.FF102_Sit.BxParcial);
             var idAberto = await staticaLabelRepository.GetIDStaticaByLabel<CSICP_FF102Sit>(Entities.FF102_Sit.Aberto);
-            var protoclo = await generateProtocolo.Fcn_Protocolo10(inBB001_ID, "COBRANÇA", inTenantID);
+            var protoclo = await generateProtocolo.Fcn_Protocolo10(inBB001_ID, "COBRANÇA", inTenantID, hasToCommit: false);
             return new PrmAtualizaFF127Repository
             {
                 InCS_GenerateID = inCS_GenerateID,

@@ -5,6 +5,10 @@ namespace CSCore.Domain.CS_Models.CSICP_FF;
 
 public partial class CSICP_FF126
 {
+    private CSICP_FF126()
+    {
+    }
+
     public int TenantId { get; set; }
 
     public string Ff126Id { get; set; } = null!;
@@ -40,7 +44,8 @@ public partial class CSICP_FF126
     public bool? Ff126Isprimario { get; set; }
 
     public DateTime? Ff126Horaregistro { get; set; }
+    
 
+    
 
-    public CSICP_FF102? Ff126Titulo { get; set; }
 }

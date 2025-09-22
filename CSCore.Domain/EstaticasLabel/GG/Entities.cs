@@ -165,6 +165,7 @@ namespace CSCore.Domain.EstaticasLabel.GG
         public static class CSICP_FF998
         {
             public const string CIS = "82-Incluir SPC";
+            public const string SPC = "80-SPC";
         }
 
         public static class BB062_Sta

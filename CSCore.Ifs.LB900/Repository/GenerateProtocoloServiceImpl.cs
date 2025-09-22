@@ -14,28 +14,33 @@ namespace CSCore.Ifs.Eventos.Repository
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly ICS_GenerateId? _generateId = generateId;
 
+    
 
-        public async Task<decimal> Fcn_ProtocoloGeral(string empresaID, int InTenantID)
+
+        public async Task<decimal> Fcn_ProtocoloGeral(string empresaID, int InTenantID, bool hasToCommit = true)
         {
-            decimal protocolo = await CS_Protocolo_Kernel_InternalAsync(empresaID, "PTL", tipoProtocolo: 1, inTenantID: InTenantID);
+            decimal protocolo
+            = await CS_Protocolo_Kernel_InternalAsync(empresaID, "PTL", tipoProtocolo: 1, inTenantID: InTenantID,hasToCommit: hasToCommit);
             return protocolo;
         }
 
 
-        public async Task<decimal> Fcn_Protocolo10(string empresaID, string arquivo, int InTenantID)
+        public async Task<decimal> Fcn_Protocolo10(string empresaID, string arquivo, int InTenantID, bool hasToCommit = true)
         {
-            decimal protocolo = await CS_Protocolo_Kernel_InternalAsync(empresaID, arquivo, tipoProtocolo: 2, inTenantID: InTenantID);
+            decimal protocolo
+            = await CS_Protocolo_Kernel_InternalAsync(empresaID, arquivo, tipoProtocolo: 2, inTenantID: InTenantID);
             return protocolo;
         }
 
 
-        public async Task<decimal> Fcn_Protocolo15(string empresaID, string arquivo, int InTenantID)
+        public async Task<decimal> Fcn_Protocolo15(string empresaID, string arquivo, int InTenantID, bool hasToCommit = true)
         {
-            decimal protocolo = await CS_Protocolo_Kernel_InternalAsync(empresaID, arquivo, tipoProtocolo: 5, inTenantID: InTenantID);
+            decimal protocolo
+            = await CS_Protocolo_Kernel_InternalAsync(empresaID, arquivo, tipoProtocolo: 5, inTenantID: InTenantID);
             return protocolo;
         }
 
-        public async Task<decimal> Fcn_Protocolo(string empresaID, string arquivo, string textName, int InTenantID)
+        public async Task<decimal> Fcn_Protocolo(string empresaID, string arquivo, string textName, int InTenantID, bool hasToCommit = true)
         {
             var uuid = _generateId.GenerateUuId();
             decimal protocolo = await CS_Protocolo_Kernel_InternalAsync(empresaID, arquivo, tipoProtocolo: 2, inTenantID: InTenantID);
@@ -83,6 +88,7 @@ namespace CSCore.Ifs.Eventos.Repository
            int tipoProtocolo,
            int inTenantID,
            decimal maxCircularValue = 9999,
+           bool hasToCommit = true,
            bool isCircular = false)
         {
             int codigoEmpresa = 1;
@@ -101,6 +107,10 @@ namespace CSCore.Ifs.Eventos.Repository
             }
 
             CSICP_AA006 AA006_Entity = await MotandoESalvandoAA006Async(empresaID, arquivo, maxCircularValue, isCircular, codigoEmpresa, inTenantID);
+            if(hasToCommit){
+                await _appDbContext.SaveChangesAsync();
+            }
+            
             decimal? result = tipoProtocolo switch
             {
                 1 => ProtocolType1(codigoEmpresa, AA006_Entity),
@@ -149,7 +159,7 @@ namespace CSCore.Ifs.Eventos.Repository
                 _appDbContext.Add(AA006_Entity);
             }
 
-            await _appDbContext.SaveChangesAsync();
+  
             return AA006_Entity;
         }
 
@@ -254,5 +264,6 @@ namespace CSCore.Ifs.Eventos.Repository
             return result;
         }
 
+  
     }
 }
