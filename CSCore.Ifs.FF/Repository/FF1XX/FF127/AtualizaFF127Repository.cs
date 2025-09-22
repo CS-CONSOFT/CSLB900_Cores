@@ -127,44 +127,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF127
 
 
         /*FLUXO USADO FORA DO METODO Atualiza_FF127, É USADO EM UMA VARIACAO DE wb_Atualiza_reg_SPC*/
-        public async Task<string> CriaHistoricoFF127(
-            CSICP_FF125 InFF125,
-            CSICP_FF126 InFF126,
-            string InNovoIDFF127,
-            string? InSY001ID,
-            string InNovoProtocoloFF127,
-            string? InBB006CobradorID)
-        {
-            var WorkFF127 = await GetQueryWorkFF127(InFF125.TenantId, InFF125.Ff125ContaId)
-                  .Where(e => e.Ff127AgcobradorId != null)
-                  .FirstOrDefaultAsync();
-
-            if(WorkFF127 == null)
-            {
-                var novoFF127 = CSICP_FF127
-                    .CreateInstance(
-                        InFF125.TenantId,
-                        InNovoIDFF127,
-                        InNovoProtocoloFF127,
-                        InFF125.Ff125ContaId,
-                        InFF125.Ff125Dtprevisaogeral,
-                        mensagem: "",
-                        agCobradorId: null,
-                        dataVisita: null,
-                        InSY001ID,
-                        bb006CobradorID: InBB006CobradorID,
-                        ff001IdMotivo: null
-                    );
-                _appDbContext.OsusrE9aCsicpFf127s.Add(novoFF127);
-                return InNovoIDFF127;
-            }
-
-            if (WorkFF127 != null && DataPrevisaoEhMaiorOuIgualDoQueHoje(WorkFF127))
-                InativaRegistroFF127(WorkFF127, InFF126.Ff126Mensagem);
-
-            return WorkFF127!.Ff127Id;
-        }
-
 
         private string CriaHistoricoFF127(PrmAtualizaFF127Repository prm, CSICP_Bb006? InBB006)
         {

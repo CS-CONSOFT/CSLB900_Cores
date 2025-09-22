@@ -4298,9 +4298,9 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF126_TITULO_ID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(e => e.Ff126Titulo)
-                 .WithOne(ff102 => ff102.NavFF126)
-                 .HasForeignKey<CSICP_FF126>(e => e.Ff126TituloId);
+                // entity.HasOne(e => e.Ff126Titulo)
+                //  .WithOne(ff102 => ff102.NavFF126)
+                //  .HasForeignKey<CSICP_FF126>(e => e.Ff126TituloId);
 
             });
 
