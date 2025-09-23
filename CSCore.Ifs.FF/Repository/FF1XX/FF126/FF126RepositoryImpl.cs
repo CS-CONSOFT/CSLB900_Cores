@@ -1,7 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.Interfaces.FF._1XX.FF126;
 using CSCore.Ifs.CS_Context;
-using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX.FF126
@@ -14,7 +13,6 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF126
         {
             this.appDbContext = appDbContext;
         }
-
 
         public async Task<CSICP_FF126?> GetFF126PeloTituloFF102(int InTenantID, string InFF102_ID)
         {

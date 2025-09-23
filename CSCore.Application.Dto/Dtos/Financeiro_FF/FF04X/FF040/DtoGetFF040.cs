@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CSBS101._82Application.Dto.BB00X.BB005;
+using CSBS101._82Application.Dto.BB00X.BB012.Get;
+using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -75,5 +78,8 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF04X.FF040
         public long? Ff040CtlIdlancto { get; set; }
 
         public string? Ff040CtlMsg { get; set; }
+        public Dto_GetBB005_Exibicao? NavBB005CCustoID { get; set; }
+        public Dto_GetBB012_ExibSimples? NavBB012ContaID { get; set; }
+
     }
 }

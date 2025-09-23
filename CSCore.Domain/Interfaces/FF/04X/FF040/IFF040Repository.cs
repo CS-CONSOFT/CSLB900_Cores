@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Domain.Interfaces.FF._04X
 {
-    public interface IFF040Repository : IRepositorioBase<CSICP_FF040>
+    public interface IFF040Repository : IGetListBase<CSICP_FF040, PrmFiltrosFF040Repo>
     {
         Task<CSICP_FF040?> GetByIdAsync(int InTenantID, long InIDFF040);
-        Task<(List<CSICP_FF040>, int)> GetListAsync(int InTenantID, PrmFiltrosFF040Repo parametros);  
+        Task<(List<CSICP_FF040>, int)> GetListAsync(int InTenantID, PrmFiltrosFF040Repo prm);  
     }
 }

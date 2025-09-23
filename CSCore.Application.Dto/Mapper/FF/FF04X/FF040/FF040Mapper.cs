@@ -1,10 +1,5 @@
 ﻿using CSCore.Application.Dto.Dtos.Financeiro_FF.FF04X.FF040;
 using CSCore.Domain.CS_Models.CSICP_FF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF04X.FF040
 {

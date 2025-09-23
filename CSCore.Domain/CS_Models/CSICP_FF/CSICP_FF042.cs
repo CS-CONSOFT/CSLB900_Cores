@@ -32,4 +32,6 @@ public partial class CSICP_FF042
     public string? Ff042ChaveVincId { get; set; }
 
     public virtual CSICP_FF040? Ff040 { get; set; }
+
+    public IEnumerable<CSICP_FF043> NavListFF043 { get; set; } = new List<CSICP_FF043>();
 }
