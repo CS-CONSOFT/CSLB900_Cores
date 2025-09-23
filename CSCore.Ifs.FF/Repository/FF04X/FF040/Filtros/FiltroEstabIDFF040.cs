@@ -10,7 +10,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040.Filtros
 {
     internal class FiltroEstabIDFF040 : ICSFilter<CSICP_FF040>
     {
-        private readonly string _estabID;
+        private readonly string? _estabID;
 
         public FiltroEstabIDFF040(string? estabID)
         {

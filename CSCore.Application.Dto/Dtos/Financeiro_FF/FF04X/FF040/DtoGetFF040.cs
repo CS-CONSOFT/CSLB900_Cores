@@ -1,6 +1,11 @@
 ﻿using CSBS101._82Application.Dto.BB00X.BB005;
+using CSBS101._82Application.Dto.BB00X.BB006;
+using CSBS101._82Application.Dto.BB00X.BB009;
 using CSBS101._82Application.Dto.BB00X.BB012.Get;
 using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF003;
+using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
+using CSCore.Domain.CS_Models.Staticas.FF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,6 +85,14 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF04X.FF040
         public string? Ff040CtlMsg { get; set; }
         public Dto_GetBB005_Exibicao? NavBB005CCustoID { get; set; }
         public Dto_GetBB012_ExibSimples? NavBB012ContaID { get; set; }
+        public Dto_GetBB006_Exibicao? NavBB006AgCobradorID { get; set; }
+        public Dto_GetBB007SemListSimples? NavBB007ResponsavelID { get; set; }
+        public Dto_GetFF003_Exibicao? NavFF003EspecieID { get; set; }
+        public Dto_GetBB009_Exibicao? NavBB009TipoCobrancaID { get; set; }
+        public Dto_GetSY001Simples? NavSY001UsuarioPropID { get; set; }
+        public OsusrE9aCsicpFf040Sit? NavFF040SituacaoID { get; set; }
+
+
 
     }
 }

@@ -11,7 +11,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
     public class PrmFiltrosFF040Repo : ParametrosBaseFiltro
     {
         public string? InEstabID { get; set; }
-        public string InNomeContaID { get; set; } //perguntar ao Valter sobre esse campo
+        public string? InContaID { get; set; } 
         public string? InProtocoloNumber { get; set; }
         public DateTime? DataInicio { get; set; }
         public DateTime? DataFim { get; set; }

@@ -1,4 +1,9 @@
-﻿using CSCore.Application.Dto.Dtos.Financeiro_FF.FF04X.FF040;
+﻿using CSBS101._82Application.Mapper.BB00X;
+using CSBS101._82Application.Mapper.BB00X.BB009;
+using CSBS101._82Application.Mapper.BB00X.BB012;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF04X.FF040;
+using CSCore.Application.Dto.Mapper.FF.FF00X;
+using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_FF;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF04X.FF040
@@ -43,6 +48,14 @@ namespace CSCore.Application.Dto.Mapper.FF.FF04X.FF040
                 Ff040CtlEstdtreg = entity.Ff040CtlEstdtreg,
                 Ff040CtlIdlancto = entity.Ff040CtlIdlancto,
                 Ff040CtlMsg = entity.Ff040CtlMsg,
+                NavBB005CCustoID = entity.NavBB005CCustoID?.ToDtoGetBB005_Exibicao(),
+                NavBB006AgCobradorID = entity.NavBB006AgCobradorID?.ToDtoGetExibicao(),
+                NavBB007ResponsavelID = entity.NavBB007ResponsavelID?.ToDtoGetSimples(),
+                NavBB009TipoCobrancaID = entity.NavBB009TipoCobrancaID?.ToDtoGetBB009_Exibicao(),
+                NavBB012ContaID = entity.NavBB012ContaID?.ToDtoGetExibSimples(),
+                NavFF003EspecieID = entity.NavFF003EspecieID?.ToDtoGetExibicao(),
+                NavFF040SituacaoID = entity.NavFF040SituacaoID,
+                NavSY001UsuarioPropID = entity.NavSY001UsuarioPropID?.ToDtoGetSimples(),
             };
         }
     }

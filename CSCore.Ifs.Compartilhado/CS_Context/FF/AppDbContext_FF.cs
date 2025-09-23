@@ -1889,6 +1889,9 @@ namespace CSCore.Ifs.CS_Context
                 entity.HasOne(e => e.NavBB006AgCobradorID).WithMany().HasForeignKey(e => e.NavBB006AgCobradorID);
                 entity.HasOne(e => e.NavBB007ResponsavelID).WithMany().HasForeignKey(e => e.Ff040ResponsavelId);
                 entity.HasOne(e => e.NavFF003EspecieID).WithMany().HasForeignKey(e => e.NavFF003EspecieID);
+                entity.HasOne(e => e.NavBB009TipoCobrancaID).WithMany().HasForeignKey(e => e.Ff040Tipocobrancaid);
+                entity.HasOne(e => e.NavSY001UsuarioPropID).WithMany().HasForeignKey(e => e.Ff040UsuarioProprId);
+                entity.HasOne(e => e.NavFF040SituacaoID).WithMany().HasForeignKey(e => e.Ff040Situacaoid);
 
             });
 
@@ -1936,7 +1939,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF042_VALOR_TROCO");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasMany(e => e.NavListFF043).WithOne().HasForeignKey(e => e.Ff042Id); //verificar essa logica com o Valter
+                entity.HasMany(e => e.NavListFF043).WithOne().HasForeignKey(e => e.Ff042Id);
 
             });
 
