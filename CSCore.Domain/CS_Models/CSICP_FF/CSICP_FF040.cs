@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
 
-public partial class CSICP_FF040
+public partial class    CSICP_FF040
 {
     public int TenantId { get; set; }
 

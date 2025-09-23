@@ -68,7 +68,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
                 new IncludeNavFF003EspecieIDFF040(),
                 new IncludeNavBB006AgCobradorIDFF040(),
                 new IncludeNavBB007ResponsavelIDFF040(),
-                new IncludeNavBB009TipoCobrancaIDFF040(),
+                //new IncludeNavBB009TipoCobrancaIDFF040(),
                 new IncludeNavSY001UsuarioPropIDFF040(),
                 new IncludeNavFF040SituacaoIDFF040(),
             ];
