@@ -18,7 +18,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF042.Filtros
         }
         public IQueryable<CSICP_FF042> Apply(IQueryable<CSICP_FF042> query)
         {
-            if (_ff040ID.HasValue) //verificar com o Valter
+            if (_ff040ID.HasValue) //verificar com o Valter esse filtro
             {
                 query = query.Where(e => e.Ff040Id == _ff040ID);
             }

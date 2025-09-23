@@ -12,7 +12,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040.Filtros
     {
         private readonly string _estabID;
 
-        public FiltroEstabIDFF040(string estabID)
+        public FiltroEstabIDFF040(string? estabID)
         {
             _estabID = estabID;
         }

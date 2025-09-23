@@ -53,7 +53,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
                 throw new ArgumentNullException(nameof(Filtros), "Parâmetros de filtro inválidos.");
 
             return [
-                new FiltroEstabIDFF040(filtros.InEstabID), 
+                new FiltroEstabIDFF040(filtros.InEstabID), //verificar sobre a obrigatoriedade
                 new FiltroNomeContaIDFF040(filtros.InNomeContaID),
                 new FiltroProtocoloNumberFF040(filtros.InProtocoloNumber),
                 new FiltroDataPeriodoFF040(filtros.DataInicio, filtros.DataFim),

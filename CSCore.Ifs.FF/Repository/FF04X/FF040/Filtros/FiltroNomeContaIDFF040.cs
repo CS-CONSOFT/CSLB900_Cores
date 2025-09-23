@@ -7,7 +7,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040.Filtros
     {
         private readonly string? _nomeContaID;
 
-        public FiltroNomeContaIDFF040(string? nomeContaID)
+        public FiltroNomeContaIDFF040(string nomeContaID)
         {
             _nomeContaID = nomeContaID;
         }
