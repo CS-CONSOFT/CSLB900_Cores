@@ -5,6 +5,10 @@ namespace CSCore.Domain.CS_Models.CSICP_FF;
 
 public partial class CSICP_FF042
 {
+    private CSICP_FF042()
+    {
+    }
+
     public int TenantId { get; set; }
 
     public long Ff042Id { get; set; }
@@ -31,5 +35,25 @@ public partial class CSICP_FF042
 
     public string? Ff042ChaveVincId { get; set; }
 
-    public virtual CSICP_FF040? Ff040 { get; set; }
+    public static CSICP_FF042 Create(
+        CSICP_FF040 ff040Entity,
+        string formaPgtoID,
+        string condicaoPgtoID,
+        int NroParcelas)  
+    {
+        int qtd = 1;
+        decimal? valorTotalPago = qtd * ff040Entity.Ff040Vtransacao;
+        return new CSICP_FF042
+        {
+            TenantId = ff040Entity.TenantId,
+            Ff040Id = ff040Entity.Ff040Id,
+            Ff042Fpagtoid = formaPgtoID,
+            Ff042Condicaoid = condicaoPgtoID,
+            Ff042Nroparcelas = NroParcelas,
+            Ff042Qtd = qtd,
+            Ff042ValorTotalpago = valorTotalPago,
+            Ff042ValorTroco = ff040Entity.Ff040Vtransacao - valorTotalPago,
+            Ff042DataMovimento = ff040Entity.Ff040Dbasevencto
+        };
+    }
 }
