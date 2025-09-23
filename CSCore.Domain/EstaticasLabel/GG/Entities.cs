@@ -324,5 +324,10 @@ namespace CSCore.Domain.EstaticasLabel.GG
             public const string Aberto = "Aberto";
             public const string Transferido = "Transferido";
         }
+
+        public static class Csicp_FF040_status
+        {
+            public const string Aberto = "Aberto";
+        }
     }
 }

@@ -56,4 +56,7 @@ public partial class CSICP_FF042
             Ff042DataMovimento = ff040Entity.Ff040Dbasevencto
         };
     }
+    public virtual CSICP_FF040? Ff040 { get; set; }
+
+    public IEnumerable<CSICP_FF043> NavListFF043 { get; set; } = new List<CSICP_FF043>();
 }
