@@ -417,7 +417,7 @@ public partial class CSICP_FF102
     public CSICP_FF000? NavFF000 { get; set; }
     public CSICP_FF003? NavFF003 { get; set; }
     public CSICP_FF104? NavFF104 { get; set; }
-    public CSICP_FF126? NavFF126 { get; set; }
+
     public CSICP_FF102_C021? NavFF102C021 { get; set; }
     public CSICP_FF102Des? NavFF102Des { get; set; }
     public CSICP_FF102Ent? NavFF102Ent { get; set; }

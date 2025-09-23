@@ -44,6 +44,21 @@ public partial class CSICP_FF128
     public DateTime? Ff128HoraRegistro { get; set; }
 
 
+    /*NAVS*/
+    public CSICP_Bb006? NavBB006AgenteCobrador { get; set; }
+
+    public CSICP_FF102? NavFF102Titulo { get; set; }
+    public CSICP_FF998? NavFF998SituacaoSai { get; set; }
+
+    public Csicp_Sy001? NavSy001Cobrador { get; set; }
+
+    public CSICP_FF127? NavFF127Cobranca { get; set; }
+
+    public CSICP_Bb012Sitcta? NavBB012SituacaodeCobranca { get; set; }
+    public CSICP_Bb012Sitcta? NavBB012SituacaoSaidaCobranca { get; set; }
+    public CSICP_Bb029? NavBB0029CategoriaRegistro { get; set; }
+
+
     public static CSICP_FF128 Create(
         string id,
         string tituloID,
