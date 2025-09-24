@@ -413,6 +413,13 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF003_SEQNROTITULO");
                 entity.Property(e => e.Ff003Tipoespecie).HasColumnName("FF003_TIPOESPECIE");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+                entity.HasOne(e => e.NavBB001).WithOne().HasForeignKey<CSICP_FF003>(e => e.Ff003Filialid);
+                entity.HasOne(e => e.NavFF003TpEsp).WithOne().HasForeignKey<CSICP_FF003>(e => e.Ff003Tipoespecie);
+                entity.HasOne(e => e.NavBB005).WithOne().HasForeignKey<CSICP_FF003>(e => e.Ff003Ccustoid);
+                entity.HasOne(e => e.NavStatica).WithOne().HasForeignKey<CSICP_FF003>(e => e.Ff003Provisao);
+
+
             });
 
             modelBuilder.Entity<CSICP_FF005>(entity =>

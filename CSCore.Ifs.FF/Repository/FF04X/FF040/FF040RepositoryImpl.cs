@@ -36,7 +36,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
                 .Include(e => e.NavBB012ContaID)
                 .Include(e => e.NavBB006AgCobradorID)
                 .Include(e => e.NavBB007ResponsavelID)
-                //.Include(e => e.NavFF003EspecieID)
+                .Include(e => e.NavFF003EspecieID)
                 .Include(e => e.NavBB009TipoCobrancaID)
                 .Include(e => e.NavSY001UsuarioPropID)
                 .Include(e => e.NavFF040SituacaoID)
@@ -44,7 +44,6 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(InTenantID, prm));
-            //query = AplicaIncludes(query, GetIncludesParaAplicar());
 
             var queryCount = query;
             var count = queryCount.Count();

@@ -45,7 +45,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF042
             if (filtros == null)
                 throw new ArgumentNullException(nameof(Filtros), "Parâmetros de filtro inválidos.");
             return [
-                new FiltroFF040IDParaFF042(filtros.InFF040Id)]; //verificar o filtro do IDFF040
+                new FiltroFF040IDParaFF042(filtros.InFF040Id)];
         }
 
         protected override ICSInclude<CSICP_FF042>[] GetIncludesParaAplicar()
