@@ -56,14 +56,15 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
                 new FiltroEstabIDFF040(filtros.InEstabID),
                 new FiltroContaIDFF040(filtros.InContaID),
                 new FiltroProtocoloNumberFF040(filtros.InProtocoloNumber),
-                new FiltroDataPeriodoFF040(filtros.DataInicio, filtros.DataFim),
+                new FiltroDataMovtFF040(filtros.DataInicio, filtros.DataFim),
+                new FiltroStatusIDFF040(filtros.InStatusID),
             ];
         }
 
         protected override ICSInclude<CSICP_FF040>[] GetIncludesParaAplicar()
         {
             return [
-                new IncludesNavBB012ContaIDFF040(),
+                new IncludeNavBB012ContaIDFF040(),
                 new IncludeNavBB005CCustoIDFF040(),
                 new IncludeNavFF003EspecieIDFF040(),
                 new IncludeNavBB006AgCobradorIDFF040(),

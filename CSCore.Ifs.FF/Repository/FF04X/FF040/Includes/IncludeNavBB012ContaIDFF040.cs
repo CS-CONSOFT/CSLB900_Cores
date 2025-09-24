@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.FF.Repository.FF04X.FF040.Includes
 {
-    internal class IncludesNavBB012ContaIDFF040 : ICSInclude<CSICP_FF040>
+    internal class IncludeNavBB012ContaIDFF040 : ICSInclude<CSICP_FF040>
     {
         public IQueryable<CSICP_FF040> ApplyIncludes(IQueryable<CSICP_FF040> query)
         {

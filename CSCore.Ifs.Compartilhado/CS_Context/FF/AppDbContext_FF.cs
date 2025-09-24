@@ -1886,9 +1886,9 @@ namespace CSCore.Ifs.CS_Context
 
                 entity.HasOne(e => e.NavBB005CCustoID).WithMany().HasForeignKey(e => e.Ff040CcustoId);
                 entity.HasOne(e => e.NavBB012ContaID).WithMany().HasForeignKey(e => e.Ff040ContaId);
-                entity.HasOne(e => e.NavBB006AgCobradorID).WithMany().HasForeignKey(e => e.NavBB006AgCobradorID);
+                entity.HasOne(e => e.NavBB006AgCobradorID).WithMany().HasForeignKey(e => e.Ff040AgcobradorId);
                 entity.HasOne(e => e.NavBB007ResponsavelID).WithMany().HasForeignKey(e => e.Ff040ResponsavelId);
-                entity.HasOne(e => e.NavFF003EspecieID).WithMany().HasForeignKey(e => e.NavFF003EspecieID);
+                entity.HasOne(e => e.NavFF003EspecieID).WithMany().HasForeignKey(e => e.Ff040EspecieId);
                 entity.HasOne(e => e.NavBB009TipoCobrancaID).WithMany().HasForeignKey(e => e.Ff040Tipocobrancaid);
                 entity.HasOne(e => e.NavSY001UsuarioPropID).WithMany().HasForeignKey(e => e.Ff040UsuarioProprId);
                 entity.HasOne(e => e.NavFF040SituacaoID).WithMany().HasForeignKey(e => e.Ff040Situacaoid);
