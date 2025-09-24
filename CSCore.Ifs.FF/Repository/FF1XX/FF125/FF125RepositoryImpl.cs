@@ -4,7 +4,6 @@ using CSCore.Domain.Interfaces.PrmFiltros.FF125;
 using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.FF1XX.FF125.IncludesFF125List;
-using CSLB900.MSTools.CS_QueryFilters;
 using CSLB900.MSTools.Extensao;
 using GG104Materiais.C82Application.Service.FF1XX.FF125;
 using Microsoft.EntityFrameworkCore;
