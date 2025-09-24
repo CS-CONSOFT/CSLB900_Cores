@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.FF.Repository.FF04X.FF040.Filtros
 {
-    internal class FiltroDataPeriodoFF040 : ICSFilter<CSICP_FF040>
+    internal class FiltroDataMovtFF040 : ICSFilter<CSICP_FF040>
     {
         private readonly DateTime? _dataInicio;
         private readonly DateTime? _dataFim;
 
-        public FiltroDataPeriodoFF040(DateTime? dataInicio, DateTime? dataFim)
+        public FiltroDataMovtFF040(DateTime? dataInicio, DateTime? dataFim)
         {
             _dataInicio = dataInicio;
             _dataFim = dataFim;

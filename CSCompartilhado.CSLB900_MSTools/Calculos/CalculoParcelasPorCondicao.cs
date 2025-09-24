@@ -8,9 +8,10 @@ namespace CSLB900.MSTools.Calculos
         public static List<RetCalculoParcelasPorCondicao> Calcular(
             PrmCalculoParcelasPorCondicao prm, IIncrementarDataStrategy IncrementarDataStrategy)
         {
-            int _aux_qtd_parcelas = int.Parse(prm.InCondicaoPagtoDividida[0]);
-            int entrada = int.Parse(prm.InCondicaoPagtoDividida[1]);
-            int intervaloParcelas = int.Parse(prm.InCondicaoPagtoDividida[2]);
+            /*PERIGO PEGAR O VALOR DE FORMA DIRETA DO ARRAY*/
+            int _aux_qtd_parcelas = int.Parse(prm.InCondicaoPagtoDividida.GetCondicaoPagamentoDividida()[0]);
+            int entrada = int.Parse(prm.InCondicaoPagtoDividida.GetCondicaoPagamentoDividida()[1]);
+            int intervaloParcelas = int.Parse(prm.InCondicaoPagtoDividida.GetCondicaoPagamentoDividida()[2]);
             int ultimoIntervaloParcelaSalvo = intervaloParcelas + entrada;
 
             var parcelasRestantes = entrada != 0 ? _aux_qtd_parcelas - 1 : _aux_qtd_parcelas;
@@ -70,10 +71,54 @@ namespace CSLB900.MSTools.Calculos
 
     public class PrmCalculoParcelasPorCondicao
     {
-        public string[] InCondicaoPagtoDividida { get; set; } = null!;
+        public CondicaoPagamentoDividia InCondicaoPagtoDividida { get; set; } = null!;
         public decimal InFaturaTotal { get; set; }
         public decimal InValorEntrada { get; set; } = 0;
         public DateTime InDataCalculo { get; set; }
+    }
+
+
+
+
+
+
+    /*CLASSE QUE REPRESENTA A CONDIÇÃO DE PAGAMENTO DIVIDIDA*/
+    public class CondicaoPagamentoDividia
+    {
+        private string[] InCondicaoPagto { get; set; } = null!;
+    
+        public CondicaoPagamentoDividia(string[] inCondicaoPagto)
+        {
+            var inCondicaoPagtoJoined = string.Join(";", inCondicaoPagto);
+            if (inCondicaoPagtoJoined is null)
+                throw new ArgumentNullException("A condição de pagamento não pode ser nula.");
+
+            if (inCondicaoPagtoJoined.Trim() == "")
+                throw new ArgumentException("A condição de pagamento não pode ser vazia.");
+
+            if (inCondicaoPagtoJoined.Split(';').Length < 3)
+                throw new ArgumentException("A condição de pagamento deve conter PELO MENOS três partes separadas por ponto e vírgula.");
+
+            if (inCondicaoPagtoJoined.Split(';').Any(part => !int.TryParse(part, out _)))
+                throw new ArgumentException("Todas as partes da condição de pagamento devem ser números inteiros.");
+
+            if (int.Parse(inCondicaoPagtoJoined.Split(';')[0]) <= 0)
+                throw new ArgumentException("A quantidade de parcelas deve ser maior que zero.");
+
+            InCondicaoPagto = inCondicaoPagtoJoined.Split(';');
+        }
+
+
+
+        public CondicaoPagamentoDividia GetCondicaoPagamento()
+        {
+            return this;
+        }
+
+        public string[] GetCondicaoPagamentoDividida()
+        {
+            return InCondicaoPagto;
+        }
     }
 
 }

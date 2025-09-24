@@ -36,9 +36,10 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             RetornoFinanciamento in_calculoFinanciamento)
         {
 
+            var condicaoPagamentoValidador = new CondicaoPagamentoDividia(_aux_condicaoPagtoDividida);
             var prm = new PrmCalculoParcelasPorCondicao
             {
-                InCondicaoPagtoDividida = _aux_condicaoPagtoDividida,
+                InCondicaoPagtoDividida = condicaoPagamentoValidador.GetCondicaoPagamento(),
                 InFaturaTotal = in_calculoFinanciamento.ValorFaturaTotal,
                 InValorEntrada = _work_valor_entrada,
                 InDataCalculo = in_Renegociacao_Calc_Titulos.in_data
@@ -48,19 +49,34 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             List<CSICP_FF999> entidadesParaInserir = [];
             foreach (var calculoCorrente in listaCalculoParcelasPorCondicao)
             {
-                CSICP_FF999 work_ff999 = new()
+                var entidade = await CriarEntidade<CSICP_FF999>(calculoCorrente, in_Renegociacao_Calc_Titulos.in_TenantID, in_Renegociacao_Calc_Titulos.in_renegociacaoID);
+                if(entidade is null)
+                    continue;
+                entidadesParaInserir.Add(entidade);
+            }
+            await PersistirAsync(entidadesParaInserir);
+        }
+
+        protected virtual Task<TEntity?> CriarEntidade<TEntity>(
+            RetCalculoParcelasPorCondicao calculoCorrente,
+            int InTenantID,
+            string InIdControle)   where TEntity : class
+        {
+                var entidade = new CSICP_FF999
                 {
                     Id = _generateId.GenerateUuId(),
-                    TenantId = in_Renegociacao_Calc_Titulos.in_TenantID,
-                    Ff999IdControle = in_Renegociacao_Calc_Titulos.in_renegociacaoID,
+                    TenantId = InTenantID,
+                    Ff999IdControle = InIdControle,
                     Ff999Valorparcela = calculoCorrente.ValorParcela,
                     Ff999Parcela = calculoCorrente.Parcela,
                     Ff999Datavencto = calculoCorrente.DataVencimento
                 };
-                entidadesParaInserir.Add(work_ff999);
-            }
-            
-            _appDbContext.AddRange(entidadesParaInserir);
+                return Task.FromResult(entidade as TEntity);
+        }
+        
+        protected virtual async Task PersistirAsync<TEntity>(List<TEntity> entidades)
+        {
+            _appDbContext.AddRange(entidades);
             await _appDbContext.SaveChangesAsync();
         }
     }
