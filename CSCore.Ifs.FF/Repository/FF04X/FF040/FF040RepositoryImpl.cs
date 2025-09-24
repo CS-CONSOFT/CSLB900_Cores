@@ -32,11 +32,19 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
         {
             IQueryable<CSICP_FF040> query = _appDbContext.OsusrE9aCsicpFf040s
                 .AsNoTracking()
+                .Include(e => e.NavBB005CCustoID)
+                .Include(e => e.NavBB012ContaID)
+                .Include(e => e.NavBB006AgCobradorID)
+                .Include(e => e.NavBB007ResponsavelID)
+                //.Include(e => e.NavFF003EspecieID)
+                .Include(e => e.NavBB009TipoCobrancaID)
+                .Include(e => e.NavSY001UsuarioPropID)
+                .Include(e => e.NavFF040SituacaoID)
                 .AsSplitQuery();
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(InTenantID, prm));
-            query = AplicaIncludes(query, GetIncludesParaAplicar());
+            //query = AplicaIncludes(query, GetIncludesParaAplicar());
 
             var queryCount = query;
             var count = queryCount.Count();
@@ -58,20 +66,6 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
                 new FiltroProtocoloNumberFF040(filtros.InProtocoloNumber),
                 new FiltroDataMovtFF040(filtros.DataInicio, filtros.DataFim),
                 new FiltroStatusIDFF040(filtros.InStatusID),
-            ];
-        }
-
-        protected override ICSInclude<CSICP_FF040>[] GetIncludesParaAplicar()
-        {
-            return [
-                new IncludeNavBB012ContaIDFF040(),
-                new IncludeNavBB005CCustoIDFF040(),
-                new IncludeNavFF003EspecieIDFF040(),
-                new IncludeNavBB006AgCobradorIDFF040(),
-                new IncludeNavBB007ResponsavelIDFF040(),
-                new IncludeNavBB009TipoCobrancaIDFF040(),
-                new IncludeNavSY001UsuarioPropIDFF040(),
-                new IncludeNavFF040SituacaoIDFF040(),
             ];
         }
     }
