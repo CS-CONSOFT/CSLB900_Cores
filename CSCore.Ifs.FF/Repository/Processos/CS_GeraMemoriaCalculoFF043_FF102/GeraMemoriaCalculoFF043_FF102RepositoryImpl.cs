@@ -1,9 +1,14 @@
 using System;
+using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar.Fabrica;
+using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.AvaliarCondicaoPagamento;
+using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.FinanciamentoCalculador;
+using CSLB900.MSTools.GenerateId;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102;
@@ -11,37 +16,72 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102;
 public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF043_FF102Repository
 {
     private readonly AppDbContext _context;
+    private readonly IGenerateProtocolo generateProtocolo;
+    private readonly ICS_GenerateId generateId;
 
-    public GeraMemoriaCalculoFF043_FF102RepositoryImpl(AppDbContext context)
+    public GeraMemoriaCalculoFF043_FF102RepositoryImpl(AppDbContext context, IGenerateProtocolo generateProtocolo, ICS_GenerateId generateId)
     {
         _context = context;
+        this.generateProtocolo = generateProtocolo;
+        this.generateId = generateId;
     }
 
     public async Task GeraFormaPagtotoMemoriaCalculoFF043_FF102(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm)
     {
-        await GeraFF042APartirDaFF040Async(prm);
+        var idFF042 = await GeraFF042APartirDaFF040Async(prm);
+        CSICP_Bb008 work_bb008 = await ObterCondicaoPagamentoBb008(prm.InTenantID, prm.InCondicaoPgtoID);
+       
+        decimal Protocolo = await this.generateProtocolo.Fcn_Protocolo10(prm.InEmpresaID, "CPAGAR", prm.InTenantID);
+        var prmGeraMemoriaCalculo = CreateParaMemoriaCalculoFF043Params.Create(
+            in_StID_bb008_tp_Dias: prm.In_StID_bb008_tp_Dias,
+            in_StID_bb008_tp_ParcelaDias: prm.In_StID_bb008_tp_ParcelaDias,
+            in_StID_bb008_tp_ParcelaMes: prm.In_StID_bb008_tp_ParcelaMes,
+            in_StID_bb008_tp_A_vista: prm.In_StID_bb008_tp_A_vista,
+            inTipoBB008_ID_Recuperada: work_bb008.Bb008Tipoid ?? -1,
+            Protocolo: Protocolo,
+            inGenerateId: generateId,
+            inEmpresaID: prm.InEmpresaID,
+            inNumeroDeParcelas: prm.InNroDeParcelas,
+            inValorEntrada: 0m,
+            inAppDbContext: _context
+        );
+        
 
-        //recuperar a bb008 para pegar o ID do tipo
-        //recuperar o id dabb008 correspondente dessa 
-        //passar o generate protocolo
-        //passar o generateID
-        //passar o numero de parcela
-        //passar o valor de entrada
-        //passar o appDbContext
-        //precisa testar o processar parcela tipo parcela no foreach ao gerar a enitdade
-        //precisa testar tambem o CondicaoPagamentoDividia
-
-        var prmGeraMemoriaCalculo = new CreateParaMemoriaCalculoFF043Params();
         IAuxProcessarCalculoTitulo processarCalculoTitulo
-            = ProcessarRenegociacaoCalcTituloFactory.CreateParaMemoriaCalculoFF043(prmGeraMemoriaCalculo);
+            = GerarMemoriaCalcFF04XFactory.CreateParaMemoriaCalculoFF043(prmGeraMemoriaCalculo);
 
+        RetornoFinanciamento calculoFinanciamento = CalcularValoresdeFinanciamento(work_bb008,prm);
 
-        //precisa refatorar para receber os parametros
-        // processarCalculoTitulo.Processar();
-
+        /*GERA MEMÓRIA*/
+        await processarCalculoTitulo.Processar(
+           InControleID: idFF042.ToString(),
+           InData: DateOnly.FromDateTime(prm.InDataBaseVencimento),
+           InTenantID: prm.InTenantID,
+           ina_calculoFinanciamento: calculoFinanciamento
+        );
     }
 
-    private async Task GeraFF042APartirDaFF040Async(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm)
+    private RetornoFinanciamento CalcularValoresdeFinanciamento(CSICP_Bb008 work_bb008, PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm)
+    {
+       
+
+        int work_qtd_parcelas
+                    = CondicaoPagamentoAvaliador
+                    .AvaliarCondicaoPagamento(
+                        prm.In_StID_bb008_tp_ParcelaDias,
+                        prm.In_StID_bb008_tp_ParcelaMes,
+                        prm.In_StID_bb008_tp_Dias,
+                        work_bb008,
+                        work_bb008.Bb008Condicao?.Split(';') ?? []);
+
+        RetornoFinanciamento calculoFinanciamento = FinanciamentoCalculator.CalcularValoresFinanciamento(
+            faturaTotal: prm.InFaturaTotal,
+            qtdParcelas: work_qtd_parcelas,
+            valorEntrada: 0m);
+        return calculoFinanciamento;
+    }
+
+    private async Task<long> GeraFF042APartirDaFF040Async(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm)
     {
         CSICP_FF040 WorkFF040 = await _context.OsusrE9aCsicpFf040s
                     .Where(e => e.TenantId == prm.InTenantID && e.Ff040Id == prm.InFF040_ID)
@@ -54,8 +94,18 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
             ff040Entity: WorkFF040,
             formaPgtoID: prm.InFormaPgtoID,
             condicaoPgtoID: prm.InCondicaoPgtoID,
-            NroParcelas: prm.InNroParcelas);
+            NroParcelas: prm.InNroDeParcelas);
 
-        _context.Add(WorkFF042);
+        var result = _context.Add(WorkFF042);
+        return WorkFF042.Ff042Id;
     }
+
+    
+        private async Task<CSICP_Bb008> ObterCondicaoPagamentoBb008(int InTenantID, string InCondicaoPagamentoID)
+        {
+            return await _context.OsusrE9aCsicpBb008s
+                                .Where(e => e.TenantId == InTenantID
+                                && e.Id == InCondicaoPagamentoID)
+                                .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Condição de pagamento não encontrada!");
+        }
 }

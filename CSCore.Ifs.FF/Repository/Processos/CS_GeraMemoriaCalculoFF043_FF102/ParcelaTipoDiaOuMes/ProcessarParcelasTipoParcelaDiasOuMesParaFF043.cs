@@ -2,6 +2,7 @@ using System;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
+using CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parametro;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.FinanciamentoCalculador;
 using CSLB900.MSTools.CalculoAdicaoDataStrategy;
@@ -10,22 +11,13 @@ using CSLB900.MSTools.GenerateId;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar;
 
-public record ProcessarParcelasTipoParcelaDiasOuMesParaFF043Input(
-        IGenerateProtocolo GenerateProtocolo,
-        ICS_GenerateId GenerateId,
-        string EmpresaID,
-        string[] Aux_condicaoPagtoDividida,
-        decimal Work_valor_entrada,
-        AppDbContext AppDbContext,
-        IIncrementarDataStrategy IncrementarDataStrategy
-);
-
 public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasTipoParcelaDiasOuMes
 {
-    private readonly IGenerateProtocolo generateProtocolo;
+
     private readonly AppDbContext _appDbContext;
 
-    private readonly string _empresaID;
+    private readonly decimal Fcn_Protocolo10;
+
     public ProcessarParcelasTipoParcelaDiasOuMesParaFF043(ProcessarParcelasTipoParcelaDiasOuMesParaFF043Input input)
            : base(input.GenerateId,
             input.Aux_condicaoPagtoDividida,
@@ -33,20 +25,17 @@ public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasT
             input.AppDbContext,
             input.IncrementarDataStrategy)
     {
-        this.generateProtocolo = input.GenerateProtocolo;
-        this._empresaID = input.EmpresaID;
         this._appDbContext = input.AppDbContext;
+        this.Fcn_Protocolo10 = input.Protocolo;   
     }
 
 
     /*ALTERANDO A ENTIDADE QUE SERÁ SALVA AO GERAR O CALCULO*/
-    override protected async Task<TEntity?> CriarEntidade<TEntity>(
+    override protected TEntity? CriarEntidade<TEntity>(
         RetCalculoParcelasPorCondicao calculoCorrente, int InTenantID, string InIdControle) where TEntity : class
     {
         if (typeof(TEntity) != typeof(CSICP_FF043))
             throw new InvalidOperationException($"Tipo de entidade não suportado: {typeof(TEntity).Name}");
-
-        var protcolo = await generateProtocolo.Fcn_Protocolo10(this._empresaID, "CPAGAR", InTenantID);
 
         var entidade = CSICP_FF043.Create(
             InTenantID: InTenantID,
@@ -55,7 +44,7 @@ public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasT
             Parcela: calculoCorrente.Parcela,
             DataVencimento: calculoCorrente.DataVencimento,
             Pfxtitulo: "",
-            Protocolo: protcolo
+            Protocolo: Fcn_Protocolo10
         );
         return entidade as TEntity;
     }

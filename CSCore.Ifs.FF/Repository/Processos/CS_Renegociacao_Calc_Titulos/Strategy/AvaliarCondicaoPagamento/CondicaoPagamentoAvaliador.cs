@@ -7,10 +7,16 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strate
     {
 
         public static int AvaliarCondicaoPagamento(
-            Prm_Renegociacao_Calc_Simulacao_Titulos in_Renegociacao_Calc_Titulos,
+            int in_StID_bb008_tp_ParcelaDias,
+            int in_StID_bb008_tp_ParcelaMes,
+            int in_StID_bb008_tp_Dias,
             CSICP_Bb008 work_bb008, string[]? aux_condicaoPagtoDividida)
         {
-            var strategy = CondicaoPgtoStrategyFactory.Criar(in_Renegociacao_Calc_Titulos, work_bb008);
+            var strategy = CondicaoPgtoStrategyFactory.Criar(
+                in_StID_bb008_tp_ParcelaDias,
+                in_StID_bb008_tp_ParcelaMes,
+                in_StID_bb008_tp_Dias,
+                work_bb008);
             return strategy.AvaliarCondicaoPagamento(aux_condicaoPagtoDividida);
         }
 

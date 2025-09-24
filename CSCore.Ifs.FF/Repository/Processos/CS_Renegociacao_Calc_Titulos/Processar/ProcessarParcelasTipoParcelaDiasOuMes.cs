@@ -32,8 +32,23 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
         }
 
         public async Task Processar(
-            Prm_Renegociacao_Calc_Simulacao_Titulos in_Renegociacao_Calc_Titulos,
-            RetornoFinanciamento in_calculoFinanciamento)
+            /// <summary>
+            /// Identificador do processo em que esse método será usado
+            /// Ex. Ao processar ProcessarParcelasTipoParcelaDiasOuMes no processo de 
+            /// Calculo da renegociação, esse ID será o ID da renegociação
+            /// Já no gerar memória de cálculo FF043, será o ID da FF042
+            /// Então é importante que esse ID seja passado para que a entidade que será criada
+            /// tenha a referência correta
+            /// </summary>
+            string InControleID,
+            DateOnly InData,
+            int InTenantID,
+            RetornoFinanciamento in_calculoFinanciamento,
+             /// <summary>
+            /// Parâmetros necessários para o cálculo das parcelas quando se tem entrada, usado em CS_Renegociacao_Calc_Titulos
+            /// </summary>
+            decimal? _ = 0
+            )
         {
 
             var condicaoPagamentoValidador = new CondicaoPagamentoDividia(_aux_condicaoPagtoDividida);
@@ -42,14 +57,15 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
                 InCondicaoPagtoDividida = condicaoPagamentoValidador.GetCondicaoPagamento(),
                 InFaturaTotal = in_calculoFinanciamento.ValorFaturaTotal,
                 InValorEntrada = _work_valor_entrada,
-                InDataCalculo = in_Renegociacao_Calc_Titulos.in_data
+                InDataCalculo = new DateTime(InData.Year, InData.Month, InData.Day),
             };
 
             List<RetCalculoParcelasPorCondicao> listaCalculoParcelasPorCondicao = CalculoParcelasPorCondicao.Calcular(prm, _incrementarDataStrategy);
             List<CSICP_FF999> entidadesParaInserir = [];
             foreach (var calculoCorrente in listaCalculoParcelasPorCondicao)
             {
-                var entidade = await CriarEntidade<CSICP_FF999>(calculoCorrente, in_Renegociacao_Calc_Titulos.in_TenantID, in_Renegociacao_Calc_Titulos.in_renegociacaoID);
+                var entidade =  CriarEntidade<CSICP_FF999>(calculoCorrente, InTenantID,
+                InControleID);
                 if(entidade is null)
                     continue;
                 entidadesParaInserir.Add(entidade);
@@ -57,7 +73,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             await PersistirAsync(entidadesParaInserir);
         }
 
-        protected virtual Task<TEntity?> CriarEntidade<TEntity>(
+        protected virtual TEntity? CriarEntidade<TEntity>(
             RetCalculoParcelasPorCondicao calculoCorrente,
             int InTenantID,
             string InIdControle)   where TEntity : class
@@ -71,7 +87,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
                     Ff999Parcela = calculoCorrente.Parcela,
                     Ff999Datavencto = calculoCorrente.DataVencimento
                 };
-                return Task.FromResult(entidade as TEntity);
+                return entidade as TEntity;
         }
         
         protected virtual async Task PersistirAsync<TEntity>(List<TEntity> entidades)

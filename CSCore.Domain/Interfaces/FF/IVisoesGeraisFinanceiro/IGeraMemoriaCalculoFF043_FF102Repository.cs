@@ -4,11 +4,17 @@ namespace CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
 
 public record PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository(
     int InTenantID,
+    string InEmpresaID,
     long InFF040_ID,
-    DateTime InDataBaseVencimento, 
+    DateTime InDataBaseVencimento,
     string InFormaPgtoID,
     string InCondicaoPgtoID,
-    int InNroParcelas
+    int InNroDeParcelas,
+    decimal InFaturaTotal,
+    int In_StID_bb008_tp_Dias,
+    int In_StID_bb008_tp_ParcelaDias,
+    int In_StID_bb008_tp_ParcelaMes,
+    int In_StID_bb008_tp_A_vista
     );
 
 public interface IGeraMemoriaCalculoFF043_FF102Repository
