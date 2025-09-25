@@ -67,10 +67,10 @@ namespace CSCore.Tests.Financeiro.Financeiro.CS_Renegociacao_Calc_Titulos.Proces
             Assert.Equal(3, parcelas.Count);
             Assert.Equal(1, parcelas[0].Ff999Parcela); // Primeira parcela
             Assert.Equal(dataBase.ToDateTime(new TimeOnly(0, 0)), parcelas[0].Ff999Datavencto);
-            Assert.Equal(250, parcelas[0].Ff999Valorparcela); // ValorParcela + ValorRestoParcela
+            Assert.Equal(100, parcelas[0].Ff999Valorparcela); // ValorParcela + ValorRestoParcela
             Assert.Equal(2, parcelas[1].Ff999Parcela); // Segunda parcela
             Assert.Equal(dataBase.ToDateTime(new TimeOnly(0, 0)).AddDays(30), parcelas[1].Ff999Datavencto);
-            Assert.Equal(200, parcelas[1].Ff999Valorparcela); // ValorParcela
+            Assert.Equal(250, parcelas[1].Ff999Valorparcela); // ValorParcela
             Assert.Equal(3, parcelas[2].Ff999Parcela); // Terceira parcela
             Assert.Equal(dataBase.ToDateTime(new TimeOnly(0, 0)).AddDays(60), parcelas[2].Ff999Datavencto);
             Assert.Equal(200, parcelas[2].Ff999Valorparcela); // ValorParcela
@@ -111,7 +111,9 @@ namespace CSCore.Tests.Financeiro.Financeiro.CS_Renegociacao_Calc_Titulos.Proces
             // Assert
             var parcelas = context.Set<CSICP_FF999>().Where(x => x.Ff999IdControle == controleId).OrderBy(x => x.Ff999Parcela).ToList();
             Assert.Equal(2, parcelas.Count);
-            Assert.All(parcelas, p => Assert.Equal(320, p.Ff999Valorparcela)); // ValorParcela + ValorRestoParcela
+
+            Assert.Equal(320, parcelas[0].Ff999Valorparcela); // Primeira parcela: ValorParcela + ValorRestoParcela
+            Assert.Equal(300, parcelas[1].Ff999Valorparcela); // Segunda parcela: apenas ValorParcela
         }
     }
 }

@@ -12,7 +12,7 @@ public class ProcessarParcelasTipoParcelaDiaParaFF043 : ProcessarCalculoTituloTi
 {
   private readonly decimal protocolo;
   private readonly AppDbContext _appDbContext;
-
+  private readonly IEnumerable<string> _aux_condicaoPagtoDividida;
   public ProcessarParcelasTipoParcelaDiaParaFF043(
     decimal protcolo,
     AppDbContext appDbContext,
@@ -23,9 +23,36 @@ public class ProcessarParcelasTipoParcelaDiaParaFF043 : ProcessarCalculoTituloTi
   {
     this.protocolo = protcolo;
     this._appDbContext = appDbContext;
+        this._aux_condicaoPagtoDividida = aux_condicaoPagtoDividida;
   }
 
-        override protected TEntity? CriarEntidade<TEntity>(
+    public override async Task Processar(string InControleID, DateOnly InData, int InTenantID, RetornoFinanciamento in_calculoFinanciamento, decimal? InValorEntrada = 0)
+    {
+        int aux_parcela_atual = 0;
+        List<CSICP_FF043> entidadesParaInserir = [];
+        foreach (var diasPraAdd in _aux_condicaoPagtoDividida)
+        {
+            var entidade = CSICP_FF043.Create(
+               InTenantID: InTenantID,
+               InFf042Id: long.Parse(InControleID),
+               ValorParcela: InValorEntrada ?? 0m,
+               Parcela: aux_parcela_atual,
+               DataVencimento: InData.ToDateTime(new TimeOnly(0, 0)).AddDays(int.Parse(diasPraAdd)),
+               Pfxtitulo: "",
+               Protocolo: protocolo
+           );
+
+            if (entidade is null) continue;
+
+            entidadesParaInserir.Add(entidade);
+
+            aux_parcela_atual += 1;
+        }
+
+        await PersistirAsync<CSICP_FF043>(entidadesParaInserir);
+    }
+
+    override protected TEntity? CriarEntidade<TEntity>(
               string InControleID,
               DateOnly InData,
               int InTenantID,
@@ -51,9 +78,14 @@ public class ProcessarParcelasTipoParcelaDiaParaFF043 : ProcessarCalculoTituloTi
 
         override protected async Task PersistirAsync<TEntity>(List<TEntity> entidades)
         {
-            await this._appDbContext.AddRangeAsync(entidades);
-            // Não faz nada de commit, pois a persistência é gerenciada externamente no service
+        foreach (var item in entidades)
+        {
+            if (item is null) continue;
+            await _appDbContext.AddAsync(item);
         }
+
+        // Não faz nada de commit, pois a persistência é gerenciada externamente no service
+    }
 }
 
 

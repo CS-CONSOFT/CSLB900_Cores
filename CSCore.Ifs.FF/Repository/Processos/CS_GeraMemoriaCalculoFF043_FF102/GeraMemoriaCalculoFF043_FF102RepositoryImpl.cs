@@ -1,11 +1,11 @@
-using System;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
+using CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102.ParcelaTipoAVista;
+using CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102.ParcelaTipoDia;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar;
-using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar.Fabrica;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.AvaliarCondicaoPagamento;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.FinanciamentoCalculador;
 using CSLB900.MSTools.GenerateId;
@@ -29,9 +29,15 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
     public async Task GeraFormaPagtotoMemoriaCalculoFF043_FF102(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm)
     {
         var idFF042 = await GeraFF042APartirDaFF040Async(prm);
+        await GerarMemoriaCalculoFF043Async(prm, idFF042);
+    }
+
+    private async Task GerarMemoriaCalculoFF043Async(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm, long idFF042)
+    {
         CSICP_Bb008 work_bb008 = await ObterCondicaoPagamentoBb008(prm.InTenantID, prm.InCondicaoPgtoID);
-       
+
         decimal Protocolo = await this.generateProtocolo.Fcn_Protocolo10(prm.InEmpresaID, "CPAGAR", prm.InTenantID);
+
         var prmGeraMemoriaCalculo = CreateParaMemoriaCalculoFF043Params.Create(
             in_StID_bb008_tp_Dias: prm.In_StID_bb008_tp_Dias,
             in_StID_bb008_tp_ParcelaDias: prm.In_StID_bb008_tp_ParcelaDias,
@@ -45,15 +51,24 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
             inValorEntrada: 0m,
             inAppDbContext: _context
         );
-        
 
-        IAuxProcessarCalculoTitulo processarCalculoTitulo
-            = GerarMemoriaCalcFF04XFactory.CreateParaMemoriaCalculoFF043(prmGeraMemoriaCalculo);
 
-        RetornoFinanciamento calculoFinanciamento = CalcularValoresdeFinanciamento(work_bb008,prm);
+        IAuxProcessarCalculoTitulo? processarCalculoTitulo
+            = GerarMemoriaCalcFF04XFactory.RetornaInstanciaParaExecutarOCalculo(prmGeraMemoriaCalculo);
+
+
+        #warning PRECISA ALTERAR PRA STRATEGY!!!!
+        if (processarCalculoTitulo is ProcessarParcelasTipoParcelaDiasOuMes)
+            processarCalculoTitulo = processarCalculoTitulo as ProcessarParcelasTipoParcelaDiasOuMesParaFF043;
+        else if (processarCalculoTitulo is ProcessarCalculoTituloTipoDias)
+            processarCalculoTitulo = processarCalculoTitulo as ProcessarParcelasTipoParcelaDiaParaFF043;
+        else if (processarCalculoTitulo is ProcessarCalculoTipoAVista)
+            processarCalculoTitulo = processarCalculoTitulo as ProcessarParcelasTipoAVistaParaFF043;
+
+        RetornoFinanciamento calculoFinanciamento = CalcularValoresdeFinanciamento(work_bb008, prm);
 
         /*GERA MEMÓRIA*/
-        await processarCalculoTitulo.Processar(
+        await processarCalculoTitulo!.Processar(
            InControleID: idFF042.ToString(),
            InData: DateOnly.FromDateTime(prm.InDataBaseVencimento),
            InTenantID: prm.InTenantID,
@@ -74,7 +89,8 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
                         work_bb008,
                         work_bb008.Bb008Condicao?.Split(';') ?? []);
 
-        RetornoFinanciamento calculoFinanciamento = FinanciamentoCalculator.CalcularValoresFinanciamento(
+        RetornoFinanciamento calculoFinanciamento 
+            = FinanciamentoCalculator.CalcularValoresFinanciamento(
             faturaTotal: prm.InFaturaTotal,
             qtdParcelas: work_qtd_parcelas,
             valorEntrada: 0m);

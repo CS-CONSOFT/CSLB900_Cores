@@ -10,7 +10,7 @@ public class GerarMemoriaCalcFF04XFactory
 {
      /*CREATE USADO NO FLUXO DE CALCULO DA RENEGOCIACAO*/
           /*CREATE USADO NO FLUXO DE MEMORIA PARA FF043*/
-        public static IAuxProcessarCalculoTitulo CreateParaMemoriaCalculoFF043(CreateParaMemoriaCalculoFF043Params prm)
+        public static IAuxProcessarCalculoTitulo RetornaInstanciaParaExecutarOCalculo(CreateParaMemoriaCalculoFF043Params prm)
         {
             if (IsTipoParcelaDias(prm.InTipoBB008_ID_Recuperada, prm.In_StID_bb008_tp_ParcelaDias))
             {

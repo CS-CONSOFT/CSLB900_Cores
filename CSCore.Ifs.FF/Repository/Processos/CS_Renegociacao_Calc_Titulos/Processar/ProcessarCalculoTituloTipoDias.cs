@@ -4,6 +4,7 @@ using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parametro;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.FinanciamentoCalculador;
 using CSLB900.MSTools.Calculos;
 using CSLB900.MSTools.GenerateId;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             _work_valor_entrada = work_valor_entrada;
         }
 
-        public async Task Processar(
+        public virtual async Task Processar(
             /// <summary>
             /// Identificador do processo em que esse método será usado
             /// Ex. Ao processar ProcessarParcelasTipoParcelaDiasOuMes no processo de 
@@ -50,7 +51,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             decimal? InValorEntrada = 0)
         {
             int aux_parcela_atual = 0;
-            List<CSICP_FF999> entidadesParaInserir = new List<CSICP_FF999>();
+            List<CSICP_FF999> entidadesParaInserir = [];
             foreach (var current in _aux_condicaoPagtoDividida)
             {
                 var entidade = CriarEntidade<CSICP_FF999>(
@@ -83,7 +84,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             string InDiasPraAdicionar,
             decimal? InValorEntrada = 0) where TEntity : class
         {
-            CSICP_FF999 work_ff999 = new CSICP_FF999
+            CSICP_FF999 work_ff999 = new()
             {
                 Id = _generateId.GenerateUuId(),
                 TenantId = InTenantID,
@@ -105,7 +106,12 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
         protected virtual async Task PersistirAsync<TEntity>(List<TEntity> entidades)
         {
             entidades = entidades.Where(e => e != null).ToList();
-            _appDbContext.AddRange(entidades);
+            foreach (var item in entidades)
+            {
+                if (item is null) continue;
+                _appDbContext.Add(item);
+            }
+            
             await _appDbContext.SaveChangesAsync();
         }
 

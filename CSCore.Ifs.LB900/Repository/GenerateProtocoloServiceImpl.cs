@@ -14,7 +14,7 @@ namespace CSCore.Ifs.Eventos.Repository
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly ICS_GenerateId? _generateId = generateId;
 
-    
+        
 
 
         public async Task<decimal> Fcn_ProtocoloGeral(string empresaID, int InTenantID, bool hasToCommit = true)
