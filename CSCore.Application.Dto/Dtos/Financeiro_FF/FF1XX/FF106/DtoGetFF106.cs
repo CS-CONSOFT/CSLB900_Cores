@@ -82,9 +82,6 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF106
 
         public int? Ff106BaixaApi { get; set; }
 
-        public virtual CSICP_FF102? Ff102 { get; set; }
-
-        public virtual CSICP_FF105? Ff105 { get; set; }
         public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
         public Dto_GetBB006_Exibicao? NavBB006 { get; set; }
         public Dto_GetBB009_Exibicao? NavBB009 { get; set; }

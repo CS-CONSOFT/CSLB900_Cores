@@ -112,4 +112,9 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF106
             };
         }
     }
+
+    public class DtoCreateUpdateFF106List
+    {
+         public List<DtoCreateUpdateFF106>? Lista { get; set; }
+    }
 }

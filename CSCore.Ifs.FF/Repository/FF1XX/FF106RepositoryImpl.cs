@@ -52,11 +52,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    from bb009 in bb009_ff106_join.DefaultIfEmpty()
 
                    join ff102 in _appDbContext.OsusrE9aCsicpFf102s
-                   on ff106.Ff102Id equals ff102.Id into ff102_ff106_join //Titulo? Verificar
+                   on ff106.Ff102Id equals ff102.Id into ff102_ff106_join //Titulo Verificar
                    from ff102 in ff102_ff106_join.DefaultIfEmpty()
 
                    join ff105 in _appDbContext.OsusrE9aCsicpFf105s
-                   on ff106.Ff105Id equals ff105.Id into ff105_ff106_join //Bordero? Verificar
+                   on ff106.Ff105Id equals ff105.Id into ff105_ff106_join //Bordero Verificar
                    from ff105 in ff105_ff106_join.DefaultIfEmpty()
 
                    join ff102OcorrenciaApi in _appDbContext.OsusrE9aCsicpFf112apiOcorrencia
