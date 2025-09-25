@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CSCore.Domain.CS_Models.CSICP_GG;
+using CSCore.Domain.CS_Models.Staticas.FF;
+using System;
 using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
@@ -47,5 +49,22 @@ public partial class CSICP_FF140
 
     public int? Ff140AdtoId { get; set; }
 
-    public virtual CSICP_FF003? Ff140Especie { get; set; }
+    //NavsGetList
+    public CSICP_BB001? NavBB001EstabID { get; set; }
+    public CSICP_Bb005? NavBB005CCustoID { get; set; }
+    public CSICP_Bb006? NavBB006AgCobradorID { get; set; }
+    public CSICP_Bb008? NavBB008CondicaoID { get; set; }
+    public CSICP_Bb009? NavBB009TpCobrancaID { get; set; }
+    public CSICP_BB012? NavBB012ContaID { get; set; }
+    public CSICP_Bb026? NavBB026FPagto { get; set; }
+    public CSICP_FF003? NavFF003EspecieID { get; set; }
+    public Csicp_Sy001? NavSY001UsuarioPropID { get; set; }
+    public OsusrE9aCsicpFf140Stum? NavFF140Status { get; set; }
+    public OsusrE9aCsicpFf140Exe? NavFF140Exe { get; set; }
+    public OsusrE9aCsicpFf140Vin? NavFF140Vinculo { get; set; }
+
+    //NavsListGetByID
+    public IEnumerable<CSICP_FF141>? NavListFF141 { get; set; } = [];
+    public IEnumerable<CSICP_FF143>? NavListFF143 { get; set; } = [];
+    public IEnumerable<CSICP_FF144>? NavListFF144 { get; set; } = [];
 }

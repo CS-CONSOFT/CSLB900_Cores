@@ -71,7 +71,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
 
         
 
-        private IQueryable<CSICP_FF125> FiltraQuandoExisteFiltro(IQueryable<CSICP_FF125> query, PrmFiltrosFF125Repo InPrmFiltrosFF125, params ICSFilter<CSICP_FF125>[] InFiltros)
+        private IQueryable<CSICP_FF125> FiltraQuandoExisteFiltro(IQueryable<CSICP_FF125> query,
+            PrmFiltrosFF125Repo InPrmFiltrosFF125, params ICSFilter<CSICP_FF125>[] InFiltros)
         {
             foreach (var filtro in InFiltros)
             {
