@@ -1,6 +1,7 @@
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
+using CSCore.Ex.Personalizada;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102.ParcelaTipoAVista;
@@ -30,6 +31,41 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
     {
         var idFF042 = await GeraFF042APartirDaFF040Async(prm);
         await GerarMemoriaCalculoFF043Async(prm, idFF042);
+    }
+
+
+    public async Task CS_005_GeraContasAPagar(
+        int InTenantID,
+        long InFF040_ID,
+        int InStID_FF040Sit_Registrado)
+    {
+        CSICP_FF040 WorkFF040 = await _context.OsusrE9aCsicpFf040s
+            .Where(e => e.TenantId == InTenantID && e.Ff040Id == InFF040_ID)
+            .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("FF040 não encontrada");
+
+        List<CSICP_FF042> WorkListFF042 = 
+            await _context.OsusrE9aCsicpFf042s
+            .Where(e => e.TenantId == InTenantID && e.Ff040Id == InFF040_ID)
+            .ToListAsync();
+
+        if (!WorkListFF042.Any()) throw new EmptyListException("Sem forma de pagamento no movimento");
+
+        List<long> ff042IdList = WorkListFF042.DistinctBy(e => e.Ff042Id).Select(e => e.Ff042Id).ToList();
+
+        List<CSICP_FF043> WorkListFF043 = await _context.OsusrE9aCsicpFf043s
+            .Where(e => e.TenantId == InTenantID)
+            .Where(e => e.Ff043TituloCpId == null)
+            .Where(e => ff042IdList.Contains(e.Ff042Id))
+            .ToListAsync();
+
+        if (!WorkListFF043.Any()) throw new EmptyListException("Sem CSICP_FF043 para gerar contas a pagar");
+
+        foreach (var current in WorkListFF043)
+        {
+            //gera titulo   
+        }
+
+        WorkFF040.Ff040Situacaoid = InStID_FF040Sit_Registrado;
     }
 
     private async Task GerarMemoriaCalculoFF043Async(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm, long idFF042)
@@ -117,11 +153,12 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
     }
 
     
-        private async Task<CSICP_Bb008> ObterCondicaoPagamentoBb008(int InTenantID, string InCondicaoPagamentoID)
+   private async Task<CSICP_Bb008> ObterCondicaoPagamentoBb008(int InTenantID, string InCondicaoPagamentoID)
         {
             return await _context.OsusrE9aCsicpBb008s
                                 .Where(e => e.TenantId == InTenantID
                                 && e.Id == InCondicaoPagamentoID)
                                 .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Condição de pagamento não encontrada!");
         }
+
 }

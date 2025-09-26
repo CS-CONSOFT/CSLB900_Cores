@@ -13,7 +13,7 @@ public partial class CSICP_FF043
 
     public long Ff043Id { get; set; }
 
-    public long? Ff042Id { get; set; }
+    public long Ff042Id { get; set; }
 
     public int? Ff043Parcela { get; set; }
 

@@ -20,4 +20,8 @@ public record PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository(
 public interface IGeraMemoriaCalculoFF043_FF102Repository
 {
     Task GeraFormaPagtotoMemoriaCalculoFF043_FF102(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm);
+    Task CS_005_GeraContasAPagar(
+         int InTenantID,
+         long InFF040_ID,
+         int InStID_FF040Sit_Registrado);
 }
