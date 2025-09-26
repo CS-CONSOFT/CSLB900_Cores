@@ -73,4 +73,9 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF018
                 };
         }
     }
+
+    public class DtoCreateUpdateFF018List
+    {
+        public List<DtoCreateUpdateFF018>? ListaCreate { get; set; }
+    }
 }
