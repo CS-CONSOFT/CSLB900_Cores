@@ -53,9 +53,7 @@ public partial class CSICP_GG055 : IEquatable<CSICP_GG055>
 
     public CSICP_GG520? Nav_GG520Saldo { get; set; }
 
-
-
-
+    public CSICP_GG008? Nav_GG008Produto { get; set; }
 
 
     public bool Equals(CSICP_GG055? other)

@@ -1,6 +1,7 @@
 ﻿using CSBS101._82Application.Dto.BB00X.BB005;
 using CSBS101._82Application.Dto.BB00X.BB006;
 using CSBS101._82Application.Dto.BB00X.BB007;
+using CSCore.Domain;
 
 namespace CSBS101._82Application.Dto.BB00X.BB01X.BB010
 {
@@ -116,7 +117,11 @@ namespace CSBS101._82Application.Dto.BB00X.BB01X.BB010
 
         public string? Bb010Zona { get; set; }
 
+        public Dto_GetBB006_Exibicao? Bb010Banco01 { get; set; }
 
+        public Dto_GetBB006_Exibicao? Bb010Banco02 { get; set; }
+
+        public Dto_GetBB006_Exibicao? Bb010Banco03 { get; set; }
 
 
     }

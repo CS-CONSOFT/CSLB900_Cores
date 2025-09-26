@@ -124,6 +124,7 @@ namespace CSCore.Ifs.Repository.Statica
                 StaticTypeFF.Csicp_Ff003Tpesps => _appDbContext.OsusrE9aCsicpFf003Tpesps.Where(c => c.IsActive == true).OrderBy(c => c.Label),
                 StaticTypeFF.Csicp_Ff102ApiBancos => _appDbContext.OsusrE9aCsicpFf102ApiBancos.Where(c => c.IsActive == true).OrderBy(c => c.Label),
                 StaticTypeFF.Csicp_FF103TPEsp => _appDbContext.OsusrE9aCsicpFf003Tpesps.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeFF.Csicp_Ff16Tagcars => _appDbContext.OsusrE9aCsicpFf16Tagcars.Where(c => c.IsActive == true).OrderBy(c => c.Label),
                 _ => throw new ArgumentOutOfRangeException(nameof(staticTypeFF), "Tipo estático inválido")
             };
             return await query.Cast<object>().ToListAsync();

@@ -17,4 +17,8 @@
     <ProjectReference Include="..\CSCore.Domain\CSCore.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dtos\Financeiro_FF\FF1XX\NovaPasta\" />
+  </ItemGroup>
+
 </Project>

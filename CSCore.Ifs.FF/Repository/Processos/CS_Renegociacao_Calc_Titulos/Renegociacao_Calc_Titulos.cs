@@ -50,7 +50,6 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
                     qtdParcelas: work_qtd_parcelas,
                     valorEntrada: prmSimulacao.in_valorEntrada);
 
-
                 var prm = new PrmRenegociacaoCalcTituloFactory
                 {
                     prmSimulacao = prmSimulacao,

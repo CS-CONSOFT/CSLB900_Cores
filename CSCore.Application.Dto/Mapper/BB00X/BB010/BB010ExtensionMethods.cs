@@ -79,7 +79,9 @@ namespace CSBS101._82Application.ExtensionsMethods.BB00X
                 TenantId = entity.TenantId,
                 Bb010Codigo = entity.Bb010Codigo,
                 Bb010Zona = entity.Bb010Zona,
-
+                Bb010Banco01 = entity.Bb010Banco01?.ToDtoGetExibicao(),
+                Bb010Banco02 = entity.Bb010Banco02?.ToDtoGetExibicao(),
+                Bb010Banco03 = entity.Bb010Banco03?.ToDtoGetExibicao(),
 
             };
         }

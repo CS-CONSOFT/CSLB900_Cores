@@ -20,16 +20,16 @@ namespace CSCore.Ifs.FF.Repository.FF00X
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<RepoDtoCSICP_FF006?> GetByIdAsync(int tenant, long id)
+        public async Task<CSICP_FF006?> GetByIdAsync(int tenant, long id)
         {
-            IQueryable<RepoDtoCSICP_FF006> query = GetQueryBase(tenant);
-            RepoDtoCSICP_FF006? cSICP_FF006 = await query.FirstOrDefaultAsync(e => e.Ff006Id == id);
+            IQueryable<CSICP_FF006> query = GetQueryBase(tenant);
+            CSICP_FF006? cSICP_FF006 = await query.FirstOrDefaultAsync(e => e.Ff006Id == id);
             return cSICP_FF006;
         }
 
-        public async Task<(List<RepoDtoCSICP_FF006>, int)> GetListAsync(int tenant, string ff102Id, int page, int pageSize)
+        public async Task<(List<CSICP_FF006>, int)> GetListAsync(int tenant, string ff102Id, int page, int pageSize)
         {
-            IQueryable<RepoDtoCSICP_FF006> query = GetQueryBase(tenant);
+            IQueryable<CSICP_FF006> query = GetQueryBase(tenant);
             query = FiltraQuandoExisteFiltro(ff102Id, query);
 
             var queryCount = query;
@@ -39,14 +39,14 @@ namespace CSCore.Ifs.FF.Repository.FF00X
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF006> FiltraQuandoExisteFiltro(string ff102Id, IQueryable<RepoDtoCSICP_FF006> query)
+        private IQueryable<CSICP_FF006> FiltraQuandoExisteFiltro(string ff102Id, IQueryable<CSICP_FF006> query)
         {
             if (!string.IsNullOrEmpty(ff102Id))
                 query = query.Where(e => e.Ff102Id!.Equals(ff102Id));
             return query;
         }
 
-        private IQueryable<RepoDtoCSICP_FF006> GetQueryBase(int tenant)
+        private IQueryable<CSICP_FF006> GetQueryBase(int tenant)
         {
             return from ff006 in _appDbContext.OsusrE9aCsicpFf006s
 
@@ -64,7 +64,7 @@ namespace CSCore.Ifs.FF.Repository.FF00X
 
                    where ff006.TenantId == tenant
 
-                   select new RepoDtoCSICP_FF006
+                   select new CSICP_FF006
                    {
                        TenantId = ff006.TenantId,
                        Ff006Id = ff006.Ff006Id,

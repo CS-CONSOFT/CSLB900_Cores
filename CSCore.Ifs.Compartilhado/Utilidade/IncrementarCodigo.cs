@@ -6,13 +6,13 @@ namespace CSCore.Ifs.Compartilhado.Utilidade
     public static class IncrementarCodigo
     {
         public static int IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<T>(
-     AppDbContext context,
-     int? novoCodigo,
-     string? in_currentID,
-     string nomePropriedadeCodigo,
-     string nomePropriedadeId,
-     bool usarMaxCodigo = true
- ) where T : class
+            AppDbContext context,
+            int? novoCodigo,
+            string? in_currentID,
+            string nomePropriedadeCodigo,
+            string nomePropriedadeId,
+            bool usarMaxCodigo = true
+        ) where T : class
         {
             // Recupera a entidade pelo ID atual
             var entidadeAtual = context.Set<T>()

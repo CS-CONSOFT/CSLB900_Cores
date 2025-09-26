@@ -3,13 +3,12 @@ using CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF012;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF112;
 using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_FF;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF012;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF01X
 {
     public static class FF012Mapper
     {
-        public static DtoGetFF012 ToDtoGet(this RepoDtoCSICP_FF012 entity)
+        public static DtoGetFF012 ToDtoGet(this CSICP_FF012 entity)
         {
             return new DtoGetFF012
             {
@@ -24,8 +23,8 @@ namespace CSCore.Application.Dto.Mapper.FF.FF01X
                 Ff012Grupopaiid = entity.Ff012Grupopaiid,
                 NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
                 NavSY001 = entity.NavSY001?.ToDtoGetSimples(),
-                NavFF014ComissaoSuper = entity.NavFF014ComissaoSuper?.ToDtoGet(),
-                NavFF014ComissaoCobrador = entity.NavFF014ComissaoCobrador?.ToDtoGet(),
+                NavFF014ComissaoSuper = entity.NavFF014ComissaoSuper?.ToDtoGetSimples(),
+                NavFF014ComissaoCobrador = entity.NavFF014ComissaoCobrador?.ToDtoGetSimples(),
                 NavFF012GrupoPai = entity.NavFF012GrupoPai?.ToDtoGetSimples()
             };
         }

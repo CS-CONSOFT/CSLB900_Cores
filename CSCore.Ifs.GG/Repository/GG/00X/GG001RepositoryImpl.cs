@@ -14,9 +14,10 @@ namespace CSCore.Ifs.Repository.GG
 
         public override CSICP_GG001 Create(CSICP_GG001 gg001)
         {
-            int novoCodigo = IncrementarCodigo
-          .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_GG001>
-          (_appDbContext, gg001.Gg001Codigoalmox, null, "Gg001Codigoalmox", "Id");
+            int novoCodigo 
+                = IncrementarCodigo
+                .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_GG001>
+                (_appDbContext, gg001.Gg001Codigoalmox, null, "Gg001Codigoalmox", "Id");
 
             gg001.Gg001Codigoalmox = novoCodigo;
             _appDbContext.Add(gg001);

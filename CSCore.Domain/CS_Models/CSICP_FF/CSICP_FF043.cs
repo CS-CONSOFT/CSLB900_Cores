@@ -5,6 +5,10 @@ namespace CSCore.Domain.CS_Models.CSICP_FF;
 
 public partial class CSICP_FF043
 {
+    private CSICP_FF043()
+    {
+    }
+
     public int TenantId { get; set; }
 
     public long Ff043Id { get; set; }
@@ -27,7 +31,28 @@ public partial class CSICP_FF043
 
     public string? Ff043TituloCpId { get; set; }
 
-    public virtual CSICP_FF042? Ff042 { get; set; }
-
-    public virtual CSICP_FF102? Ff043TituloCp { get; set; }
+    public static CSICP_FF043 Create(
+        int InTenantID,
+        long InFf042Id,
+        decimal ValorParcela,
+        int Parcela,
+        DateTime DataVencimento,
+        string Pfxtitulo,
+        decimal Protocolo
+        )
+    {
+        var parcelaStr = Parcela.ToString();
+        var sfxTitulo = parcelaStr.Length > 1 ? parcelaStr : "0" + parcelaStr;
+        return new CSICP_FF043
+        {
+            Ff042Id = InFf042Id,
+            TenantId = InTenantID,
+            Ff043ValorParcela = ValorParcela,
+            Ff043Parcela = Parcela,
+            Ff043DataVencto = DataVencimento,
+            Ff043Pfxtitulo = Pfxtitulo,
+            Ff043Titulo = Protocolo,
+            Ff043Sfxtitulo = sfxTitulo
+        };
+    }
 }

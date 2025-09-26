@@ -1,10 +1,11 @@
 ﻿using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Factory.Template;
 using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy.Template;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy
 {
-    public class ExportarArquivoExcelBloco0200 : ExportarArquivoTemplate, IExportarArquivo
+    internal class ExportarArquivoExcelBloco0200 : ExportarArquivoTemplateExcel, IExportarArquivo
     {
         private readonly AppDbContext _appDbContext;
 
@@ -28,7 +29,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
             {
                 worksheet.Cell(index, 1).Value = currentProduto.Gg033Produto;
                 worksheet.Cell(index, 2).Value = currentProduto.Gg033DescricaoProduto;
-                worksheet.Cell(index, 3).Value = currentProduto.EAN_Tributavel;
+                worksheet.Cell(index, 3).Value = currentProduto.EAN_Tributavel.ToString();
                 worksheet.Cell(index, 4).Value = currentProduto.QtdInventario;
                 worksheet.Cell(index, 5).Value = currentProduto.PrecoCusto;
                 worksheet.Cell(index, 6).Value = currentProduto.PrecoCustoReal;
@@ -55,12 +56,13 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strateg
                 worksheet.Cell(index, 27).Value = currentProduto.IndPropriedade;
                 index++;
             }
+
             var filename = GetFilename(protocolo ?? "", "Block-0200", ExtensaoArquivo.XLSX);
             var bytesParaDownload = DownloadFileWithMemoryStream(workbook, filename);
             return (bytesParaDownload, filename);
         }
 
-        public override void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet)
+        protected override void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet)
         {
             // Criação das colunas na primeira linha
             worksheet.Cell(1, 1).Value = "Cod Produto";

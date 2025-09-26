@@ -1,10 +1,11 @@
 ﻿using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Factory.Template;
 using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy;
 using CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais.Strategy.Template;
 
 namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais
 {
-    public class ExportarParaExcel : ExportarArquivoTemplate, IExportarArquivo
+    internal class ExportarParaExcel : ExportarArquivoTemplateExcel, IExportarArquivo
     {
         private readonly AppDbContext _appDbContext;
 
@@ -67,7 +68,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais
 
 
 
-        public override void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet)
+        protected override void AdicionarCabecalhoPlanilha(ClosedXML.Excel.IXLWorksheet worksheet)
         {
             string[] cabecalhos =
             [

@@ -5,22 +5,23 @@ namespace GG104Materiais.C82Application.Dto.GG00X.GG001
 {
     public class DtoCreateUpdateGG001 : IConverteParaEntidade<CSICP_GG001>
     {
-        public int? Gg001Filial { get; set; }
+        public int? Gg001Filial { get; set; } = 123;
 
-        public string? Gg001Filialid { get; set; }
+        public string? Gg001Filialid { get; set; } = "FILIAL01";
 
-        public int? Gg001Codigoalmox { get; set; }
+        public int? Gg001Codigoalmox { get; set; } = 456;
 
-        public string? Gg001Descalmox { get; set; }
+        public string? Gg001Descalmox { get; set; } = "Almoxarifado Central";
 
-        public int? Gg001Tipoalmoxarifado { get; set; }
+        public int? Gg001Tipoalmoxarifado { get; set; } = 1; // conforme solicitado
 
-        public bool? Gg001RiControlequalidade { get; set; }
+        public bool? Gg001RiControlequalidade { get; set; } = true;
 
-        public decimal? Gg001Caparmaz { get; set; }
+        public decimal? Gg001Caparmaz { get; set; } = 1000.50m;
 
-        public string? Gg001Descnspadrao { get; set; }
-        public bool? Gg001Isactive { get; set; }
+        public string? Gg001Descnspadrao { get; set; } = "Padrão de armazenamento";
+
+        public bool? Gg001Isactive { get; set; } = true;
 
         public CSICP_GG001 ToEntity(int tenant, string? id)
         {

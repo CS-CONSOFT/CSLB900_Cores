@@ -37,7 +37,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos
 
                 if (!Work_GetMemoriaCalculo.Any()) throw new Exception("Memória de cálculo não encontrada!");
 
-                decimal protocolo = await _generateProtocolo.Fcn_Protocolo10(InPrmCriaTitulo.InBB001FilialID, "CPAGAR");
+                decimal protocolo = await _generateProtocolo.Fcn_Protocolo10(InPrmCriaTitulo.InBB001FilialID, "CPAGAR", InPrmCriaTitulo.InTenantID);
 
                 bool AuxIsConfAprovAutomatico = await Verifica_ConfirmAutomatico(InPrmCriaTitulo.InBB001FilialID, InPrmCriaTitulo.InTenantID);
 

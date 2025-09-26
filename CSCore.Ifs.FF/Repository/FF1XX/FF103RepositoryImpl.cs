@@ -176,7 +176,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Bb006Diasretencaodesc = bb006.Bb006Diasretencaodesc
                        } : null,
                        // Navegação para FF102 (Título) - Adicionando as informações do título
-                       NavFF102 = ff102 != null ? new RepoDtoCSICP_FF102
+                       NavFF102 = ff102 != null ? new CSICP_FF102
                        {
                            TenantId = ff102.TenantId,
                            Id = ff102.Id,
@@ -198,7 +198,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Ff102Situacaoid = ff102.Ff102Situacaoid,
                            Ff102Observacao = ff102.Ff102Observacao,
                            // Navegação aninhada para CSICP_FF102Sit (Situação do Título)
-                          NavFF102Sit  = ff102Sit != null ? ff102Sit : null,
+                           NavFF102Sit  = ff102Sit != null ? ff102Sit : null,
 
                            // Navegação aninhada para BB012 (Conta)
                            NavBB012 = bb012 != null ? new CSICP_BB012

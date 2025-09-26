@@ -22,7 +22,7 @@ namespace CSCore.RabbitMQ.Bus
                  context.Message);
             try
             {
-                await _gerarProtocolo.Fcn_ProtocoloGeral(context.Message.EmpresaID);
+                await _gerarProtocolo.Fcn_ProtocoloGeral(context.Message.EmpresaID, context.Message.InTenantID);
 
 
                 await _hubContext.Clients.Group("gera-protocolo-ci-" + context.Message.InUsuarioID)

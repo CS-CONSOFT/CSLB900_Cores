@@ -7,13 +7,15 @@ using CSBS101._82Application.Dto.BB00X.BB019;
 using CSBS101._82Application.Dto.BB00X.BB026;
 using CSBS101.C82Application.Dto.BB00X.BB00X.BB008;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF003;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF126;
 using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.Staticas.FF;
 
 namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
 {
-    public class DtoGetFF102
+    public class 
+        DtoGetFF102
     {
         public int TenantId { get; set; }
 
@@ -403,6 +405,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
         public decimal? CSPercentualCorrecaoMonetariaConfig { get; set; }
         public decimal? CSPercentualHonorarioConfig { get; set; }
 
+        public DtoGetFF126? NavFF126 { get; set; }
         public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
         public Dto_GetBB005_Exibicao? NavBB005 { get; set; } 
         public Dto_GetBB006_Exibicao? NavBB006 { get; set; }

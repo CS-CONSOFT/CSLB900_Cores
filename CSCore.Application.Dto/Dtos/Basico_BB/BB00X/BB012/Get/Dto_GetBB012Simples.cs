@@ -1,4 +1,5 @@
 ﻿using CSCore.Application.Dto.Dtos.Basico_AA.AA00X;
+using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get;
 using CSCore.Domain.CS_Models.Staticas.AA;
 
 namespace CSBS101._82Application.Dto.BB00X.BB012.Get
@@ -64,6 +65,8 @@ namespace CSBS101._82Application.Dto.BB00X.BB012.Get
 
         //csicp_aa046_TpGov
         public int? bb012_TpGovId { get; set; }
+
+        public Dto_GetBB01206Simples? NavEnderecoSimples { get; set; }
 
     }
 }

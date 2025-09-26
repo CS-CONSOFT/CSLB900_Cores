@@ -71,7 +71,7 @@ namespace CSBS101._82Application.Dto.BB00X.BB012.Get
         public int? bb012_TpGovId { get; set; }
 
         public DtoGetAA043? NavAA043 { get; set; }
-        public CSICP_AA146_TP_GOV? Nav_AA046_TP_GOV { get; set; }
+        public OsusrE9aCsicpAa146Tpgov? Nav_AA046_TP_GOV { get; set; }
         public Dto_GetBB012_Exibicao? NavBb012IdIndicadorNavigation { get; set; }
         public Dto_GetBB01201? NavGetBB1201 { get; set; }
         public Dto_GetBB01202? NavGetBB1202 { get; set; }
@@ -102,7 +102,7 @@ namespace CSBS101._82Application.Dto.BB00X.BB012.Get
         public int? bb012_TpGovId { get; set; }
 
         public DtoGetAA043? NavAA043 { get; set; }
-        public CSICP_AA146_TP_GOV? Nav_AA046_TP_GOV { get; set; }
+        public OsusrE9aCsicpAa146Tpgov? Nav_AA046_TP_GOV { get; set; }
     }
 }
 

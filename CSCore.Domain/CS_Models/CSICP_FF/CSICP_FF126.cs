@@ -5,13 +5,17 @@ namespace CSCore.Domain.CS_Models.CSICP_FF;
 
 public partial class CSICP_FF126
 {
+    private CSICP_FF126()
+    {
+    }
+
     public int TenantId { get; set; }
 
     public string Ff126Id { get; set; } = null!;
 
     public DateTime? Ff126Dtregistro { get; set; }
 
-    public string? Ff126TituloId { get; set; }
+    public string Ff126TituloId { get; set; } = string.Empty;
 
     public int? Ff126Diasatrasoent { get; set; }
 
@@ -21,7 +25,7 @@ public partial class CSICP_FF126
 
     public int? Ff126SituacaosaiId { get; set; }
 
-    public string? Ff126Mensagem { get; set; }
+    public string Ff126Mensagem { get; set; } = string.Empty;
 
     public string? Ff126Propid { get; set; }
 
@@ -40,8 +44,8 @@ public partial class CSICP_FF126
     public bool? Ff126Isprimario { get; set; }
 
     public DateTime? Ff126Horaregistro { get; set; }
+    
 
-    public virtual CSICP_FF998? Ff126SitcobrancaEnt { get; set; }
+    
 
-    public virtual CSICP_FF102? Ff126Titulo { get; set; }
 }

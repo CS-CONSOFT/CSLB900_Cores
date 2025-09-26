@@ -5,6 +5,10 @@ namespace CSCore.Domain.CS_Models.CSICP_FF;
 
 public partial class CSICP_FF128
 {
+    private CSICP_FF128()
+    {
+    }
+
     public int TenantId { get; set; }
 
     public string Ff128Id { get; set; } = null!;
@@ -23,7 +27,7 @@ public partial class CSICP_FF128
 
     public bool? Ff128Isactive { get; set; }
 
-    public string? Ff127Id { get; set; }
+    public string Ff127Id { get; set; } = string.Empty;
 
     public int? Ff128Diasatrasoent { get; set; }
 
@@ -39,9 +43,56 @@ public partial class CSICP_FF128
 
     public DateTime? Ff128HoraRegistro { get; set; }
 
-    public virtual CSICP_FF127? Ff127 { get; set; }
 
-    public virtual CSICP_FF998? Ff128Sitcobrancaent { get; set; }
+    /*NAVS*/
+    public CSICP_Bb006? NavBB006AgenteCobrador { get; set; }
 
-    public virtual CSICP_FF102? Ff128Titulo { get; set; }
+    public CSICP_FF102? NavFF102Titulo { get; set; }
+    public CSICP_FF998? NavFF998SituacaoSai { get; set; }
+
+    public Csicp_Sy001? NavSy001Cobrador { get; set; }
+
+    public CSICP_FF127? NavFF127Cobranca { get; set; }
+
+    public CSICP_Bb012Sitcta? NavBB012SituacaodeCobranca { get; set; }
+    public CSICP_Bb012Sitcta? NavBB012SituacaoSaidaCobranca { get; set; }
+    public CSICP_Bb029? NavBB0029CategoriaRegistro { get; set; }
+
+
+    public static CSICP_FF128 Create(
+        string id,
+        string tituloID,
+        DateTime? dataPrevisao,
+        DateTime? dataLimiteVisita,
+        string mensagem,
+        string novoIdFF127,
+        int? diasAtrasoEnt,
+        int? sitCobranca,
+        int? situacaoSaiId,
+        string? cobradorId,
+        string? agCobradorId,
+        int tenantID
+        )
+    {
+        var obj = new CSICP_FF128()
+        {
+            Ff128Id = id,
+            TenantId = tenantID,
+            Ff128Dtregistro = DateTime.UtcNow.ToLocalTime(),
+            Ff128Dtlimitevisita = dataLimiteVisita,
+            Ff128Tituloid = tituloID,
+            Ff128Dtprevisao = dataPrevisao,
+            Ff128Mensagem = mensagem,
+            Ff128Isactive = true,
+            Ff127Id = novoIdFF127,
+            Ff128Diasatrasoent = diasAtrasoEnt,
+            Ff128Sitcobranca = sitCobranca,
+            Ff128SituacaosaiId = situacaoSaiId,
+            Ff128AgcobradorId = agCobradorId,
+            Ff128CobradorId = cobradorId,
+            Ff128HoraRegistro = DateTime.UtcNow.ToLocalTime(),
+        };
+
+        return obj;
+    }
 }

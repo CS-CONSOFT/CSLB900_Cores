@@ -17,9 +17,7 @@ public partial class CSICP_FF132
 
     public virtual CSICP_FF131? Ff131 { get; set; }
 
-    public class RepoDtoCSICP_FF132 : CSICP_FF132
-    {
-        public CSICP_FF131? NavFF131 { get; set; }
-        public CSICP_FF102? NavFF102 { get; set; }
-    }
+    // Propriedades de navegação movidas do RepoDtoCSICP_FF132
+    public CSICP_FF131? NavFF131 { get; set; }
+    public CSICP_FF102? NavFF102 { get; set; }
 }
