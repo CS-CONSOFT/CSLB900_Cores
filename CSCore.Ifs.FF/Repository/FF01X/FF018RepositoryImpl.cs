@@ -19,10 +19,10 @@ namespace CSCore.Ifs.FF.Repository.FF01X
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<(List<RepoDtoCSICP_FF018>, int)> GetListAsync(int in_tenant, string in_ff017Id,
+        public async Task<(List<CSICP_FF018>, int)> GetListAsync(int in_tenant, string in_ff017Id,
             int in_pageNumber, int in_pageSize)
         {
-            IQueryable<RepoDtoCSICP_FF018> query = GetQueryBase(in_tenant);
+            IQueryable<CSICP_FF018> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_ff017Id, query);
 
             var queryCount = query;
@@ -32,14 +32,14 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF018> FiltraQuandoExisteFiltro(string in_ff017Id, IQueryable<RepoDtoCSICP_FF018> query)
+        private IQueryable<CSICP_FF018> FiltraQuandoExisteFiltro(string in_ff017Id, IQueryable<CSICP_FF018> query)
         {
-            if (in_ff017Id == null)
-                query = query.Where(e => e.Ff017Id!.Equals(in_ff017Id));
+            if (!string.IsNullOrEmpty(in_ff017Id))
+                query = query.Where(e => e.Ff017Id == in_ff017Id);
             return query;
         }
 
-        private IQueryable<RepoDtoCSICP_FF018> GetQueryBase(int in_tenant)
+        private IQueryable<CSICP_FF018> GetQueryBase(int in_tenant)
         {
             return from ff018 in _appDbContext.OsusrE9aCsicpFf018s
                    .AsNoTracking()
@@ -54,7 +54,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
 
                    where ff018.TenantId == in_tenant
 
-                   select new RepoDtoCSICP_FF018
+                   select new CSICP_FF018
                    {
                        TenantId = ff018.TenantId,
                        Id = ff018.Id,
@@ -77,7 +77,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                        Ff018Vjurosorig = ff018.Ff018Vjurosorig,
                        Ff018Vabertoorig = ff018.Ff018Vabertoorig,
 
-                       NavFF102 = ff102 != null ? new CSICP_FF102 //verificar os campos que serao trazidos ou se é todos mesmo
+                       NavFF102 = ff102 != null ? new CSICP_FF102
                        {
                            TenantId = ff102.TenantId,
                            Id = ff102.Id,

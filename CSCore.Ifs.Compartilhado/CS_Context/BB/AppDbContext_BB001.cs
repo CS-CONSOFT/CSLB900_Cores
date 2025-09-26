@@ -219,12 +219,14 @@ namespace CSCore.Ifs.CS_Context
                     .HasForeignKey<CSICP_BB001>(d => d.Bb001Ramoempresa)
                     .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_BB001_OSUSR_E9A_CSICP_STATICA_BB001_RAMOEMPRESA");
 
-                entity.HasMany(d => d.OsusrE9aCsicpBb001Imgs).WithOne().HasForeignKey(d => d.Empresaid);
-
-                entity.HasMany(d => d.NavBB001AXML).WithOne().HasForeignKey(d => d.Bb001aEstabid);
-                entity.HasMany(d => d.Bb001CnaesList).WithOne().HasForeignKey(d => d.Bb001Id);
-                entity.HasMany(d => d.OsusrE9aCsicpBb001Spls).WithOne().HasForeignKey(d => d.Bb001Id);
-                entity.HasMany(d => d.OsusrE9aCsicpBb001Cfgfis).WithOne().HasForeignKey(d => d.Bb001EmpresaId);
+                entity.HasOne(d => d.Bb001Pais).WithOne().HasForeignKey<CSICP_BB001>(d => d.Bb001Paisid);
+                entity.HasOne(d => d.Bb001Uf).WithOne().HasForeignKey<CSICP_BB001>(d => d.Bb001Ufid);
+                entity.HasOne(d => d.Cidade).WithOne().HasForeignKey<CSICP_BB001>(d => d.Cidadeid);
+                // Configuração do relacionamento 1:1 com CSICP_BB001Cfgfi
+                entity.HasOne(d => d.NavBB001Cfgfi)
+                    .WithOne()
+                    .HasForeignKey<CSICP_BB001Cfgfi>(c => c.Bb001EmpresaId)
+                    .HasPrincipalKey<CSICP_BB001>(e => e.Id);
 
 
             });
@@ -355,6 +357,8 @@ namespace CSCore.Ifs.CS_Context
                 entity.HasOne(d => d.Bb001Tptributacao).WithMany()
                     .HasForeignKey(d => d.Bb001TptributacaoId)
                     .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_BB001_CFGFIS_OSUSR_E9A_CSICP_BB001_TPTRI_BB001_TPTRIBUTACAO_ID");
+
+    
             });
 
             modelBuilder.Entity<CSICP_BB001Img>(entity =>

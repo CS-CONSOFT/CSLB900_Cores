@@ -1,18 +1,12 @@
 ﻿using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF007;
 using CSCore.Domain.CS_Models.CSICP_FF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF007;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF00X
 {
     public static class FF007Mapper
     {
-        public static DtoGetFF007 ToDtoGet(this RepoDtoCSICP_FF007 entity)
+        public static DtoGetFF007 ToDtoGet(this CSICP_FF007 entity)
         {
             return new DtoGetFF007
             {

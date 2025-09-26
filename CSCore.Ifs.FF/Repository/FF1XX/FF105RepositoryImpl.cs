@@ -199,9 +199,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             if (in_agCobradorId != null)
                 query = query.Where(e => e.Ff105Agcobradorid!.Equals(in_agCobradorId));
             if (in_dataInicio.HasValue)
-                query = query.Where(e => e.Ff105EmissaoInicial >= in_dataInicio.Value);
+                query = query.Where(e => e.Ff105DataCriacao >= in_dataInicio.Value);
             if (in_dataFinal.HasValue)
-                query = query.Where(e => e.Ff105EmissaoFinal <= in_dataFinal.Value);
+                query = query.Where(e => e.Ff105DataCriacao <= in_dataFinal.Value);
             return query;
         }
 

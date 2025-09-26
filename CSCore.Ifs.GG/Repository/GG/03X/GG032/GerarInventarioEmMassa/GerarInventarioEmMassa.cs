@@ -284,7 +284,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
             int in_TpInventarioID,
             int in_StatusID)
         {
-            decimal protocolo = await _generateProtocolo.Fcn_ProtocoloGeral(in_filialID);
+            decimal protocolo = await _generateProtocolo.Fcn_ProtocoloGeral(in_filialID, in_tenantID);
             if (in_usuarioID != null)
             {
                 string? usuario = await _appDbContext.OsusrE9aCsicpSy001s

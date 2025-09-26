@@ -57,9 +57,9 @@ public partial class CSICP_FF104
 
     public string? Ge010Id { get; set; }
 
-    public virtual CSICP_FF040? Ff040 { get; set; }
 
-    public virtual CSICP_FF102? Ff102 { get; set; }
 
-    public virtual CSICP_FF140? Ff140 { get; set; }
+    public CSICP_FF102? Ff102 { get; set; }
+
+
 }

@@ -1,5 +1,4 @@
 using CSCore.Ifs.FF.Repository.AlteracaoDataVencimento;
-using CSCore.Ifs.FF.Repository.GravaOcorrencia;
 
 namespace CSCore.Ifs.FF.Repository.AlteracaoDataVencimento
 {

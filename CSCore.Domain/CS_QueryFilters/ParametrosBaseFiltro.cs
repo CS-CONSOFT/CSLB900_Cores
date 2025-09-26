@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CSLB900.MSTools.CS_QueryFilters;
 
 public class ParametrosBaseFiltro
 {
     const int maxPageSize = 50;
-    /// <summary>
-    /// Obrigatorio
-    /// </summary>
     [Required]
     public int PageNumber { get; set; } = 1;
+    [JsonIgnore]
+    public bool? DeveExcederOMaxPageSize { get; set; } = false;
     private int _pageSize = 50;
 
     [Required]
@@ -22,7 +22,9 @@ public class ParametrosBaseFiltro
 
         set
         {
-            _pageSize = value > maxPageSize ? maxPageSize : value;
+            _pageSize = value > maxPageSize && DeveExcederOMaxPageSize == false ? maxPageSize : value;
         }
     }
 }
+
+public record ParametrosBaseFiltroRecord(int PageNumber = 1, int PageSize = 50, bool? DeveExcederOMaxPageSize = false);

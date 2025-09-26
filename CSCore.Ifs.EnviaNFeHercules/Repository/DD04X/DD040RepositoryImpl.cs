@@ -12,10 +12,10 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<RepoDtoCSICP_DD040?> GetByIdAsync(int in_tenant, string in_dd040Id)
+        public async Task<CSICP_DD040?> GetByIdAsync(int in_tenant, string in_dd040Id)
         {
-            IQueryable<RepoDtoCSICP_DD040> query = GetQueryBase(in_tenant);
-            RepoDtoCSICP_DD040? cSICP_DD040 = await query.FirstOrDefaultAsync(e => e.Dd040Id == in_dd040Id);
+            IQueryable<CSICP_DD040> query = GetQueryBase(in_tenant);
+            CSICP_DD040? cSICP_DD040 = await query.FirstOrDefaultAsync(e => e.Dd040Id == in_dd040Id);
             return cSICP_DD040;
         }
 
@@ -28,7 +28,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
             return await query.ToListAsync();
         }
 
-        private IQueryable<RepoDtoCSICP_DD040> GetQueryBase(int in_tenant)
+        private IQueryable<CSICP_DD040> GetQueryBase(int in_tenant)
         {
             return from dd040 in _appDbContext.OsusrTeiCsicpDd040s
                    where dd040.TenantId == in_tenant
@@ -36,6 +36,10 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                    join bb001 in _appDbContext.E9ACSICP_BB001s
                    on dd040.Dd040Empresaid equals bb001.Id into bb001_dd040_join
                    from bb001 in bb001_dd040_join.DefaultIfEmpty()
+
+                   join bb012 in _appDbContext.OsusrE9aCsicpBb012s
+                   on dd040.Dd040ContaId equals bb012.Id into bb012_dd040_join
+                   from bb012 in bb012_dd040_join.DefaultIfEmpty()
 
                    join aa028 in _appDbContext.OsusrE9aCsicpAa028s
                    on bb001.Cidadeid equals aa028.Id into aa028_bb001_join
@@ -77,7 +81,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                    on dd040.Dd040Modalidadefrete equals dd041Frete.Id into dd041Frete_dd040_join
                    from dd041Frete in dd041Frete_dd040_join.DefaultIfEmpty()
 
-                   select new RepoDtoCSICP_DD040
+                   select new CSICP_DD040
                    {
                        TenantId = dd040.TenantId,
                        Dd040Id = dd040.Dd040Id,
@@ -320,63 +324,83 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                            Bb001ChaveApl = bb001.Bb001ChaveApl,
                            Bb001AutToken = bb001.Bb001AutToken,
                            Bb001TokenCspix = bb001.Bb001TokenCspix,
-                       } : null,
-
-                       NavAA028byBB001 = aa028 != null ? new CSICP_Aa028
-                       {
-                           TenantId = aa028.TenantId,
-                           Id = aa028.Id,
-                           Aa028Cidade = aa028.Aa028Cidade,
-                           Aa028Percicmscontrib = aa028.Aa028Percicmscontrib,
-                           A028Percicmsncontrib = aa028.A028Percicmsncontrib,
-                           A028Percsubsttribut = aa028.A028Percsubsttribut,
-                           A028Mascinsestadual = aa028.A028Mascinsestadual,
-                           A028Percicmsentrada = aa028.A028Percicmsentrada,
-                           A028Mascieimpressao = aa028.A028Mascieimpressao,
-                           Aa028Codgibge = aa028.Aa028Codgibge,
-                           Aa028Zonafranca = aa028.Aa028Zonafranca,
-                           Aa028Estadobrasil = aa028.Aa028Estadobrasil,
-                           Ufid = aa028.Ufid,
-                           Aa028ExportCidadeid = aa028.Aa028ExportCidadeid,
-                           Aa027ExportUfid = aa028.Aa027ExportUfid,
-                       } : null,
-
-                       NavAA027byBB001 = aa027 != null ? new CSICP_Aa027
-                       {
-                           TenantId = aa027.TenantId,
-                           Id = aa027.Id,
-                           Aa027Sigla = aa027.Aa027Sigla,
-                           Descricao = aa027.Descricao,
-                           Aa027Percicmscontrib = aa027.Aa027Percicmscontrib,
-                           Aa027Percicmsncontrib = aa027.Aa027Percicmsncontrib,
-                           Aa027Percsubsttribut = aa027.Aa027Percsubsttribut,
-                           Aa027Mascinsestadual = aa027.Aa027Mascinsestadual,
-                           Aa027Percicmsentrada = aa027.Aa027Percicmsentrada,
-                           Aa027Mascieimpressao = aa027.Aa027Mascieimpressao,
-                           Aa027Codigoibge = aa027.Aa027Codigoibge,
-                           Paisid = aa027.Paisid,
-                           Regiaoid = aa027.Regiaoid,
-                           Aa027Naturalidade = aa027.Aa027Naturalidade,
-                           Aa027ExportUfid = aa027.Aa027ExportUfid,
-                           Aa025ExportPaisid = aa027.Aa025ExportPaisid,
-                           Aa026ExportRegiaoid = aa027.Aa026ExportRegiaoid,
-                       } : null,
-
-                       NavAA025byBB001 = aa025 != null ? new CSICP_Aa025
-                       {
-                           TenantId = aa025.TenantId,
-                           Id = aa025.Id,
-                           Aa025Codigopais = aa025.Aa025Codigopais,
-                           Aa025Descricao = aa025.Aa025Descricao,
-                           Aa025Codigobacen = aa025.Aa025Codigobacen,
-                           Aa025Codigosiscomex = aa025.Aa025Codigosiscomex,
-                           Aa025Isactive = aa025.Aa025Isactive,
-                           Aa025Nacionalidade = aa025.Aa025Nacionalidade,
-                           Aa025Iso3166A2 = aa025.Aa025Iso3166A2,
-                           Aa025Iso3166A3 = aa025.Aa025Iso3166A3,
-                           Aa025Iso3166N3 = aa025.Aa025Iso3166N3,
-                           Aa025ExportPaisid = aa025.Aa025ExportPaisid,
-                           Aa025CodigoNacoesunidas = aa025.Aa025CodigoNacoesunidas,
+                           Cidade = aa028 != null ? new CSICP_Aa028
+                           {
+                               TenantId = aa028.TenantId,
+                               Id = aa028.Id,
+                               Aa028Cidade = aa028.Aa028Cidade,
+                               Aa028Percicmscontrib = aa028.Aa028Percicmscontrib,
+                               A028Percicmsncontrib = aa028.A028Percicmsncontrib,
+                               A028Percsubsttribut = aa028.A028Percsubsttribut,
+                               A028Mascinsestadual = aa028.A028Mascinsestadual,
+                               A028Percicmsentrada = aa028.A028Percicmsentrada,
+                               A028Mascieimpressao = aa028.A028Mascieimpressao,
+                               Aa028Codgibge = aa028.Aa028Codgibge,
+                               Aa028Zonafranca = aa028.Aa028Zonafranca,
+                               Aa028Estadobrasil = aa028.Aa028Estadobrasil,
+                               Ufid = aa028.Ufid,
+                               Aa028ExportCidadeid = aa028.Aa028ExportCidadeid,
+                               Aa027ExportUfid = aa028.Aa027ExportUfid,
+                           } : null,
+                           Bb001Uf = aa027 != null ? new CSICP_Aa027
+                           {
+                               TenantId = aa027.TenantId,
+                               Id = aa027.Id,
+                               Aa027Sigla = aa027.Aa027Sigla,
+                               Descricao = aa027.Descricao,
+                               Aa027Percicmscontrib = aa027.Aa027Percicmscontrib,
+                               Aa027Percicmsncontrib = aa027.Aa027Percicmsncontrib,
+                               Aa027Percsubsttribut = aa027.Aa027Percsubsttribut,
+                               Aa027Mascinsestadual = aa027.Aa027Mascinsestadual,
+                               Aa027Percicmsentrada = aa027.Aa027Percicmsentrada,
+                               Aa027Mascieimpressao = aa027.Aa027Mascieimpressao,
+                               Aa027Codigoibge = aa027.Aa027Codigoibge,
+                               Paisid = aa027.Paisid,
+                               Regiaoid = aa027.Regiaoid,
+                               Aa027Naturalidade = aa027.Aa027Naturalidade,
+                               Aa027ExportUfid = aa027.Aa027ExportUfid,
+                               Aa025ExportPaisid = aa027.Aa025ExportPaisid,
+                               Aa026ExportRegiaoid = aa027.Aa026ExportRegiaoid,
+                           } : null,
+                           Bb001Pais = aa025 != null ? new CSICP_Aa025
+                           {
+                               TenantId = aa025.TenantId,
+                               Id = aa025.Id,
+                               Aa025Codigopais = aa025.Aa025Codigopais,
+                               Aa025Descricao = aa025.Aa025Descricao,
+                               Aa025Codigobacen = aa025.Aa025Codigobacen,
+                               Aa025Codigosiscomex = aa025.Aa025Codigosiscomex,
+                               Aa025Isactive = aa025.Aa025Isactive,
+                               Aa025Nacionalidade = aa025.Aa025Nacionalidade,
+                               Aa025Iso3166A2 = aa025.Aa025Iso3166A2,
+                               Aa025Iso3166A3 = aa025.Aa025Iso3166A3,
+                               Aa025Iso3166N3 = aa025.Aa025Iso3166N3,
+                               Aa025ExportPaisid = aa025.Aa025ExportPaisid,
+                               Aa025CodigoNacoesunidas = aa025.Aa025CodigoNacoesunidas,
+                           } : null,
+                           NavBB001Cfgfi = bb001CfgFis != null ? new CSICP_BB001Cfgfi
+                           {
+                               TenantId = bb001CfgFis.TenantId,
+                               Bb001CfgId = bb001CfgFis.Bb001CfgId,
+                               Bb001EmpresaId = bb001CfgFis.Bb001EmpresaId,
+                               Bb001TptributacaoId = bb001CfgFis.Bb001TptributacaoId,
+                               Bb001PercIcms = bb001CfgFis.Bb001PercIcms,
+                               Bb001PercCsllBc = bb001CfgFis.Bb001PercCsllBc,
+                               Bb001PercCsllBcServico = bb001CfgFis.Bb001PercCsllBcServico,
+                               Bb001PercIrpjBc = bb001CfgFis.Bb001PercIrpjBc,
+                               Bb001PercIrpjBcServico = bb001CfgFis.Bb001PercIrpjBcServico,
+                               Bb001NaturezapjId = bb001CfgFis.Bb001NaturezapjId,
+                               Bb001TpatividadeId = bb001CfgFis.Bb001TpatividadeId,
+                               Bb001Regimetributarioid = bb001CfgFis.Bb001Regimetributarioid,
+                               Bb001Regimetributario  = aa030Regime != null ? new CSICP_AA030Regime
+                                       {
+                                           Id = aa030Regime.Id,
+                                           Label = aa030Regime.Label,
+                                           Order = aa030Regime.Order,
+                                           IsActive = aa030Regime.IsActive,
+                                           CrtDigito = aa030Regime.CrtDigito,
+                                       } : null,
+                           } : null,
                        } : null,
 
                        NavDD040Tnt = dd040Tnt != null ? new CSICP_DD040Tnt
@@ -390,22 +414,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                            CsCodg = dd040Tnt.CsCodg,
                        } : null,
 
-                       NavBB001Cfgfi = bb001CfgFis != null ? new CSICP_BB001Cfgfi
-                       {
-                           TenantId = bb001CfgFis.TenantId,
-                           Bb001CfgId = bb001CfgFis.Bb001CfgId,
-                           Bb001EmpresaId = bb001CfgFis.Bb001EmpresaId,
-                           Bb001TptributacaoId = bb001CfgFis.Bb001TptributacaoId,
-                           Bb001PercIcms = bb001CfgFis.Bb001PercIcms,
-                           Bb001PercCsllBc = bb001CfgFis.Bb001PercCsllBc,
-                           Bb001PercCsllBcServico = bb001CfgFis.Bb001PercCsllBcServico,
-                           Bb001PercIrpjBc = bb001CfgFis.Bb001PercIrpjBc,
-                           Bb001PercIrpjBcServico = bb001CfgFis.Bb001PercIrpjBcServico,
-                           Bb001NaturezapjId = bb001CfgFis.Bb001NaturezapjId,
-                           Bb001TpatividadeId = bb001CfgFis.Bb001TpatividadeId,
-                           Bb001Regimetributarioid = bb001CfgFis.Bb001Regimetributarioid,
-                       } : null,
-
+   
                        NavSpedIcm = spedIcms != null ? new OsusrNnxSpedInDocIcm
                        {
                            Id = spedIcms.Id,
@@ -417,14 +426,6 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                            Docfiscal = spedIcms.Docfiscal,
                        } : null,
 
-                       NavAA030Regime = aa030Regime != null ? new CSICP_AA030Regime
-                       {
-                           Id = aa030Regime.Id,
-                           Label = aa030Regime.Label,
-                           Order = aa030Regime.Order,
-                           IsActive = aa030Regime.IsActive,
-                           CrtDigito = aa030Regime.CrtDigito,
-                       } : null,
 
                        NavDD909 = dd909 != null ? new CSICP_DD909
                        {
@@ -455,6 +456,164 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                    };
         }
 
+        public async Task<List<CSICP_DD041>> GetListAsyncDD041(int in_tenant, string in_dd040Id)
+        {
+            var query = from dd041 in _appDbContext.OsusrTeiCsicpDd041s
+
+                        where dd041.TenantId == in_tenant
+                        && dd041.Dd040Id == in_dd040Id
+
+                        join bb012Trasportadora in _appDbContext.OsusrE9aCsicpBb012s
+                        on dd041.Dd041TransportadoraId equals bb012Trasportadora.Id into bb012Trasportadora_join
+                        from bb012Trasportadora in bb012Trasportadora_join.DefaultIfEmpty()
+
+                        join aa025pais in _appDbContext.OsusrE9aCsicpAa025s
+                        on dd041.Dd041PaisId equals aa025pais.Id into aa025pais_join
+                        from aa025pais in aa025pais_join.DefaultIfEmpty()
+
+                        join aa027uf in _appDbContext.OsusrE9aCsicpAa027s
+                        on dd041.Dd041UfId equals aa027uf.Id into aa027uf_join
+                        from aa027uf in aa027uf_join.DefaultIfEmpty()
+
+                        join aa028cidade in _appDbContext.OsusrE9aCsicpAa028s
+                        on dd041.Dd041CidadeId equals aa028cidade.Id into aa028cidade_join
+                        from aa028cidade in aa028cidade_join.DefaultIfEmpty()
+
+                        join dd041doc in _appDbContext.OsusrTeiCsicpDd041Doctos
+                        on dd041.Dd041Tipodocto equals dd041doc.Id into dd041doc_join
+                        from dd041doc in dd041doc_join.DefaultIfEmpty()
+
+                        select new CSICP_DD041
+                        {
+                            TenantId = dd041.TenantId,
+                            Dd041Id = dd041.Dd041Id,
+                            Dd040Id = dd041.Dd040Id,
+                            Dd041Tipo = dd041.Dd041Tipo,
+                            Dd041ContaId = dd041.Dd041ContaId,
+                            Dd041Tipodocto = dd041.Dd041Tipodocto,
+                            Dd041CnpjCpf = dd041.Dd041CnpjCpf,
+                            Dd041Nome = dd041.Dd041Nome,
+                            Dd041Logradouro = dd041.Dd041Logradouro,
+                            Dd041Numero = dd041.Dd041Numero,
+                            Dd041Complemento = dd041.Dd041Complemento,
+                            Dd041Perimetro = dd041.Dd041Perimetro,
+                            Dd041BairroId = dd041.Dd041BairroId,
+                            Dd041Nomebairro = dd041.Dd041Nomebairro,
+                            Dd041Cep = dd041.Dd041Cep,
+                            Dd041PaisId = dd041.Dd041PaisId,
+                            Dd041UfId = dd041.Dd041UfId,
+                            Dd041CidadeId = dd041.Dd041CidadeId,
+                            Dd041IeRg = dd041.Dd041IeRg,
+                            Dd041Suframa = dd041.Dd041Suframa,
+                            Dd041Telefone = dd041.Dd041Telefone,
+                            Dd041Email = dd041.Dd041Email,
+                            Dd041TransportadoraId = dd041.Dd041TransportadoraId,
+                            Dd041Nometransp = dd041.Dd041Nometransp,
+                            Dd041Modalidadefrete = dd041.Dd041Modalidadefrete,
+                            Dd041Placaveiculo = dd041.Dd041Placaveiculo,
+                            Dd041Ufveiculo = dd041.Dd041Ufveiculo,
+                            Dd041Marcaveiculo = dd041.Dd041Marcaveiculo,
+                            Dd041Numtransp = dd041.Dd041Numtransp,
+                            Dd041Placareboque = dd041.Dd041Placareboque,
+                            Dd041UfreboqueId = dd041.Dd041UfreboqueId,
+                            Dd041Numtranspreboq = dd041.Dd041Numtranspreboq,
+                            Dd041Vagao = dd041.Dd041Vagao,
+                            Dd041Balsa = dd041.Dd041Balsa,
+                            Dd041EnderecoId = dd041.Dd041EnderecoId,
+                            Dd041SendEmail = dd041.Dd041SendEmail,
+                            Dd041SendSms = dd041.Dd041SendSms,
+                            Dd041UserOperadorId = dd041.Dd041UserOperadorId,
+                            Dd041DataCaixa = dd041.Dd041DataCaixa,
+                            Dd041Sms = dd041.Dd041Sms,
+                            Dd041Indfinal = dd041.Dd041Indfinal,
+                            Dd041IdentEstrangeiro = dd041.Dd041IdentEstrangeiro,
+
+                            NavBB012Trasportadora = bb012Trasportadora != null ? new CSICP_BB012
+                            {
+                                TenantId = bb012Trasportadora.TenantId,
+                                Id = bb012Trasportadora.Id,
+                                Bb012Codigo = bb012Trasportadora.Bb012Codigo,
+                                Bb012NomeCliente = bb012Trasportadora.Bb012NomeCliente,
+                                Bb012NomeFantasia = bb012Trasportadora.Bb012NomeFantasia,
+                                Bb012DataAniversario = bb012Trasportadora.Bb012DataAniversario,
+                                Bb012DataCadastro = bb012Trasportadora.Bb012DataCadastro,
+                                Bb012Telefone = bb012Trasportadora.Bb012Telefone,
+                                Bb012Faxcelular = bb012Trasportadora.Bb012Faxcelular,
+                                Bb012HomePage = bb012Trasportadora.Bb012HomePage,
+                                Bb012Email = bb012Trasportadora.Bb012Email,
+                                Bb012DataEntradaSit = bb012Trasportadora.Bb012DataEntradaSit,
+                                Bb012DataSaidaSit = bb012Trasportadora.Bb012DataSaidaSit,
+                                Bb012Descricao = bb012Trasportadora.Bb012Descricao,
+                                Bb012IsActive = bb012Trasportadora.Bb012IsActive,
+                                Bb012TipoContaId = bb012Trasportadora.Bb012TipoContaId,
+                                Bb012GrupocontaId = bb012Trasportadora.Bb012GrupocontaId,
+                                Bb012ClassecontaId = bb012Trasportadora.Bb012ClassecontaId,
+                                Bb012StatuscontaId = bb012Trasportadora.Bb012StatuscontaId,
+                                Bb012SitContaId = bb012Trasportadora.Bb012SitContaId,
+                                Bb012ModrelacaoId = bb012Trasportadora.Bb012ModrelacaoId,
+                                Bb012Sequence = bb012Trasportadora.Bb012Sequence,
+                                Bb012Dultalteracao = bb012Trasportadora.Bb012Dultalteracao,
+                                Bb012Estabcadid = bb012Trasportadora.Bb012Estabcadid,
+                                Bb012Keyacess = bb012Trasportadora.Bb012Keyacess,
+                                Bb012IdIndicador = bb012Trasportadora.Bb012IdIndicador,
+                                Bb012Countappmcon = bb012Trasportadora.Bb012Countappmcon,
+                                Bb012Oricadastroid = bb012Trasportadora.Bb012Oricadastroid
+                            } : null,
+
+                            NavDD041Doc = dd041doc != null ? new CSICP_DD041Docto
+                            {
+                                Id = dd041doc.Id,
+                                Label = dd041doc.Label,
+                                Order = dd041doc.Order,
+                                IsActive = dd041doc.IsActive
+                            } : null,
+
+                            NavAA025 = aa025pais != null ? new CSICP_Aa025
+                            {
+                                TenantId = aa025pais.TenantId,
+                                Id = aa025pais.Id,
+                                Aa025Codigobacen = aa025pais.Aa025Codigobacen,
+                                Aa025CodigoNacoesunidas = aa025pais.Aa025CodigoNacoesunidas,
+                                Aa025Codigopais = aa025pais.Aa025Codigopais,
+                                Aa025Codigosiscomex = aa025pais.Aa025Codigosiscomex,
+                                Aa025Isactive = aa025pais.Aa025Isactive,
+                                Aa025Nacionalidade = aa025pais.Aa025Nacionalidade,
+                                Aa025Iso3166A2 = aa025pais.Aa025Iso3166A2,
+                                Aa025Iso3166A3 = aa025pais.Aa025Iso3166A3,
+                                Aa025Iso3166N3 = aa025pais.Aa025Iso3166N3,
+                                Aa025ExportPaisid = aa025pais.Aa025ExportPaisid,
+                                Aa025Descricao = aa025pais.Aa025Descricao
+                            } : null,
+
+                            NavAA027 = aa027uf != null ? new CSICP_Aa027
+                            {
+                                TenantId = aa027uf.TenantId,
+                                Id = aa027uf.Id,
+                                Aa027Sigla = aa027uf.Aa027Sigla,
+                                Descricao = aa027uf.Descricao,
+                                Aa027Percicmscontrib = aa027uf.Aa027Percicmscontrib,
+                                Aa027Percicmsncontrib = aa027uf.Aa027Percicmsncontrib,
+                                Aa027Percsubsttribut = aa027uf.Aa027Percsubsttribut,
+                                Aa027Mascinsestadual = aa027uf.Aa027Mascinsestadual,
+                                Aa027Percicmsentrada = aa027uf.Aa027Percicmsentrada,
+                                Aa027Mascieimpressao = aa027uf.Aa027Mascieimpressao,
+                                Aa027Codigoibge = aa027uf.Aa027Codigoibge,
+                                Paisid = aa027uf.Paisid,
+                                Regiaoid = aa027uf.Regiaoid,
+                                Aa027Naturalidade = aa027uf.Aa027Naturalidade,
+                            } : null,
+
+                            NavAA028 = aa028cidade != null ? new CSICP_Aa028
+                            {
+                                TenantId = aa028cidade.TenantId,
+                                Id = aa028cidade.Id,
+                                Aa028Cidade = aa028cidade.Aa028Cidade,
+                                Aa028Codgibge = aa028cidade.Aa028Codgibge
+                            } : null,
+                        };
+                        
+            return await query.ToListAsync();
+        }
 
         public async Task<List<RepoCSICP_DD042>> GetListAsyncDD042(int in_tenant, string in_dd040Id)
         {

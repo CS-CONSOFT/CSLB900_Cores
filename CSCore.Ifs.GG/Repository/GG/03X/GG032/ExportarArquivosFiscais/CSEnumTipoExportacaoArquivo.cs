@@ -10,7 +10,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ExportarArquivosFiscais
     {
         EXCEL,
         XLS_BLC_K,
-        XLS_BLC_0200,
+        TXT_BLC_0200,
         XLS_SISPRO,
         TXT_BLOCO_H2,
         TXT_BLOCO_H,

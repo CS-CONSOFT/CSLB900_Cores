@@ -8,7 +8,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
 {
     public static class DD060Mapper
     {
-        public static DtoGetDD060 ToDtoGet(this RepoDtoCSICP_DD060 entity)
+        public static DtoGetDD060 ToDtoGet(this CSICP_DD060 entity)
         {
             return new DtoGetDD060
             {

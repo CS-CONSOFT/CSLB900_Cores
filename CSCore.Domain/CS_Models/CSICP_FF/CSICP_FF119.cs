@@ -24,8 +24,6 @@ public partial class CSICP_FF119
 
     public virtual CSICP_FF112? Ff112 { get; set; }
 
-    public class RepoDtoCSICP_FF119 : CSICP_FF119
-    {
-        public OsusrE9aCsicpFf112Reg? NavFF112Reg { get; set; }
-    }
+    // Propriedades de navegação movidas do RepoDtoCSICP_FF119
+    public OsusrE9aCsicpFf112Reg? NavFF112Reg { get; set; }
 }

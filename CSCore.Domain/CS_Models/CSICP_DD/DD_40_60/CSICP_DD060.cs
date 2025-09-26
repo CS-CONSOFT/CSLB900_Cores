@@ -284,33 +284,55 @@ public partial class CSICP_DD060
     public string? DD080_RFTRANSACAO_ID { get; set; }
 
     //-------------------------------------------------------//
-}
 
-public class RepoDtoCSICP_DD060 : CSICP_DD060
-{
+
+    //NAVS
+    [NotMapped]
     public CSICP_GG005? NavGG005 { get; set; }
+    [NotMapped]
     public CSICP_GG006? NavGG006 { get; set; }
+    [NotMapped]
     public CSICP_GG007? NavGG007Unidade { get; set; }
+    [NotMapped]
     public CSICP_GG007? NavGG007UnidadeSec { get; set; }
+    [NotMapped]
     public CSICP_GG008? NavGG008Produto { get; set; }
+    [NotMapped]
     public CSICP_GG008Kdx? NavGG008Kdx { get; set; }
+    [NotMapped]
     public CSICP_GG021? NavGG021 { get; set; }
+    [NotMapped]
     public CSICP_DD040? NavDD040NF { get; set; }
+    [NotMapped]
     public CSICP_AA031Cstori? NavAA031Cstori { get; set; }
+    [NotMapped]
     public CSICP_AA032Csticm? NavAA032Csticm { get; set; }
+    [NotMapped]
     public CSICP_AA033Cstipi? NavAA033Cstipi { get; set; }
+    [NotMapped]
     public CSICP_AA034Cstpi? NavAA034Cstpi { get; set; }
+    [NotMapped]
     public CSICP_AA035Cstcof? CSICP_AA035Cstcof { get; set; }
+    [NotMapped]
     public CSICP_AA038Modst? NavAA038Modst { get; set; }
+    [NotMapped]
     public CSICP_Bb027Modal? NavBB027Modal { get; set; }
+    [NotMapped]
     public CSICP_Bb027Motivo? NavBB027Motivo { get; set; }
+    [NotMapped]
     public CSICP_DD061Cfgimp? NavDD061Cfgimp { get; set; }
+    [NotMapped]
     public OsusrE9aCsicpGg021cest? NavGG021Cest { get; set; }
+    [NotMapped]
     public SpedCsicpStrelevancium? NavStRelavancium { get; set; }
+    [NotMapped]
     public Osusr66cSpedInCenqIpi? NavSpedInCenqIpi { get; set; }
+    [NotMapped]
     public Osusr66cSpedInCfop? NavSpedInCfop { get; set; }
+    [NotMapped]
     public IEnumerable<CSICP_DD061> NavListDD061 { get; set; } = [];
+    [NotMapped]
     public CSICP_DD060comb? NavDD060Combs { get; set; }
     public IEnumerable<CSICP_DD060combla01> NavListDD060CombsLa01 { get; set; } = [];
-
 }
+

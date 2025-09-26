@@ -19,8 +19,8 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF012
         // Navegações
         public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
         public Dto_GetSY001Simples? NavSY001 { get; set; }
-        public DtoGetFF014? NavFF014ComissaoSuper { get; set; }
-        public DtoGetFF014? NavFF014ComissaoCobrador { get; set; }
+        public DtoGetFF014Simples? NavFF014ComissaoSuper { get; set; }
+        public DtoGetFF014Simples? NavFF014ComissaoCobrador { get; set; }
         public DtoGetFF012Simples? NavFF012GrupoPai { get; set; }
     }
 }

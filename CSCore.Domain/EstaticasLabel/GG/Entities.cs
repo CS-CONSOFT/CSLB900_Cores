@@ -1,4 +1,6 @@
-﻿namespace CSCore.Domain.EstaticasLabel.GG
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+
+namespace CSCore.Domain.EstaticasLabel.GG
 {
     public static class Entities
     {
@@ -135,6 +137,12 @@
             public const string Saida = "Saida";
         }
 
+        public static class FF102_Cob
+        {
+            public const string Normal = "Normal";
+            public const string Cobranca = "Cobrança";
+        }
+
         public static class BB01201_Con
         {
             public const string AVista = "A Vista";
@@ -144,6 +152,20 @@
             public const string Cheque = "Cheque";
             public const string CartaoInterno = "Modo Cartão Interno";
             public const string CartaoExterno = "Cartão Externo";
+        }
+
+        public static class BB012_SitCTA
+        {
+            public const string SPC = "SPC";
+            public const string CIS = "Incluir SPC";
+            public const string Retirado = "Retirado SPC";
+            public const string CRS = "Retirar SPC";
+        }
+
+        public static class CSICP_FF998
+        {
+            public const string CIS = "82-Incluir SPC";
+            public const string SPC = "80-SPC";
         }
 
         public static class BB062_Sta
@@ -263,6 +285,12 @@
             public const string Aberto = "Aberto";
         }
 
+        public static class Csicp_ff102_cob
+        {
+            public const string Cobranca = "Cobrança";
+            public const string Normal = "Normal";
+        }
+
         public static class Csicp_ff102_Situacao
         {
             public const string Aberto = "Aberto";
@@ -284,6 +312,24 @@
             public const string Confirmar = "Confirmado";
             public const string VlrAlterado = "Vlr Alterado";
             public const string AtrJurosNCob = "Atribuído Juros Não Cobrados";
+        }
+
+        public static class Csicp_bb1201_jur
+        {
+            public const string NCobraJuros = "Juros/Multa não cobrados";
+        }
+
+        public static class Csicp_gg055_status
+        {
+            public const string Aberto = "Aberto";
+            public const string Transferido = "Transferido";
+        }
+
+        public static class Csicp_FF040_status
+        {
+            public const string Aberto = "Aberto";
+            public const string Registrado = "Registrado";
+            public const string Cancelado = "Cancelado";
         }
     }
 }

@@ -195,7 +195,7 @@ namespace CSCore.Ifs.Repository.BB
             if (especie == null) throw new Exception("Espécie não encontrada ao gerar financeiro!");
 
 
-            decimal nroTitutlo = await _generateProtocolo.Fcn_Protocolo10(in_estabelecimentoID, "CRECEBER");
+            decimal nroTitutlo = await _generateProtocolo.Fcn_Protocolo10(in_estabelecimentoID, "CRECEBER", in_tenant);
             string id = _generateID.GenerateUuId();
             CSICP_FF102 entityParaSalvar = new()
             {

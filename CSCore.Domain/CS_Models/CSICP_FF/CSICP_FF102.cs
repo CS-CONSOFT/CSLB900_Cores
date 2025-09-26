@@ -1,5 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.Interfaces.Dashboard;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
 
@@ -378,42 +379,45 @@ public partial class CSICP_FF102
 
     public int? Ff102TrilhaApiid { get; set; }
 
-}
-
-public class RepoDtoCSICP_FF102 : CSICP_FF102
-{
+    [NotMapped]
     public int? CSDiasAtraso { get; set; } = default;
-
+    [NotMapped]
     public decimal? CSValorCorrecaoMonetaria { get; set; } = default;
-
+    [NotMapped]
     public decimal? CSValorMulta { get; set; } = default;
-
+    [NotMapped]
     public decimal? CSValorHonorarios { get; set; } = default;
-
+    [NotMapped]
     public decimal? CSValorJuros { get; set; } = default;
-
+    [NotMapped]
     public decimal? CSValorAPagar { get; set; } = default;
+    [NotMapped]
     public decimal? CSPercentualJurosConfig { get; set; }
+    [NotMapped]
     public decimal? CSPercentualMultaConfig { get; set; }
+    [NotMapped]
     public decimal? CSPercentualCorrecaoMonetariaConfig { get; set; }
+    [NotMapped]
     public decimal? CSPercentualHonorarioConfig { get; set; }
-
 
     public CSICP_BB001? NavBB001 { get; set; }
     public CSICP_Bb005? NavBB005 { get; set; }
+    public CSICP_Bb003? NavBB003 { get; set; }
     public CSICP_Bb006? NavBB006 { get; set; }
     public CSICP_BB007? NavBB007 { get; set; }
     public CSICP_Bb008? NavBB008 { get; set; }
     public CSICP_Bb009? NavBB009 { get; set; }
     public CSICP_Bb019? NavBB019 { get; set; }
     public CSICP_BB012? NavBB012 { get; set; }
-    public CSICP_BB012? NavBB012ContaID { get; set; }
     public CSICP_BB012? NavBB012ContaRealID { get; set; }
     public CSICP_BB012? NavBB012AvalistaID { get; set; }
     public CSICP_Bb01201Jur? NavBB01201Jur { get; set; }
     public CSICP_Bb026? NavBB026 { get; set; }
+    [NotMapped]
     public CSICP_FF000? NavFF000 { get; set; }
     public CSICP_FF003? NavFF003 { get; set; }
+    public CSICP_FF104? NavFF104 { get; set; }
+
     public CSICP_FF102_C021? NavFF102C021 { get; set; }
     public CSICP_FF102Des? NavFF102Des { get; set; }
     public CSICP_FF102Ent? NavFF102Ent { get; set; }

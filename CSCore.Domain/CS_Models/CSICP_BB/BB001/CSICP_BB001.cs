@@ -117,7 +117,6 @@ public partial class CSICP_BB001
     public bool? BB001_IsRegimeRegular { get; set; }
 
     //navegacao
-    public ICollection<CSICP_BB001Img> OsusrE9aCsicpBb001Imgs { get; set; } = new List<CSICP_BB001Img>();
     public CSICP_Aa025? Bb001Pais { get; set; }
 
     public CSICP_Statica? Bb001RamoempresaNavigation { get; set; }
@@ -125,13 +124,5 @@ public partial class CSICP_BB001
     public CSICP_Aa027? Bb001Uf { get; set; }
 
     public CSICP_Aa028? Cidade { get; set; }
-
-    public ICollection<CSICP_BB001_AXML> NavBB001AXML { get; set; } = new List<CSICP_BB001_AXML>();
-
-    public ICollection<CSICP_BB001Cfgfi> OsusrE9aCsicpBb001Cfgfis { get; set; } = new List<CSICP_BB001Cfgfi>();
-
-    public ICollection<CSICP_BB001Cnaes> Bb001CnaesList { get; set; } = new List<CSICP_BB001Cnaes>();
-
-    public ICollection<CSICP_BB001Spls> OsusrE9aCsicpBb001Spls { get; set; } = new List<CSICP_BB001Spls>();
-
+    public CSICP_BB001Cfgfi? NavBB001Cfgfi { get; set; }
 }

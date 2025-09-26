@@ -18,12 +18,6 @@ public partial class CSICP_FF016
 
     public string? Ff016Textocarta { get; set; }
 
-    public class RepoDtoCSICP_FF016 : CSICP_FF016
-    {
-        // Navegação
-        public OsusrE9aCsicpFf016Email? NavFF016Email { get; set; }
-
-        //public OsusrE9aCsicpFf16Tagcar? NavFF016TagCar { get; set; }
-    }
-
+    // Navegação movida do RepoDtoCSICP_FF016
+    public OsusrE9aCsicpFf016Email? NavFF016Email { get; set; }
 }

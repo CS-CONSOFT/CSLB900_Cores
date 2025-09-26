@@ -295,6 +295,8 @@
         {
             Csicp_ff003,
             Csicp_ff002,
+            Csicp_ff014,
+            Csicp_ff012,
         }
 
         public enum ComboTypeSYS

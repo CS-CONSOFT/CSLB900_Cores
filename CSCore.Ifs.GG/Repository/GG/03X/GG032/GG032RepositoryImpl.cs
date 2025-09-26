@@ -61,10 +61,11 @@ namespace CSCore.Ifs.Repository.GG._03X
             {
                 query = query.Where(e => e.Gg032Codgalmox == codigo);
             }
+            var queryCount = query;
+            
+            int count = queryCount.GetCountTotal();
 
             query = query.PaginacaoNoBanco(page, pageSize);
-
-            int count = query.GetCountTotal();
 
             List<CSICP_GG032> listaCSICP_GG032 = await query.ToListAsync();
             return (listaCSICP_GG032, count);
