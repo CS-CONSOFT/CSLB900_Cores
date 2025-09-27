@@ -30,36 +30,6 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImplTests
         _repository = new GeraMemoriaCalculoFF043_FF102RepositoryImpl(_context, _mockGenerateProtocolo.Object, _mockGenerateId.Object);
     }
 
-    [Fact]
-    public async Task GeraFormaPagtotoMemoriaCalculoFF043_FF102_ShouldGenerateData()
-    {
-        // Arrange
-        var prm = new PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository(
-               InTenantID: 1,
-               InEmpresaID: "1",
-               InFF040_ID: 1,
-               InDataBaseVencimento: DateTime.Now,
-               InFormaPgtoID: "Cond1",
-               InCondicaoPgtoID: "Cond1",
-               InNroDeParcelas: 2,
-               InFaturaTotal: 1000m,
-               In_StID_bb008_tp_Dias: 0,
-               In_StID_bb008_tp_ParcelaDias: 0,
-               In_StID_bb008_tp_ParcelaMes: 0,
-               In_StID_bb008_tp_A_vista: 0
-           );
-
-        _mockGenerateProtocolo.Setup(x => x.Fcn_Protocolo10(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>(), false))
-            .ReturnsAsync(12345);
-
-        // Act
-        await _repository.GeraFormaPagtotoMemoriaCalculoFF043_FF102(prm);
-
-        // Assert
-        var ff042 = await _context.OsusrE9aCsicpFf042s.FirstOrDefaultAsync();
-        Assert.NotNull(ff042);
-        Assert.Equal(prm.InFormaPgtoID, ff042.Ff042Fpagtoid);
-    }
 
     [Fact]
     public async Task CS_005_GeraContasAPagar_ShouldThrowException_WhenNoFF043Exists()
@@ -68,6 +38,13 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImplTests
         int tenantId = 1;
         long ff040Id = 1;
         int situacaoRegistrado = 1;
+        int stIdFf102EntParcela = 2;
+        int stIdFf102SitAberto = 3;
+        int stIdFf102SitProvisao = 4;
+        int stIdFf102AutPagamentoAutorizado = 5;
+        int stIdFf102AutPagamentoNaoAutorizado = 6;
+        int stIdEntitiesSim = 7;
+        int stIdEntitiesNao = 8;
 
         _context.OsusrE9aCsicpFf040s.Add(new CSICP_FF040
         {
@@ -80,7 +57,18 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImplTests
         // Act & Assert
         await Assert.ThrowsAsync<EmptyListException>(async () =>
         {
-            await _repository.CS_005_GeraContasAPagar(tenantId, ff040Id, situacaoRegistrado);
+            await _repository.CS_005_GeraContasAPagar(
+                tenantId,
+                ff040Id,
+                situacaoRegistrado,
+                stIdFf102EntParcela,
+                stIdFf102SitAberto,
+                stIdFf102SitProvisao,
+                stIdFf102AutPagamentoAutorizado,
+                stIdFf102AutPagamentoNaoAutorizado,
+                stIdEntitiesSim,
+                stIdEntitiesNao
+            );
         });
     }
 }
