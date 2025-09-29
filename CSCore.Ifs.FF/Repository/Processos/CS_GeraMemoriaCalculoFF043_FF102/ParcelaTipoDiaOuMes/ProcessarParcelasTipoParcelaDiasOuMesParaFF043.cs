@@ -16,7 +16,11 @@ public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasT
 
     private readonly AppDbContext _appDbContext;
 
-    private readonly decimal Fcn_Protocolo10;
+    private readonly IGenerateProtocolo Fcn_Protocolo10;
+    private readonly string[] _aux_condicaoPagtoDividida;
+    private readonly string empresaID;
+    private readonly decimal _work_valor_entrada;
+    private readonly IIncrementarDataStrategy _incrementarDataStrategy;
 
     public ProcessarParcelasTipoParcelaDiasOuMesParaFF043(ProcessarParcelasTipoParcelaDiasOuMesParaFF043Input input)
            : base(input.GenerateId,
@@ -27,6 +31,41 @@ public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasT
     {
         this._appDbContext = input.AppDbContext;
         this.Fcn_Protocolo10 = input.Protocolo;   
+        this._aux_condicaoPagtoDividida = input.Aux_condicaoPagtoDividida;
+        this._work_valor_entrada = input.Work_valor_entrada;
+        this._incrementarDataStrategy = input.IncrementarDataStrategy;
+        this.empresaID = input.EmpresaID;
+    }
+
+    public override async Task Processar(
+    string InControleID,
+    DateOnly InData,
+    int InTenantID,
+    RetornoFinanciamento in_calculoFinanciamento,
+    decimal? _ = 0)
+    {
+        var condicaoPagamentoValidador = new CondicaoPagamentoDividia(_aux_condicaoPagtoDividida);
+        var prm = new PrmCalculoParcelasPorCondicao
+        {
+            InCondicaoPagtoDividida = condicaoPagamentoValidador.GetCondicaoPagamento(),
+            InFaturaTotal = in_calculoFinanciamento.ValorFaturaTotal,
+            InValorEntrada = _work_valor_entrada,
+            InDataCalculo = new DateTime(InData.Year, InData.Month, InData.Day),
+        };
+
+        List<RetCalculoParcelasPorCondicao> listaCalculoParcelasPorCondicao = CalculoParcelasPorCondicao.Calcular(prm, _incrementarDataStrategy);
+
+        List<CSICP_FF043> entidadesParaInserir = new();
+        foreach (var calculoCorrente in listaCalculoParcelasPorCondicao)
+        {
+            decimal Protocolo = await this.Fcn_Protocolo10.Fcn_Protocolo10(empresaID, "CPAGAR", InTenantID);
+            var entidade = CriarEntidade<CSICP_FF043>(calculoCorrente, InTenantID, InControleID);
+            entidade!.Ff043Titulo = Protocolo;
+            if (entidade is null)
+                continue;
+            entidadesParaInserir.Add(entidade);
+        }
+        await PersistirAsync(entidadesParaInserir);
     }
 
 
@@ -44,7 +83,7 @@ public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasT
             Parcela: calculoCorrente.Parcela,
             DataVencimento: calculoCorrente.DataVencimento,
             Pfxtitulo: "",
-            Protocolo: Fcn_Protocolo10
+            Protocolo: null
         );
         return entidade as TEntity;
     }
@@ -52,7 +91,15 @@ public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasT
     /*ALTERANDO A ESTRATEGIA DE PERSISTENCIA, DELEGANDO ISSO, NESSE CASO, PARA O UNIT OF WORK, SEGUINDO O NOVO PADRAO*/
     override protected async Task PersistirAsync<TEntity>(List<TEntity> entidades)
     {
-        await this._appDbContext.AddRangeAsync(entidades);
-        // Não faz nada de commit, pois a persistência é gerenciada externamente no service
+        if (entidades == null || entidades.Count == 0)
+            return;
+        foreach (var current in entidades)
+        {
+            if (current == null) continue;
+
+            await this._appDbContext.AddAsync(current);
+            // Não faz nada de commit, pois a persistência é gerenciada externamente no service    
+        }
+
     }
 }

@@ -7,7 +7,7 @@ using CSLB900.MSTools.GenerateId;
 namespace CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102;
 
 public record ProcessarParcelasTipoParcelaDiasOuMesParaFF043Input(
-        decimal Protocolo,
+        IGenerateProtocolo Protocolo,
         ICS_GenerateId GenerateId,
         string EmpresaID,
         string[] Aux_condicaoPagtoDividida,

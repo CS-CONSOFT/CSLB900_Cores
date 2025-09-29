@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 using Microsoft.EntityFrameworkCore;
+using CSCore.Ifs.Eventos.Repository;
 
 namespace CSCore.Tests.Financeiro.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102.ParcelaTipoDiaOuMes
 {
@@ -29,7 +30,7 @@ namespace CSCore.Tests.Financeiro.Repository.Processos.CS_GeraMemoriaCalculoFF04
             decimal protocolo = 12345.67m)
         {
             var input = new ProcessarParcelasTipoParcelaDiasOuMesParaFF043Input(
-                protocolo,
+                Mock.Of<IGenerateProtocolo>(),
                 Mock.Of<ICS_GenerateId>(),
                 "01",
                 new string[] { "A", "B" },
@@ -116,7 +117,7 @@ namespace CSCore.Tests.Financeiro.Repository.Processos.CS_GeraMemoriaCalculoFF04
         {
             var testable = new ProcessarParcelasTipoParcelaDiasOuMesParaFF043Tests.TestableProcessarParcelas(
                 new ProcessarParcelasTipoParcelaDiasOuMesParaFF043Input(
-                    12345.67m,
+                   Mock.Of<IGenerateProtocolo>(),
                     Mock.Of<ICS_GenerateId>(),
                     "01",
                     new string[] { "A", "B" },
@@ -132,7 +133,7 @@ namespace CSCore.Tests.Financeiro.Repository.Processos.CS_GeraMemoriaCalculoFF04
         {
             var testable = new ProcessarParcelasTipoParcelaDiasOuMesParaFF043Tests.TestableProcessarParcelas(
                 new ProcessarParcelasTipoParcelaDiasOuMesParaFF043Input(
-                    12345.67m,
+                    Mock.Of<IGenerateProtocolo>(),
                     Mock.Of<ICS_GenerateId>(),
                     "01",
                     new string[] { "A", "B" },

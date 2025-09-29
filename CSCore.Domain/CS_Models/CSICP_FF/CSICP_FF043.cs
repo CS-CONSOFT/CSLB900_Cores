@@ -38,7 +38,7 @@ public partial class CSICP_FF043
         int Parcela,
         DateTime DataVencimento,
         string Pfxtitulo,
-        decimal Protocolo
+        decimal? Protocolo
         )
     {
         var parcelaStr = Parcela.ToString();

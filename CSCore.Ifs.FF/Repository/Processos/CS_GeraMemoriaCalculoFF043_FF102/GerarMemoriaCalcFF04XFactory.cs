@@ -13,14 +13,17 @@ public class GerarMemoriaCalcFF04XFactory
           /*CREATE USADO NO FLUXO DE MEMORIA PARA FF043*/
         public static IAuxProcessarCalculoTitulo RetornaInstanciaParaExecutarOCalculo(CreateParaMemoriaCalculoFF043Params prm)
         {
-            if (IsTipoParcelaDias(prm.InTipoBB008_ID_Recuperada, prm.In_StID_bb008_tp_ParcelaDias))
+        //incrementa de 1 em 1 mes
+        string[] aux_condicaoPagtoDividida = string.Join(";", prm.InNumeroDeParcelas, 0, 1).Split(';');
+        if (IsTipoParcelaDias(prm.InTipoBB008_ID_Recuperada, prm.In_StID_bb008_tp_ParcelaDias))
             {
                 var prmGeraMemoriaCalculo
                 = new ProcessarParcelasTipoParcelaDiasOuMesParaFF043Input(
                     Protocolo: prm.Protocolo,
                     GenerateId: prm.InGenerateId,
                     EmpresaID: prm.InEmpresaID,
-                    Aux_condicaoPagtoDividida: string.Join(";", prm.InNumeroDeParcelas, 0, 30).Split(';'),
+ 
+                    Aux_condicaoPagtoDividida: aux_condicaoPagtoDividida,
                     Work_valor_entrada: prm.InValorEntrada,
                     AppDbContext: prm.InAppDbContext,
                     IncrementarDataStrategy: new IncrementarDataTipoParcelaDiaStrategy()
@@ -36,7 +39,7 @@ public class GerarMemoriaCalcFF04XFactory
                     Protocolo: prm.Protocolo,
                     GenerateId: prm.InGenerateId,
                     EmpresaID: prm.InEmpresaID,
-                    Aux_condicaoPagtoDividida: string.Join(";", prm.InNumeroDeParcelas, 0, 30).Split(';'),
+                    Aux_condicaoPagtoDividida: aux_condicaoPagtoDividida,
                     Work_valor_entrada: prm.InValorEntrada,
                     AppDbContext: prm.InAppDbContext,
                     IncrementarDataStrategy: new IncrementarDataTipoParcelaMesStrategy()
@@ -47,11 +50,13 @@ public class GerarMemoriaCalcFF04XFactory
             //tipo parcela mes
             else if (IsTipoDias(prm.InTipoBB008_ID_Recuperada, prm.In_StID_bb008_tp_Dias))
             {
+            
                 return new ProcessarParcelasTipoParcelaDiaParaFF043(
+                    empresaID: prm.InEmpresaID,
                     protcolo: prm.Protocolo,
                     appDbContext: prm.InAppDbContext,
                     generateId: prm.InGenerateId,
-                    aux_condicaoPagtoDividida: string.Join(";", prm.InNumeroDeParcelas, 0, 30).Split(';'),
+                    aux_condicaoPagtoDividida: aux_condicaoPagtoDividida,
                     work_valor_entrada: prm.InValorEntrada
                 );
             }

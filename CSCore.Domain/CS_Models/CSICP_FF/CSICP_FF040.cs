@@ -89,5 +89,5 @@ public partial class    CSICP_FF040
 
     public OsusrE9aCsicpFf040Sit? NavFF040SituacaoID { get; set; }
 
-    public virtual CSICP_FF003? Ff040Especie { get; set; }
+    //public virtual CSICP_FF003? Ff040Especie { get; set; }
 }

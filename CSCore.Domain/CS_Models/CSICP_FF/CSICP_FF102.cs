@@ -77,11 +77,11 @@ public partial class CSICP_FF102
 
     public int? Ff102CodgMoeda { get; set; }
 
-    public DateTime Ff102DataEmissao { get; set; } = default(DateTime);
+    public DateTime Ff102DataEmissao { get; set; } = new DateTime(1999, 01,01);
 
-    public DateTime Ff102DataVencimento { get; set; } = default(DateTime);
+    public DateTime Ff102DataVencimento { get; set; } = new DateTime(1999, 01, 01);
 
-    public DateTime? Ff102DataVencReal { get; set; } = default(DateTime);
+    public DateTime? Ff102DataVencReal { get; set; } = new DateTime(1999, 01,01);
 
     public decimal? Ff102ValorTitulo { get; set; }
 
@@ -889,6 +889,7 @@ public partial class CSICP_FF102
             Ff102cpConfirmadoId = ff102cpConfirmadoId,
             Ff102cpPagtoautorizadoId = ff102cpPagtoautorizadoId,
             Ff102Especieid = ff102Especieid?.ToString(),
+            
             // Todas as outras propriedades permanecem nulas ou com valor padrão
         };
     }

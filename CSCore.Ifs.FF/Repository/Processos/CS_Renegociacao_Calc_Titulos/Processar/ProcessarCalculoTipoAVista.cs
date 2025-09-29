@@ -23,7 +23,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             _generateId = generateId;
         }
 
-        public async Task Processar(
+        public async virtual Task Processar(
             /// <summary>
             /// Identificador do processo em que esse método será usado
             /// Ex. Ao processar ProcessarParcelasTipoParcelaDiasOuMes no processo de 

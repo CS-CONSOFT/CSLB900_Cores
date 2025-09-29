@@ -17,7 +17,7 @@ public class CreateParaMemoriaCalculoFF043Params
     public int In_StID_bb008_tp_ParcelaMes { get; set; }
     public int In_StID_bb008_tp_A_vista { get; set; }
     public int InTipoBB008_ID_Recuperada { get; set; }
-    public decimal Protocolo { get; set; } = 0m;
+    public IGenerateProtocolo Protocolo { get; set; }
     public ICS_GenerateId InGenerateId { get; set; } = null!;
     public string InEmpresaID { get; set; } = null!;
     public int InNumeroDeParcelas { get; set; }
@@ -30,7 +30,7 @@ public class CreateParaMemoriaCalculoFF043Params
         int in_StID_bb008_tp_ParcelaMes,
         int in_StID_bb008_tp_A_vista,
         int inTipoBB008_ID_Recuperada,
-        decimal Protocolo,
+        IGenerateProtocolo Protocolo,
         ICS_GenerateId inGenerateId,
         string inEmpresaID,
         int inNumeroDeParcelas,

@@ -1,22 +1,45 @@
-using System;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.FinanciamentoCalculador;
+using CSLB900.MSTools.CalculoAdicaoDataStrategy;
+using CSLB900.MSTools.Calculos;
 using CSLB900.MSTools.GenerateId;
+using System;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102.ParcelaTipoAVista;
 
 public class ProcessarParcelasTipoAVistaParaFF043 : ProcessarCalculoTipoAVista
 {
-    private readonly decimal protocolo;
+    private readonly IGenerateProtocolo protocolo;
     private readonly AppDbContext _appDbContext;
 
-    public ProcessarParcelasTipoAVistaParaFF043(decimal protocolo, AppDbContext appDbContext, ICS_GenerateId generateId) : base(appDbContext, generateId)
+    public ProcessarParcelasTipoAVistaParaFF043(IGenerateProtocolo protocolo, AppDbContext appDbContext, ICS_GenerateId generateId) : base(appDbContext, generateId)
     {
         this.protocolo = protocolo;
         this._appDbContext = appDbContext;
     }
+
+    public override async Task Processar(
+       string InControleID,
+            DateOnly InData,
+            int InTenantID,
+            RetornoFinanciamento in_calculoFinanciamento,
+       decimal? InValorEntrada = 0)
+            {
+        var entidade = CriarEntidade<CSICP_FF043>(
+                 InControleID,
+                 InData,
+                 InTenantID,
+                 in_calculoFinanciamento,
+                 InAuxParcelaAtual: 1,
+                 string.Empty,
+                 InValorEntrada);
+                if (entidade != null)
+            await PersistirAsync(entidade);
+    }
+
 
     public override TEntity? CriarEntidade<TEntity>(
         string InControleID,
@@ -38,7 +61,7 @@ public class ProcessarParcelasTipoAVistaParaFF043 : ProcessarCalculoTipoAVista
             Parcela: 1,
             InData.ToDateTime(new TimeOnly(0, 0)),
             string.Empty,
-            protocolo
+            Protocolo: null
             );
         return entidade as TEntity;
     }

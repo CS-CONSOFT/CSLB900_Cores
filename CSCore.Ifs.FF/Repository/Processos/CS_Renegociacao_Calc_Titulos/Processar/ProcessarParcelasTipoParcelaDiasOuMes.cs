@@ -31,7 +31,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             _incrementarDataStrategy = incrementarDataStrategy;
         }
 
-        public async Task Processar(
+        public virtual async Task Processar(
             /// <summary>
             /// Identificador do processo em que esse método será usado
             /// Ex. Ao processar ProcessarParcelasTipoParcelaDiasOuMes no processo de 
