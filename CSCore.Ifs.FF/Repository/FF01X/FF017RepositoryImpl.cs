@@ -75,6 +75,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                    from sy001 in sy001_ff017_join.DefaultIfEmpty()
 
                    where ff017.TenantId == in_tenant
+
                    select new CSICP_FF017
                    {
                        TenantId = ff017.TenantId,
@@ -227,15 +228,14 @@ namespace CSCore.Ifs.FF.Repository.FF01X
         private IQueryable<CSICP_FF017> FiltraQuandoExisteFiltro(string in_estabId, string? in_nomeCliente,
             DateTime? in_dataInicial, DateTime? in_dataFinal, IQueryable<CSICP_FF017> query)
         {
-            if (in_estabId != null)
-                query = query.Where(e => e.Id!.Equals(in_estabId));
+            if (!string.IsNullOrEmpty(in_estabId))
+                query = query.Where(e => e.Ff017Filialid == in_estabId);
             if (!string.IsNullOrEmpty(in_nomeCliente))
-                query = query.Where(e => e.NavBB012.Bb012NomeCliente.Contains(in_nomeCliente));
+                query = query.Where(e => e.NavBB012 != null && e.NavBB012.Bb012NomeCliente.Contains(in_nomeCliente));
             if (in_dataInicial != null)
                 query = query.Where(e => e.Ff017DataRenegociacao >= in_dataInicial);
             if (in_dataFinal != null)
                 query = query.Where(e => e.Ff017DataRenegociacao <= in_dataFinal);
-            //tem outros filtros? Perguntar ao Agnaldo.
             return query;
         }
     }
