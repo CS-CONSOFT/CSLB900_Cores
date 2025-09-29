@@ -3238,6 +3238,15 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("NN016_ID_BX_TES");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
+                entity.HasOne(e => e.NavBB001).WithOne().HasForeignKey<CSICP_FF106>(e => e.Ff106Filialid);
+                entity.HasOne(e => e.NavBB006).WithOne().HasForeignKey<CSICP_FF106>(e => e.Ff106Agcobradorid);
+                entity.HasOne(e => e.NavBB009).WithOne().HasForeignKey<CSICP_FF106>(e => e.Ff106Tipocobrancaid);
+                entity.HasOne(e => e.NavFF102).WithOne().HasForeignKey<CSICP_FF106>(e => e.Ff102Id);
+                entity.HasOne(e => e.NavFF105).WithOne().HasForeignKey<CSICP_FF106>(e => e.Ff105Id);
+                entity.HasOne(e => e.NavFF105).WithOne().HasForeignKey<CSICP_FF106>(e => e.Ff105Id);
+                entity.HasOne(e => e.NavFF112ApiOcorrencia).WithOne().HasForeignKey<CSICP_FF106>(e => e.Ff106OcorrenciaApi);
+                entity.HasOne(e => e.NavFF112ApiBaixa).WithOne().HasForeignKey<CSICP_FF106>(e => e.Ff106BaixaApi);
+                entity.HasOne(e => e.NavFF112ApiLiquidacao).WithOne().HasForeignKey<CSICP_FF106>(e => e.Ff106LiqApi);
 
 
             });

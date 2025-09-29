@@ -8,7 +8,7 @@ namespace CSCore.Domain.Interfaces.FF._1XX.FF140
         public DateTime? InDataInicio { get; set; }
         public DateTime? InDataFinal { get; set; }
         public string? InContaID { get; set; }
-        public string? InProtocolNumber { get; set; }
+        public string? InProtocoloNumber { get; set; }
         public int? InStatusID { get; set; }
         public int? InExecucaoID { get; set; }
         public int? InTpvinculoID { get; set; }
