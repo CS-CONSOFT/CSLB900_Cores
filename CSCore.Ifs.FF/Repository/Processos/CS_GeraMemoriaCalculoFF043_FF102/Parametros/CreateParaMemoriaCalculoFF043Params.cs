@@ -3,7 +3,7 @@ using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
 using CSLB900.MSTools.GenerateId;
 
-namespace CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102;
+namespace CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102.Parametros;
 
 /*PARAMETROS USADOS NA FACTORY PARA MEMORIA FF043*/
 public class CreateParaMemoriaCalculoFF043Params

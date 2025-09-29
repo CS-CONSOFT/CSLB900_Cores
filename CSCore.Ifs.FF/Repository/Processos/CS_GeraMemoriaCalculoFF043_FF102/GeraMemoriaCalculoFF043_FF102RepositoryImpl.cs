@@ -4,6 +4,7 @@ using CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
 using CSCore.Ex.Personalizada;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
+using CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102.Parametros;
 using CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102.ParcelaTipoAVista;
 using CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102.ParcelaTipoDia;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar;
@@ -11,6 +12,7 @@ using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.A
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.FinanciamentoCalculador;
 using CSLB900.MSTools.GenerateId;
 using Microsoft.EntityFrameworkCore;
+using NPOI.SS.Formula.Functions;
 using Org.BouncyCastle.Asn1.Pkcs;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102;
@@ -35,67 +37,87 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
     }
 
 
-    public async Task CS_005_GeraContasAPagar(
-        int InTenantID,
-        long InFF040_ID,
-        int InStID_FF040Sit_Registrado,
-        int InStID_FF102_Ent_Parcela,
-        int InStID_FF102_Sit_Aberto,
-        int InStID_FF102_Sit_Provisao,
-        int InStID_FF102_Aut_PagamentoAutorizado,
-        int InStID_FF102_Aut_PagamentoNaoAutorizado,
-        int InStID_Entities_SIM,
-        int InStID_Entities_NAO
-        )
+    public async Task CS_005_GeraContasAPagar(CS_005_GeraContasAPagarParametros prm)
     {
-        CSICP_FF040 WorkFF040 = await ObterFF040PorIdAsync(InTenantID, InFF040_ID);
-        List<long> ff042IdList = await ObterFF042IdsPorFF040Async(InTenantID, InFF040_ID);
+        CSICP_FF040 WorkFF040 = await ObterFF040PorIdAsync(prm.InTenantID, prm.InFF040_ID);
+        List<long> ff042IdList = await ObterFF042IdsPorFF040Async(prm.InTenantID, prm.InFF040_ID);
         List<CSICP_FF043> WorkListFF043 
-            = await ObterFF043PorFF042IdsAsync(InTenantID, ff042IdList);
+            = await ObterFF043PorFF042IdsAsync(prm.InTenantID, ff042IdList);
 
 
-        List<CSICP_FF102> WorkListFF102_Adicionados = new List<CSICP_FF102>();  
-        foreach (var current in WorkListFF043)
+        List<CSICP_FF102> WorkListFF102_Adicionados = new List<CSICP_FF102>();
+        List<CSICP_FF104> WorkListFF104_Adicionados = new List<CSICP_FF104>();
+        foreach (var currentFF043 in WorkListFF043)
         {
-            string generatedTituloId = generateId.GenerateUuId();
-            var observacao = "Geração em massa de Titulos " +
-            (WorkFF040.Ff040Tiporegistro == 3 ? "CP" : "CR") + " " +
-            (WorkFF040.Ff040Protocolnumber ?? "") + " " +
-            (WorkFF040.Ff040Texto ?? "");
+            bool ff000_IsDesabFcConfAut = await ObterIsDesabilitaFcConfAutAsync(prm.InTenantID, WorkFF040.Ff040Empresaid);
+            CSICP_FF102 titulo = MontarFF102(
+                prm,
+                WorkFF040,
+                WorkFF043: currentFF043,
+                WorkListFF043.Count,
+                ff000_IsDesabFcConfAut);
 
-            bool ff000_IsDesabFcConfAut = await ObterIsDesabilitaFcConfAutAsync(InTenantID);
+            CSICP_FF104 cSICP_FF104 = MontarFF104(prm, WorkFF040, titulo);
 
-            CSICP_FF102 titulo = MontarFF102(InTenantID, InStID_FF102_Ent_Parcela, InStID_FF102_Sit_Aberto, InStID_FF102_Sit_Provisao, InStID_FF102_Aut_PagamentoAutorizado, InStID_FF102_Aut_PagamentoNaoAutorizado, InStID_Entities_SIM, InStID_Entities_NAO, WorkFF040, WorkListFF043, current, generatedTituloId, observacao, ff000_IsDesabFcConfAut);
             WorkListFF102_Adicionados.Add(titulo);
-
-
+            WorkListFF104_Adicionados.Add(cSICP_FF104);
+            currentFF043.Ff043TituloCpId = titulo.Id;
         }
 
-        WorkFF040.Ff040Situacaoid = InStID_FF040Sit_Registrado;
+        WorkFF040.Ff040Situacaoid = prm.InStID_FF040Sit_Registrado;
     }
 
-    private async Task<bool> ObterIsDesabilitaFcConfAutAsync(int InTenantID)
+
+
+
+
+    /*PRIVADOS*/
+    private CSICP_FF104 MontarFF104(CS_005_GeraContasAPagarParametros prm, CSICP_FF040 WorkFF040, CSICP_FF102 titulo)
+    {
+        return CSICP_FF104.CreateInstance(
+            tenantId: prm.InTenantID,
+            id: generateId.GenerateUuId(),
+            filialID: WorkFF040.Ff040Empresaid ?? null,
+            ff102_id: titulo.Id,
+            ff040_id: WorkFF040.Ff040Id,
+            pfx: titulo.Ff102Pfx ?? "",
+            sfx: titulo.Ff102Sfx ?? "",
+            noTitulo: titulo.Ff102NoTitulo ?? 0,
+            nfNoCupom: decimal.Parse(WorkFF040.Ff040Protocolnumber ?? "0"),
+            dataEmissao: DateOnly.FromDateTime(WorkFF040.Ff040DataMovimento),
+            valorNF: Math.Round(titulo.Ff102ValorTitulo ?? 0, 2)
+            );
+    }
+
+    private async Task<bool> ObterIsDesabilitaFcConfAutAsync(int InTenantID, string? InBB001_ID)
     {
         return await _context.OsusrE9aCsicpFf000s
             .AsNoTracking()
             .Where(e => e.TenantId == InTenantID)
-            .Where(e => e.Ff000EstabId == "")
+            .Where(e => e.Ff000EstabId == InBB001_ID)
             .Select(e => e.Ff000Isdesabfcconfaut)
             .FirstOrDefaultAsync() ?? false;
     }
 
-    private static CSICP_FF102 MontarFF102(int InTenantID, int InStID_FF102_Ent_Parcela, int InStID_FF102_Sit_Aberto, int InStID_FF102_Sit_Provisao, int InStID_FF102_Aut_PagamentoAutorizado, int InStID_FF102_Aut_PagamentoNaoAutorizado, int InStID_Entities_SIM, int InStID_Entities_NAO, CSICP_FF040 WorkFF040, List<CSICP_FF043> WorkListFF043, CSICP_FF043 current, string generatedTituloId, string observacao, bool ff000_IsDesabFcConfAut)
+    private CSICP_FF102 MontarFF102(
+        CS_005_GeraContasAPagarParametros prm, CSICP_FF040 WorkFF040, CSICP_FF043 WorkFF043,int WorkListFF043Count, bool ff000_IsDesabFcConfAut)
     {
+        string generatedTituloId = generateId.GenerateUuId();
+        var observacao = "Geração em massa de Titulos " +
+           (WorkFF040.Ff040Tiporegistro == 3 ? "CP" : "CR") + " " +
+           (WorkFF040.Ff040Protocolnumber ?? "") + " " +
+           (WorkFF040.Ff040Texto ?? "");
+
         return CSICP_FF102.CreateInstance(
-               tenantId: InTenantID,
+               tenantId: prm.InTenantID,
                id: generatedTituloId,
                ff102Tiporegistro: WorkFF040.Ff040Tiporegistro == 1 ? 1 : 3,
                ff102Filialid: WorkFF040.Ff040Empresaid,
-               ff102Tipoparcelaid: InStID_FF102_Ent_Parcela,
-               ff102ParcelaX: current.Ff043Parcela,
-               ff102ParcelaY: WorkListFF043.Count,
-               ff102Pfx: current.Ff043Pfxtitulo,
-               ff102Sfx: current.Ff043Sfxtitulo,
+               ff102Tipoparcelaid: prm.InStID_FF102_Ent_Parcela,
+               ff102ParcelaX: WorkFF043.Ff043Parcela,
+               ff102ParcelaY: WorkListFF043Count,
+               ff102Pfx: WorkFF043.Ff043Pfxtitulo,
+               ff102Sfx: WorkFF043.Ff043Sfxtitulo,
                ff102Contaid: WorkFF040.Ff040ContaId,
                ff102Contarealid: WorkFF040.Ff040ContaId,
                ff102Ccustoid: WorkFF040.Ff040CcustoId,
@@ -104,17 +126,17 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
                ff102Responsavelid: WorkFF040.Ff040ResponsavelId,
                ff102Administradoraid: null,
                ff102DataEmissao: WorkFF040.Ff040DataMovimento,
-               ff102Cdatamovimento: current.Ff043DataVencto,
-               ff102ValorTitulo: Math.Round(current.Ff043ValorParcela ?? 0, 2),
-               ff102VlLiqTitulo: Math.Round(current.Ff043ValorParcela ?? 0, 2),
+               ff102Cdatamovimento: WorkFF043.Ff043DataVencto,
+               ff102ValorTitulo: Math.Round(WorkFF043.Ff043ValorParcela ?? 0, 2),
+               ff102VlLiqTitulo: Math.Round(WorkFF043.Ff043ValorParcela ?? 0, 2),
                ff102Observacao: observacao,
-               ff102FluxoCaixa: InStID_Entities_SIM,
-               ff102Situacaoid: WorkFF040.Ff040Isprovisao == true ? InStID_FF102_Sit_Provisao : InStID_FF102_Sit_Aberto,
-               ff102NoTitulo: current.Ff043Titulo,
+               ff102FluxoCaixa: prm.InStID_Entities_SIM,
+               ff102Situacaoid: WorkFF040.Ff040Isprovisao == true ? prm.InStID_FF102_Sit_Provisao : prm.InStID_FF102_Sit_Aberto,
+               ff102NoTitulo: WorkFF043.Ff043Titulo,
                ff10FpagtoId: "42",
                ff102Condicaoid: "42",
-               ff102cpConfirmadoId: ff000_IsDesabFcConfAut ? InStID_Entities_SIM : InStID_Entities_NAO,
-               ff102cpPagtoautorizadoId: ff000_IsDesabFcConfAut ? InStID_FF102_Aut_PagamentoAutorizado : InStID_FF102_Aut_PagamentoNaoAutorizado,
+               ff102cpConfirmadoId: ff000_IsDesabFcConfAut ? prm.InStID_Entities_SIM : prm.InStID_Entities_NAO,
+               ff102cpPagtoautorizadoId: ff000_IsDesabFcConfAut ? prm.InStID_FF102_Aut_PagamentoAutorizado : prm.InStID_FF102_Aut_PagamentoNaoAutorizado,
                ff102Especieid: WorkFF040.Ff040EspecieId == null ? 42 : WorkFF040.Ff040EspecieId);
     }
 

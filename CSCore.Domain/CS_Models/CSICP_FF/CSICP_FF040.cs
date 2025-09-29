@@ -14,7 +14,7 @@ public partial class    CSICP_FF040
 
     public int? Ff040Tiporegistro { get; set; }
 
-    public DateTime? Ff040DataMovimento { get; set; }
+    public DateTime Ff040DataMovimento { get; set; }
 
     public string? Ff040ContaId { get; set; }
 
