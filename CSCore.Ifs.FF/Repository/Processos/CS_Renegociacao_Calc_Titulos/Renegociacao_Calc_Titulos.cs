@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
 {
-   
+
     public class Renegociacao_Calc_Titulos : IRenegociacao_Calc_Titulos
     {
         private readonly AppDbContext _appDbContext;
@@ -42,7 +42,12 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
 
                 int work_qtd_parcelas
                     = CondicaoPagamentoAvaliador
-                    .AvaliarCondicaoPagamento(prmSimulacao, work_bb008, work_condicaoPagtoDividida);
+                    .AvaliarCondicaoPagamento(
+                        prmSimulacao.in_StID_bb008_tp_ParcelaDias,
+                        prmSimulacao.in_StID_bb008_tp_ParcelaMes,
+                        prmSimulacao.in_StID_bb008_tp_Dias,
+                        work_bb008,
+                        work_condicaoPagtoDividida);
 
 
                 RetornoFinanciamento calculoFinanciamento = FinanciamentoCalculator.CalcularValoresFinanciamento(
@@ -62,7 +67,13 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
                 };
 
                 IAuxProcessarCalculoTitulo processarCalculoTitulo = ProcessarRenegociacaoCalcTituloFactory.Create(prm);
-                await processarCalculoTitulo.Processar(prmSimulacao, calculoFinanciamento);
+
+                await processarCalculoTitulo.Processar(
+                    InControleID: prmSimulacao.in_renegociacaoID,
+                    InData: DateOnly.FromDateTime(prmSimulacao.in_data),
+                    InTenantID: prmSimulacao.in_TenantID,
+                    ina_calculoFinanciamento: calculoFinanciamento,
+                    InValorEntrada: prmSimulacao.in_valorEntrada);
 
                 await transaction.CommitAsync();
                 return true;

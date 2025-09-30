@@ -57,9 +57,23 @@ public partial class CSICP_FF104
 
     public string? Ge010Id { get; set; }
 
-
-
     public CSICP_FF102? Ff102 { get; set; }
 
-
+    public static CSICP_FF104 CreateInstance(int tenantId, string id, string? filialID, string ff102_id, long? ff040_id, string pfx, string sfx, decimal noTitulo, decimal nfNoCupom, DateOnly dataEmissao, decimal valorNF)
+    {
+        return new CSICP_FF104
+        {
+            TenantId = tenantId,
+            Id = id,
+            Ff104Filialid = filialID,
+            Ff102Id = ff102_id,
+            Ff040Id = ff040_id,
+            Ff104Pfx = pfx,
+            Ff104Sfx = sfx,
+            Ff104NoTitulo = noTitulo,
+            Ff104CiNfNCupom = nfNoCupom,
+            Ff104Dataemissao = dataEmissao.ToDateTime(new TimeOnly(0, 0)),
+            Ff104Valornf = valorNF
+        };
+    }
 }
