@@ -11,8 +11,12 @@ using CSBS101._82Application.Mapper.BB00X.BB012;
 using CSBS101.C82Application.Dto.BB00X.BB00X.BB008;
 using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF003;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF141;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF143;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF144;
 using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
 using CSCore.Application.Dto.Mapper.FF.FF00X;
+using CSCore.Application.Dto.Mapper.FF.FF1XX;
 using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_FF;
@@ -81,6 +85,9 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF140
             NavFF140Status = entity.NavFF140Status;
             NavFF140Exe = entity.NavFF140Exe;
             NavFF140Vinculo = entity.NavFF140Vinculo;
+            NavListFF141 = entity.NavListFF141?.Select(e => e.ToDtoGetFF141()).ToList();
+            NavListFF143 = entity.NavListFF143?.Select(e => e.ToDtoGetFF143()).ToList();
+            NavListFF144 = entity.NavListFF144?.Select(e => e.ToDtoGetFF144()).ToList();
         }
 
         public int TenantId { get; set; }
@@ -140,8 +147,8 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF140
         public OsusrE9aCsicpFf140Vin? NavFF140Vinculo { get; set; }
 
         //NavsListGetByID
-        public IEnumerable<CSICP_FF141>? NavListFF141 { get; set; } = [];
-        public IEnumerable<CSICP_FF143>? NavListFF143 { get; set; } = [];
-        public IEnumerable<CSICP_FF144>? NavListFF144 { get; set; } = [];
+        public List<DtoGetFF141>? NavListFF141 { get; set; }
+        public List<DtoGetFF143>? NavListFF143 { get; set; }
+        public List<DtoGetFF144>? NavListFF144 { get; set; }
     }
 }

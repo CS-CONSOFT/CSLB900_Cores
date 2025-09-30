@@ -64,7 +64,7 @@ public partial class CSICP_FF140
     public OsusrE9aCsicpFf140Vin? NavFF140Vinculo { get; set; }
 
     //NavsListGetByID
-    public IEnumerable<CSICP_FF141>? NavListFF141 { get; set; } = [];
-    public IEnumerable<CSICP_FF143>? NavListFF143 { get; set; } = [];
-    public IEnumerable<CSICP_FF144>? NavListFF144 { get; set; } = [];
+    public IEnumerable<CSICP_FF141>? NavListFF141 { get; set; }
+    public IEnumerable<CSICP_FF143>? NavListFF143 { get; set; }
+    public IEnumerable<CSICP_FF144>? NavListFF144 { get; set; }
 }

@@ -23,7 +23,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF140
             IQueryable<CSICP_FF140> query = GetQueryBase(InTenantID);
             query = query.Include(e => e.NavListFF141)
                          .Include(e => e.NavListFF143)
-                         .Include(e => e.NavListFF144);
+
+                         .Include(e => e.NavListFF144)
+                            .ThenInclude(e => e.NavFF140ExecucaoFF144)
+                         .Include(e => e.NavListFF144)
+                            .ThenInclude(e => e.NavFF140StatusFF144)
+                         .Include(e => e.NavListFF144)
+                            .ThenInclude(e => e.NavSY001UsuarioFF144);
+                            
 
             CSICP_FF140? CSICP_FF140 = await query.FirstOrDefaultAsync(e => e.Ff140Id == InFF140ID);
             return CSICP_FF140;

@@ -4829,8 +4829,6 @@ namespace CSCore.Ifs.CS_Context
                 entity.HasOne(e => e.NavFF140Status).WithMany().HasForeignKey(e => e.Ff140Statusid);
                 entity.HasOne(e => e.NavFF140Exe).WithMany().HasForeignKey(e => e.Ff140Execucaoid);
                 entity.HasOne(e => e.NavFF140Vinculo).WithMany().HasForeignKey(e => e.Ff140Tpvinculoid);
-                //entity.HasMany(e => e.NavListFF141).WithOne().HasForeignKey(e => e.);
-
 
 
             });
@@ -4861,6 +4859,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF141_VUNITARIO");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
+                entity.HasOne(e => e.NavFF140).WithMany(e => e.NavListFF141).HasForeignKey(e => e.Ff140RdId);
 
             });
 
@@ -4917,6 +4916,8 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FILENAME");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
+                entity.HasOne(e => e.NavFF140).WithMany(e => e.NavListFF143).HasForeignKey(e => e.Ff140RdId);
+
             });
 
             modelBuilder.Entity<CSICP_FF144>(entity =>
@@ -4950,6 +4951,10 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF144_USUARIOPROPRIEID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
+                entity.HasOne(e => e.NavFF140).WithMany(e => e.NavListFF144).HasForeignKey(e => e.Ff144RdId);
+                entity.HasOne(e => e.NavFF140StatusFF144).WithMany().HasForeignKey(e => e.Ff144Statusid);
+                entity.HasOne(e => e.NavFF140ExecucaoFF144).WithMany().HasForeignKey(e => e.Ff144Execucaoid);
+                entity.HasOne(e => e.NavSY001UsuarioFF144).WithMany().HasForeignKey(e => e.Ff144Usuarioproprieid);
 
             });
 
