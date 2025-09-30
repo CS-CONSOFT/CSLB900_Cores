@@ -21,5 +21,4 @@ public partial class CSICP_FF144
 
     public string? F144Observacao { get; set; }
 
-    public virtual CSICP_FF140? Ff144Rd { get; set; }
 }

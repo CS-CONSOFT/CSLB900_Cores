@@ -1,10 +1,28 @@
-﻿using CSCore.Domain.CS_Models.CSICP_FF;
+﻿using CSBS101._82Application.Dto.BB00X.BB001;
+using CSBS101._82Application.Dto.BB00X.BB005;
+using CSBS101._82Application.Dto.BB00X.BB006;
+using CSBS101._82Application.Dto.BB00X.BB009;
+using CSBS101._82Application.Dto.BB00X.BB026;
+using CSBS101._82Application.ExtensionsMethods.BB00X;
+using CSBS101._82Application.Mapper.BB00X;
+using CSBS101._82Application.Mapper.BB00X.BB009;
+using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSBS101._82Application.Mapper.BB00X.BB012;
+using CSBS101.C82Application.Dto.BB00X.BB00X.BB008;
+using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF003;
+using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
+using CSCore.Application.Dto.Mapper.FF.FF00X;
+using CSCore.Application.Dto.Mapper.Sistema;
+using CSCore.Domain;
+using CSCore.Domain.CS_Models.CSICP_FF;
+using CSCore.Domain.CS_Models.Staticas.FF;
 
 namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF140
 {
     public record DtoGetFF140Simples(
         int TenantId,
-        string Ff140Id,
+        long Ff140Id,
         DateTime? Ff140Data,
         string? Ff140Contaid,
         string? Ff140Especieid,
@@ -51,6 +69,18 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF140
             Ff140QtdeParcelas = entity.Ff140QtdeParcelas;
             Ff140Estabid = entity.Ff140Estabid;
             Ff140AdtoId = entity.Ff140AdtoId;
+            NavBB001EstabID = entity.NavBB001EstabID?.ToDtoGetExibicao();
+            NavBB005CCustoID = entity.NavBB005CCustoID?.ToDtoGetBB005_Exibicao();
+            NavBB006AgCobradorID = entity.NavBB006AgCobradorID?.ToDtoGetExibicao();
+            NavBB008CondicaoID = entity.NavBB008CondicaoID?.ToDtoGetSimples();
+            NavBB009TpCobrancaID = entity.NavBB009TpCobrancaID?.ToDtoGetBB009_Exibicao();
+            NavBB012ContaID = entity.NavBB012ContaID?.ToDtoGetExibSimples();
+            NavBB026FPagto = entity.NavBB026FPagto?.ToDtoGetExibicao();
+            NavFF003EspecieID = entity.NavFF003EspecieID?.ToDtoGetExibicao();
+            NavSY001UsuarioPropID = entity.NavSY001UsuarioPropID?.ToDtoGetSimples();
+            NavFF140Status = entity.NavFF140Status;
+            NavFF140Exe = entity.NavFF140Exe;
+            NavFF140Vinculo = entity.NavFF140Vinculo;
         }
 
         public int TenantId { get; set; }
@@ -94,5 +124,24 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF140
         public string? Ff140Estabid { get; set; }
 
         public int? Ff140AdtoId { get; set; }
+
+        //NavsGetList
+        public Dto_GetBB001_Exibicao? NavBB001EstabID { get; set; }
+        public Dto_GetBB005_Exibicao? NavBB005CCustoID { get; set; }
+        public Dto_GetBB006_Exibicao? NavBB006AgCobradorID { get; set; }
+        public Dto_GetBB008_Exibicao? NavBB008CondicaoID { get; set; }
+        public Dto_GetBB009_Exibicao? NavBB009TpCobrancaID { get; set; }
+        public Dto_GetBB012_ExibSimples? NavBB012ContaID { get; set; }
+        public Dto_GetBB026_Exibicao? NavBB026FPagto { get; set; }
+        public Dto_GetFF003_Exibicao? NavFF003EspecieID { get; set; }
+        public Dto_GetSY001Simples? NavSY001UsuarioPropID { get; set; }
+        public OsusrE9aCsicpFf140Stum? NavFF140Status { get; set; }
+        public OsusrE9aCsicpFf140Exe? NavFF140Exe { get; set; }
+        public OsusrE9aCsicpFf140Vin? NavFF140Vinculo { get; set; }
+
+        //NavsListGetByID
+        public IEnumerable<CSICP_FF141>? NavListFF141 { get; set; } = [];
+        public IEnumerable<CSICP_FF143>? NavListFF143 { get; set; } = [];
+        public IEnumerable<CSICP_FF144>? NavListFF144 { get; set; } = [];
     }
 }
