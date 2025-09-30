@@ -22,7 +22,7 @@ public class GerarMemoriaCalcFF04XFactory
                     Protocolo: prm.Protocolo,
                     GenerateId: prm.InGenerateId,
                     EmpresaID: prm.InEmpresaID,
- 
+                    PFX_FF003: prm.FF003_Pfx,
                     Aux_condicaoPagtoDividida: aux_condicaoPagtoDividida,
                     Work_valor_entrada: prm.InValorEntrada,
                     AppDbContext: prm.InAppDbContext,
@@ -42,6 +42,7 @@ public class GerarMemoriaCalcFF04XFactory
                     Aux_condicaoPagtoDividida: aux_condicaoPagtoDividida,
                     Work_valor_entrada: prm.InValorEntrada,
                     AppDbContext: prm.InAppDbContext,
+                    PFX_FF003: prm.FF003_Pfx,
                     IncrementarDataStrategy: new IncrementarDataTipoParcelaMesStrategy()
                 );
                 return new ProcessarParcelasTipoParcelaDiasOuMesParaFF043(prmGeraMemoriaCalculo);
@@ -56,6 +57,7 @@ public class GerarMemoriaCalcFF04XFactory
                     protcolo: prm.Protocolo,
                     appDbContext: prm.InAppDbContext,
                     generateId: prm.InGenerateId,
+                    ff003_pfx: prm.FF003_Pfx,
                     aux_condicaoPagtoDividida: aux_condicaoPagtoDividida,
                     work_valor_entrada: prm.InValorEntrada
                 );
@@ -64,7 +66,7 @@ public class GerarMemoriaCalcFF04XFactory
             //a vista
             else if (IsTipoAVista(prm.InTipoBB008_ID_Recuperada, prm.In_StID_bb008_tp_A_vista))
             {
-                return new ProcessarParcelasTipoAVistaParaFF043(prm.Protocolo, prm.InAppDbContext, prm.InGenerateId);
+                return new ProcessarParcelasTipoAVistaParaFF043(prm.Protocolo, prm.InAppDbContext, prm.InGenerateId, prm.FF003_Pfx, prm.InEmpresaID);
             }
             throw new NotSupportedException("Tipo de renegociação não suportado.");
         }

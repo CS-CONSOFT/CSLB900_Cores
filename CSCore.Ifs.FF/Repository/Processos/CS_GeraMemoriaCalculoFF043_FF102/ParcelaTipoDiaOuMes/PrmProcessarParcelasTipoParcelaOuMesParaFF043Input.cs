@@ -13,5 +13,6 @@ public record ProcessarParcelasTipoParcelaDiasOuMesParaFF043Input(
         string[] Aux_condicaoPagtoDividida,
         decimal Work_valor_entrada,
         AppDbContext AppDbContext,
-        IIncrementarDataStrategy IncrementarDataStrategy
+        IIncrementarDataStrategy IncrementarDataStrategy,
+        string PFX_FF003
 );

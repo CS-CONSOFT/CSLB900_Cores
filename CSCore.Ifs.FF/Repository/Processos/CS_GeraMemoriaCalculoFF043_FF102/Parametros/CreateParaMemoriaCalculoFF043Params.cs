@@ -23,6 +23,7 @@ public class CreateParaMemoriaCalculoFF043Params
     public int InNumeroDeParcelas { get; set; }
     public decimal InValorEntrada { get; set; }
     public AppDbContext InAppDbContext { get; set; } = null!;
+    public string FF003_Pfx { get; set; } = "";
 
     public static CreateParaMemoriaCalculoFF043Params Create(
         int in_StID_bb008_tp_Dias,
@@ -35,7 +36,9 @@ public class CreateParaMemoriaCalculoFF043Params
         string inEmpresaID,
         int inNumeroDeParcelas,
         decimal inValorEntrada,
-        AppDbContext inAppDbContext)
+        AppDbContext inAppDbContext,
+        string FF003_Pfx
+        )
     {
         return new CreateParaMemoriaCalculoFF043Params
         {
@@ -49,7 +52,9 @@ public class CreateParaMemoriaCalculoFF043Params
             InEmpresaID = inEmpresaID,
             InNumeroDeParcelas = inNumeroDeParcelas,
             InValorEntrada = inValorEntrada,
-            InAppDbContext = inAppDbContext
+            InAppDbContext = inAppDbContext,
+            FF003_Pfx = FF003_Pfx
+
         };
     }
 

@@ -12,13 +12,17 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102.Pa
 
 public class ProcessarParcelasTipoAVistaParaFF043 : ProcessarCalculoTipoAVista
 {
-    private readonly IGenerateProtocolo protocolo;
+    private readonly string ff003Pfx;
     private readonly AppDbContext _appDbContext;
+    private readonly IGenerateProtocolo protocolo;
+    private readonly string empresaID;
 
-    public ProcessarParcelasTipoAVistaParaFF043(IGenerateProtocolo protocolo, AppDbContext appDbContext, ICS_GenerateId generateId) : base(appDbContext, generateId)
+    public ProcessarParcelasTipoAVistaParaFF043(IGenerateProtocolo protocolo, AppDbContext appDbContext, ICS_GenerateId generateId, string ff003PFx, string empresaID) : base(appDbContext, generateId)
     {
-        this.protocolo = protocolo;
+        this.ff003Pfx = ff003PFx;
         this._appDbContext = appDbContext;
+        this.protocolo = protocolo;
+        this.empresaID = empresaID;
     }
 
     public override async Task Processar(
@@ -28,6 +32,7 @@ public class ProcessarParcelasTipoAVistaParaFF043 : ProcessarCalculoTipoAVista
             RetornoFinanciamento in_calculoFinanciamento,
        decimal? InValorEntrada = 0)
             {
+        decimal Protocolo = await this.protocolo.Fcn_Protocolo10(this.empresaID, "CPAGAR", InTenantID);
         var entidade = CriarEntidade<CSICP_FF043>(
                  InControleID,
                  InData,
@@ -36,8 +41,11 @@ public class ProcessarParcelasTipoAVistaParaFF043 : ProcessarCalculoTipoAVista
                  InAuxParcelaAtual: 1,
                  string.Empty,
                  InValorEntrada);
-                if (entidade != null)
-            await PersistirAsync(entidade);
+
+        if (entidade == null) return;
+
+        entidade.Ff043Titulo = Protocolo;
+        await PersistirAsync(entidade);
     }
 
 
@@ -60,7 +68,7 @@ public class ProcessarParcelasTipoAVistaParaFF043 : ProcessarCalculoTipoAVista
             in_calculoFinanciamento.ValorFinanciado,
             Parcela: 1,
             InData.ToDateTime(new TimeOnly(0, 0)),
-            string.Empty,
+            Pfxtitulo: this.ff003Pfx,
             Protocolo: null
             );
         return entidade as TEntity;

@@ -38,7 +38,7 @@ public record CS_005_GeraContasAPagarParametros
 
 public interface IGeraMemoriaCalculoFF043_FF102Repository
 {
-    Task<CSICP_FF042> GerarFormaPagamentoMemoriaCalculo(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm);
-    Task CS_005_GeraContasAPagar(CS_005_GeraContasAPagarParametros prm);
-    Task GerarMemoriaCalculoFF043Async(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm, long idFF042);
+    Task<(CSICP_FF042, CSICP_FF040)> GerarFormaPagamentoMemoriaCalculo(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm);
+    Task CS_005_GeraContasAPagar(CS_005_GeraContasAPagarParametros prm, CSICP_FF040 WorkFF040);
+    Task GerarMemoriaCalculoFF043Async(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm, long idFF042, CSICP_FF040 InFF040);
 }

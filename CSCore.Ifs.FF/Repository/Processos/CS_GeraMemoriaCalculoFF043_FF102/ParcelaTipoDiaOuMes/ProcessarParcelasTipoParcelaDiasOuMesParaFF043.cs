@@ -21,6 +21,7 @@ public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasT
     private readonly string empresaID;
     private readonly decimal _work_valor_entrada;
     private readonly IIncrementarDataStrategy _incrementarDataStrategy;
+    private readonly string PFX_FF003;
 
     public ProcessarParcelasTipoParcelaDiasOuMesParaFF043(ProcessarParcelasTipoParcelaDiasOuMesParaFF043Input input)
            : base(input.GenerateId,
@@ -35,6 +36,7 @@ public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasT
         this._work_valor_entrada = input.Work_valor_entrada;
         this._incrementarDataStrategy = input.IncrementarDataStrategy;
         this.empresaID = input.EmpresaID;
+        this.PFX_FF003 = input.PFX_FF003;
     }
 
     public override async Task Processar(
@@ -56,9 +58,9 @@ public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasT
         List<RetCalculoParcelasPorCondicao> listaCalculoParcelasPorCondicao = CalculoParcelasPorCondicao.Calcular(prm, _incrementarDataStrategy);
 
         List<CSICP_FF043> entidadesParaInserir = new();
+        decimal Protocolo = await this.Fcn_Protocolo10.Fcn_Protocolo10(empresaID, "CPAGAR", InTenantID);
         foreach (var calculoCorrente in listaCalculoParcelasPorCondicao)
         {
-            decimal Protocolo = await this.Fcn_Protocolo10.Fcn_Protocolo10(empresaID, "CPAGAR", InTenantID);
             var entidade = CriarEntidade<CSICP_FF043>(calculoCorrente, InTenantID, InControleID);
             entidade!.Ff043Titulo = Protocolo;
             if (entidade is null)
@@ -69,7 +71,8 @@ public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasT
     }
 
 
-    /*ALTERANDO A ENTIDADE QUE SERÁ SALVA AO GERAR O CALCULO*/
+
+   /*ALTERANDO A ENTIDADE QUE SERÁ SALVA AO GERAR O CALCULO*/
     override protected TEntity? CriarEntidade<TEntity>(
         RetCalculoParcelasPorCondicao calculoCorrente, int InTenantID, string InIdControle) where TEntity : class
     {
@@ -82,7 +85,9 @@ public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasT
             ValorParcela: calculoCorrente.ValorParcela,
             Parcela: calculoCorrente.Parcela,
             DataVencimento: calculoCorrente.DataVencimento,
-            Pfxtitulo: "",
+            Pfxtitulo: PFX_FF003,
+
+            //setado dentro doforeach
             Protocolo: null
         );
         return entidade as TEntity;

@@ -15,19 +15,22 @@ public class ProcessarParcelasTipoParcelaDiaParaFF043 : ProcessarCalculoTituloTi
   private readonly AppDbContext _appDbContext;
   private readonly string empresaID;
   private readonly IEnumerable<string> _aux_condicaoPagtoDividida;
+  private readonly string FF003_Pfx;
   public ProcessarParcelasTipoParcelaDiaParaFF043(
     string empresaID,
     IGenerateProtocolo protcolo,
     AppDbContext appDbContext,
     ICS_GenerateId generateId,
     IEnumerable<string> aux_condicaoPagtoDividida,
-   decimal work_valor_entrada) :
+   decimal work_valor_entrada,
+   string ff003_pfx) :
     base(appDbContext, generateId, aux_condicaoPagtoDividida, work_valor_entrada)
   {
-    this.protocolo = protcolo;
-    this._appDbContext = appDbContext;
-    this._aux_condicaoPagtoDividida = aux_condicaoPagtoDividida;
+        this.protocolo = protcolo;
+        this._appDbContext = appDbContext;
+        this._aux_condicaoPagtoDividida = aux_condicaoPagtoDividida;
         this.empresaID = empresaID;
+        this.FF003_Pfx = ff003_pfx;
     }
 
     public override async Task Processar(string InControleID, DateOnly InData, int InTenantID, RetornoFinanciamento in_calculoFinanciamento, decimal? InValorEntrada = 0)
@@ -43,7 +46,7 @@ public class ProcessarParcelasTipoParcelaDiaParaFF043 : ProcessarCalculoTituloTi
                ValorParcela: InValorEntrada ?? 0m,
                Parcela: aux_parcela_atual,
                DataVencimento: InData.ToDateTime(new TimeOnly(0, 0)).AddDays(int.Parse(diasPraAdd)),
-               Pfxtitulo: "",
+               Pfxtitulo: FF003_Pfx,
                Protocolo: Protocolo
            );
 

@@ -30,11 +30,10 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
         this.generateId = generateId;
     }
 
-    public async Task<CSICP_FF042> GerarFormaPagamentoMemoriaCalculo(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm)
+    public async Task<(CSICP_FF042, CSICP_FF040)> GerarFormaPagamentoMemoriaCalculo(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm)
     {
         CSICP_FF040 WorkFF040 = await _context.OsusrE9aCsicpFf040s
                      .Where(e => e.TenantId == prm.InTenantID && e.Ff040Id == prm.InFF040_ID)
-                     .AsNoTracking()
                      .FirstOrDefaultAsync() ?? throw new Exception("FF040 não encontrada");
 
         WorkFF040.Ff040Dbasevencto = prm.InDataBaseVencimento;
@@ -46,17 +45,15 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
             NroParcelas: prm.InNroDeParcelas);
 
         var result = _context.Add(WorkFF042);
-        return WorkFF042;
+        return (WorkFF042, WorkFF040);
     }
 
 
-    public async Task CS_005_GeraContasAPagar(CS_005_GeraContasAPagarParametros prm)
+    public async Task CS_005_GeraContasAPagar(CS_005_GeraContasAPagarParametros prm, CSICP_FF040 WorkFF040)
     {
-        CSICP_FF040 WorkFF040 = await ObterFF040PorIdAsync(prm.InTenantID, prm.InFF040_ID);
-        List<long> ff042IdList = await ObterFF042IdsPorFF040Async(prm.InTenantID, prm.InFF040_ID);
-        List<CSICP_FF043> WorkListFF043 
-            = await ObterFF043PorFF042IdsAsync(prm.InTenantID, ff042IdList);
-
+      
+        List<CSICP_FF043> WorkListFF043 = await ObterFF043ParaContasAPagarAsync(prm);
+        
         foreach (var currentFF043 in WorkListFF043)
         {
             string? especieBB026ID_Da_Forma = await ObterEspecieIdDaFormaPgtoAsync(prm);
@@ -77,17 +74,17 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
             _context.Add(titulo);
             _context.Add(cSICP_FF104);
 
-            //currentFF043.Ff043TituloCpId = generatedTituloId;
+            currentFF043.NavFF102Titulo = titulo;
         }
-
         WorkFF040.Ff040Situacaoid = prm.InStID_FF040Sit_Registrado;
     }
 
-    public async Task GerarMemoriaCalculoFF043Async(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm, long idFF042)
+
+    public async Task GerarMemoriaCalculoFF043Async(PrmGeraFormPgtoMemoriaCalculoFF043_FF102Repository prm, long idFF042, CSICP_FF040 InFF040)
     {
         CSICP_Bb008 work_bb008 = await ObterCondicaoPagamentoBb008(prm.InTenantID, prm.InCondicaoPgtoID);
 
-        decimal Protocolo = await this.generateProtocolo.Fcn_Protocolo10(prm.InEmpresaID, "CPAGAR", prm.InTenantID);
+        string? pfxFF003 = await ObterPrefixoFF003PorFormaPgtoAsync(prm.InTenantID, InFF040);
 
         var prmGeraMemoriaCalculo = CreateParaMemoriaCalculoFF043Params.Create(
             in_StID_bb008_tp_Dias: prm.In_StID_bb008_tp_Dias,
@@ -100,7 +97,9 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
             inEmpresaID: prm.InEmpresaID,
             inNumeroDeParcelas: prm.InNroDeParcelas,
             inValorEntrada: 0m,
-            inAppDbContext: _context
+            inAppDbContext: _context,
+            FF003_Pfx: pfxFF003 ?? ""
+
         );
 
 
@@ -111,10 +110,14 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
 
         if (processarCalculoTitulo is ProcessarParcelasTipoParcelaDiasOuMes)
             processarCalculoTitulo = processarCalculoTitulo as ProcessarParcelasTipoParcelaDiasOuMesParaFF043;
-        else if (processarCalculoTitulo is ProcessarCalculoTituloTipoDias)
-            processarCalculoTitulo = processarCalculoTitulo as ProcessarParcelasTipoParcelaDiaParaFF043;
-        else if (processarCalculoTitulo is ProcessarCalculoTipoAVista)
-            processarCalculoTitulo = processarCalculoTitulo as ProcessarParcelasTipoAVistaParaFF043;
+        else return;
+
+        /*Valter 30-09-2025: Isso abaixo foi comentado porque, segundo o Agnaldo, apenas o TIPO MENSAL é feito*/
+
+        //else if (processarCalculoTitulo is ProcessarCalculoTituloTipoDias)
+        //    processarCalculoTitulo = processarCalculoTitulo as ProcessarParcelasTipoParcelaDiaParaFF043;
+        //else if (processarCalculoTitulo is ProcessarCalculoTipoAVista)
+        //    processarCalculoTitulo = processarCalculoTitulo as ProcessarParcelasTipoAVistaParaFF043;
 
         RetornoFinanciamento calculoFinanciamento = CalcularValoresdeFinanciamento(work_bb008, prm);
 
@@ -127,12 +130,25 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
         );
     }
 
+    private async Task<string?> ObterPrefixoFF003PorFormaPgtoAsync(int InTenantID, CSICP_FF040 InFF040)
+    {
+        var pfxFF003 = await _context.OsusrE9aCsicpFf003s.Where(e => e.Id == InFF040.Ff040EspecieId && e.TenantId == InTenantID).Select(e => e.Ff003Pfx).FirstOrDefaultAsync();
+        return pfxFF003;
+    }
+
 
 
 
 
     /*PRIVADOS*/
 
+    private async Task<List<CSICP_FF043>> ObterFF043ParaContasAPagarAsync(CS_005_GeraContasAPagarParametros prm)
+    {
+        List<long> ff042IdList = await ObterFF042IdsPorFF040Async(prm.InTenantID, prm.InFF040_ID);
+        List<CSICP_FF043> WorkListFF043
+            = await ObterFF043PorFF042IdsAsync(prm.InTenantID, ff042IdList);
+        return WorkListFF043;
+    }
     private async Task<string?> ObterEspecieIdDaFormaPgtoAsync(CS_005_GeraContasAPagarParametros prm)
     {
         return await _context.OsusrE9aCsicpBb026s
@@ -194,7 +210,7 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
                ff102Responsavelid: WorkFF040.Ff040ResponsavelId,
                ff102Administradoraid: null,
                ff102DataEmissao: WorkFF040.Ff040DataMovimento,
-               ff102Cdatamovimento: WorkFF043.Ff043DataVencto,
+               ff102Cdatamovimento: WorkFF043.Ff043DataVencto ?? new DateTime(1999,01,01),
                ff102ValorTitulo: Math.Round(WorkFF043.Ff043ValorParcela ?? 0, 2),
                ff102VlLiqTitulo: Math.Round(WorkFF043.Ff043ValorParcela ?? 0, 2),
                ff102Observacao: observacao,

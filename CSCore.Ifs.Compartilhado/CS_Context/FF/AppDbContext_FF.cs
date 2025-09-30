@@ -1981,7 +1981,9 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF043_VALOR_PARCELA");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-
+                entity.HasOne(ff043 => ff043.NavFF102Titulo)
+                .WithMany() 
+                .HasForeignKey(ff043 => ff043.Ff043TituloCpId);
 
             });
 

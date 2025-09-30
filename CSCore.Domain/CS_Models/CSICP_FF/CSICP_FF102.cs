@@ -844,7 +844,7 @@ public partial class CSICP_FF102
  string? ff102Responsavelid,
  string? ff102Administradoraid,
  DateTime? ff102DataEmissao,
- DateTime? ff102Cdatamovimento,
+ DateTime ff102Cdatamovimento,
  decimal? ff102ValorTitulo,
  decimal? ff102VlLiqTitulo,
  string? ff102Observacao,
@@ -877,7 +877,7 @@ public partial class CSICP_FF102
             Ff102Responsavelid = ff102Responsavelid,
             Ff102Administradoraid = ff102Administradoraid,
             Ff102DataEmissao = ff102DataEmissao ?? default,
-            Ff102Cdatamovimento = ff102Cdatamovimento?.ToString(),
+            Ff102Cdatamovimento = ff102Cdatamovimento.ToString(),
             Ff102ValorTitulo = ff102ValorTitulo,
             Ff102VlLiqTitulo = ff102VlLiqTitulo ?? 0,
             Ff102Observacao = ff102Observacao,
@@ -889,6 +889,7 @@ public partial class CSICP_FF102
             Ff102cpConfirmadoId = ff102cpConfirmadoId,
             Ff102cpPagtoautorizadoId = ff102cpPagtoautorizadoId,
             Ff102Especieid = ff102Especieid?.ToString(),
+            Ff102DataVencimento = ff102Cdatamovimento 
             
             // Todas as outras propriedades permanecem nulas ou com valor padrão
         };
