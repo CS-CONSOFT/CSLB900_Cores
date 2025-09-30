@@ -23,7 +23,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_GerarTituloemMassa_Cancelar
             var ff040 = await appDbContext.OsusrE9aCsicpFf040s.FindAsync(ff040Id) 
                 ?? throw new KeyNotFoundException($"FF040 com TenantID {tenantId} e FF040_ID {ff040Id} não encontrada.");
 
-            var listaFF042 = appDbContext.OsusrE9aCsicpFf042s
+            var listaFF042 = await appDbContext.OsusrE9aCsicpFf042s
                 .Where(e => e.TenantId == tenantId && e.Ff040Id == ff040Id)
                 .ToListAsync();
 
