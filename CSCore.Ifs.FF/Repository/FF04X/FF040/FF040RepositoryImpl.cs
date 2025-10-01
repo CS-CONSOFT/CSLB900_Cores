@@ -65,6 +65,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
                 new FiltroProtocoloNumberFF040(filtros.InProtocoloNumber),
                 new FiltroDataMovtFF040(filtros.DataInicio, filtros.DataFim),
                 new FiltroStatusIDFF040(filtros.InStatusID),
+                new FiltroTipoRegistroIDFF040(filtros.InTipoRegistro)
             ];
         }
     }

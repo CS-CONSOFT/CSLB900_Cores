@@ -66,5 +66,5 @@ public partial class CSICP_FF140
     //NavsListGetByID
     public IEnumerable<CSICP_FF141>? NavListFF141 { get; set; }
     public IEnumerable<CSICP_FF143>? NavListFF143 { get; set; }
-    public IEnumerable<CSICP_FF144>? NavListFF144 { get; set; }
+    public IEnumerable<CSICP_FF144> NavListFF144 { get; set; } = new List<CSICP_FF144>();
 }

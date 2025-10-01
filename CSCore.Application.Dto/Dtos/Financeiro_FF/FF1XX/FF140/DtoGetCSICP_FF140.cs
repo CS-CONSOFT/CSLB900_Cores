@@ -87,7 +87,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF140
             NavFF140Vinculo = entity.NavFF140Vinculo;
             NavListFF141 = entity.NavListFF141?.Select(e => e.ToDtoGetFF141()).ToList();
             NavListFF143 = entity.NavListFF143?.Select(e => e.ToDtoGetFF143()).ToList();
-            NavListFF144 = entity.NavListFF144?.Select(e => e.ToDtoGetFF144()).ToList();
+            NavListFF144 = entity.NavListFF144.Select(e => e.ToDtoGetFF144()).ToList();
         }
 
         public int TenantId { get; set; }
@@ -149,6 +149,6 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF140
         //NavsListGetByID
         public List<DtoGetFF141>? NavListFF141 { get; set; }
         public List<DtoGetFF143>? NavListFF143 { get; set; }
-        public List<DtoGetFF144>? NavListFF144 { get; set; }
+        public List<DtoGetFF144> NavListFF144 { get; set; } = new List<DtoGetFF144>();
     }
 }
