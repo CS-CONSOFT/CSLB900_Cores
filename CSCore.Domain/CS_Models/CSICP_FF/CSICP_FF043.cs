@@ -13,7 +13,7 @@ public partial class CSICP_FF043
 
     public long Ff043Id { get; set; }
 
-    public long? Ff042Id { get; set; }
+    public long Ff042Id { get; set; }
 
     public int? Ff043Parcela { get; set; }
 
@@ -31,6 +31,8 @@ public partial class CSICP_FF043
 
     public string? Ff043TituloCpId { get; set; }
 
+    public CSICP_FF102? NavFF102Titulo { get; set; }
+
     public static CSICP_FF043 Create(
         int InTenantID,
         long InFf042Id,
@@ -38,7 +40,7 @@ public partial class CSICP_FF043
         int Parcela,
         DateTime DataVencimento,
         string Pfxtitulo,
-        decimal Protocolo
+        decimal? Protocolo
         )
     {
         var parcelaStr = Parcela.ToString();

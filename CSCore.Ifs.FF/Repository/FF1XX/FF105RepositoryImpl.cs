@@ -26,6 +26,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         /// Busca o borderô com suas informações de status para validações
         private async Task<FF105ComStatusInfo> ObterBorderoComStatusAsync(int in_tenantId, string in_ff105_borderoId)
         {
+
             // Verifica se o borderô existe
             var ff105 = await _appDbContext.OsusrE9aCsicpFf105s
                 .FirstOrDefaultAsync(e => e.TenantId == in_tenantId && e.Id == in_ff105_borderoId) 

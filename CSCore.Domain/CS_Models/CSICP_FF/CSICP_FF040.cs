@@ -14,7 +14,7 @@ public partial class    CSICP_FF040
 
     public int? Ff040Tiporegistro { get; set; }
 
-    public DateTime? Ff040DataMovimento { get; set; }
+    public DateTime Ff040DataMovimento { get; set; }
 
     public string? Ff040ContaId { get; set; }
 
@@ -88,4 +88,7 @@ public partial class    CSICP_FF040
     public Csicp_Sy001? NavSY001UsuarioPropID { get; set; }
 
     public OsusrE9aCsicpFf040Sit? NavFF040SituacaoID { get; set; }
+
+    //public virtual CSICP_FF003? Ff040Especie { get; set; }
+
 }
