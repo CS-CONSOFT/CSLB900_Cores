@@ -16,7 +16,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
         private readonly AppDbContext _appDbContext = appDbContext;
 
         public async Task<(List<CSICP_DD060>, int)> GetListAsync(
-            int in_tenant,string in_dd040id, int in_page, int in_pageSize)
+            int in_tenant, string in_dd040id, int in_page, int in_pageSize)
         {
             var query = from dd060 in _appDbContext.OsusrTeiCsicpDd060s
 
@@ -25,84 +25,83 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
 
                         join gg008Kdx in _appDbContext.OsusrE9aCsicpGg008Kdxes
                         on new { ProdutoId = dd060.Dd060Produtoid }
-                        equals new { ProdutoId = gg008Kdx.Gg008Produtoid } 
-                        into gg008Kdx_dd060_join
+                        equals new { ProdutoId = gg008Kdx.Gg008Produtoid } into gg008Kdx_dd060_join
                         from gg008Kdx in gg008Kdx_dd060_join.DefaultIfEmpty()
 
                         join gg008Produto in _appDbContext.OsusrE9aCsicpGg008s
-                            on dd060.Dd060Produtoid equals gg008Produto.Id into dd060_gg008Produto_join
+                        on dd060.Dd060Produtoid equals gg008Produto.Id into dd060_gg008Produto_join
                         from gg008Produto in dd060_gg008Produto_join.DefaultIfEmpty()
 
                         join gg005 in _appDbContext.OsusrE9aCsicpGg005s
-                            on gg008Produto.Gg008Artigoid equals gg005.Id into gg008Produto_gg005_join
+                        on gg008Produto.Gg008Artigoid equals gg005.Id into gg008Produto_gg005_join
                         from gg005 in gg008Produto_gg005_join.DefaultIfEmpty()
 
                         join gg006 in _appDbContext.OsusrE9aCsicpGg006s
-                            on gg008Produto.Gg008Marcaid equals gg006.Id into gg008Produto_gg006_join
+                        on gg008Produto.Gg008Marcaid equals gg006.Id into gg008Produto_gg006_join
                         from gg006 in gg008Produto_gg006_join.DefaultIfEmpty()
 
                         join dd061_cfgimp in _appDbContext.OsusrTeiCsicpDd061Cfgimps
-                            on dd060.Dd060Id equals dd061_cfgimp.Dd060Id into dd060_dd061_cfgimp_join
+                        on dd060.Dd060Id equals dd061_cfgimp.Dd060Id into dd060_dd061_cfgimp_join
                         from dd061_cfgimp in dd060_dd061_cfgimp_join.DefaultIfEmpty()
 
                         join aa031_cstori in _appDbContext.E9ACSICP_AA031Cstoris
-                            on dd061_cfgimp.Dd061Bb027bOrigemId equals aa031_cstori.Id into dd061_cfgimp_aa031_cstori_join
+                        on dd061_cfgimp.Dd061Bb027bOrigemId equals aa031_cstori.Id into dd061_cfgimp_aa031_cstori_join
                         from aa031_cstori in dd061_cfgimp_aa031_cstori_join.DefaultIfEmpty()
 
                         join aa032_csticm in _appDbContext.E9ACSICP_AA032Csticms
-                            on dd061_cfgimp.Dd061Bb027bCstIcmsId equals aa032_csticm.Id into dd061_cfgimp_aa032_csticm_join
+                        on dd061_cfgimp.Dd061Bb027bCstIcmsId equals aa032_csticm.Id into dd061_cfgimp_aa032_csticm_join
                         from aa032_csticm in dd061_cfgimp_aa032_csticm_join.DefaultIfEmpty()
 
                         join bb027_modal in _appDbContext.OsusrE9aCsicpBb027Modals
-                            on dd061_cfgimp.Dd061Bb027bModbcId equals bb027_modal.Id into dd061_cfgimp_bb027_modal_join
+                        on dd061_cfgimp.Dd061Bb027bModbcId equals bb027_modal.Id into dd061_cfgimp_bb027_modal_join
                         from bb027_modal in dd061_cfgimp_bb027_modal_join.DefaultIfEmpty()
 
                         join aa038_modst in _appDbContext.E9ACSICP_AA038Modsts
-                            on dd061_cfgimp.Dd061Bb027bModalbcIcmsSt equals aa038_modst.Id into dd061_cfgimp_aa038_modst_join
+                        on dd061_cfgimp.Dd061Bb027bModalbcIcmsSt equals aa038_modst.Id into dd061_cfgimp_aa038_modst_join
                         from aa038_modst in dd061_cfgimp_aa038_modst_join.DefaultIfEmpty()
 
                         join bb027_motivo in _appDbContext.OsusrE9aCsicpBb027Motivos
-                            on dd061_cfgimp.Dd061Bb027bMotdesoneracao equals bb027_motivo.Id into dd061_cfgimp_bb027_motivo_join
+                        on dd061_cfgimp.Dd061Bb027bMotdesoneracao equals bb027_motivo.Id into dd061_cfgimp_bb027_motivo_join
                         from bb027_motivo in dd061_cfgimp_bb027_motivo_join.DefaultIfEmpty()
 
                         join aa033_cstipi in _appDbContext.E9ACSICP_AA033Cstipis
-                            on dd061_cfgimp.Dd061Bb027bCstIpiId equals aa033_cstipi.Id into dd061_cfgimp_aa033_cstipi_join
+                        on dd061_cfgimp.Dd061Bb027bCstIpiId equals aa033_cstipi.Id into dd061_cfgimp_aa033_cstipi_join
                         from aa033_cstipi in dd061_cfgimp_aa033_cstipi_join.DefaultIfEmpty()
 
                         join aa034_cstpis in _appDbContext.E9ACSICP_AA034Cstpis
-                            on dd061_cfgimp.Dd061Bb027bCstPisId equals aa034_cstpis.Id into dd061_cfgimp_aa034_cstpis_join
+                        on dd061_cfgimp.Dd061Bb027bCstPisId equals aa034_cstpis.Id into dd061_cfgimp_aa034_cstpis_join
                         from aa034_cstpis in dd061_cfgimp_aa034_cstpis_join.DefaultIfEmpty()
 
                         join aa035_cstcof in _appDbContext.E9ACSICP_AA035Cstcofs
-                            on dd061_cfgimp.Dd061Bb027bCstCofinsId equals aa035_cstcof.Id into dd061_cfgimp_aa035_cstcof_join
+                        on dd061_cfgimp.Dd061Bb027bCstCofinsId equals aa035_cstcof.Id into dd061_cfgimp_aa035_cstcof_join
                         from aa035_cstcof in dd061_cfgimp_aa035_cstcof_join.DefaultIfEmpty()
 
                         join spedInCfop in _appDbContext.Osusr66cSpedInCfops
-                            on dd061_cfgimp.Dd061Bb027bCfopStaticaId equals spedInCfop.Id into dd061_cfgimp_spedInCfop_join
+                        on dd061_cfgimp.Dd061Bb027bCfopStaticaId equals spedInCfop.Id into dd061_cfgimp_spedInCfop_join
                         from spedInCfop in dd061_cfgimp_spedInCfop_join.DefaultIfEmpty()
 
                         join gg021 in _appDbContext.OsusrE9aCsicpGg021s
-                            on gg008Produto.Gg008Ncmid equals gg021.Id into gg008Produto_gg021_join
+                        on gg008Produto.Gg008Ncmid equals gg021.Id into gg008Produto_gg021_join
                         from gg021 in gg008Produto_gg021_join.DefaultIfEmpty()
 
                         join gg007 in _appDbContext.OsusrE9aCsicpGg007s
-                            on dd060.Dd060UnId equals gg007.Id into dd060_gg007_join
+                        on dd060.Dd060UnId equals gg007.Id into dd060_gg007_join
                         from gg007 in dd060_gg007_join.DefaultIfEmpty()
 
                         join gg007_UNSec in _appDbContext.OsusrE9aCsicpGg007s
-                            on dd060.Dd060UnSecId equals gg007_UNSec.Id into dd060_gg007_UNSec_join
+                        on dd060.Dd060UnSecId equals gg007_UNSec.Id into dd060_gg007_UNSec_join
                         from gg007_UNSec in dd060_gg007_UNSec_join.DefaultIfEmpty()
 
                         join spedIncenq_IPI in _appDbContext.Osusr66cSpedInCenqIpis
-                            on dd061_cfgimp.Dd061Bb027bCenquadIpiId equals spedIncenq_IPI.Id into dd061_cfgimp_in_cEnq_IPI_join
+                        on dd061_cfgimp.Dd061Bb027bCenquadIpiId equals spedIncenq_IPI.Id into dd061_cfgimp_in_cEnq_IPI_join
                         from spedIncenq_IPI in dd061_cfgimp_in_cEnq_IPI_join.DefaultIfEmpty()
 
                         join gg021cest in _appDbContext.OsusrE9aCsicpGg021cests
-                            on gg021.Gg021CestId equals gg021cest.Id into gg021_gg021cest_join
+                        on gg021.Gg021CestId equals gg021cest.Id into gg021_gg021cest_join
                         from gg021cest in gg021_gg021cest_join.DefaultIfEmpty()
 
                         join stRelevancia in _appDbContext.OsusrSpedNnxCsicpStrelevancia
-                            on dd060.Dd060Ierelevanteid equals stRelevancia.Id into dd060_stRelevancia_join
+                        on dd060.Dd060Ierelevanteid equals stRelevancia.Id into dd060_stRelevancia_join
                         from stRelevancia in dd060_stRelevancia_join.DefaultIfEmpty()
 
                         /*UTILIZANDO TÉCNICA LET PARA EVITAR REGISTROS DUPLICADOS NA QUERY, A DD061 É UMA FILHA DA DD060,

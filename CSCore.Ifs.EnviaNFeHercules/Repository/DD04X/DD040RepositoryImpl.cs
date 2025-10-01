@@ -269,6 +269,38 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                        Dd040Origemregpv = dd040.Dd040Origemregpv,
                        Dd040Keyecommerce = dd040.Dd040Keyecommerce,
 
+                       NavBB012Conta = bb012 != null ? new CSICP_BB012
+                       {
+                           TenantId = bb012.TenantId,
+                           Id = bb012.Id,
+                           Bb012Codigo = bb012.Bb012Codigo,
+                           Bb012NomeCliente = bb012.Bb012NomeCliente,
+                           Bb012NomeFantasia = bb012.Bb012NomeFantasia,
+                           Bb012DataAniversario = bb012.Bb012DataAniversario,
+                           Bb012DataCadastro = bb012.Bb012DataCadastro,
+                           Bb012Telefone = bb012.Bb012Telefone,
+                           Bb012Faxcelular = bb012.Bb012Faxcelular,
+                           Bb012HomePage = bb012.Bb012HomePage,
+                           Bb012Email = bb012.Bb012Email,
+                           Bb012DataEntradaSit = bb012.Bb012DataEntradaSit,
+                           Bb012DataSaidaSit = bb012.Bb012DataSaidaSit,
+                           Bb012Descricao = bb012.Bb012Descricao,
+                           Bb012IsActive = bb012.Bb012IsActive,
+                           Bb012TipoContaId = bb012.Bb012TipoContaId,
+                           Bb012GrupocontaId = bb012.Bb012GrupocontaId,
+                           Bb012ClassecontaId = bb012.Bb012ClassecontaId,
+                           Bb012StatuscontaId = bb012.Bb012StatuscontaId,
+                           Bb012SitContaId = bb012.Bb012SitContaId,
+                           Bb012ModrelacaoId = bb012.Bb012ModrelacaoId,
+                           Bb012Sequence = bb012.Bb012Sequence,
+                           Bb012Dultalteracao = bb012.Bb012Dultalteracao,
+                           Bb012Estabcadid = bb012.Bb012Estabcadid,
+                           Bb012Keyacess = bb012.Bb012Keyacess,
+                           Bb012IdIndicador = bb012.Bb012IdIndicador,
+                           Bb012Countappmcon = bb012.Bb012Countappmcon,
+                           Bb012Oricadastroid = bb012.Bb012Oricadastroid,
+                       } : null,
+
                        NavBB001 = bb001 != null ? new CSICP_BB001
                        {
                            TenantId = bb001.TenantId,
@@ -463,6 +495,22 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                         where dd041.TenantId == in_tenant
                         && dd041.Dd040Id == in_dd040Id
 
+                        join bb012conta in _appDbContext.OsusrE9aCsicpBb012s
+                        on dd041.Dd041ContaId equals bb012conta.Id into bb012conta_join
+                        from bb012conta in bb012conta_join.DefaultIfEmpty() //adicionar no dto/mapper
+
+                        join bb012gructa in _appDbContext.OsusrE9aCsicpBb012Gructa
+                        on bb012conta.Bb012GrupocontaId equals bb012gructa.Id into bb012gructa_join
+                        from bb012gructa in bb012gructa_join.DefaultIfEmpty() //adicionar no dto/mapper
+
+                        join bb01202 in _appDbContext.OsusrE9aCsicpBb01202s
+                        on bb012conta.Id equals bb01202.Id into bb01202_join
+                        from bb01202 in bb01202_join.DefaultIfEmpty() //adicionar no dto/mapper
+
+                        join bb012ins in _appDbContext.OsusrE9aCsicpBb01202Ins
+                        on bb01202.Bb012InscEstSniId equals bb012ins.Id into bb012ins_join
+                        from bb012ins in bb012ins_join.DefaultIfEmpty() //adicionar no dto/mapper
+
                         join bb012Trasportadora in _appDbContext.OsusrE9aCsicpBb012s
                         on dd041.Dd041TransportadoraId equals bb012Trasportadora.Id into bb012Trasportadora_join
                         from bb012Trasportadora in bb012Trasportadora_join.DefaultIfEmpty()
@@ -615,7 +663,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
             return await query.ToListAsync();
         }
 
-        public async Task<List<RepoCSICP_DD042>> GetListAsyncDD042(int in_tenant, string in_dd040Id)
+        public async Task<List<CSICP_DD042>> GetListAsyncDD042(int in_tenant, string in_dd040Id)
         {
             var query = from dd042 in _appDbContext.OsusrTeiCsicpDd042s
 
@@ -630,11 +678,31 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                         on bb026.Bb026ClasseId equals bb026Class.Id into bb026Class_join
                         from bb026Class in bb026Class_join.DefaultIfEmpty()
 
+                        join bb019 in _appDbContext.OsusrE9aCsicpBb019s
+                        on dd042.Dd042Administradoraid equals bb019.Id into bb019_join
+                        from bb019 in bb019_join.DefaultIfEmpty() //bandeira do cartão (colocar no dto/mapper)
+
+                        join bb019tipo in _appDbContext.OsusrE9aCsicpBb019Tipos
+                        on bb019.Bb019TipofinancId equals bb019tipo.Id into bb019tipo_join
+                        from bb019tipo in bb019tipo_join.DefaultIfEmpty() //tipo do cartão (crédito, débito, voucher) (colocar no dto/mapper)
+
+                        join bb012 in _appDbContext.OsusrE9aCsicpBb012s
+                        on bb019.Bb019Contaid equals bb012.Id into bb012_join
+                        from bb012 in bb012_join.DefaultIfEmpty() //conta vinculada à administradora (colocar no dto/mapper)
+
+                        join bb01202 in _appDbContext.OsusrE9aCsicpBb01202s
+                        on bb012.Id equals bb01202.Id into bb01202_join
+                        from bb01202 in bb01202_join.DefaultIfEmpty() //dados bancários da conta vinculada à administradora (colocar no dto/mapper)
+
+                        join dd830 in _appDbContext.OsusrTeiCsicpDd830s
+                        on dd042.Dd042Id equals dd830.Dd042Id into dd830_join
+                        from dd830 in dd830_join.DefaultIfEmpty() //dados de conciliação bancária (colocar no dto/mapper)
+
                         let listdd043 = (from dd043 in _appDbContext.OsusrTeiCsicpDd043s
                                          where dd043.TenantId == in_tenant && dd043.Dd042Id == dd042.Dd042Id
                                          select dd043).ToList()
 
-                        select new RepoCSICP_DD042
+                        select new CSICP_DD042
                         {
                             TenantId = dd042.TenantId,
                             Dd042Id = dd042.Dd042Id,

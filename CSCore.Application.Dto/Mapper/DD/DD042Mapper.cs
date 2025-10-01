@@ -11,7 +11,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
 {
     public static class DD042Mapper
     {
-        public static DtoGetDD042 ToDtoGetDD042(this RepoCSICP_DD042 entity)
+        public static DtoGetDD042 ToDtoGetDD042(this CSICP_DD042 entity)
         {
             return new DtoGetDD042
             {
@@ -55,7 +55,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 Dd042Fatoracresc = entity.Dd042Fatoracresc,
                 NavBB026 = entity.NavBB026?.ToDtoGetBB026ComBB026Classe(),
                 NavBb026Classe = entity.NavBb026Classe,
-                NavDD043 = entity.NavDD043.Select(e => e.ToDtoGetDD043()),
+                NavDD043 = entity.NavDD043.Select(e => e.ToDtoGetDD043()).ToList(),
             };
         }
     }

@@ -420,25 +420,24 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD040
         public int? B34_TPOPERGOVID { get; set; }
 
         //------------------------------------------------------------//
-        public Dto_GetBB001ListSimples? NavBB001 { get; set; }
         public Dto_GetBB012Convenio? NavBB012Conta { get; set; }
-
-        public Dto_GetAA028? NavAA028byBB001 { get; set; }
-        public Dto_GetAA027? NavAA027byBB001 { get; set; }
-        public Dto_GetAA025? NavAA025byBB001 { get; set; }
-        public CSICP_DD040Tnt? NavDD040Tnt { get; set; }
+        public Dto_GetBB001ListSimples? NavBB001 { get; set; }
         public CSICP_BB001Cfgfi? NavBB001Cfgfi { get; set; }
+        public Dto_GetAA028? NavAA028 { get; set; }
+        public Dto_GetAA027? NavAA027 { get; set; }
+        public Dto_GetAA025? NavAA025 { get; set; }
         public CSICP_AA030Regime? NavAA030Regime { get; set; }
         public OsusrNnxSpedInDocIcm? NavSpedIcm { get; set; }
         public CSICP_DD909? NavDD909 { get; set; }
+        public CSICP_DD040Tnt? NavDD040Tnt { get; set; }
         public CSICP_DD040Ipre? NavDD040Ipre { get; set; }
         public CSICP_DD041Frete? NavDD041Frete { get; set; }
         public List<DtoGetDD041> NavListDD041 { get; set; } = new List<DtoGetDD041>();
+        public List<DtoGetDD042> NavListDD042 { get; set; } = new List<DtoGetDD042>();
         public List<DtoGetDD044> NavListDD044 { get; set; } = new List<DtoGetDD044>();
         public List<DtoGetDD045> NavListDD045 { get; set; } = new List<DtoGetDD045>();
         public List<DtoGetDD048> NavListDD048 { get; set; } = new List<DtoGetDD048>();
         public List<Dto_GetXmlFromBB001> NavListBB001AXML { get; set; } = new List<Dto_GetXmlFromBB001>();
-        public List<DtoGetDD042> NavListDD042 { get; set; } = new List<DtoGetDD042>();
 
     }
 }

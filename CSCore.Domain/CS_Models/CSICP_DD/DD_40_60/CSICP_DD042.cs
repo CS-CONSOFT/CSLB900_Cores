@@ -80,12 +80,9 @@ public partial class CSICP_DD042
     public decimal? Dd042Nrotitulo { get; set; }
 
     public decimal? Dd042Fatoracresc { get; set; }
-
-    public virtual CSICP_DD040? Dd040 { get; set; }
-}
-
-public class RepoCSICP_DD042 : CSICP_DD042
-{
+    
+    //Navs movidos do antigo RepoDTO_CSICPDD042
+    public CSICP_Bb019? NavBB019 { get; set; }
     public CSICP_Bb026? NavBB026 { get; set; }
     public CSICP_Bb026Classe? NavBb026Classe { get; set; }
     public IEnumerable<CSICP_DD043?> NavDD043 { get; set; } = [];

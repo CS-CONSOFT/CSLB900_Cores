@@ -7,12 +7,6 @@ using CSCore.Application.Dto.Mapper.DD;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using EnviaNFeHercules.C82Application.Dto.DD.DD040;
 using EnviaNFeHercules.C82Application.Mapper.DD00X;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static CSCore.Domain.CS_Models.CSICP_DD.CSICP_DD040;
 
 namespace EnviaNFeHercules.C82Application.Mapper.DD00X
 {
@@ -207,13 +201,14 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 W06eVicmsmonoret = entity.W06eVicmsmonoret,
                 Dd040Origemregpv = entity.Dd040Origemregpv,
                 Dd040Keyecommerce = entity.Dd040Keyecommerce,
+                NavBB012Conta = entity.NavBB012Conta?.ToDtoGet(),
                 NavBB001 = entity.NavBB001?.ToDtoGetBB001ListSimples(),
-                NavAA028byBB001 = entity.NavBB001?.Cidade?.ToDtoGet(),
-                NavAA027byBB001 = entity.NavBB001?.Bb001Uf?.ToDtoGet(),
-                NavAA025byBB001 = entity.NavBB001?.Bb001Pais?.ToDtoGet(),
+                NavAA028 = entity.NavBB001?.Cidade?.ToDtoGet(),
+                NavAA027 = entity.NavBB001?.Bb001Uf?.ToDtoGet(),
+                NavAA025 = entity.NavBB001?.Bb001Pais?.ToDtoGet(),
                 NavDD040Tnt = entity.NavDD040Tnt,
                 NavBB001Cfgfi = entity.NavBB001?.NavBB001Cfgfi,
-                NavAA030Regime = entity.NavBB001?.NavBB001Cfgfi?.Bb001Regimetributario,
+                NavAA030Regime = entity.NavBB001?.NavBB001Cfgfi?.Bb001Regimetributario, //verificar ess
                 NavSpedIcm = entity.NavSpedIcm,
                 NavDD909 = entity.NavDD909,
                 NavDD040Ipre = entity.NavDD040Ipre,
