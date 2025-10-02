@@ -10,7 +10,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF018
 {
     public class DtoCreateUpdateFF018 : IConverteParaEntidade<CSICP_FF018>
     {
-        public string? Ff017Id { get; set; }
+        public string Ff017Id { get; set; } = null!;
 
         public string? Ff102Tituloid { get; set; }
 

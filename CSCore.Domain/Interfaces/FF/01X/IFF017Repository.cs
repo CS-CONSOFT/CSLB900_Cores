@@ -15,6 +15,6 @@ namespace CSCore.Domain.Interfaces.FF._01X
             DateTime? in_dataInicial, DateTime? in_dataFinal, int in_pageNumber, int in_pageSize);
         Task<CSICP_FF017?> GetByIdAsync(int in_tenant, string in_ff017Id);
 
-        Task<bool> SumarizarOsTotais(List<CSICP_FF018> InFF018, int InTenantID);
+        Task<bool> SumarizarOsTotais(string InFF017_ID, int InTenantID);
     }
 }
