@@ -36,7 +36,8 @@ namespace CSCore.Tests.Financeiro.Repository.Processos.CS_GeraMemoriaCalculoFF04
                 new string[] { "A", "B" },
                 100m,
                 dbContext ?? CreateInMemoryDbContext(),
-                Mock.Of<IIncrementarDataStrategy>()
+                Mock.Of<IIncrementarDataStrategy>(),
+                "PFX"
             );
             return new ProcessarParcelasTipoParcelaDiasOuMesParaFF043(input);
         }
@@ -123,7 +124,8 @@ namespace CSCore.Tests.Financeiro.Repository.Processos.CS_GeraMemoriaCalculoFF04
                     new string[] { "A", "B" },
                     100m,
                     CreateInMemoryDbContext(),
-                    Mock.Of<IIncrementarDataStrategy>()
+                    Mock.Of<IIncrementarDataStrategy>(),
+                    "PFX"
                 )
             );
             return testable.InvokeCriarEntidade<TEntity>(calculo, tenantId, idControle);
@@ -139,7 +141,8 @@ namespace CSCore.Tests.Financeiro.Repository.Processos.CS_GeraMemoriaCalculoFF04
                     new string[] { "A", "B" },
                     100m,
                     CreateInMemoryDbContext(),
-                    Mock.Of<IIncrementarDataStrategy>()
+                    Mock.Of<IIncrementarDataStrategy>(),
+                    "PFX"
                 )
             );
             return testable.InvokePersistirAsync(entidades);

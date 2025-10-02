@@ -55,7 +55,7 @@ namespace CSCore.Tests.Financeiro.Financeiro.CS_Renegociacao_Calc_Titulos.Proces
             int tenantId = 1;
 
             // Act
-            await processor.Processar(
+            await processor.GerarMemoriaCalculo(
                 controleId,
                 dataBase,
                 tenantId,
@@ -101,7 +101,7 @@ namespace CSCore.Tests.Financeiro.Financeiro.CS_Renegociacao_Calc_Titulos.Proces
             int tenantId = 2;
 
             // Act
-            await processor.Processar(
+            await processor.GerarMemoriaCalculo(
                 controleId,
                 dataBase,
                 tenantId,

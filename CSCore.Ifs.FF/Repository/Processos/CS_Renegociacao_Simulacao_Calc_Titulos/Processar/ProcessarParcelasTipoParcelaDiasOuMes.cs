@@ -9,7 +9,7 @@ using System.Net.WebSockets;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar
 {
-    public class ProcessarParcelasTipoParcelaDiasOuMes : IAuxProcessarCalculoTitulo
+    public class ProcessarParcelasTipoParcelaDiasOuMes : IAuxProcessarMemoriaCalculo
     {
         private readonly ICS_GenerateId _generateId;
         private readonly string[] _aux_condicaoPagtoDividida;
@@ -31,7 +31,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             _incrementarDataStrategy = incrementarDataStrategy;
         }
 
-        public virtual async Task Processar(
+        public virtual async Task GerarMemoriaCalculo(
             /// <summary>
             /// Identificador do processo em que esse método será usado
             /// Ex. Ao processar ProcessarParcelasTipoParcelaDiasOuMes no processo de 

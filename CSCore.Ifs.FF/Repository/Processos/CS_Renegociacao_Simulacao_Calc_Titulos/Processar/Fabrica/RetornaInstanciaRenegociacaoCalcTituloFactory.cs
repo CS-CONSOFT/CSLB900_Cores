@@ -29,10 +29,10 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
 
 
     /*CLASSE*/
-    public class ProcessarRenegociacaoCalcTituloFactory
+    public class RetornaInstanciaRenegociacaoCalcTituloFactory
     {
         /*CREATE USADO NO FLUXO DE CALCULO DA RENEGOCIACAO*/
-        public static IAuxProcessarCalculoTitulo Create(PrmRenegociacaoCalcTituloFactory prm)
+        public static IAuxProcessarMemoriaCalculo Create(PrmRenegociacaoCalcTituloFactory prm)
         {
             //tipo dias
             if (IsTipoDias(prm.prmSimulacao, prm.work_bb008))

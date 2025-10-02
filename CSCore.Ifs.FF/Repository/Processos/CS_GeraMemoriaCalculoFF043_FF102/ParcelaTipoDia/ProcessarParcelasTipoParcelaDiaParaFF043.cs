@@ -33,7 +33,7 @@ public class ProcessarParcelasTipoParcelaDiaParaFF043 : ProcessarCalculoTituloTi
         this.FF003_Pfx = ff003_pfx;
     }
 
-    public override async Task Processar(string InControleID, DateOnly InData, int InTenantID, RetornoFinanciamento in_calculoFinanciamento, decimal? InValorEntrada = 0)
+    public override async Task GerarMemoriaCalculo(string InControleID, DateOnly InData, int InTenantID, RetornoFinanciamento in_calculoFinanciamento, decimal? InValorEntrada = 0)
     {
         int aux_parcela_atual = 0;
         List<CSICP_FF043> entidadesParaInserir = [];

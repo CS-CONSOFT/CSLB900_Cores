@@ -103,7 +103,7 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
         );
 
 
-        IAuxProcessarCalculoTitulo? processarCalculoTitulo
+        IAuxProcessarMemoriaCalculo? processarCalculoTitulo
             = GerarMemoriaCalcFF04XFactory.RetornaInstanciaParaExecutarOCalculo(prmGeraMemoriaCalculo);
 
 
@@ -122,7 +122,7 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImpl : IGeraMemoriaCalculoFF
         RetornoFinanciamento calculoFinanciamento = CalcularValoresdeFinanciamento(work_bb008, prm);
 
         /*GERA MEMÓRIA*/
-        await processarCalculoTitulo!.Processar(
+        await processarCalculoTitulo!.GerarMemoriaCalculo(
            InControleID: idFF042.ToString(),
            InData: DateOnly.FromDateTime(prm.InDataBaseVencimento),
            InTenantID: prm.InTenantID,

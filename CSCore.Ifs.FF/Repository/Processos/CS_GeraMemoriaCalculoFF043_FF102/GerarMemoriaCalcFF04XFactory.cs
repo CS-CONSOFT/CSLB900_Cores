@@ -11,7 +11,7 @@ public class GerarMemoriaCalcFF04XFactory
 {
      /*CREATE USADO NO FLUXO DE CALCULO DA RENEGOCIACAO*/
           /*CREATE USADO NO FLUXO DE MEMORIA PARA FF043*/
-        public static IAuxProcessarCalculoTitulo RetornaInstanciaParaExecutarOCalculo(CreateParaMemoriaCalculoFF043Params prm)
+        public static IAuxProcessarMemoriaCalculo RetornaInstanciaParaExecutarOCalculo(CreateParaMemoriaCalculoFF043Params prm)
         {
         //incrementa de 1 em 1 mes
         string[] aux_condicaoPagtoDividida = string.Join(";", prm.InNumeroDeParcelas, 0, 1).Split(';');

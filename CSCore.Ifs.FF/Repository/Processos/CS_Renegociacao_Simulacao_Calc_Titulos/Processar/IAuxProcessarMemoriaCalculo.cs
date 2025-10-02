@@ -8,9 +8,9 @@ using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.F
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar
 {
-    public interface IAuxProcessarCalculoTitulo
+    public interface IAuxProcessarMemoriaCalculo
     {
-        Task Processar(
+        Task GerarMemoriaCalculo(
             /// <summary>
             /// Identificador do processo em que esse método será usado
             /// Ex. Ao processar ProcessarParcelasTipoParcelaDiasOuMes no processo de 

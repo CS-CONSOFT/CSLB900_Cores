@@ -36,7 +36,7 @@ public class ProcessarCalculoTipoAVistaTests
         RetornoFinanciamento financiamento = new() { ValorFinanciado = 1000m };
 
         // Act
-        await sut.Processar(controleId, data, tenantId, financiamento);
+        await sut.GerarMemoriaCalculo(controleId, data, tenantId, financiamento);
 
         // Assert
         var entidade = await db.Set<CSICP_FF999>().FirstOrDefaultAsync();

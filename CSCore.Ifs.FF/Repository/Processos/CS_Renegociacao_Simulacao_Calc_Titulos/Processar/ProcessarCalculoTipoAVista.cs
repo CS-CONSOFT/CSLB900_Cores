@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar
 {
-    public class ProcessarCalculoTipoAVista : IAuxProcessarCalculoTitulo
+    public class ProcessarCalculoTipoAVista : IAuxProcessarMemoriaCalculo
     {
         private readonly AppDbContext _appDbContext;
         private readonly ICS_GenerateId _generateId;
@@ -23,7 +23,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
             _generateId = generateId;
         }
 
-        public async virtual Task Processar(
+        public async virtual Task GerarMemoriaCalculo(
             /// <summary>
             /// Identificador do processo em que esse método será usado
             /// Ex. Ao processar ProcessarParcelasTipoParcelaDiasOuMes no processo de 

@@ -25,7 +25,7 @@ public class ProcessarParcelasTipoAVistaParaFF043 : ProcessarCalculoTipoAVista
         this.empresaID = empresaID;
     }
 
-    public override async Task Processar(
+    public override async Task GerarMemoriaCalculo(
        string InControleID,
             DateOnly InData,
             int InTenantID,

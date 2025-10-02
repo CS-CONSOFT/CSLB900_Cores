@@ -73,13 +73,16 @@ namespace CSCore.Tests.Financeiro.Repository.Processos
                 InStID_FF102_Aut_PagamentoAutorizado: stIdFf102AutPagamentoAutorizado,
                 InStID_FF102_Aut_PagamentoNaoAutorizado: stIdFf102AutPagamentoNaoAutorizado,
                 InStID_Entities_SIM: stIdEntitiesSim,
-                InStID_Entities_NAO: stIdEntitiesNao
+                InStID_Entities_NAO: stIdEntitiesNao,
+            InFormaPgtoID: "",
+            InCondicaoPgtoID: ""
             );
 
+            var ff040 = await _context.OsusrE9aCsicpFf040s.FirstAsync(f => f.Ff040Id == ff040Id);
             // Act & Assert
             await Assert.ThrowsAsync<EmptyListException>(async () =>
             {
-                await _repository.CS_005_GeraContasAPagar(parametros);
+                await _repository.CS_005_GeraContasAPagar(parametros, ff040);
             });
         }
 
@@ -166,11 +169,13 @@ namespace CSCore.Tests.Financeiro.Repository.Processos
                 InStID_FF102_Aut_PagamentoAutorizado: stIdFf102AutPagamentoAutorizado,
                 InStID_FF102_Aut_PagamentoNaoAutorizado: stIdFf102AutPagamentoNaoAutorizado,
                 InStID_Entities_SIM: stIdEntitiesSim,
-                InStID_Entities_NAO: stIdEntitiesNao
+                InStID_Entities_NAO: stIdEntitiesNao,
+            InFormaPgtoID: "",
+            InCondicaoPgtoID: ""
             );
 
             // Act
-            await _repository.CS_005_GeraContasAPagar(parametros);
+            await _repository.CS_005_GeraContasAPagar(parametros, ff040);
 
             // Assert
             var ff043Reloaded = _context.OsusrE9aCsicpFf043s.First();

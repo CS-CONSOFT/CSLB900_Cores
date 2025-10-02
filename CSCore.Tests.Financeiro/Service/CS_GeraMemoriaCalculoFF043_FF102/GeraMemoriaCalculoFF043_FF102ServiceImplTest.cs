@@ -51,7 +51,9 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImplTests
             InStID_FF102_Aut_PagamentoAutorizado: 5,
             InStID_FF102_Aut_PagamentoNaoAutorizado: 6,
             InStID_Entities_SIM: 7,
-            InStID_Entities_NAO: 8
+            InStID_Entities_NAO: 8,
+            InFormaPgtoID: "",
+            InCondicaoPgtoID: ""
         );
 
         _context.OsusrE9aCsicpFf040s.Add(new CSICP_FF040
@@ -60,12 +62,14 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImplTests
             Ff040Id = ff040Id
         });
 
+        var ff040 = await _context.OsusrE9aCsicpFf040s.Where(e => e.Ff040Id == ff040Id).FirstAsync();
+
         await _context.SaveChangesAsync();
 
         // Act & Assert
         await Assert.ThrowsAsync<EmptyListException>(async () =>
         {
-            await _repository.CS_005_GeraContasAPagar(parametros);
+            await _repository.CS_005_GeraContasAPagar(parametros, ff040);
         });
     }
 
@@ -106,13 +110,15 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImplTests
             InStID_FF102_Aut_PagamentoAutorizado: 5,
             InStID_FF102_Aut_PagamentoNaoAutorizado: 6,
             InStID_Entities_SIM: 7,
-            InStID_Entities_NAO: 8
+            InStID_Entities_NAO: 8,
+            InFormaPgtoID: "",
+            InCondicaoPgtoID: ""
         );
 
         // Act & Assert
         await Assert.ThrowsAsync<EmptyListException>(async () =>
         {
-            await _repository.CS_005_GeraContasAPagar(parametros);
+            await _repository.CS_005_GeraContasAPagar(parametros, ff040Entity);
         });
     }
 
@@ -165,11 +171,13 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImplTests
             InStID_FF102_Aut_PagamentoAutorizado: 5,
             InStID_FF102_Aut_PagamentoNaoAutorizado: 6,
             InStID_Entities_SIM: 7,
-            InStID_Entities_NAO: 8
+            InStID_Entities_NAO: 8,
+            InFormaPgtoID: "",
+            InCondicaoPgtoID: ""
         );
 
         // Act
-        await _repository.CS_005_GeraContasAPagar(parametros);
+        await _repository.CS_005_GeraContasAPagar(parametros, ff040Entity);
 
         // Assert
         var updatedFF040 = await _context.OsusrE9aCsicpFf040s.FirstOrDefaultAsync(e => e.Ff040Id == ff040Id);
@@ -190,6 +198,8 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImplTests
             Ff040Id = ff040Id
         });
 
+        var ff040 = await _context.OsusrE9aCsicpFf040s.Where(e => e.Ff040Id == ff040Id).FirstAsync();
+
         await _context.SaveChangesAsync();
 
         var parametros = new CS_005_GeraContasAPagarParametros(
@@ -202,13 +212,15 @@ public class GeraMemoriaCalculoFF043_FF102RepositoryImplTests
             InStID_FF102_Aut_PagamentoAutorizado: 5,
             InStID_FF102_Aut_PagamentoNaoAutorizado: 6,
             InStID_Entities_SIM: 7,
-            InStID_Entities_NAO: 8
+            InStID_Entities_NAO: 8,
+            InFormaPgtoID: "",
+            InCondicaoPgtoID: ""
         );
 
         // Act & Assert
         await Assert.ThrowsAsync<EmptyListException>(async () =>
         {
-            await _repository.CS_005_GeraContasAPagar(parametros);
+            await _repository.CS_005_GeraContasAPagar(parametros, ff040);
         });
     }
 }

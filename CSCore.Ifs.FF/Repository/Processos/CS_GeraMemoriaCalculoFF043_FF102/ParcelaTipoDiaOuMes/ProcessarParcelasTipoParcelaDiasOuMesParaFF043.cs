@@ -39,7 +39,7 @@ public class ProcessarParcelasTipoParcelaDiasOuMesParaFF043 : ProcessarParcelasT
         this.PFX_FF003 = input.PFX_FF003;
     }
 
-    public override async Task Processar(
+    public override async Task GerarMemoriaCalculo(
     string InControleID,
     DateOnly InData,
     int InTenantID,

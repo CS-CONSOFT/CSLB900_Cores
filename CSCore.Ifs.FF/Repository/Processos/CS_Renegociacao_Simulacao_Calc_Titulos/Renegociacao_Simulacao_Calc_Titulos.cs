@@ -15,13 +15,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
 {
-
-    public class Renegociacao_Calc_Titulos : IRenegociacao_Calc_Titulos
+    public class Renegociacao_Simulacao_Calc_Titulos : IRenegociacao_Calc_Titulos
     {
         private readonly AppDbContext _appDbContext;
         private readonly ICS_GenerateId _generateId;
 
-        public Renegociacao_Calc_Titulos(AppDbContext appDbContext, ICS_GenerateId generateId)
+        public Renegociacao_Simulacao_Calc_Titulos(AppDbContext appDbContext, ICS_GenerateId generateId)
         {
             _appDbContext = appDbContext;
             _generateId = generateId;
@@ -34,7 +33,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
             {
                 await RemoverItensRenegociacaoFF999(prmSimulacao);
 
-                await ValidarRenegociacaoAberta(prmSimulacao);
+                await ValidarRenegociacaoAbertaFF017(prmSimulacao);
 
                 CSICP_Bb008 work_bb008 = await ObterCondicaoPagamentoBb008(prmSimulacao);
 
@@ -66,9 +65,9 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
                     work_valor_entrada = prmSimulacao.in_valorEntrada,
                 };
 
-                IAuxProcessarCalculoTitulo processarCalculoTitulo = ProcessarRenegociacaoCalcTituloFactory.Create(prm);
+                IAuxProcessarMemoriaCalculo processarCalculoTitulo = RetornaInstanciaRenegociacaoCalcTituloFactory.Create(prm);
 
-                await processarCalculoTitulo.Processar(
+                await processarCalculoTitulo.GerarMemoriaCalculo(
                     InControleID: prmSimulacao.in_renegociacaoID,
                     InData: DateOnly.FromDateTime(prmSimulacao.in_data),
                     InTenantID: prmSimulacao.in_TenantID,
@@ -94,12 +93,12 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
                                 .FirstOrDefaultAsync() ?? throw new ExceptionSemAuditoria("Condição de pagamento não encontrada!");
         }
 
-        private async Task ValidarRenegociacaoAberta(Prm_Renegociacao_Calc_Simulacao_Titulos in_Renegociacao_Calc_Titulos)
+        private async Task ValidarRenegociacaoAbertaFF017(Prm_Renegociacao_Calc_Simulacao_Titulos in_Renegociacao_Calc_Titulos)
         {
             CSICP_FF017 work_ff017_renegociacao = await _appDbContext.OsusrE9aCsicpFf017s
-            .Where(e => e.TenantId == in_Renegociacao_Calc_Titulos.in_TenantID
-            && e.Id == in_Renegociacao_Calc_Titulos.in_renegociacaoID
-            && e.Ff017Aberto == true)
+                .Where(e => e.TenantId == in_Renegociacao_Calc_Titulos.in_TenantID
+                && e.Id == in_Renegociacao_Calc_Titulos.in_renegociacaoID
+                && e.Ff017Aberto == true)
             .FirstOrDefaultAsync() ?? throw new ExceptionSemAuditoria("Renegociação já processada!");
         }
 
