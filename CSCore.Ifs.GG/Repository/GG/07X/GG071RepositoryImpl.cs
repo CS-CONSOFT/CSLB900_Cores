@@ -464,28 +464,17 @@ namespace CSCore.Ifs.Repository.GG._07X
 
         private IQueryable<CSICP_GG071> CriaQueryBase(int tenant)
         {
-            IQueryable<CSICP_GG071> query = from _CSICP_GG071 in _appDbContext.OsusrE9aCsicpGg071s
-                                            where _CSICP_GG071.TenantId == tenant
-                                            select new CSICP_GG071
-                                            {
-                                                TenantId = _CSICP_GG071.TenantId,
-                                                Gg071Id = _CSICP_GG071.Gg071Id,
-                                                Gg071Estabid = _CSICP_GG071.Gg071Estabid,
-                                                Gg071Protocolnumber = _CSICP_GG071.Gg071Protocolnumber,
-                                                Gg071DataMovimento = _CSICP_GG071.Gg071DataMovimento,
-                                                Gg071Usuarioid = _CSICP_GG071.Gg071Usuarioid,
-                                                Gg071Observacao = _CSICP_GG071.Gg071Observacao,
-                                                Gg071Ccustoid = _CSICP_GG071.Gg071Ccustoid,
-                                                Gg071NoDocto = _CSICP_GG071.Gg071NoDocto,
-                                                Gg071Statusid = _CSICP_GG071.Gg071Statusid,
-                                                Dd070Id = _CSICP_GG071.Dd070Id,
-                                                Gg071Almoxsaidaid = _CSICP_GG071.Gg071Almoxsaidaid,
-                                                Gg071Almoxentid = _CSICP_GG071.Gg071Almoxentid,
-                                                Gg071AtendenteUsuarioid = _CSICP_GG071.Gg071AtendenteUsuarioid,
-                                                Gg071Datendimento = _CSICP_GG071.Gg071Datendimento,
-                                                Gg071Tpreqid = _CSICP_GG071.Gg071Tpreqid,
-                                                Gg071Dhsolicitacao = _CSICP_GG071.Gg071Dhsolicitacao,
-                                            };
+            IQueryable<CSICP_GG071> query = _appDbContext.OsusrE9aCsicpGg071s
+                .Where(e => e.TenantId == tenant)
+                .Include(e => e.NavBB001Estab)
+                .Include(e => e.NavBB005CentroCusto)
+                .Include(e => e.NavGG071Status)
+                .Include(e => e.NavGG071TipoReq)
+                .Include(e => e.NavUsuarioProprietarioSY001)
+                .Include(e => e.NavAtendenteUsuarioSY001)
+                .Include(e => e.NavGg071Almoxent)
+                .Include(e => e.NavGg071Almoxsaida)
+                .AsNoTracking();
             return query;
         }
 

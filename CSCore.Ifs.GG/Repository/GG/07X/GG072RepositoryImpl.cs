@@ -43,6 +43,27 @@ namespace CSCore.Ifs.GG.Repository.GG._07X
         {
             IQueryable<CSICP_GG072> query = from _CSICP_GG072 in _appDbContext.OsusrE9aCsicpGg072s
                                             where _CSICP_GG072.TenantId == tenant
+
+                                            join gg071 in _appDbContext.OsusrE9aCsicpGg071s
+                                            on _CSICP_GG072.Gg071Id equals gg071.Gg071Id into gg071_join
+                                            from gg071 in gg071_join.DefaultIfEmpty()
+
+                                            join gg520SaldoOrigem in _appDbContext.OsusrE9aCsicpGg520s
+                                            on _CSICP_GG072.Gg072Entradasaldoid equals gg520SaldoOrigem.Id into gg520SaldoOrigem_join
+                                            from gg520SaldoOrigem in gg520SaldoOrigem_join.DefaultIfEmpty()
+
+                                            join gg520SaldoSaida in _appDbContext.OsusrE9aCsicpGg520s
+                                            on _CSICP_GG072.Gg072Saidasaldoid equals gg520SaldoSaida.Id into gg520SaldoSaida_join
+                                            from gg520SaldoSaida in gg520SaldoSaida_join.DefaultIfEmpty()
+
+                                            join gg008Kdx in _appDbContext.OsusrE9aCsicpGg008Kdxes
+                                            on _CSICP_GG072.Gg072KardexId equals gg008Kdx.Gg008Kardexid into gg008Kdx_join
+                                            from gg008Kdx in gg008Kdx_join.DefaultIfEmpty()
+
+                                            join gg008 in _appDbContext.OsusrE9aCsicpGg008s
+                                            on gg008Kdx.Gg008Produtoid equals gg008.Id into gg008_join
+                                            from gg008 in gg008_join.DefaultIfEmpty()
+
                                             select new CSICP_GG072
                                             {
                                                 TenantId = _CSICP_GG072.TenantId,
@@ -63,6 +84,10 @@ namespace CSCore.Ifs.GG.Repository.GG._07X
                                                 Gg072Statusestqid = _CSICP_GG072.Gg072Statusestqid,
                                                 Dd080Id = _CSICP_GG072.Dd080Id,
                                                 Gg072Qtdsolicitada = _CSICP_GG072.Gg072Qtdsolicitada,
+                                                Gg071 = gg071,
+                                                Gg072Entradasaldo = gg520SaldoOrigem,
+                                                NavGG520Saidasaldo = gg520SaldoSaida,
+                                                GG008ProdutoDescricao = gg008.Gg008Descreduzida,
                                             };
             return query;
         }

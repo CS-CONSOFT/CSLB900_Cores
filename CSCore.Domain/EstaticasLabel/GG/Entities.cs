@@ -26,6 +26,13 @@ namespace CSCore.Domain.EstaticasLabel.GG
             public const string Suspenso = "Suspenso";
         }
 
+        public static class GG041_TPREQ
+        {
+            public const string Outros = "Outros";
+            public const string Reposicao = "Reposicao";
+            public const string Vendas = "Vendas";
+        }
+
         public static class CSICP_Statica_Labels
         {
             public const string Sim = "Sim";
