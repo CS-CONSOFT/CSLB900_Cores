@@ -4,6 +4,7 @@ using CSBS101._82Application.Dto.BB00X.BB001.BB001Xml;
 using CSBS101.C82Application.Dto.BB00X.BB012.Get;
 using CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA028;
 using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get.BB012MDFe;
 using CSCore.Application.Dto.Dtos.DD.DD041;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_DD;
@@ -421,7 +422,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD040
         public int? B34_TPOPERGOVID { get; set; }
 
         //------------------------------------------------------------//
-        public Dto_GetBB012Convenio? NavBB012Conta { get; set; }
+        public DtoGet_BB012MDFe? NavBB012Conta { get; set; }
         public DtoGet_BB001paraMDFe? NavBB001 { get; set; }
         public OsusrNnxSpedInDocIcm? NavSpedIcm { get; set; }
         public CSICP_DD909? NavDD909 { get; set; }

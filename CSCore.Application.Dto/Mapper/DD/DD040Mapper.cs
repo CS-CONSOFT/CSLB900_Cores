@@ -3,6 +3,7 @@ using CSBS101._82Application.Mapper.AA00X.AA027;
 using CSBS101._82Application.Mapper.AA00X.AA028;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSBS101._82Application.Mapper.BB00X.BB012;
+using CSCore.Application.Dto.Mapper.BB00X.BB012.BB012MDFe;
 using CSCore.Application.Dto.Mapper.DD;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using EnviaNFeHercules.C82Application.Dto.DD.DD040;
@@ -201,7 +202,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 W06eVicmsmonoret = entity.W06eVicmsmonoret,
                 Dd040Origemregpv = entity.Dd040Origemregpv,
                 Dd040Keyecommerce = entity.Dd040Keyecommerce,
-                NavBB012Conta = entity.NavBB012Conta?.ToDtoGet(),
+                NavBB012Conta = entity.NavBB012Conta?.ToDtoGetBB012MDFe(),
                 NavBB001 = entity.NavBB001?.ToDtoGetBB001paraNFe(),
                 NavDD040Tnt = entity.NavDD040Tnt,
                 NavSpedIcm = entity.NavSpedIcm,

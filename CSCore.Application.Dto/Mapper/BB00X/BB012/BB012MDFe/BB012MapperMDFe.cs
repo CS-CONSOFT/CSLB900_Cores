@@ -45,6 +45,7 @@ namespace CSCore.Application.Dto.Mapper.BB00X.BB012.BB012MDFe
                 Bb012Oricadastroid = entity.Bb012Oricadastroid,
                 Nav_BB01201 = entity.OsusrE9aCsicpBb01201?.ToDtoGetBB01201MDFe(),
                 Nav_BB01202 = entity.Nav_BB01202?.ToDtoGetBB01202MDFe(),
+                NavGrupoConta = entity.BB012_GrupoConta
             };
         }
 

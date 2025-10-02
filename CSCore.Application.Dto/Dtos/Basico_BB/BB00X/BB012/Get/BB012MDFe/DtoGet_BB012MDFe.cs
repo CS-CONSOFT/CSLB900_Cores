@@ -67,5 +67,6 @@ namespace CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get.BB012MDFe
 
         public DtoGet_BB01201MDFe? Nav_BB01201 { get; set; }
         public DtoGet_BB01202MDFe? Nav_BB01202 { get; set; }
+        public CSICP_Bb012Gructa? NavGrupoConta { get; set; }
     }
 }

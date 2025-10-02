@@ -2,7 +2,9 @@
 using CSBS101._82Application.Dto.BB00X.BB012.Get;
 using CSBS101.C82Application.Dto.BB00X.BB012.Get;
 using CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA027;
+using CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA028;
 using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get;
+using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get.BB012MDFe;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using System;
@@ -98,11 +100,10 @@ namespace CSCore.Application.Dto.Dtos.DD.DD041
         public string? Dd041Indfinal { get; set; }
 
         public string? Dd041IdentEstrangeiro { get; set; }
-
+        public DtoGet_BB012MDFe? NavBB012Conta { get; set; }
         public Dto_GetBB012Convenio? NavBB012Trasportadora { get; set; }
         public CSICP_DD041Docto? NavDD041Doc { get; set; }
-        public Dto_GetAA025? NavAA025 { get; set; }
-        public DtoGetAA027_Simples? NavAA027 { get; set; }
-        public Dto_GetAA028_Exibicao? NavAA028 { get; set; }
+        
+        public DtoGet_AA028paraMDFe? NavAA028 { get; set; }
     }
 }
