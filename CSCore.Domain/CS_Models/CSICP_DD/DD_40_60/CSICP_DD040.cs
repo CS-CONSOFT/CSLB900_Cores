@@ -374,15 +374,9 @@ public partial class CSICP_DD040
 
     public string? Dd040Keyecommerce { get; set; }
 
-
     //NAV
     public CSICP_BB012? NavBB012Conta { get; set; }
     public CSICP_BB001? NavBB001 { get; set; }
-    public CSICP_Aa025? NavAA025 { get; set; }
-    public CSICP_Aa028? NavAA028 { get; set; }
-    public CSICP_Aa027? NavAA027 { get; set; }
-    public CSICP_AA030Regime? NavAA030Regime { get; set; }
-    public CSICP_BB001Cfgfi? NavBB001Cfgfi { get; set; }
     public OsusrNnxSpedInDocIcm? NavSpedIcm { get; set; }
     public CSICP_DD909? NavDD909 { get; set; }
     public CSICP_DD040Tnt? NavDD040Tnt { get; set; }
