@@ -37,10 +37,6 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                    on dd040.Dd040Empresaid equals bb001.Id into bb001_dd040_join
                    from bb001 in bb001_dd040_join.DefaultIfEmpty()
 
-                   join bb012 in _appDbContext.OsusrE9aCsicpBb012s
-                   on dd040.Dd040ContaId equals bb012.Id into bb012_dd040_join
-                   from bb012 in bb012_dd040_join.DefaultIfEmpty()
-
                    join aa028 in _appDbContext.OsusrE9aCsicpAa028s
                    on bb001.Cidadeid equals aa028.Id into aa028_bb001_join
                    from aa028 in aa028_bb001_join.DefaultIfEmpty()
@@ -53,25 +49,43 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                    on aa027.Paisid equals aa025.Id into aa025_aa027_join
                    from aa025 in aa025_aa027_join.DefaultIfEmpty()
 
-                   join dd040Tnt in _appDbContext.OsusrTeiCsicpDd040Tnts
-                   on dd040.Dd040TiponotaId equals dd040Tnt.Id into dd040Tnt_dd040_join
-                   from dd040Tnt in dd040Tnt_dd040_join.DefaultIfEmpty()
-
                    join bb001CfgFis in _appDbContext.E9ACSICP_BB001Cfgfis
                    on bb001.Id equals bb001CfgFis.Bb001EmpresaId into bb001CfgFis_bb001_join
                    from bb001CfgFis in bb001CfgFis_bb001_join.DefaultIfEmpty()
-
-                   join spedIcms in _appDbContext.OsusrNnxSpedInDocIcms
-                   on dd040.Dd040ModId equals spedIcms.Id into spedIcms_dd040_join
-                   from spedIcms in spedIcms_dd040_join.DefaultIfEmpty()
 
                    join aa030Regime in _appDbContext.E9ACSICP_AA030Regimes
                    on bb001CfgFis.Bb001Regimetributarioid equals aa030Regime.Id into aa030Regime_bb001CfgFis_join
                    from aa030Regime in aa030Regime_bb001CfgFis_join.DefaultIfEmpty()
 
+                   join bb012 in _appDbContext.OsusrE9aCsicpBb012s
+                   on dd040.Dd040ContaId equals bb012.Id into bb012_dd040_join
+                   from bb012 in bb012_dd040_join.DefaultIfEmpty()
+
+                   //adicionadas tabelas estaticas da bb012 dia 02/10/2025 
+                   join bb01201 in _appDbContext.OsusrE9aCsicpBb01201s
+                   on bb012.Id equals bb01201.Id into bb01201_bb012_join //verificar a propriedadeID "bb012.Id" se está correta
+                   from bb01201 in bb01201_bb012_join.DefaultIfEmpty()
+
+                   join bb01202 in _appDbContext.OsusrE9aCsicpBb01202s
+                   on bb012.Id equals bb01202.Id into bb01202_bb012_join
+                   from bb01202 in bb01202_bb012_join.DefaultIfEmpty()
+
+                   join bb012ins in _appDbContext.OsusrE9aCsicpBb01202Ins
+                   on bb01202.Bb012InscEstSniId equals bb012ins.Id into bb012ins_bb012_join
+                   from bb012ins in bb012ins_bb012_join.DefaultIfEmpty()
+                   //-----------------------------------------------------//
+
                    join dd909 in _appDbContext.OsusrTeiCsicpDd909s
                    on dd040.Dd040Tpemis equals dd909.Id into dd909_dd040_join
                    from dd909 in dd909_dd040_join.DefaultIfEmpty()
+
+                   join spedIcms in _appDbContext.OsusrNnxSpedInDocIcms
+                   on dd040.Dd040ModId equals spedIcms.Id into spedIcms_dd040_join
+                   from spedIcms in spedIcms_dd040_join.DefaultIfEmpty()
+
+                   join dd040Tnt in _appDbContext.OsusrTeiCsicpDd040Tnts
+                   on dd040.Dd040TiponotaId equals dd040Tnt.Id into dd040Tnt_dd040_join
+                   from dd040Tnt in dd040Tnt_dd040_join.DefaultIfEmpty()
 
                    join dd040IPres in _appDbContext.OsusrTeiCsicpDd040Ipres
                    on dd040.Dd040Indpres equals dd040IPres.Id into dd040IPres_dd040_join
@@ -299,6 +313,120 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                            Bb012IdIndicador = bb012.Bb012IdIndicador,
                            Bb012Countappmcon = bb012.Bb012Countappmcon,
                            Bb012Oricadastroid = bb012.Bb012Oricadastroid,
+                           OsusrE9aCsicpBb01201 = bb01201 != null ? new CSICP_BB01201
+                           {
+                               TenantId = bb01201.TenantId,
+                               Id = bb01201.Id,
+                               Bb012Zonaid = bb01201.Bb012Zonaid,
+                               Bb012Atividadeid = bb01201.Bb012Atividadeid,
+                               Bb012Limitecredito = bb01201.Bb012Limitecredito,
+                               Bb012Limcreditosecun = bb01201.Bb012Limcreditosecun,
+                               Bb012Limiteccredito = bb01201.Bb012Limiteccredito,
+                               Bb012Diavenctocartao = bb01201.Bb012Diavenctocartao,
+                               Bb012Contaconvenio = bb01201.Bb012Contaconvenio,
+                               Bb012Diaspagtoconv = bb01201.Bb012Diaspagtoconv,
+                               Bb012Padraobancoid = bb01201.Bb012Padraobancoid,
+                               Bb012Bcoagenciaconta = bb01201.Bb012Bcoagenciaconta,
+                               Bb012Revenda = bb01201.Bb012Revenda,
+                               Bb012TaxaAdministracaoCon = bb01201.Bb012TaxaAdministracaoCon,
+                               Bb012Requisicao = bb01201.Bb012Requisicao,
+                               Bb012Contacontabil = bb01201.Bb012Contacontabil,
+                               Bb012Historicocontabilid = bb01201.Bb012Historicocontabilid,
+                               Bb012Contratocartao = bb01201.Bb012Contratocartao,
+                               Bb012Datacontratocartao = bb01201.Bb012Datacontratocartao,
+                               Bb012Dtvalidadecartao = bb01201.Bb012Dtvalidadecartao,
+                               Bb012Modalidadecredcartao = bb01201.Bb012Modalidadecredcartao,
+                               Bb012Perclimcredito = bb01201.Bb012Perclimcredito,
+                               Bb012Prazoentregafornec = bb01201.Bb012Prazoentregafornec,
+                               Bb012Condpagtofornec = bb01201.Bb012Condpagtofornec,
+                               Bb012Natoperacaoid = bb01201.Bb012Natoperacaoid,
+                               Bb012Condpagtoid = bb01201.Bb012Condpagtoid,
+                               Bb012Textonotaid = bb01201.Bb012Textonotaid,
+                               Bb012GrauRisco = bb01201.Bb012GrauRisco,
+                               Bb012ClasseCredito = bb01201.Bb012ClasseCredito,
+                               Bb012Dtvalidcadastro = bb01201.Bb012Dtvalidcadastro,
+                               Bb012PercIcms = bb01201.Bb012PercIcms,
+                               Bb012Codgcategoria = bb01201.Bb012Codgcategoria,
+                               Bb012Categoriaid = bb01201.Bb012Categoriaid,
+                               Bb012Limitecredparcela = bb01201.Bb012Limitecredparcela,
+                               Bb012NumUltFatura = bb01201.Bb012NumUltFatura,
+                               Bb012Totcompracarnet = bb01201.Bb012Totcompracarnet,
+                               Bb012ValorEntrada = bb01201.Bb012ValorEntrada,
+                               Bb012MaiorCompra = bb01201.Bb012MaiorCompra,
+                               Bb012MenorCompra = bb01201.Bb012MenorCompra,
+                               Bb012Totdiasatraso = bb01201.Bb012Totdiasatraso,
+                               Bb012MaiorAtraso = bb01201.Bb012MaiorAtraso,
+                               Bb012MenorAtraso = bb01201.Bb012MenorAtraso,
+                               Bb012Mediadeatraso = bb01201.Bb012Mediadeatraso,
+                               Bb012Maiorsaldo = bb01201.Bb012Maiorsaldo,
+                               Bb012Numcompras = bb01201.Bb012Numcompras,
+                               Bb012Dtprimcompra = bb01201.Bb012Dtprimcompra,
+                               Bb012Dtultcompra = bb01201.Bb012Dtultcompra,
+                               Bb012Vlrmaiorpagto = bb01201.Bb012Vlrmaiorpagto,
+                               Bb012Numpagtodia = bb01201.Bb012Numpagtodia,
+                               Bb012Numpagtoatraso = bb01201.Bb012Numpagtoatraso,
+                               Bb012Saldodevedor = bb01201.Bb012Saldodevedor,
+                               Bb012Saldopedido = bb01201.Bb012Saldopedido,
+                               Bb012Qtdtitprotestado = bb01201.Bb012Qtdtitprotestado,
+                               Bb012Ultprotesto = bb01201.Bb012Ultprotesto,
+                               Bb012Qtdchqdevolvido = bb01201.Bb012Qtdchqdevolvido,
+                               Bb012Ultchqdevolvido = bb01201.Bb012Ultchqdevolvido,
+                               Bb012ConvenioId = bb01201.Bb012ConvenioId,
+                               Bb012TipogeracaoId = bb01201.Bb012TipogeracaoId,
+                               Bb012SitespecialId = bb01201.Bb012SitespecialId,
+                               Bb012Entmtgrotaid = bb01201.Bb012Entmtgrotaid,
+                               Bb012Vendarotaid = bb01201.Bb012Vendarotaid,
+                               Bb012Diavenctoid = bb01201.Bb012Diavenctoid,
+                               Bb012Codgbcodebconta = bb01201.Bb012Codgbcodebconta,
+                           } : null,
+
+                           Nav_BB01202 = bb01202 != null ? new CSICP_BB01202
+                           {
+                               TenantId = bb01202.TenantId,
+                               Id = bb01202.Id,
+                               Bb012Cnpj = bb01202!.Bb012Cnpj,
+                               Bb012Inscestadual = bb01202.Bb012Inscestadual,
+                               Bb012Suframa = bb01202.Bb012Suframa,
+                               Bb012Regsuframavalido = bb01202.Bb012Regsuframavalido,
+                               Bb012Regjuntacomercial = bb01202.Bb012Regjuntacomercial,
+                               Bb012Dataregjunta = bb01202.Bb012Dataregjunta,
+                               Bb012Patrimonio = bb01202.Bb012Patrimonio,
+                               Bb012CapitalSocial = bb01202.Bb012CapitalSocial,
+                               Bb012Cpf = bb01202.Bb012Cpf,
+                               Bb012Rg = bb01202.Bb012Rg,
+                               Bb012Complementorg = bb01202.Bb012Complementorg,
+                               Bb012Emissaorg = bb01202.Bb012Emissaorg,
+                               Bb012Pis = bb01202.Bb012Pis,
+                               Bb012Residedesde = bb01202.Bb012Residedesde,
+                               Bb012Nrodependentes = bb01202.Bb012Nrodependentes,
+                               Bb012Empadmissao = bb01202.Bb012Empadmissao,
+                               Bb012EmpProfissao = bb01202.Bb012EmpProfissao,
+                               Bb012Valorremuneracao = bb01202.Bb012Valorremuneracao,
+                               Bb012Outrosrendimentos = bb01202.Bb012Outrosrendimentos,
+                               Bb012Origemoutrosrend = bb01202.Bb012Origemoutrosrend,
+                               Bb012InscEstSniId = bb01202.Bb012InscEstSniId,
+                               Bb012SexoId = bb01202.Bb012SexoId,
+                               Bb012EstadocivilId = bb01202.Bb012EstadocivilId,
+                               Bb012TipodomicilioId = bb01202.Bb012TipodomicilioId,
+                               Bb012Compresid01Id = bb01202.Bb012Compresid01Id,
+                               Bb012Compresid02Id = bb01202.Bb012Compresid02Id,
+                               Bb012GescolaridadeId = bb01202.Bb012GescolaridadeId,
+                               Bb012OcupacaoId = bb01202.Bb012OcupacaoId,
+                               Bb012NaturaldeId = bb01202.Bb012NaturaldeId,
+                               Bb012TptributacaoId = bb01202.Bb012TptributacaoId,
+                               Bb012IdentEstrangeiro = bb01202.Bb012IdentEstrangeiro,
+                               Bb012Empresa = bb01202.Bb012Empresa,
+                               Bb012EmpEndereco = bb01202.Bb012EmpEndereco,
+                               Bb012EmpGrupoId = bb01202.Bb012EmpGrupoId,
+                               Bb012Motdesoneracaoid = bb01202.Bb012Motdesoneracaoid,
+                               BB012_Insc_Est_SNI = bb012ins != null ? new CSICP_Bb01202Ins
+                               {
+                                   Id = bb012ins.Id,
+                                   Label = bb012ins.Label,
+                                   Order = bb012ins.Order,
+                                   IsActive = bb012ins.IsActive
+                               } : null,
+                           } : null,
                        } : null,
 
                        NavBB001 = bb001 != null ? new CSICP_BB001
