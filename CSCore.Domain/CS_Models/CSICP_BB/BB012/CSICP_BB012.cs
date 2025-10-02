@@ -68,11 +68,11 @@ public partial class CSICP_BB012
 
     //csicp_aa146_TpGov
     public int? bb012_TpGovId { get; set; }
+
     public CSICP_BB012? Bb012IdIndicadorNavigation { get; set; }
-
     public CSICP_BB01201? OsusrE9aCsicpBb01201 { get; set; }
-
     public CSICP_BB01202? Nav_BB01202 { get; set; }
+  
     public CSICP_BB01206? NavBB01206 { get; set; }
 
     public CSICP_BB01205? OsusrE9aCsicpBb01205 { get; set; }

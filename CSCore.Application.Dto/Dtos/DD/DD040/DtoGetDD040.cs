@@ -2,6 +2,7 @@
 using CSBS101._82Application.Dto.BB00X.BB001;
 using CSBS101._82Application.Dto.BB00X.BB001.BB001Xml;
 using CSBS101.C82Application.Dto.BB00X.BB012.Get;
+using CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA028;
 using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.DD.DD041;
 using CSCore.Domain;
@@ -421,12 +422,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD040
 
         //------------------------------------------------------------//
         public Dto_GetBB012Convenio? NavBB012Conta { get; set; }
-        public Dto_GetBB001ListSimples? NavBB001 { get; set; }
-        public CSICP_BB001Cfgfi? NavBB001Cfgfi { get; set; }
-        public Dto_GetAA028? NavAA028 { get; set; }
-        public Dto_GetAA027? NavAA027 { get; set; }
-        public Dto_GetAA025? NavAA025 { get; set; }
-        public CSICP_AA030Regime? NavAA030Regime { get; set; }
+        public DtoGet_BB001paraMDFe? NavBB001 { get; set; }
         public OsusrNnxSpedInDocIcm? NavSpedIcm { get; set; }
         public CSICP_DD909? NavDD909 { get; set; }
         public CSICP_DD040Tnt? NavDD040Tnt { get; set; }

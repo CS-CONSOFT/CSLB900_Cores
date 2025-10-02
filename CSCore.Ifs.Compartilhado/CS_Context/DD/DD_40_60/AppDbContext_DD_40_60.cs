@@ -630,8 +630,6 @@ namespace CSCore.Ifs.CS_Context
                     .HasForeignKey(e => e.Dd040Empresaid)
                     .HasPrincipalKey(b => b.Id);
 
-
-
                 // CSICP_DD040 -> CSICP_DD040Tnt
                 modelBuilder.Entity<CSICP_DD040>()
                     .HasOne(e => e.NavDD040Tnt)
