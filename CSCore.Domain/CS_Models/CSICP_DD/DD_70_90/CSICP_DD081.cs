@@ -186,11 +186,20 @@ public partial class CSICP_DD081
 [Column("UB16_VBC", TypeName = "decimal(37,2)")]
 public decimal? UB16_VBC { get; set; }
 
-[Column("UB17_UFID", TypeName = "nvarchar(36)")]
-public string UB17_UFID { get; set; }
+// Define the foreign key relationship CSICP_AA027
+  [ForeignKey("NavAa027")]
+  [Column("UB17_UFID", TypeName = "nvarchar(36)")]
+  public string? UB17_UFID { get; set; }
+  public CSICP_Aa027? NavAa027 { get; set; }
+  // Fim da foreign key
 
-[Column("UB36_MUNICIPIOID", TypeName = "nvarchar(36)")]
-public string UB36_MUNICIPIOID { get; set; }
+// Define the foreign key relationship CSICP_AA028
+  [ForeignKey("NavAa028")]
+
+  [Column("UB36_MUNICIPIOID", TypeName = "nvarchar(36)")]
+  public string? UB36_MUNICIPIOID { get; set; }
+  public CSICP_Aa028? NavAa028 { get; set; }
+  // Fim da foreign key
 
 [Column("UB18_37_56_PIBSCBS", TypeName = "decimal(7,4)")]
 public decimal? UB18_37_56_PIBSCBS { get; set; }
@@ -316,13 +325,13 @@ public decimal? UB11_VIS { get; set; }
 public decimal? UB107_108_VIBS { get; set; }
 
 [Column("UB110_TPCREDPRESIBSZFM", TypeName = "nvarchar(1)")]
-public string UB110_TPCREDPRESIBSZFM { get; set; }
+public string? UB110_TPCREDPRESIBSZFM { get; set; }
 
 [Column("UB111_VCREDPRESIBSZFM", TypeName = "decimal(15,2)")]
 public decimal? UB111_VCREDPRESIBSZFM { get; set; }
 
 [Column("RF_MemoriaCalculo", TypeName = "nvarchar(500)")]
-public string RF_MemoriaCalculo { get; set; }
+public string? RF_MemoriaCalculo { get; set; }
 
     //-------------------------------------------------------//
 
