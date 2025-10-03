@@ -285,7 +285,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
         public int? Dd060Nroprctabela { get; set; }
         //--------------------Reforma Tributária--------------------//
 
-        public string? DD080_RFTRANSACAO_ID { get; set; }
+        public string? DD060_RFTRANSACAO_ID { get; set; }
 
         //----------------------------------------------------------//
 

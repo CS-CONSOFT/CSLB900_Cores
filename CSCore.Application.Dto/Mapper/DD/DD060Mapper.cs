@@ -169,7 +169,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 NavListDD061 = entity.NavListDD061.Select(e => e.ToDtoGetDD061()),
                 NavDD060Combs = entity.NavDD060Combs?.ToDtoGetDD060Comb(),
                 NavListDD060CombsLa01 = entity.NavListDD060CombsLa01.Select(e => e.ToDtoGetDD060CombLa01()),
-                DD080_RFTRANSACAO_ID = entity.DD080_RFTRANSACAO_ID
+                DD060_RFTRANSACAO_ID = entity.DD060_RFTRANSACAO_ID
 
             };
         }

@@ -397,7 +397,7 @@ namespace CSCore.Application.Dto.Dtos.DD.DD040
         public decimal? W56B_CBS_VCREDPRESCONDSUS { get; set; }
         public decimal? W58_VTOTIBSMONO { get; set; }
         public decimal? W59_VTOTCBSMONO { get; set; }
-        public int? DD070_TPDEBCREID { get; set; }
+        public int? DD040_TPDEBCREID { get; set; }
         public decimal? W59B_VCBSMONORETEN { get; set; }
         public decimal? W59C_VIBSMONORETEN { get; set; }
         public decimal? W59D_VCBSMONORET { get; set; }

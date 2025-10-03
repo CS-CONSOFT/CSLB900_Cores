@@ -8,6 +8,7 @@ using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get.BB012MDFe;
 using CSCore.Application.Dto.Dtos.DD.DD041;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_DD;
+using CSCore.Domain.CS_Models.Staticas.AA;
 using EnviaNFeHercules.C82Application.Dto.DD.DD042;
 using EnviaNFeHercules.C82Application.Dto.DD.DD043;
 using EnviaNFeHercules.C82Application.Dto.DD.DD044;
@@ -413,13 +414,18 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD040
         public decimal? W56B_CBS_VCREDPRESCONDSUS { get; set; }
         public decimal? W58_VTOTIBSMONO { get; set; }
         public decimal? W59_VTOTCBSMONO { get; set; }
-        public int? DD070_TPDEBCREID { get; set; }
+        public int? DD040_TPDEBCREID { get; set; }
         public decimal? W59B_VCBSMONORETEN { get; set; }
         public decimal? W59C_VIBSMONORETEN { get; set; }
         public decimal? W59D_VCBSMONORET { get; set; }
         public decimal? W60_VTOTNF { get; set; }
         public decimal? B33_PREDUTOR { get; set; }
         public int? B34_TPOPERGOVID { get; set; }
+
+        //---Navs Reforma Tributária---//
+        public OsusrE9aCsicpAa145Tpdebcre? NavAa145Tpdebcre { get; set; }
+        public OsusrE9aCsicpAa149Tpopgov? NavAa149Tpopgov { get; set; }
+
 
         //------------------------------------------------------------//
         public DtoGet_BB012MDFe? NavBB012Conta { get; set; }

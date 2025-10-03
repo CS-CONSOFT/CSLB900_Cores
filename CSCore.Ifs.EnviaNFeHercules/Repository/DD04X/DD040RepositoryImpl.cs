@@ -1,5 +1,6 @@
 ﻿using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_DD;
+using CSCore.Domain.CS_Models.Staticas.AA;
 using CSCore.Domain.Interfaces.DD._04X;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
@@ -98,6 +99,14 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                    join dd041Frete in _appDbContext.OsusrTeiCsicpDd041Fretes
                    on dd040.Dd040Modalidadefrete equals dd041Frete.Id into dd041Frete_dd040_join
                    from dd041Frete in dd041Frete_dd040_join.DefaultIfEmpty()
+
+                   join aa145Tpdebcre in _appDbContext.OsusrE9aCsicpAa145Tpdebcres
+                   on dd040.DD040_TPDEBCREID equals aa145Tpdebcre.Id into aa145Tpdebcre_dd040_join
+                   from aa145Tpdebcre in aa145Tpdebcre_dd040_join.DefaultIfEmpty()
+
+                   join aa149Tpopgov in _appDbContext.OsusrE9aCsicpAa149Tpopgovs
+                   on dd040.B34_TPOPERGOVID equals aa149Tpopgov.Id into aa149Tpopgov_dd040_join
+                   from aa149Tpopgov in aa149Tpopgov_dd040_join.DefaultIfEmpty()
 
                    select new CSICP_DD040
                    {
@@ -286,7 +295,8 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                        W06eVicmsmonoret = dd040.W06eVicmsmonoret,
                        Dd040Origemregpv = dd040.Dd040Origemregpv,
                        Dd040Keyecommerce = dd040.Dd040Keyecommerce,
-                       //W33_VIS = dd040.W33_VIS,
+                       //--------Reforma Tributária-----------------//
+                       W33_VIS = dd040.W33_VIS,
                        W35_VBCIBSCBS = dd040.W35_VBCIBSCBS,
                        W38_IBSUF_VDIF = dd040.W38_IBSUF_VDIF,
                        W39_IBSUF_VDEVTRIB = dd040.W39_IBSUF_VDEVTRIB,
@@ -294,16 +304,16 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                        W43_IBSMUN_VDIF = dd040.W43_IBSMUN_VDIF,
                        W44_IBSMUN__VDEVTRIB = dd040.W44_IBSMUN__VDEVTRIB,
                        W46_VIBSMUN = dd040.W46_VIBSMUN,
-                       //W47_VIBSTOT = dd040.W47_VIBSTOT,
-                       //W48_VCREDPRES = dd040.W48_VCREDPRES,
-                       //W49_VCREDPRESCONDSUS = dd040.W49_VCREDPRESCONDSUS,
+                       W47_VIBSTOT = dd040.W47_VIBSTOT,
+                       W48_VCREDPRES = dd040.W48_VCREDPRES,
+                       W49_VCREDPRESCONDSUS = dd040.W49_VCREDPRESCONDSUS,
                        W53_CBS_VDIF = dd040.W53_CBS_VDIF,
                        W54_CBS_VDEVTRIB = dd040.W54_CBS_VDEVTRIB,
                        W56A_CBS_VCREDPRES = dd040.W56A_CBS_VCREDPRES,
                        W56B_CBS_VCREDPRESCONDSUS = dd040.W56B_CBS_VCREDPRESCONDSUS,
                        W58_VTOTIBSMONO = dd040.W58_VTOTIBSMONO,
                        W59_VTOTCBSMONO = dd040.W59_VTOTCBSMONO,
-                       //DD070_TPDEBCREID = dd040.DD070_TPDEBCREID,
+                       DD040_TPDEBCREID = dd040.DD040_TPDEBCREID,
                        W59B_VCBSMONORETEN = dd040.W59B_VCBSMONORETEN,
                        W59C_VIBSMONORETEN = dd040.W59C_VIBSMONORETEN,
                        W59D_VCBSMONORET = dd040.W59D_VCBSMONORET,
@@ -649,7 +659,26 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                            Order = dd041Frete.Order,
                            IsActive = dd041Frete.IsActive,
                            CodigoSefaz = dd041Frete.CodigoSefaz,
-                       } : null
+                       } : null,
+
+                       NavAa145Tpdebcre = aa145Tpdebcre != null ? new OsusrE9aCsicpAa145Tpdebcre
+                       {
+                           Id = aa145Tpdebcre.Id,
+                           Label = aa145Tpdebcre.Label,
+                           Order = aa145Tpdebcre.Order,
+                           IsActive = aa145Tpdebcre.IsActive,
+                           Tiponotacredeb = aa145Tpdebcre.Tiponotacredeb,
+                           Debcre = aa145Tpdebcre.Debcre,
+                       } : null,
+
+                       NavAa149Tpopgov = aa149Tpopgov != null ? new OsusrE9aCsicpAa149Tpopgov
+                       {
+                           Id = aa149Tpopgov.Id,
+                           Label = aa149Tpopgov.Label,
+                           Order = aa149Tpopgov.Order,
+                           IsActive = aa149Tpopgov.IsActive,
+                           CodgCs = aa149Tpopgov.CodgCs,
+                       } : null,
                    };
         }
 

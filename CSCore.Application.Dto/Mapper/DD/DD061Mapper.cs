@@ -120,7 +120,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 UB87_ADREMCBS = entity.UB87_ADREMCBS,
                 UB88_VIBSMONO = entity.UB88_VIBSMONO,
                 UB88_VCBSMONO = entity.UB88_VCBSMONO,
-                UB91_QBCMONORET = entity.UB91_QBCMONORET,
+                UB91_QBCMONORETEN = entity.UB91_QBCMONORETEN,
                 UB92_ADREMIBSRETEN = entity.UB92_ADREMIBSRETEN,
                 UB93_VIBSMONORETEN = entity.UB93_VIBSMONORETEN,
                 UB93A_ADREMCBSRETEN = entity.UB93A_ADREMCBSRETEN,

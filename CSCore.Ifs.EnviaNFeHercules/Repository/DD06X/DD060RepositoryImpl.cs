@@ -22,10 +22,19 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                         where dd060.TenantId == in_tenant
                         && dd060.Dd040Id == in_dd040id
 
+                        join gg520 in _appDbContext.OsusrE9aCsicpGg520s
+                        on dd060.Dd060Saldoid equals gg520.Id into dd060_gg520_join
+                        from gg520 in dd060_gg520_join.DefaultIfEmpty()
+
                         join gg008Kdx in _appDbContext.OsusrE9aCsicpGg008Kdxes
+                        on gg520.Gg520KardexId equals gg008Kdx.Gg008Kardexid into dd060_gg008Kdx_join
+                        from gg008Kdx in dd060_gg008Kdx_join.DefaultIfEmpty()
+
+                        // AQUI TINHA UM JOIN COMENTADO, VERIFICAR SE VAI SER USADO DEPOIS
+                        /*join gg008Kdx in _appDbContext.OsusrE9aCsicpGg008Kdxes
                         on new { ProdutoId = dd060.Dd060Produtoid }
-                        equals new { ProdutoId = gg008Kdx.Gg008Produtoid } into gg008Kdx_dd060_join
-                        from gg008Kdx in gg008Kdx_dd060_join.DefaultIfEmpty()
+                        equals new { ProdutoId = gg008Kdx.Gg008Produtoid } into gg008Kdx_dd060_join 
+                        from gg008Kdx in gg008Kdx_dd060_join.DefaultIfEmpty()*/
 
                         join gg008Produto in _appDbContext.OsusrE9aCsicpGg008s
                         on dd060.Dd060Produtoid equals gg008Produto.Id into dd060_gg008Produto_join
@@ -39,6 +48,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                         on gg008Produto.Gg008Marcaid equals gg006.Id into gg008Produto_gg006_join
                         from gg006 in gg008Produto_gg006_join.DefaultIfEmpty()
 
+                            //------Leitura da DD061Cfgimp e tabelas relacionadas------------//
                         join dd061_cfgimp in _appDbContext.OsusrTeiCsicpDd061Cfgimps
                         on dd060.Dd060Id equals dd061_cfgimp.Dd060Id into dd060_dd061_cfgimp_join
                         from dd061_cfgimp in dd060_dd061_cfgimp_join.DefaultIfEmpty()
@@ -79,6 +89,32 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                         on dd061_cfgimp.Dd061Bb027bCfopStaticaId equals spedInCfop.Id into dd061_cfgimp_spedInCfop_join
                         from spedInCfop in dd061_cfgimp_spedInCfop_join.DefaultIfEmpty()
 
+                        //fazer dto e mapeamento
+                        join aa144_classtrib in _appDbContext.OsusrE9aCsicpAa144s
+                        on dd061_cfgimp.Ub13Ub14RfclasstribId equals aa144_classtrib.Id into dd061_cfgimp_aa144_classtrib_join
+                        from aa144_classtrib in dd061_cfgimp_aa144_classtrib_join.DefaultIfEmpty()
+
+                        join aa143_leicomp in _appDbContext.CSICP_AA143
+                        on dd061_cfgimp.Dd061RflcId equals aa143_leicomp.Id into dd061_cfgimp_aa143_leicomp_join
+                        from aa143_leicomp in dd061_cfgimp_aa143_leicomp_join.DefaultIfEmpty()
+
+                        join aa144_ISclasstrib in _appDbContext.OsusrE9aCsicpAa144s
+                        on dd061_cfgimp.Ub03IsRfclasstribId equals aa144_ISclasstrib.Id into dd061_cfgimp_aa144_ISclasstrib_join
+                        from aa144_ISclasstrib in dd061_cfgimp_aa144_ISclasstrib_join.DefaultIfEmpty()
+
+                        join aa144_tribreg in _appDbContext.OsusrE9aCsicpAa144s
+                        on dd061_cfgimp.Ub6970RfclasstribregId equals aa144_tribreg.Id into dd061_cfgimp_aa144_tribreg_join
+                        from aa144_tribreg in dd061_cfgimp_aa144_tribreg_join.DefaultIfEmpty()
+
+                        join aa150_ccredpres in _appDbContext.OsusrE9aCsicpAa150Ccredpres
+                        on dd061_cfgimp.Ub7479Ccredpresid equals aa150_ccredpres.Id into dd061_cfgimp_aa150_ccredpres_join
+                        from aa150_ccredpres in dd061_cfgimp_aa150_ccredpres_join.DefaultIfEmpty()
+
+                        join bb027_reforma in _appDbContext.OsusrE9aCsicpBb027s
+                        on dd061_cfgimp.Dd061RfBb027Id equals bb027_reforma.Id into dd061_cfgimp_bb027_reforma_join
+                        from bb027_reforma in dd061_cfgimp_bb027_reforma_join.DefaultIfEmpty()
+
+                            //-----------------------FINAL--------------------------//
                         join gg021 in _appDbContext.OsusrE9aCsicpGg021s
                         on gg008Produto.Gg008Ncmid equals gg021.Id into gg008Produto_gg021_join
                         from gg021 in gg008Produto_gg021_join.DefaultIfEmpty()
@@ -111,6 +147,15 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                                          join aa037Imp in _appDbContext.E9ACSICP_AA037Imps
                                          on dd061.Dd061ImpostoId equals aa037Imp.Id into dd061_aa037Imp_join
                                          from aa037Imp in dd061_aa037Imp_join.DefaultIfEmpty()
+
+                                         //fazer dto e mapeamento
+                                         join aa027Uf in _appDbContext.OsusrE9aCsicpAa027s // apenas o campo sigla
+                                         on dd061.UB17_UFID equals aa027Uf.Id into dd061_aa027Uf_join
+                                         from aa027Uf in dd061_aa027Uf_join.DefaultIfEmpty()
+
+                                         join aa028cidade in _appDbContext.OsusrE9aCsicpAa028s // apenas o campo CDGIBGE, desccidade
+                                         on dd061.UB36_MUNICIPIOID equals aa028cidade.Id into dd061_aa028cidade_join
+                                         from aa028cidade in dd061_aa028cidade_join.DefaultIfEmpty()
 
                                          where dd061.TenantId == in_tenant && dd061.Dd060Id == dd060.Dd060Id
 
