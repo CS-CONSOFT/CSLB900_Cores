@@ -917,12 +917,10 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
                 
                 entity.HasOne(e => e.NavBB012Trasportadora).WithMany().HasForeignKey(e => e.Dd041TransportadoraId);
-                //entity.HasOne(e => e.NavAA025).WithMany().HasForeignKey(e => e.Dd041PaisId);
-                //entity.HasOne(e => e.NavAA027).WithMany().HasForeignKey(e => e.Dd041UfId);
+                entity.HasOne(e => e.NavAA025).WithMany().HasForeignKey(e => e.Dd041PaisId);
+                entity.HasOne(e => e.NavAA027).WithMany().HasForeignKey(e => e.Dd041UfId);
                 entity.HasOne(e => e.NavAA028).WithMany().HasForeignKey(e => e.Dd041CidadeId);
                 entity.HasOne(e => e.NavDD041Doc).WithMany().HasForeignKey(e => e.Dd041Tipodocto);
-                
-                
             });
 
             modelBuilder.Entity<CSICP_DD041Docto>(entity =>

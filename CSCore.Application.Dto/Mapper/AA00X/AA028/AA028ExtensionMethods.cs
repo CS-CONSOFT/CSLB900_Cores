@@ -92,5 +92,27 @@ namespace CSBS101._82Application.Mapper.AA00X.AA028
                 NavAA027Uf = entity.NavUf?.ToDtoGetAA027paraMDFe(),
             };
         }
+
+        public static DtoGetAA028_Simples ToDtoGet_Simples(this CSICP_Aa028 entity)
+        {
+            return new DtoGetAA028_Simples
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Aa028Cidade = entity.Aa028Cidade,
+                A028Percicmsentrada = entity.A028Percicmsentrada,
+                A028Percicmsncontrib = entity.A028Percicmsncontrib,
+                Aa028Percicmscontrib = entity.Aa028Percicmscontrib,
+                A028Percsubsttribut = entity.A028Percsubsttribut,
+                A028Mascinsestadual = entity.A028Mascinsestadual,
+                A028Mascieimpressao = entity.A028Mascieimpressao,
+                Aa028Codgibge = entity.Aa028Codgibge,
+                Aa028Zonafranca = entity.Aa028Zonafranca,
+                Aa028Estadobrasil = entity.Aa028Estadobrasil,
+                Ufid = entity.Ufid,
+                Aa028ExportCidadeid = entity.Aa028ExportCidadeid,
+                Aa027ExportUfid = entity.Aa027ExportUfid,
+            };
+        }
     }
 }

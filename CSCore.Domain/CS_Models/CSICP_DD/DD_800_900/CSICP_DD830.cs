@@ -96,8 +96,4 @@ public partial class CSICP_DD830
     public int? Dd830Tpregistro { get; set; }
 
     public int? Dd830Tipo { get; set; }
-
-    public virtual CSICP_DD042? Dd042 { get; set; }
-
-    public virtual CSICP_DD072? Dd072 { get; set; }
 }

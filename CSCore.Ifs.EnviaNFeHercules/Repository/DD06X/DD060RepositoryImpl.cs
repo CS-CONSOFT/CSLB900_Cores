@@ -6,7 +6,6 @@ using CSCore.Domain.Interfaces.DD._06X;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using Microsoft.EntityFrameworkCore;
-using static CSCore.Domain.CS_Models.CSICP_DD.CSICP_DD060;
 
 namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
 {

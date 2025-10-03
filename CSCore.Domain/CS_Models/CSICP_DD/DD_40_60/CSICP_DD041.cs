@@ -89,17 +89,13 @@ public partial class CSICP_DD041
 
     public string? Dd041IdentEstrangeiro { get; set; }
 
-    public virtual CSICP_DD040? Dd040 { get; set; }
-
-    public virtual CSICP_DD041Frete? Dd041ModalidadefreteNavigation { get; set; }
-
-    public virtual CSICP_DD041Docto? Dd041TipodoctoNavigation { get; set; }
 
     //Relacionamentos Navs
     public CSICP_BB012? NavBB012Conta { get; set; }
     public CSICP_BB012? NavBB012Trasportadora { get; set; }
     public CSICP_DD041Docto? NavDD041Doc { get; set; }
-
     public CSICP_Aa028? NavAA028 { get; set; }
+    public CSICP_Aa027? NavAA027 { get; set; }
+    public CSICP_Aa025? NavAA025 { get; set; }
 
 }

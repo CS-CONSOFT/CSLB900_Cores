@@ -73,9 +73,7 @@ public partial class CSICP_BB012
     public CSICP_BB01201? OsusrE9aCsicpBb01201 { get; set; }
     public CSICP_BB01202? Nav_BB01202 { get; set; }
     public CSICP_BB01206? NavBB01206 { get; set; }
-
     public CSICP_BB01205? OsusrE9aCsicpBb01205 { get; set; }
-
     public CSICP_Bb012Mrel? BB012_ModeloRelacao { get; set; }
     public CSICP_Bb012Stacta? BB012_StatusConta { get; set; }
     public CSICP_Bb012Tpcta? BB012_TipoConta { get; set; }

@@ -5,6 +5,7 @@ using CSBS101._82Application.Mapper.BB00X.BB012;
 using CSCore.Application.Dto.Dtos.DD.DD041;
 using CSCore.Application.Dto.Mapper.BB00X.BB012.BB012MDFe;
 using CSCore.Domain.CS_Models.CSICP_DD;
+using EnviaNFeHercules.C82Application.Mapper.DD00X;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,7 +65,9 @@ namespace CSCore.Application.Dto.Mapper.DD
                 NavBB012Conta = entity.NavBB012Conta?.ToDtoGetBB012MDFe(),
                 NavBB012Trasportadora = entity.NavBB012Trasportadora?.ToDtoGet(),
                 NavDD041Doc = entity.NavDD041Doc,
-                NavAA028 = entity.NavAA028?.ToDtoGetAA028paraMDFe()
+                NavAA028 = entity.NavAA028?.ToDtoGet_Simples(),
+                NavAA027 = entity.NavAA027?.ToDtoGetAA027SASimples(),
+                NavAA025 = entity.NavAA025?.ToDtoGet(),
             };
         }
     }
