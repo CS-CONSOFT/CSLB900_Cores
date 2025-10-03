@@ -445,7 +445,7 @@ public partial class CSICP_DD040
     [Column("W59_VTOTCBSMONO", TypeName = "decimal(15,2)")]
     public decimal? W59_VTOTCBSMONO { get; set; }
 
-// Define foreign key to OsusrE9aCsicpAa145Tpdebcre
+    // Define foreign key to OsusrE9aCsicpAa145Tpdebcre
     [ForeignKey("NavAa145Tpdebcre")]
 
     [Column("DD040_TPDEBCREID", TypeName = "int")]

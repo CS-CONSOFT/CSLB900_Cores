@@ -3,7 +3,9 @@ using CSBS101._82Application.Mapper.AA00X.AA027;
 using CSBS101._82Application.Mapper.AA00X.AA028;
 using CSBS101._82Application.Mapper.BB00X.BB012;
 using CSCore.Application.Dto.Dtos.DD.DD041;
+using CSCore.Application.Dto.Mapper.BB00X.BB012.BB012MDFe;
 using CSCore.Domain.CS_Models.CSICP_DD;
+using EnviaNFeHercules.C82Application.Mapper.DD00X;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,12 +62,12 @@ namespace CSCore.Application.Dto.Mapper.DD
                 Dd041Sms = entity.Dd041Sms,
                 Dd041Indfinal = entity.Dd041Indfinal,
                 Dd041IdentEstrangeiro = entity.Dd041IdentEstrangeiro,
+                NavBB012Conta = entity.NavBB012Conta?.ToDtoGetBB012MDFe(),
                 NavBB012Trasportadora = entity.NavBB012Trasportadora?.ToDtoGet(),
                 NavDD041Doc = entity.NavDD041Doc,
-                NavAA025 = entity.NavAA025?.ToDtoGet(),
+                NavAA028 = entity.NavAA028?.ToDtoGet_Simples(),
                 NavAA027 = entity.NavAA027?.ToDtoGetAA027SASimples(),
-                NavAA028 = entity.NavAA028?.ToDtoGetSimples()
-
+                NavAA025 = entity.NavAA025?.ToDtoGet(),
             };
         }
     }

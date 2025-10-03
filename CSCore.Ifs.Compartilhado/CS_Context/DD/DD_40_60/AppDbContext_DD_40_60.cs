@@ -921,8 +921,6 @@ namespace CSCore.Ifs.CS_Context
                 entity.HasOne(e => e.NavAA027).WithMany().HasForeignKey(e => e.Dd041UfId);
                 entity.HasOne(e => e.NavAA028).WithMany().HasForeignKey(e => e.Dd041CidadeId);
                 entity.HasOne(e => e.NavDD041Doc).WithMany().HasForeignKey(e => e.Dd041Tipodocto);
-                
-                
             });
 
             modelBuilder.Entity<CSICP_DD041Docto>(entity =>

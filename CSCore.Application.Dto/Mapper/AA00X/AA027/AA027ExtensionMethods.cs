@@ -103,7 +103,7 @@ namespace CSBS101._82Application.Mapper.AA00X.AA027
                 Aa027ExportUfid = entity.Aa027ExportUfid,
                 Aa025ExportPaisid = entity.Aa025ExportPaisid,
                 Aa026ExportRegiaoid = entity.Aa026ExportRegiaoid,
-                NavAA025PaisbyBB001 = entity.Pais?.ToDtoGet(),
+                NavAA025Pais = entity.Pais?.ToDtoGet(),
             };
         }
     }

@@ -1,5 +1,6 @@
 ﻿using CSBS101._82Application.Dto.BB00X.BB019;
 using CSBS101._82Application.Dto.BB00X.BB026;
+using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get.BB012MDFe;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using EnviaNFeHercules.C82Application.Dto.DD.DD043;
@@ -88,10 +89,11 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD042
         public decimal? Dd042Nrotitulo { get; set; }
 
         public decimal? Dd042Fatoracresc { get; set; }
-        public Dto_GetBB019? NavBB019 { get; set; }
 
-        public Dto_GetBB026_ComBB026Classe? NavBB026 { get; set; }
-        public CSICP_Bb026Classe? NavBb026Classe { get; set; }
+        public DtoGet_BB012MDFe? NavBB012Conta { get; set; }
+        public Dto_GetBB019? NavBB019 { get; set; }
+        public DtoGet_BB026_ComClasseETipo? NavBB026 { get; set; }
+        public CSICP_DD830? NavDD830 { get; set; }
         public IEnumerable<DtoGetDD043?> NavDD043 { get; set; } = [];
     }
 }

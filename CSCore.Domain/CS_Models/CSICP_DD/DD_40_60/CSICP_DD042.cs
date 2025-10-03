@@ -82,8 +82,9 @@ public partial class CSICP_DD042
     public decimal? Dd042Fatoracresc { get; set; }
     
     //Navs movidos do antigo RepoDTO_CSICPDD042
+    public CSICP_BB012? NavBB012Conta { get; set; }
     public CSICP_Bb019? NavBB019 { get; set; }
     public CSICP_Bb026? NavBB026 { get; set; }
-    public CSICP_Bb026Classe? NavBb026Classe { get; set; }
+    public CSICP_DD830? NavDD830 { get; set; }
     public IEnumerable<CSICP_DD043?> NavDD043 { get; set; } = [];
 }

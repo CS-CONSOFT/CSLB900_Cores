@@ -1,7 +1,4 @@
-﻿using CSBS101._82Application.Dto.AA00X;
-using CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA027;
-using CSCore.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA028
 {
-    public class DtoGet_AA028paraMDFe
+    public class DtoGetAA028_Simples
     {
         public int TenantId { get; set; }
 
@@ -40,7 +37,5 @@ namespace CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA028
         public string? Aa028ExportCidadeid { get; set; }
 
         public string? Aa027ExportUfid { get; set; }
-
-        public DtoGet_AA027paraMDFe? NavAA027Uf { get; set; }
     }
 }

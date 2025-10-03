@@ -423,7 +423,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
                 Dd060CashbackPvendaliq = this.Dd060CashbackPvendaliq,
                 Dd060CashbackVpremio = this.Dd060CashbackVpremio,
                 Dd060Nroprctabela = this.Dd060Nroprctabela,
-                DD080_RFTRANSACAO_ID = this.DD080_RFTRANSACAO_ID
+                DD060_RFTRANSACAO_ID = this.DD080_RFTRANSACAO_ID
             };
         }
     }

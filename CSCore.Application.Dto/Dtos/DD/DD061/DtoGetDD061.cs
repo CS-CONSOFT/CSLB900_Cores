@@ -225,7 +225,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD061
 
         public decimal? UB88_VCBSMONO { get; set; }
 
-        public decimal? UB91_QBCMONORET { get; set; }
+        public decimal? UB91_QBCMONORETEN { get; set; }
 
         public decimal? UB92_ADREMIBSRETEN { get; set; }
 

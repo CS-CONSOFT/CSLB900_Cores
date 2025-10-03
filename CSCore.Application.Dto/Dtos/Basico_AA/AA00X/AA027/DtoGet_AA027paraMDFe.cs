@@ -43,6 +43,6 @@ namespace CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA027
         public string? Aa025ExportPaisid { get; set; }
 
         public string? Aa026ExportRegiaoid { get; set; }
-        public Dto_GetAA025? NavAA025PaisbyBB001 { get; set; }
+        public Dto_GetAA025? NavAA025Pais { get; set; }
     }
 }
