@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using CSCore.Domain.CS_Models.Staticas.AA;
 
 namespace CSCore.Domain.CS_Models.CSICP_DD;
 
@@ -444,8 +445,14 @@ public partial class CSICP_DD040
     [Column("W59_VTOTCBSMONO", TypeName = "decimal(15,2)")]
     public decimal? W59_VTOTCBSMONO { get; set; }
 
+// Define foreign key to OsusrE9aCsicpAa145Tpdebcre
+    [ForeignKey("NavAa145Tpdebcre")]
+
     [Column("DD040_TPDEBCREID", TypeName = "int")]
     public int? DD040_TPDEBCREID { get; set; }
+    public OsusrE9aCsicpAa145Tpdebcre? NavAa145Tpdebcre { get; set; }
+    // foreign key definition end
+
 
     [Column("W59B_VCBSMONORETEN", TypeName = "decimal(15,2)")]
     public decimal? W59B_VCBSMONORETEN { get; set; }
@@ -462,8 +469,12 @@ public partial class CSICP_DD040
     [Column("B33_PREDUTOR", TypeName = "decimal(7,4)")]
     public decimal? B33_PREDUTOR { get; set; }
 
+// define foreign key to OsusrE9aCsicpAa149Tpopgov
+    [ForeignKey("NavAa149Tpopgov")]
     [Column("B34_TPOPERGOVID", TypeName = "int")]
     public int? B34_TPOPERGOVID { get; set; }
+    public OsusrE9aCsicpAa149Tpopgov? NavAa149Tpopgov { get; set; }
+    // foreign key definition end
 
     //-------------------------------------------------------//
 }

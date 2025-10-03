@@ -279,9 +279,13 @@ public partial class CSICP_DD060
     public int? Dd060Nroprctabela { get; set; }
 
     //--------------------Reforma Tributária--------------------//
+  // Define relacionamento com CSICP_BB027
+    [ForeignKey("CSICP_BB027")]
 
-    [Column("DD080_RFTRANSACAO_ID", TypeName = "nvarchar(72)")]
-    public string? DD080_RFTRANSACAO_ID { get; set; }
+    [Column("DD060_RFTRANSACAO_ID", TypeName = "nvarchar(72)")]
+    public string? DD060_RFTRANSACAO_ID { get; set; }
+    public CSICP_Bb027? CSICP_BB027 { get; set; }
+    // fim relacionamento
 
     //-------------------------------------------------------//
 

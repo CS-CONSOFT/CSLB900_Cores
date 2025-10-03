@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using CSCore.Domain.CS_Models.CSICP_AA;
+using CSCore.Domain.CS_Models.Staticas.AA;
 
 namespace CSCore.Domain.CS_Models.CSICP_DD;
 
@@ -70,29 +72,66 @@ public partial class CSICP_DD061Cfgimp
 
     public int? Dd061Bb027bIndpres { get; set; }
 
-   //---------Reforma Tributária----------//
+    //---------Reforma Tributária----------//
 
-[Column("UB13UB14_RFCLASSTRIB_ID", TypeName = "bigint")]
-public long? Ub13Ub14RfclasstribId { get; set; }
+// Defining the foreign key relationship to OsusrE9aCsicpAa144
+    [ForeignKey("NavCsicpAa144")]
 
-[Column("DD061_RFLC_ID", TypeName = "nvarchar(36)")]
-public string? Dd061RflcId { get; set; }
+    [Column("UB13UB14_RFCLASSTRIB_ID", TypeName = "bigint")]
+    public long? Ub13Ub14RfclasstribId { get; set; }
+   public OsusrE9aCsicpAa144? NavCsicpAa144 { get; set; }
+    // Final foreign key relationship to OsusrE9aCsicpAa144
 
-[Column("UB03_IS_RFCLASSTRIB_ID", TypeName = "bigint")]
-public long? Ub03IsRfclasstribId { get; set; }
+    // Defining the foreign key relationship to OsusrE9aCsicpAa143
 
-[Column("UB69_70_RFCLASSTRIBREG_ID", TypeName = "bigint")]
-public long? Ub6970RfclasstribregId { get; set; }
+    [ForeignKey("NavCsicpAa143")]
 
-[Column("UB74_79_CCREDPRESID", TypeName = "int")]
-public int? Ub7479Ccredpresid { get; set; }
+    [Column("DD061_RFLC_ID", TypeName = "nvarchar(36)")]
+    public string? Dd061RflcId { get; set; }
+   public CSICP_AA143? NavCsicpAa143 { get; set; }
+    // Final foreign key relationship to OsusrE9aCsicpAa143
 
-[Column("DD061_RF_BB027_ID", TypeName = "nvarchar(36)")]
-public string? Dd061RfBb027Id { get; set; }
+// Define relacionamento com OsusrE9aCsicpAa144
 
-[Column("DD061_RF_BB027B_CFGIMP_ID", TypeName = "nvarchar(36)")]
-public string? Dd061RfBb027bCfgimpId { get; set; }
+    [ForeignKey("NavCsicpAa144_1")]
 
+    [Column("UB03_IS_RFCLASSTRIB_ID", TypeName = "bigint")]
+    public long? Ub03IsRfclasstribId { get; set; }
+    public OsusrE9aCsicpAa144? NavCsicpAa144_1 { get; set; }
+// fim relacionamento
+
+
+// Define relacionamento com OsusrE9aCsicpAa144
+    [ForeignKey("NavCsicpAa144_2")]
+
+    [Column("UB69_70_RFCLASSTRIBREG_ID", TypeName = "bigint")]
+    public long? Ub6970RfclasstribregId { get; set; }
+    public OsusrE9aCsicpAa144? NavCsicpAa144_2 { get; set; }
+    // fim relacionamento
+
+// Define relacionamento com OsusrE9aCsicpAa150Ccredpre
+    [ForeignKey("NavAa150Ccredpre")]
+    [Column("UB74_79_CCREDPRESID", TypeName = "int")]
+    public int? Ub7479Ccredpresid { get; set; }
+   public OsusrE9aCsicpAa150Ccredpre? NavAa150Ccredpre { get; set; }
+    // fim relacionamento
+
+   // Define relacionamento com CSICP_BB027
+    [ForeignKey("CSICP_BB027")]
+
+    [Column("DD061_RF_BB027_ID", TypeName = "nvarchar(36)")]
+    public string? Dd061RfBb027Id { get; set; }
+   public CSICP_Bb027? CSICP_BB027 { get; set; }
+    // fim relacionamento
+
+   // Define relacionamento com CSICP_BB027_imp
+    [ForeignKey("CSICP_BB027_imp")]
+
+    [Column("DD061_RF_BB027B_CFGIMP_ID", TypeName = "nvarchar(36)")]
+    public string? Dd061RfBb027bCfgimpId { get; set; }
+    public CSICP_Bb027Imp? CSICP_BB027_imp { get; set; }
+    // Fim relacionamento
+ 
     //-------------------------------------------------------//
 
     public virtual CSICP_DD060 Dd060 { get; set; } = null!;
