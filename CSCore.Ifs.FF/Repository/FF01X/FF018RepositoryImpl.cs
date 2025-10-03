@@ -39,8 +39,10 @@ namespace CSCore.Ifs.FF.Repository.FF01X
         public async Task<bool> VarrerListaECalcularJuros(CSICP_FF017 WorkFF017,ICalculoAtrasoMultaJurosTitulos ICalculoAtraso)
         {
             var ListWorkFF018 = await this.GetListAsync(WorkFF017.TenantId, WorkFF017.Id, in_pageNumber: 1, in_pageSize: 9999, devePaginar: false);
+            if (ListWorkFF018.Item1.Count() == 0) return false;
             foreach (var currentFF018 in ListWorkFF018.Item1)
             {
+                var has = _appDbContext.ChangeTracker.Entries().Any(e => e.Entity == currentFF018);
                 PrmRetornoCalculo retornoCalculos = CalcularRetornoJurosMulta(WorkFF017, ICalculoAtraso, currentFF018);
 
                 currentFF018.Ff018ValorJuros = retornoCalculos.OutValorJuros;
@@ -50,9 +52,16 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                     + (currentFF018.Ff018ValorMulta ?? 0)
                     - (currentFF018.Ff018ValorDescontos ?? 0);
 
-                _appDbContext.OsusrE9aCsicpFf018s.Update(currentFF018);
+                _appDbContext.ChangeTracker.Clear();
+                _appDbContext.Entry(currentFF018).State = EntityState.Modified;
             }
             return true;
+        }
+
+        public async Task<CSICP_FF018> GetById(int in_tenant, string ID)
+        {
+            return await GetQueryBase(in_tenant).FirstOrDefaultAsync(e => e.Id == ID)
+                ?? throw new KeyNotFoundException("FF018 Não encontrada!");
         }
 
         private static PrmRetornoCalculo CalcularRetornoJurosMulta(CSICP_FF017 WorkFF017, ICalculoAtrasoMultaJurosTitulos ICalculoAtraso, CSICP_FF018 currentFF018)
@@ -320,5 +329,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                    };
                    
         }
+
+
     }
 }
