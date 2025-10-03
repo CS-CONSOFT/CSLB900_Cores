@@ -25,15 +25,10 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return cSICP_FF017;
         }
 
-        public async Task<bool> SumarizarOsTotais(string InFF017_ID, int InTenantID)
+        public async Task<bool> SumarizarOsTotais(CSICP_FF017 WorkFF017)
         {
-            var WorkFF017 = await _appDbContext.OsusrE9aCsicpFf017s
-                .Where(e => e.TenantId ==InTenantID && e.Id == InFF017_ID)
-                .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Registro não encontrado");
-
-
             var WorkQuery = _appDbContext.OsusrE9aCsicpFf018s
-                .Where(e => e.TenantId == InTenantID && e.Ff017Id == InFF017_ID);
+                .Where(e => e.TenantId == WorkFF017.TenantId && e.Ff017Id == WorkFF017.Id);
 
             var WorkSumValorTitulo = await WorkQuery.SumAsync(e => e.Ff018ValorTitulo);
             var WorkSumValorJuros = await WorkQuery.SumAsync(e => e.Ff018ValorJuros);
@@ -46,6 +41,8 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             WorkFF017.Ff017TotalMulta = WorkSumValorMulta;
             WorkFF017.Ff017TotalAberto = WorkTotalEmAberto;
             WorkFF017.Ff017Totrenegociado = WorkValorRenegociado;
+
+            _appDbContext.OsusrE9aCsicpFf017s.Update(WorkFF017);
 
             return true;
         }

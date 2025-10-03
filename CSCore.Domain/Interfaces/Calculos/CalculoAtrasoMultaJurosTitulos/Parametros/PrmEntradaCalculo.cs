@@ -11,7 +11,14 @@ public class PrmEntradaCalculo
     public decimal? InPercentualJuros { get; set; }
     public decimal? InPercentualHonorarios { get; set; }
     public string InEstabID { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Juros especial, pra não cobrar juros
+    /// </summary>
     public bool InFinacEspJurosMulta { get; set; } = false;
+
+
+
 
     public static PrmEntradaCalculo CreateInstance(
         int inTenantID,

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSCore.Ifs.LB900.Calculos.Parametros
+namespace CSCore.Domain.Interfaces.Calculos.CalculoAtrasoMultaJurosTitulos.Parametros
 {
     public class PrmEntradaContasAReceber : PrmEntradaCalculo
     {
