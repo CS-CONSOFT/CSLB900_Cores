@@ -303,7 +303,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD04X
                        W56B_CBS_VCREDPRESCONDSUS = dd040.W56B_CBS_VCREDPRESCONDSUS,
                        W58_VTOTIBSMONO = dd040.W58_VTOTIBSMONO,
                        W59_VTOTCBSMONO = dd040.W59_VTOTCBSMONO,
-                       DD070_TPDEBCREID = dd040.DD070_TPDEBCREID,
+                       //DD070_TPDEBCREID = dd040.DD070_TPDEBCREID,
                        W59B_VCBSMONORETEN = dd040.W59B_VCBSMONORETEN,
                        W59C_VIBSMONORETEN = dd040.W59C_VIBSMONORETEN,
                        W59D_VCBSMONORET = dd040.W59D_VCBSMONORET,
