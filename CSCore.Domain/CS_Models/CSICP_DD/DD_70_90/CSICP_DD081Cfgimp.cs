@@ -73,32 +73,26 @@ public partial class CSICP_DD081Cfgimp
 
     //---------Reforma Tributária----------//
 
-    [Column("UB13UB14_CLASSTRIB_ID", TypeName = "bigint")]
-    public long? UB13UB14_CLASSTRIB_ID { get; set; }
+[Column("UB13UB14_RFCLASSTRIB_ID", TypeName = "bigint")]
+public long? Ub13Ub14RfclasstribId { get; set; }
 
+[Column("DD081_RFLC_ID", TypeName = "nvarchar(36)")]
+public string? Dd061RflcId { get; set; }
 
-    [Column("DD081_LC_ID", TypeName = "nvarchar(72)")]
-    public string? DD081_LC_ID { get; set; }
+[Column("UB03_IS_RFCLASSTRIB_ID", TypeName = "bigint")]
+public long? Ub03IsRfclasstribId { get; set; }
 
+[Column("UB69_70_RFCLASSTRIBREG_ID", TypeName = "bigint")]
+public long? Ub6970RfclasstribregId { get; set; }
 
-    [Column("UB03_IS_CLASSTRIB_ID", TypeName = "bigint")]
-    public long? UB03_IS_CLASSTRIB_ID { get; set; }
+[Column("UB74_79_CCREDPRESID", TypeName = "int")]
+public int? Ub7479Ccredpresid { get; set; }
 
+[Column("DD081_RF_BB027_ID", TypeName = "nvarchar(36)")]
+public string? Dd061RfBb027Id { get; set; }
 
-    [Column("UB69_70_CLASSTRIBREG_ID", TypeName = "bigint")]
-    public long? UB69_70_CLASSTRIBREG_ID { get; set; }
-
-
-    [Column("UB74_79_CCREDPRESID", TypeName = "int")]
-    public int? UB74_79_CCREDPRESID { get; set; }
-
-
-    [Column("DD081_RF_BB027_ID", TypeName = "nvarchar(72)")]
-    public string? DD081_RF_BB027_ID { get; set; }
-
-
-    [Column("DD081_RF_BB027B_CFGIMP_ID", TypeName = "nvarchar(72)")]
-    public string? DD081_RF_BB027B_CFGIMP_ID { get; set; }
+[Column("DD081_RF_BB027B_CFGIMP_ID", TypeName = "nvarchar(36)")]
+public string? Dd061RfBb027bCfgimpId { get; set; }
 
     //-------------------------------------------------------//
 
