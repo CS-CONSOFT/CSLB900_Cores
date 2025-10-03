@@ -53,6 +53,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 Dd042RetCompcanc = entity.Dd042RetCompcanc,
                 Dd042Nrotitulo = entity.Dd042Nrotitulo,
                 Dd042Fatoracresc = entity.Dd042Fatoracresc,
+                NavBB019 = entity.NavBB019?.ToDtoGet(),
                 NavBB026 = entity.NavBB026?.ToDtoGetBB026ComBB026Classe(),
                 NavBb026Classe = entity.NavBb026Classe,
                 NavDD043 = entity.NavDD043.Select(e => e.ToDtoGetDD043()).ToList(),

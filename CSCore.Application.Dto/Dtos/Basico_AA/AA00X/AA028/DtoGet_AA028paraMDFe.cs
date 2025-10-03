@@ -41,6 +41,6 @@ namespace CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA028
 
         public string? Aa027ExportUfid { get; set; }
 
-        public DtoGet_AA027paraMDFe? NavAA027UfbyBB001 { get; set; }
+        public DtoGet_AA027paraMDFe? NavAA027Uf { get; set; }
     }
 }

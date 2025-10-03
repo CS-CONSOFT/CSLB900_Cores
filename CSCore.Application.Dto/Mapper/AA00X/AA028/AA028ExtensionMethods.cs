@@ -89,7 +89,7 @@ namespace CSBS101._82Application.Mapper.AA00X.AA028
                 Ufid = entity.Ufid,
                 Aa028ExportCidadeid = entity.Aa028ExportCidadeid,
                 Aa027ExportUfid = entity.Aa027ExportUfid,
-                NavAA027UfbyBB001 = entity.NavUf?.ToDtoGetAA027paraMDFe(),
+                NavAA027Uf = entity.NavUf?.ToDtoGetAA027paraMDFe(),
             };
         }
     }
