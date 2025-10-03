@@ -67,8 +67,7 @@ public partial class CSICP_FF017
 
     public string? Ff017Formapagtoid { get; set; }
 
-    public virtual CSICP_FF003? Ff017Especie { get; set; }
-
+   
     public CSICP_BB001? NavBB001 { get; set; }
     public CSICP_Bb005? NavBB005 { get; set; }
     public CSICP_Bb006? NavBB006 { get; set; }

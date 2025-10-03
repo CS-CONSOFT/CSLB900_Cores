@@ -95,5 +95,42 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF017
         public OsusrE9aCsicpFf107Vc? NavFF107vc { get; set; }
         public Dto_GetFF003_Exibicao? NavFF003 { get; set; }
         public Dto_GetSY001Simples? NavSY001 { get; set; }
+
+        public CSICP_FF017 ToEntity()
+        {
+            return new CSICP_FF017
+            {
+                TenantId = TenantId,
+                Ff017Tiporegistro = Ff017Tiporegistro,
+                Ff017Filialid = Ff017Filialid,
+                Ff017Filial = Ff017Filial,
+                Ff017DataRenegociacao = Ff017DataRenegociacao,
+                Ff017Especieid = Ff017Especieid,
+                Ff017Contaid = Ff017Contaid,
+                Ff017Ccustoid = Ff017Ccustoid,
+                Ff017Agcobradorid = Ff017Agcobradorid,
+                Ff017Usuarioid = Ff017Usuarioid,
+                Ff017Condicaoid = Ff017Condicaoid,
+                Ff017Tipocobrancaid = Ff017Tipocobrancaid,
+                Ff017Contatomadordivid = Ff017Contatomadordivid,
+                Ff017PercJuros = Ff017PercJuros,
+                Ff017Multa = Ff017Multa,
+                Ff017TotalTitulos = Ff017TotalTitulos,
+                Ff017TotalAberto = Ff017TotalAberto,
+                Ff017TotalJuros = Ff017TotalJuros,
+                Ff017TotalMulta = Ff017TotalMulta,
+                Ff017TotalDescontos = Ff017TotalDescontos,
+                Ff017Totrenegociado = Ff017Totrenegociado,
+                Ff017ValorEntrada = Ff017ValorEntrada,
+                Ff017PercEntrada = Ff017PercEntrada,
+                Ff017Aberto = Ff017Aberto,
+                Ff017Protocolnumber = Ff017Protocolnumber,
+                Ff017Pminvlrentrada = Ff017Pminvlrentrada,
+                Ff017Vminentrada = Ff017Vminentrada,
+                Id = Id,
+                Ff017Valecreditoid = Ff017Valecreditoid,
+                Ff017Statusvcid = Ff017Statusvcid
+            };
+        }
     }
 }

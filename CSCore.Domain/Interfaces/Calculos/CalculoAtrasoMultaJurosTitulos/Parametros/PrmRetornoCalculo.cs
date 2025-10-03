@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSCore.Ifs.LB900.Calculos.Parametros
+namespace CSCore.Domain.Interfaces.Calculos.CalculoAtrasoMultaJurosTitulos.Parametros
 {
     public class PrmRetornoCalculo
     {
@@ -16,7 +16,6 @@ namespace CSCore.Ifs.LB900.Calculos.Parametros
 
         public decimal OutValorMulta { get; set; }
         public int OutDiasAtrasoMulta { get; set; }
-
         public decimal? OutPercentualMultaTitulo { get; set; }
         public decimal? OutPercentualMultaConfig { get; set; }
 

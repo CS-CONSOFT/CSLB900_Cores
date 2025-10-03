@@ -25,15 +25,47 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return cSICP_FF017;
         }
 
-        public async Task<bool> SumarizarOsTotais(List<CSICP_FF018> InFF018, int InTenantID)
+        public async Task<bool> SumarizarOsTotais(CSICP_FF017 WorkFF017)
         {
-            foreach (var currentFF018 in InFF018)
-            {
-                CSICP_FF017 WorkFF017 = await _appDbContext.OsusrE9aCsicpFf017s.Where(e => e.TenantId == InTenantID && e.Id == currentFF018.Ff017Id).FirstAsync();
-            }
+            var WorkQuery = _appDbContext.OsusrE9aCsicpFf018s
+                .Where(e => e.TenantId == WorkFF017.TenantId && e.Ff017Id == WorkFF017.Id);
+
+            var WorkSumValorTitulo = await WorkQuery.SumAsync(e => e.Ff018ValorTitulo);
+            var WorkSumValorJuros = await WorkQuery.SumAsync(e => e.Ff018ValorJuros);
+            var WorkSumValorMulta = await WorkQuery.SumAsync(e => e.Ff018ValorMulta);
+            var WorkTotalEmAberto = await WorkQuery.SumAsync(e => e.Ff018ValorAberto);
+            var WorkValorRenegociado = WorkTotalEmAberto - WorkFF017.Ff017TotalDescontos;
+
+
+            WorkFF017.Ff017TotalTitulos = WorkSumValorTitulo;
+            WorkFF017.Ff017TotalJuros = WorkSumValorJuros;
+            WorkFF017.Ff017TotalMulta = WorkSumValorMulta;
+            WorkFF017.Ff017TotalAberto = WorkTotalEmAberto;
+            WorkFF017.Ff017Totrenegociado = WorkValorRenegociado < 0 ? WorkValorRenegociado * -1 : WorkValorRenegociado;
+            LimparNavegacoes(WorkFF017);
+
+            _appDbContext.OsusrE9aCsicpFf017s.Update(WorkFF017);
+
             return true;
         }
 
+        private static void LimparNavegacoes(CSICP_FF017 WorkFF017)
+        {
+            WorkFF017.NavBB001 = null;
+            WorkFF017.NavBB005 = null;
+            WorkFF017.NavBB006 = null;
+            WorkFF017.NavBB001 = null;
+            WorkFF017.NavBB005 = null;
+            WorkFF017.NavBB006 = null;
+            WorkFF017.NavBB008 = null;
+            WorkFF017.NavBB009 = null;
+            WorkFF017.NavBB012 = null;
+            WorkFF017.NavBB026 = null;
+            WorkFF017.NavDD125 = null;
+            WorkFF017.NavFF107vc = null;
+            WorkFF017.NavFF003 = null;
+            WorkFF017.NavSY001 = null;
+        }
 
         public async Task<(List<CSICP_FF017>, int)> GetListAsync(int in_tenant, string in_estabId,
             string? in_nomeCliente, DateTime? in_dataInicial, DateTime? in_dataFinal, int in_page, int in_pageSize)
