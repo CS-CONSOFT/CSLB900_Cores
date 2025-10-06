@@ -77,14 +77,21 @@ namespace CSCore.Ifs.Repository.Combo
                .Select(c => new { Title = c.Ff002Motivo ?? "---", c.Id }),
 
                 ComboTypeFF.Csicp_ff014 => _appDbContext.OsusrE9aCsicpFf014s
-             .Where(c => c.TenantId == tenant)
-             .OrderBy(c => c.Ff014Descricao)
-             .Select(c => new { Title = c.Ff014Descricao ?? "---", c.Id }),
+                 .Where(c => c.TenantId == tenant)
+                 .OrderBy(c => c.Ff014Descricao)
+                 .Select(c => new { Title = c.Ff014Descricao ?? "---", c.Id }),
 
-                ComboTypeFF.Csicp_ff012 => _appDbContext.OsusrE9aCsicpFf012s
-               .Where(c => c.TenantId == tenant)
-               .OrderBy(c => c.Ff012DescricaoGrupo)
-               .Select(c => new { Title = c.Ff012DescricaoGrupo ?? "---", c.Id }),
+                 ComboTypeFF.Csicp_ff012 => _appDbContext.OsusrE9aCsicpFf012s
+                   .Where(c => c.TenantId == tenant)
+                   .OrderBy(c => c.Ff012DescricaoGrupo)
+                   .Select(c => new { Title = c.Ff012DescricaoGrupo ?? "---", c.Id }),
+
+
+                   ComboTypeFF.Csicp_ff019 => _appDbContext.OsusrE9aCsicpFf019s
+                   .Where(c => c.TenantId == tenant)
+                   .Include(c => c.NavCondicaoPgto)
+                   .OrderBy(c => c.Ff019Condicaoid)
+                   .Select(c => new { Title = c.NavCondicaoPgto != null ? c.NavCondicaoPgto.Bb008CondicaoPagto : "---", Id =  c.Ff019Id }),
 
 
 

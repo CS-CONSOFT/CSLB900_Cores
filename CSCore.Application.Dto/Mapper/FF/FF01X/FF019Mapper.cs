@@ -19,7 +19,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF01X
                 Ff000Id = entity.Ff000Id,
                 Ff019FpagtoId = entity.Ff019FpagtoId,
                 Ff019Condicaoid = entity.Ff019Condicaoid,
-                Ff000 = entity.Ff000
+
             };
         }
     }
