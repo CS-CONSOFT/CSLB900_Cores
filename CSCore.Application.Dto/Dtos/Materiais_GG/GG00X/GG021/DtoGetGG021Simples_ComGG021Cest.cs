@@ -3,7 +3,7 @@ using CSCore.Domain.CS_Models.Staticas.GG;
 
 namespace GG104Materiais.C82Application.Dto.GG00X.GG021
 {
-    public class DtoGetGG021Simples
+    public class DtoGetGG021Simples_ComGG021Cest
     {
         public int TenantId { get; set; }
 
@@ -62,7 +62,7 @@ namespace GG104Materiais.C82Application.Dto.GG00X.GG021
         public DateTime? Gg021Dtiniciovigencia { get; set; }
 
         public DateTime? Gg021Dtfimvigencia { get; set; }
+        public OsusrE9aCsicpGg021cest? NavGG021Cest { get; set; }
 
-      
     }
 }

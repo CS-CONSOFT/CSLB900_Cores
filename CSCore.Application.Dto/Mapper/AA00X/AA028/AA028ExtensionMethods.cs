@@ -114,5 +114,14 @@ namespace CSBS101._82Application.Mapper.AA00X.AA028
                 Aa027ExportUfid = entity.Aa027ExportUfid,
             };
         }
+
+        public static DtoGetAA028Cidade_IBGEeDesc ToDtoGet_AA028Cidade_IBGEeDesc(this CSICP_Aa028 entity)
+        {
+            return new DtoGetAA028Cidade_IBGEeDesc
+            {
+                Aa028Codgibge = entity.Aa028Codgibge,
+                Aa028Cidade = entity.Aa028Cidade
+            };
+        }
     }
 }

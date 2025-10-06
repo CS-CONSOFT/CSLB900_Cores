@@ -38,4 +38,10 @@ namespace CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA028
 
         public string? Aa027ExportUfid { get; set; }
     }
+
+    public class DtoGetAA028Cidade_IBGEeDesc
+    {
+        public int? Aa028Codgibge { get; set; }
+        public string? Aa028Cidade { get; set; }
+    }
 }
