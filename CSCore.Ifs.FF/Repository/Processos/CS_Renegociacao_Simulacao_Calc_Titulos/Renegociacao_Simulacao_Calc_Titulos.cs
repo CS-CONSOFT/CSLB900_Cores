@@ -33,7 +33,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
             {
                 await RemoverItensRenegociacaoFF999(prmSimulacao);
 
-                await ValidarRenegociacaoAbertaFF017(prmSimulacao);
+               var WorkFF017 =  await ValidarRenegociacaoAbertaFF017(prmSimulacao);
 
                 CSICP_Bb008 work_bb008 = await ObterCondicaoPagamentoBb008(prmSimulacao);
 
@@ -50,7 +50,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
 
 
                 RetornoFinanciamento calculoFinanciamento = FinanciamentoCalculator.CalcularValoresFinanciamento(
-                    faturaTotal: prmSimulacao.in_faturaTotal,
+                    faturaTotal: WorkFF017.Ff017TotalAberto ?? 0, /*DUVIDA AGNLAODO*/
                     qtdParcelas: work_qtd_parcelas,
                     valorEntrada: prmSimulacao.in_valorEntrada);
 
@@ -93,13 +93,15 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos
                                 .FirstOrDefaultAsync() ?? throw new ExceptionSemAuditoria("Condição de pagamento não encontrada!");
         }
 
-        private async Task ValidarRenegociacaoAbertaFF017(Prm_Renegociacao_Calc_Simulacao_Titulos in_Renegociacao_Calc_Titulos)
+        private async Task<CSICP_FF017> ValidarRenegociacaoAbertaFF017(Prm_Renegociacao_Calc_Simulacao_Titulos in_Renegociacao_Calc_Titulos)
         {
             CSICP_FF017 work_ff017_renegociacao = await _appDbContext.OsusrE9aCsicpFf017s
                 .Where(e => e.TenantId == in_Renegociacao_Calc_Titulos.in_TenantID
                 && e.Id == in_Renegociacao_Calc_Titulos.in_renegociacaoID
                 && e.Ff017Aberto == true)
             .FirstOrDefaultAsync() ?? throw new ExceptionSemAuditoria("Renegociação já processada!");
+
+            return work_ff017_renegociacao;
         }
 
         private async Task RemoverItensRenegociacaoFF999(Prm_Renegociacao_Calc_Simulacao_Titulos in_Renegociacao_Calc_Titulos)

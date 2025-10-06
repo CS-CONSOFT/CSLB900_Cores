@@ -20,7 +20,6 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parame
         public string in_renegociacaoID { get; set; } = string.Empty;
         public string in_condicaoPagamento { get; set; } = string.Empty;
         public decimal in_valorEntrada { get; set; }
-        public decimal in_faturaTotal { get; set; }
         public DateTime in_data { get; set; }
     }
 }

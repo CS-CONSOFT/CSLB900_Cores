@@ -36,7 +36,15 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return (await query.ToListAsync(), count);
         }
 
-        public async Task<bool> VarrerListaECalcularJuros(CSICP_FF017 WorkFF017,ICalculoAtrasoMultaJurosTitulos ICalculoAtraso)
+
+        public async Task<CSICP_FF018> GetById(int in_tenant, string ID)
+        {
+            return await GetQueryBase(in_tenant).FirstOrDefaultAsync(e => e.Id == ID)
+                ?? throw new KeyNotFoundException("FF018 Não encontrada!");
+        }
+
+
+        public async Task<bool> VarrerListaECalcularJuros(CSICP_FF017 WorkFF017, ICalculoAtrasoMultaJurosTitulos ICalculoAtraso)
         {
             var ListWorkFF018 = await this.GetListAsync(WorkFF017.TenantId, WorkFF017.Id, in_pageNumber: 1, in_pageSize: 9999, devePaginar: false);
             if (ListWorkFF018.Item1.Count() == 0) return false;
@@ -58,11 +66,6 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return true;
         }
 
-        public async Task<CSICP_FF018> GetById(int in_tenant, string ID)
-        {
-            return await GetQueryBase(in_tenant).FirstOrDefaultAsync(e => e.Id == ID)
-                ?? throw new KeyNotFoundException("FF018 Não encontrada!");
-        }
 
         private static PrmRetornoCalculo CalcularRetornoJurosMulta(CSICP_FF017 WorkFF017, ICalculoAtrasoMultaJurosTitulos ICalculoAtraso, CSICP_FF018 currentFF018)
         {
@@ -82,6 +85,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             var retornoCalculos = ICalculoAtraso.CalcularContasAPagar(WorkPrmCalculoJuros);
             return retornoCalculos;
         }
+
 
         private IQueryable<CSICP_FF018> FiltraQuandoExisteFiltro(string in_ff017Id, IQueryable<CSICP_FF018> query)
         {
