@@ -25,6 +25,31 @@ namespace CSCore.Ifs.Repository.GG._07X
             return csicpGg030Entity;
         }
 
+        public async Task<(IEnumerable<CSICP_GG071>, int)> GetListAsync(int tenant, int pageSize, int page,
+          DateTime DataInicio, DateTime DataFinal, string? Protocolo,
+          string? BB005_CentroDeCusto_ID, int? GG071_Status_ID, int? GG041_TpReq_ID, string? SY001_UsuarioID, string? BB001_EstabID)
+        {
+            IQueryable<CSICP_GG071> query = CriaQueryBase(tenant);
+
+            query = FiltrosNecessariosEntidade(query,
+                                                DataInicio,
+                                                DataFinal,
+                                                Protocolo,
+                                                BB005_CentroDeCusto_ID,
+                                                GG071_Status_ID,
+                                                GG041_TpReq_ID,
+                                                SY001_UsuarioID,
+                                                BB001_EstabID);
+
+            query = query.PaginacaoNoBanco(page, pageSize);
+
+            int count = query.GetCountTotal();
+
+            List<CSICP_GG071> listaCSICP_GG071 = await query.ToListAsync();
+            return (listaCSICP_GG071, count);
+        }
+
+
 
         public async Task<(int retCountSaldo, int retCountContagem, bool isOk)> Requisitar_RI_Solicitacao(
             int tenant,
@@ -438,34 +463,10 @@ namespace CSCore.Ifs.Repository.GG._07X
                    };
         }
 
-        public async Task<(IEnumerable<CSICP_GG071>, int)> GetListAsync(int tenant, int pageSize, int page,
-            DateTime DataInicio, DateTime DataFinal, string? Protocolo,
-            string? BB005_CentroDeCusto_ID, int? GG071_Status_ID, int? GG041_TpReq_ID, string? SY001_UsuarioID, string? BB001_EstabID)
-        {
-            IQueryable<CSICP_GG071> query = CriaQueryBase(tenant);
-
-            query = FiltrosNecessariosEntidade(query,
-                                                DataInicio,
-                                                DataFinal,
-                                                Protocolo,
-                                                BB005_CentroDeCusto_ID,
-                                                GG071_Status_ID,
-                                                GG041_TpReq_ID,
-                                                SY001_UsuarioID,
-                                                BB001_EstabID);
-
-            query = query.PaginacaoNoBanco(page, pageSize);
-
-            int count = query.GetCountTotal();
-
-            List<CSICP_GG071> listaCSICP_GG071 = await query.ToListAsync();
-            return (listaCSICP_GG071, count);
-        }
-
+      
         private IQueryable<CSICP_GG071> CriaQueryBase(int tenant)
         {
             IQueryable<CSICP_GG071> query = _appDbContext.OsusrE9aCsicpGg071s
-                .Where(e => e.TenantId == tenant)
                 .Include(e => e.NavBB001Estab)
                 .Include(e => e.NavBB005CentroCusto)
                 .Include(e => e.NavGG071Status)
@@ -474,6 +475,7 @@ namespace CSCore.Ifs.Repository.GG._07X
                 .Include(e => e.NavAtendenteUsuarioSY001)
                 .Include(e => e.NavGg071Almoxent)
                 .Include(e => e.NavGg071Almoxsaida)
+                  .Where(e => e.TenantId == tenant)
                 .AsNoTracking();
             return query;
         }
