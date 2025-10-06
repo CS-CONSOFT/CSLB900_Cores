@@ -1,4 +1,6 @@
-﻿using CSBS101._82Application.MapperAA00X.AA030;
+﻿using CSBS101._82Application.Mapper.AA00X.AA027;
+using CSBS101._82Application.Mapper.AA00X.AA028;
+using CSBS101._82Application.MapperAA00X.AA030;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using EnviaNFeHercules.C82Application.Dto.DD.DD061;
 
@@ -97,7 +99,6 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 N43aQbcmonoret = entity.N43aQbcmonoret,
                 N44Adremicmsret = entity.N44Adremicmsret,
                 N45Vicmsmonoret = entity.N45Vicmsmonoret,
-                NavAA037Imp = entity.NavAA037Imp?.ToDtoGetAA037Imp(),
                 UB16_VBC = entity.UB16_VBC,
                 UB17_UFID = entity.UB17_UFID,
                 UB36_MUNICIPIOID = entity.UB36_MUNICIPIOID,
@@ -144,6 +145,10 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 UB107_108_VIBS = entity.UB107_108_VIBS,
                 UB110_TPCREDPRESIBSZFM = entity.UB110_TPCREDPRESIBSZFM,
                 UB111_VCREDPRESIBSZFM = entity.UB111_VCREDPRESIBSZFM,
+                RF_MemoriaCalculo = entity.RF_MemoriaCalculo,
+                NavAA037Imp = entity.NavAA037Imp?.ToDtoGetAA037Imp(),
+                NavAA027Uf = entity.NavAa027?.ToDtoGetAA027Sigla(),
+                NavAA028Cidade = entity.NavAa028?.ToDtoGet_AA028Cidade_IBGEeDesc()
             };
         }
     }

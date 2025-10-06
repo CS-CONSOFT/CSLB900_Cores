@@ -198,7 +198,7 @@ namespace GG104Materiais.C82Application.Dto.GG00X.GG008
         public DtoGetGG011Simples? NavQualidadeProdutoGG011 { get; set; }
         public DtoGetGG014Simples? NavLinhaProdutoGG014 { get; set; }
         public DtoGetGG015? NavSubGrupoProdutoGG015 { get; set; }
-        public DtoGetGG021Simples? NavNCMProdutoGG021 { get; set; }
+        public DtoGetGG021Simples_ComGG021Cest? NavNCMProdutoGG021 { get; set; }
         public DtoGetGG008c? NavGG008cCaracteristica { get; set; }
         public DtoGetGG008c? NavGG008cFichaTecnica { get; set; }
 
