@@ -1,6 +1,8 @@
 ﻿using CSCore.Domain;
+using CSCore.Domain.CS_Models.CSICP_AA;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using CSCore.Domain.CS_Models.CSICP_GG;
+using CSCore.Domain.CS_Models.Staticas.AA;
 using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Domain.Interfaces.DD._06X;
 using CSCore.Ifs.CS_Context;
@@ -697,6 +699,42 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                                 CsCodg = gg021cest.CsCodg,
                             } : null,
 
+                            NavDD061Cfgimp = dd061_cfgimp != null ? new CSICP_DD061Cfgimp
+                            {
+                                TenantId = dd061_cfgimp.TenantId,
+                                Dd060Id = dd061_cfgimp.Dd060Id,
+                                Dd061Bb027Id = dd061_cfgimp.Dd061Bb027Id,
+                                Dd061Bb027bCfgimpId = dd061_cfgimp.Dd061Bb027bCfgimpId,
+                                Dd061Bb027bCodgcst = dd061_cfgimp.Dd061Bb027bCodgcst,
+                                Dd061Bb027bRegimeId = dd061_cfgimp.Dd061Bb027bRegimeId,
+                                Dd061Bb027bOrigemId = dd061_cfgimp.Dd061Bb027bOrigemId,
+                                Dd061Bb027bCstIcmsId = dd061_cfgimp.Dd061Bb027bCstIcmsId,
+                                Dd061Bb027bCstIpiId = dd061_cfgimp.Dd061Bb027bCstIpiId,
+                                Dd061Bb027bCstPisId = dd061_cfgimp.Dd061Bb027bCstPisId,
+                                Dd061NatBcCredPis = dd061_cfgimp.Dd061NatBcCredPis,
+                                Dd061Bb027bCstCofinsId = dd061_cfgimp.Dd061Bb027bCstCofinsId,
+                                Dd061NatBcCredCofins = dd061_cfgimp.Dd061NatBcCredCofins,
+                                Dd061Bb027bInfornf = dd061_cfgimp.Dd061Bb027bInfornf,
+                                Dd061Bb027bInforipi = dd061_cfgimp.Dd061Bb027bInforipi,
+                                Dd061Bb027bInforpis = dd061_cfgimp.Dd061Bb027bInforpis,
+                                Dd061Bb027bInforcofins = dd061_cfgimp.Dd061Bb027bInforcofins,
+                                Dd061Bb027bModbcId = dd061_cfgimp.Dd061Bb027bModbcId,
+                                Dd061Bb027bMotdesoneracao = dd061_cfgimp.Dd061Bb027bMotdesoneracao,
+                                Dd061Bb027bUfDestId = dd061_cfgimp.Dd061Bb027bUfDestId,
+                                Dd061Bb027bClassecontaId = dd061_cfgimp.Dd061Bb027bClassecontaId,
+                                Dd061Bb027bCfopStaticaId = dd061_cfgimp.Dd061Bb027bCfopStaticaId,
+                                Dd061Bb027bModalbcIcmsSt = dd061_cfgimp.Dd061Bb027bModalbcIcmsSt,
+                                Dd061Bb027bAliquota = dd061_cfgimp.Dd061Bb027bAliquota,
+                                Dd061Bb027bReducaobase = dd061_cfgimp.Dd061Bb027bReducaobase,
+                                Dd061Bb027bMp255Id = dd061_cfgimp.Dd061Bb027bMp255Id,
+                                Dd061Bb027bReducaobcst = dd061_cfgimp.Dd061Bb027bReducaobcst,
+                                Dd061Bb027CfopId = dd061_cfgimp.Dd061Bb027CfopId,
+                                Dd061Bb027bCfopExcecaoId = dd061_cfgimp.Dd061Bb027bCfopExcecaoId,
+                                Dd061Bb027bCenquadIpiId = dd061_cfgimp.Dd061Bb027bCenquadIpiId,
+                                Dd061Bb027bAliqInternauf = dd061_cfgimp.Dd061Bb027bAliqInternauf,
+                                Dd061Bb027bIndpres = dd061_cfgimp.Dd061Bb027bIndpres,
+                            } : null,
+
                             NavAA031Cstori = aa031_cstori != null ? new CSICP_AA031Cstori
                             {
                                 Id = aa031_cstori.Id,
@@ -812,44 +850,8 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                                 //Bb027Icmsdiferidoid = bb027_reforma.Bb027Icmsdiferidoid,
                                 Bb027PicmsDiferido = bb027_reforma.Bb027PicmsDiferido,
                                 Bb027Tdevolucao = bb027_reforma.Bb027Tdevolucao,
-
                             } : null,
 
-                            NavDD061Cfgimp = dd061_cfgimp != null ? new CSICP_DD061Cfgimp
-                            {
-                                TenantId = dd061_cfgimp.TenantId,
-                                Dd060Id = dd061_cfgimp.Dd060Id,
-                                Dd061Bb027Id = dd061_cfgimp.Dd061Bb027Id,
-                                Dd061Bb027bCfgimpId = dd061_cfgimp.Dd061Bb027bCfgimpId,
-                                Dd061Bb027bCodgcst = dd061_cfgimp.Dd061Bb027bCodgcst,
-                                Dd061Bb027bRegimeId = dd061_cfgimp.Dd061Bb027bRegimeId,
-                                Dd061Bb027bOrigemId = dd061_cfgimp.Dd061Bb027bOrigemId,
-                                Dd061Bb027bCstIcmsId = dd061_cfgimp.Dd061Bb027bCstIcmsId,
-                                Dd061Bb027bCstIpiId = dd061_cfgimp.Dd061Bb027bCstIpiId,
-                                Dd061Bb027bCstPisId = dd061_cfgimp.Dd061Bb027bCstPisId,
-                                Dd061NatBcCredPis = dd061_cfgimp.Dd061NatBcCredPis,
-                                Dd061Bb027bCstCofinsId = dd061_cfgimp.Dd061Bb027bCstCofinsId,
-                                Dd061NatBcCredCofins = dd061_cfgimp.Dd061NatBcCredCofins,
-                                Dd061Bb027bInfornf = dd061_cfgimp.Dd061Bb027bInfornf,
-                                Dd061Bb027bInforipi = dd061_cfgimp.Dd061Bb027bInforipi,
-                                Dd061Bb027bInforpis = dd061_cfgimp.Dd061Bb027bInforpis,
-                                Dd061Bb027bInforcofins = dd061_cfgimp.Dd061Bb027bInforcofins,
-                                Dd061Bb027bModbcId = dd061_cfgimp.Dd061Bb027bModbcId,
-                                Dd061Bb027bMotdesoneracao = dd061_cfgimp.Dd061Bb027bMotdesoneracao,
-                                Dd061Bb027bUfDestId = dd061_cfgimp.Dd061Bb027bUfDestId,
-                                Dd061Bb027bClassecontaId = dd061_cfgimp.Dd061Bb027bClassecontaId,
-                                Dd061Bb027bCfopStaticaId = dd061_cfgimp.Dd061Bb027bCfopStaticaId,
-                                Dd061Bb027bModalbcIcmsSt = dd061_cfgimp.Dd061Bb027bModalbcIcmsSt,
-                                Dd061Bb027bAliquota = dd061_cfgimp.Dd061Bb027bAliquota,
-                                Dd061Bb027bReducaobase = dd061_cfgimp.Dd061Bb027bReducaobase,
-                                Dd061Bb027bMp255Id = dd061_cfgimp.Dd061Bb027bMp255Id,
-                                Dd061Bb027bReducaobcst = dd061_cfgimp.Dd061Bb027bReducaobcst,
-                                Dd061Bb027CfopId = dd061_cfgimp.Dd061Bb027CfopId,
-                                Dd061Bb027bCfopExcecaoId = dd061_cfgimp.Dd061Bb027bCfopExcecaoId,
-                                Dd061Bb027bCenquadIpiId = dd061_cfgimp.Dd061Bb027bCenquadIpiId,
-                                Dd061Bb027bAliqInternauf = dd061_cfgimp.Dd061Bb027bAliqInternauf,
-                                Dd061Bb027bIndpres = dd061_cfgimp.Dd061Bb027bIndpres,
-                            } : null,
 
                             NavSpedInCenqIpi = spedIncenq_IPI != null ? new Osusr66cSpedInCenqIpi
                             {
@@ -876,6 +878,56 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                                 Order = stRelevancia.Order,
                                 IsActive = stRelevancia.IsActive,
                                 Codgcs = stRelevancia.Codgcs,
+                            } : null,
+
+                            NavAA143LeiComp = aa143_leicomp != null ? new CSICP_AA143
+                            {
+                                Id = aa143_leicomp.Id,
+                                Aa043Artigo = aa143_leicomp.Aa043Artigo,
+                                Aa043LcRedacao = aa143_leicomp.Aa043LcRedacao,
+                                Aa043Ec = aa143_leicomp.Aa043Ec
+
+                            } : null,
+
+                            NavAA144ClassTrib = aa144_classtrib != null ? new OsusrE9aCsicpAa144
+                            {
+                                Id = aa144_classtrib.Id,
+                                CstibsCbs = aa144_classtrib.CstibsCbs,
+                                DescricaocstibsCbs = aa144_classtrib.DescricaocstibsCbs,
+                                Cclasstrib = aa144_classtrib.Cclasstrib,
+                                Descricaocclasstrib = aa144_classtrib.Descricaocclasstrib,
+                                Isactive = aa144_classtrib.Isactive
+
+                            } : null,
+
+                            NavAA144ISClassTrib = aa144_ISclasstrib != null ? new OsusrE9aCsicpAa144
+                            {
+                                Id = aa144_ISclasstrib.Id,
+                                CstibsCbs = aa144_ISclasstrib.CstibsCbs,
+                                DescricaocstibsCbs = aa144_ISclasstrib.DescricaocstibsCbs,
+                                Cclasstrib = aa144_ISclasstrib.Cclasstrib,
+                                Descricaocclasstrib = aa144_ISclasstrib.Descricaocclasstrib,
+                                Isactive = aa144_ISclasstrib.Isactive
+
+                            } : null,
+
+                            NavAA144TribReg = aa144_tribreg != null ? new OsusrE9aCsicpAa144
+                            {
+                                Id = aa144_tribreg.Id,
+                                CstibsCbs = aa144_tribreg.CstibsCbs,
+                                DescricaocstibsCbs = aa144_tribreg.DescricaocstibsCbs,
+                                Cclasstrib = aa144_tribreg.Cclasstrib,
+                                Descricaocclasstrib = aa144_tribreg.Descricaocclasstrib,
+                                Isactive = aa144_tribreg.Isactive
+                            } : null,
+
+                            NavAA150Ccredpre = aa150_ccredpres != null ? new OsusrE9aCsicpAa150Ccredpre
+                            {
+                                Id = aa150_ccredpres.Id,
+                                Label = aa150_ccredpres.Label,
+                                Order = aa150_ccredpres.Order,
+                                IsActive = aa150_ccredpres.IsActive,
+                                CodgCs = aa150_ccredpres.CodgCs
                             } : null,
                         };
 
