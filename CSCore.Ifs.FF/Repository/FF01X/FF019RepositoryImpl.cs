@@ -44,17 +44,11 @@ namespace CSCore.Ifs.FF.Repository.FF01X
 
         private IQueryable<CSICP_FF019> GetQueryBase(int in_tenant)
         {
-            return from ff019 in _appDbContext.OsusrE9aCsicpFf019s
-                   where ff019.TenantId == in_tenant
-
-                   select new CSICP_FF019
-                   {
-                       TenantId = ff019.TenantId,
-                       Ff019Id = ff019.Ff019Id,
-                       Ff000Id = ff019.Ff000Id,
-                       Ff019FpagtoId = ff019.Ff019FpagtoId,
-                       Ff019Condicaoid = ff019.Ff019Condicaoid,
-                   };
+            return _appDbContext.OsusrE9aCsicpFf019s
+                .Include(e => e.NavFormaPgto)
+                .Include(e => e.NavCondicaoPgto)
+                .AsNoTracking()
+                .Where(e => e.TenantId == in_tenant);
         }
     }
 }

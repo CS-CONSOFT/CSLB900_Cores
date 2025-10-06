@@ -13,10 +13,13 @@ public partial class CSICP_FF019
 
     public string? Ff000Id { get; set; }
 
+
+    [ForeignKey("NavFormaPgto")]
     public string? Ff019FpagtoId { get; set; }
 
     [ForeignKey("NavCondicaoPgto")]
     public string? Ff019Condicaoid { get; set; }
 
     public CSICP_Bb008? NavCondicaoPgto { get; set; }
+    public CSICP_Bb026? NavFormaPgto { get; set; }
 }

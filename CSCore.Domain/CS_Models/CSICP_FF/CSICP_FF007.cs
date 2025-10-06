@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
 
@@ -9,6 +10,7 @@ public partial class CSICP_FF007
 
     public long Ff007Id { get; set; }
 
+    [ForeignKey("NavBB001")]
     public string? Ff007Estabid { get; set; }
 
     public int? Ff007Diasate { get; set; }

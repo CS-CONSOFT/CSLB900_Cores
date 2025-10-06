@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CSBS101._82Application.ExtensionsMethods.BB00X;
+using CSBS101._82Application.Mapper.BB00X;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF019;
 using CSCore.Domain.CS_Models.CSICP_FF;
 
@@ -19,7 +21,8 @@ namespace CSCore.Application.Dto.Mapper.FF.FF01X
                 Ff000Id = entity.Ff000Id,
                 Ff019FpagtoId = entity.Ff019FpagtoId,
                 Ff019Condicaoid = entity.Ff019Condicaoid,
-
+                NavCondicaoPgto = entity.NavCondicaoPgto?.ToDtoGetSimples(),
+                NavFormaPgto = entity.NavFormaPgto?.ToDtoGetExibicao()
             };
         }
     }
