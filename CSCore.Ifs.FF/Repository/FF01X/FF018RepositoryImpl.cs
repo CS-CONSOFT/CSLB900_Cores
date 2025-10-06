@@ -131,7 +131,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                        Ff018Vmultaorig = ff018.Ff018Vmultaorig,
                        Ff018Vjurosorig = ff018.Ff018Vjurosorig,
                        Ff018Vabertoorig = ff018.Ff018Vabertoorig,
-
+                      
                        NavFF102 = ff102 != null ? new CSICP_FF102
                        {
                            TenantId = ff102.TenantId,
