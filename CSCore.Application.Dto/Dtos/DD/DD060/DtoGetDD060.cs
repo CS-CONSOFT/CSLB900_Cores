@@ -1,4 +1,5 @@
-﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008Kdx;
+﻿using CSCore.Application.Dto.Dtos.DD.DD061;
+using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008Kdx;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_AA;
 using CSCore.Domain.CS_Models.CSICP_DD;
@@ -297,7 +298,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
         public DtoGetGG008Simples? NavGG008Produto { get; set; }
         public DtoGetGG008Kdx_Simples? NavGG008Kdx { get; set; }
         public DtoGetGG021Simples_ComGG021Cest? NavGG021 { get; set; }
-        public CSICP_DD061Cfgimp? NavDD061Cfgimp { get; set; }
+        public DtoGetDD061CfgImp? NavDD061Cfgimp { get; set; }
         public CSICP_AA031Cstori? NavAA031Cstori { get; set; }
         public CSICP_AA032Csticm? NavAA032Csticm { get; set; }
         public CSICP_AA033Cstipi? NavAA033Cstipi { get; set; }

@@ -1,4 +1,5 @@
-﻿using CSCore.Domain.CS_Models.CSICP_DD;
+﻿using CSCore.Application.Dto.Mapper.DD;
+using CSCore.Domain.CS_Models.CSICP_DD;
 using EnviaNFeHercules.C82Application.Dto.DD.DD060;
 using EnviaNFeHercules.C82Application.Mapper.DD00X.DD060;
 using GG104Materiais.C82Application.Mapper;
@@ -156,7 +157,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 NavGG008Produto = entity.NavGG008Produto?.ToDtoGetSimples(),
                 NavGG008Kdx = entity.NavGG008Kdx?.ToDtoGetSimples(),
                 NavGG021 = entity.NavGG021?.ToDtoGetSimples(),
-                NavDD061Cfgimp = entity.NavDD061Cfgimp,
+                NavDD061Cfgimp = entity.NavDD061Cfgimp?.ToDtoGetDD061CfgImp(),
                 NavAA031Cstori = entity.NavAA031Cstori,
                 NavAA032Csticm = entity.NavAA032Csticm,
                 NavAA033Cstipi = entity.NavAA033Cstipi,
