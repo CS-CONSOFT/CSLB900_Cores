@@ -1,5 +1,6 @@
 ﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008Kdx;
 using CSCore.Domain;
+using CSCore.Domain.CS_Models.CSICP_AA;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using CSCore.Domain.CS_Models.Staticas.GG;
 using EnviaNFeHercules.C82Application.Dto.DD.DD061;
@@ -304,6 +305,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
         public CSICP_AA038Modst? NavAA038Modst { get; set; }
         public CSICP_Bb027Modal? NavBB027Modal { get; set; }
         public CSICP_Bb027Motivo? NavBB027Motivo { get; set; }
+        public CSICP_Bb027? NavBB027Reforma { get; set; }
         public CSICP_DD040? NavDD040NF { get; set; }
         public CSICP_DD061Cfgimp? NavDD061Cfgimp { get; set; }
         public OsusrE9aCsicpGg021cest? NavGG021Cest { get; set; }
@@ -312,6 +314,12 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
         public Osusr66cSpedInCfop? NavSpedInCfop { get; set; }
         public IEnumerable<DtoGetDD061> NavListDD061 { get; set; } = [];
         public DtoGetDD060Comb? NavDD060Combs { get; set; }
+        public CSICP_AA143? NavAA143LeiComp { get; set; }
+        public OsusrE9aCsicpAa144? NavAA144ClassTrib { get; set; }
+        public OsusrE9aCsicpAa144? NavAA144ISClassTrib { get; set; }
+        public OsusrE9aCsicpAa144? NavAA144TribReg { get; set; }
+
+
         public IEnumerable<DtoGetDD060CombLa01> NavListDD060CombsLa01 { get; set; } = [];
 
 
