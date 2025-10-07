@@ -48,7 +48,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
                 NavBB006 = entity.NavBB006?.ToDtoGetExibicao(),
                 NavBB009 = entity.NavBB009?.ToDtoGetBB009_Exibicao(),
-                NavFF102 = entity.NavFF102?.ToDtoGet_SemNavs(),
+                NavFF102 = entity.NavFF102?.ToDtoGetFF102_ComFF102Sit(),
                 NavFF105 = entity.NavFF105?.ToDtoGet_SemNavs(),
                 NavFF112ApiBaixa = entity.NavFF112ApiBaixa,
                 NavFF112ApiOcorrencia = entity.NavFF112ApiOcorrencia,
