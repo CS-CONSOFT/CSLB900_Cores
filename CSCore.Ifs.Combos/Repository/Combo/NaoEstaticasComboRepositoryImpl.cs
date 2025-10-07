@@ -91,7 +91,7 @@ namespace CSCore.Ifs.Repository.Combo
                    .Where(c => c.TenantId == tenant)
                    .Include(c => c.NavCondicaoPgto)
                    .OrderBy(c => c.Ff019Condicaoid)
-                   .Select(c => new { Title = c.NavCondicaoPgto != null ? c.NavCondicaoPgto.Bb008CondicaoPagto : "---", Id =  c.Ff019Id }),
+                   .Select(c => new { Title = c.NavCondicaoPgto != null ? c.NavCondicaoPgto.Bb008CondicaoPagto : "---", Id =  c.NavCondicaoPgto.Id }),
 
 
 
