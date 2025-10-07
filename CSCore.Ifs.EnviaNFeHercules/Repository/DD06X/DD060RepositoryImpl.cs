@@ -116,6 +116,10 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                         on dd061_cfgimp.Dd061RfBb027Id equals bb027_reforma.Id into dd061_cfgimp_bb027_reforma_join
                         from bb027_reforma in dd061_cfgimp_bb027_reforma_join.DefaultIfEmpty()
 
+                        join bb027Imp in _appDbContext.OsusrE9aCsicpBb027Imps
+                        on dd061_cfgimp.Dd061RfBb027bCfgimpId equals bb027Imp.Bb027bId into dd061_cfgimp_bb027Imp_join
+                        from bb027Imp in dd061_cfgimp_bb027Imp_join.DefaultIfEmpty()
+
                             //-----------------------FINAL--------------------------//
                         join gg021 in _appDbContext.OsusrE9aCsicpGg021s
                         on gg008Produto.Gg008Ncmid equals gg021.Id into gg008Produto_gg021_join
@@ -789,7 +793,64 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                                 Dd061Bb027bCenquadIpiId = dd061_cfgimp.Dd061Bb027bCenquadIpiId,
                                 Dd061Bb027bAliqInternauf = dd061_cfgimp.Dd061Bb027bAliqInternauf,
                                 Dd061Bb027bIndpres = dd061_cfgimp.Dd061Bb027bIndpres,
-                            } : null,
+                                CSICP_BB027_imp = bb027Imp != null ? new CSICP_Bb027Imp
+                                {
+                                    TenantId = bb027Imp.TenantId,
+                                    Bb027bId = bb027Imp.Bb027bId,
+                                    Bb027Id = bb027Imp.Bb027Id,
+                                    Bb027bImpostosId = bb027Imp.Bb027bImpostosId,
+                                    Bb027bCodgfilial = bb027Imp.Bb027bCodgfilial,
+                                    Bb027bCodgtransacao = bb027Imp.Bb027bCodgtransacao,
+                                    Bb027bCodgcst = bb027Imp.Bb027bCodgcst,
+                                    Bb027bRegimeId = bb027Imp.Bb027bRegimeId,
+                                    Bb027bOrigemId = bb027Imp.Bb027bOrigemId,
+                                    Bb027bCstIcmsId = bb027Imp.Bb027bCstIcmsId,
+                                    Bb027bCstIpiId = bb027Imp.Bb027bCstIpiId,
+                                    Bb027bCstPisId = bb027Imp.Bb027bCstPisId,
+                                    Bb027bNatBcCredPis = bb027Imp.Bb027bNatBcCredPis,
+                                    Bb027bCstCofinsId = bb027Imp.Bb027bCstCofinsId,
+                                    Bb027bNatBcCredCofins = bb027Imp.Bb027bNatBcCredCofins,
+                                    Bb027bInformacoesnf = bb027Imp.Bb027bInformacoesnf,
+                                    Bb027bInformacoesipi = bb027Imp.Bb027bInformacoesipi,
+                                    Bb027bInformacoespis = bb027Imp.Bb027bInformacoespis,
+                                    Bb027bInformacoescofins = bb027Imp.Bb027bInformacoescofins,
+                                    Bb027bModbcId = bb027Imp.Bb027bModbcId,
+                                    Bb027bMotdesoneracaoid = bb027Imp.Bb027bMotdesoneracaoid,
+                                    Bb027bUfDestId = bb027Imp.Bb027bUfDestId,
+                                    Bb027bClassecontaId = bb027Imp.Bb027bClassecontaId,
+                                    Bb027bModalbcIcmsStId = bb027Imp.Bb027bModalbcIcmsStId,
+                                    Bb027bAliquota = bb027Imp.Bb027bAliquota,
+                                    Bb027bReducaobase = bb027Imp.Bb027bReducaobase,
+                                    Bb027bMp255Id = bb027Imp.Bb027bMp255Id,
+                                    Bb027bReducaobcst = bb027Imp.Bb027bReducaobcst,
+                                    Bb027bCfopStaticaId = bb027Imp.Bb027bCfopStaticaId,
+                                    Bb027bCenquadIpiId = bb027Imp.Bb027bCenquadIpiId,
+                                    Bb027bAliqInternauf = bb027Imp.Bb027bAliqInternauf,
+                                    Bb027bHashid = bb027Imp.Bb027bHashid,
+                                    Bb027bIsvicmsdesSubtrai = bb027Imp.Bb027bIsvicmsdesSubtrai,
+                                    Bb027bFcalcicmsdesId = bb027Imp.Bb027bFcalcicmsdesId,
+                                    Bb027bPicmsDiferido = bb027Imp.Bb027bPicmsDiferido,
+                                    Bb027bVicmsdesonsubId = bb027Imp.Bb027bVicmsdesonsubId,
+                                    Bb027cIndpres = bb027Imp.Bb027cIndpres,
+                                    Bb027bCbenef = bb027Imp.Bb027bCbenef,
+                                    Bb027bPpropocaodestino = bb027Imp.Bb027bPpropocaodestino,
+                                    Bb027bRfclasstribId = bb027Imp.Bb027bRfclasstribId,
+                                    Bb027bRflcId = bb027Imp.Bb027bRflcId,
+                                    Bb027bTpdebcreid = bb027Imp.Bb027bTpdebcreid,
+                                    Bb027bPaliqefetregIbsUf = bb027Imp.Bb027bPaliqefetregIbsUf,
+                                    Bb027bPaliqefetregIbsMun = bb027Imp.Bb027bPaliqefetregIbsMun,
+                                    Bb027bPcredpresIbsUf = bb027Imp.Bb027bPcredpresIbsUf,
+                                    Bb027bPcredpresIbsMun = bb027Imp.Bb027bPcredpresIbsMun,
+                                    Bb027bPcredpresCbs = bb027Imp.Bb027bPcredpresCbs,
+                                    Bb027bPdifCbs = bb027Imp.Bb027bPdifCbs,
+                                    Bb027bPaliqefetregCbs = bb027Imp.Bb027bPaliqefetregCbs,
+                                    Bb027bPdifIbs = bb027Imp.Bb027bPdifIbs,
+                                    Bb027bIsRfclasstribId2 = bb027Imp.Bb027bIsRfclasstribId2,
+                                    Bb027bPreducaoibs = bb027Imp.Bb027bPreducaoibs,
+                                    Bb027bPreducaocbs = bb027Imp.Bb027bPreducaocbs,
+                                    Bb027bCcredpreid = bb027Imp.Bb027bCcredpreid
+                                } : null,
+                            }: null,
 
                             NavAA031Cstori = aa031_cstori != null ? new CSICP_AA031Cstori
                             {

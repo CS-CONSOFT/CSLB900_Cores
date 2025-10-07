@@ -165,18 +165,17 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 NavAA038Modst = entity.NavAA038Modst,
                 NavBB027Modal = entity.NavBB027Modal,
                 NavBB027Motivo = entity.NavBB027Motivo,
-                NavGG021Cest = entity.NavGG021Cest,
                 NavSpedInCenqIpi = entity.NavSpedInCenqIpi,
                 NavSpedInCfop = entity.NavSpedInCfop,
                 NavAA143LeiComp = entity.NavAA143LeiComp,
                 NavAA144ClassTrib = entity.NavAA144ClassTrib,
                 NavAA144ISClassTrib = entity.NavAA144ISClassTrib,
                 NavAA144TribReg = entity.NavAA144TribReg,
+                NavAA150Ccredpre = entity.NavAA150Ccredpre,
                 NavBB027Reforma = entity.NavBB027Reforma,
                 NavDD060Combs = entity.NavDD060Combs?.ToDtoGetDD060Comb(),
                 NavListDD060CombsLa01 = entity.NavListDD060CombsLa01.Select(e => e.ToDtoGetDD060CombLa01()),
                 NavListDD061 = entity.NavListDD061.Select(e => e.ToDtoGetDD061()),
-
 
             };
         }

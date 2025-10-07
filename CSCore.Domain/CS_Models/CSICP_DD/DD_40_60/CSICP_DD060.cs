@@ -329,9 +329,6 @@ public partial class CSICP_DD060
     public CSICP_Bb027Motivo? NavBB027Motivo { get; set; }
     [NotMapped]
     public CSICP_Bb027? NavBB027Reforma { get; set; }
-    
-    [NotMapped]
-    public OsusrE9aCsicpGg021cest? NavGG021Cest { get; set; }
     [NotMapped]
     public SpedCsicpStrelevancium? NavStRelavancium { get; set; }
     [NotMapped]

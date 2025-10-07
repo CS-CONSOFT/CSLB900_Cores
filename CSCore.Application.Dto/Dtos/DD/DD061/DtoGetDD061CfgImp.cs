@@ -87,15 +87,15 @@ namespace CSCore.Application.Dto.Dtos.DD.DD061
         public string? Dd061RfBb027Id { get; set; }
         public string? Dd061RfBb027bCfgimpId { get; set; }
 
-        public CSICP_AA143? NavCsicpAa143 { get; set; }
+        //public CSICP_AA143? NavCsicpAa143 { get; set; }
 
-        public OsusrE9aCsicpAa144? NavCsicpAa144 { get; set; }
+        //public OsusrE9aCsicpAa144? NavCsicpAa144 { get; set; }
         
-        public OsusrE9aCsicpAa144? NavCsicpAa144_1 { get; set; }
+        //public OsusrE9aCsicpAa144? NavCsicpAa144_1 { get; set; }
 
-        public OsusrE9aCsicpAa144? NavCsicpAa144_2 { get; set; }
+        //public OsusrE9aCsicpAa144? NavCsicpAa144_2 { get; set; }
         
-        public OsusrE9aCsicpAa150Ccredpre? NavAa150Ccredpre { get; set; }
+        //public OsusrE9aCsicpAa150Ccredpre? NavAa150Ccredpre { get; set; }
 
         public Dto_GetBB027? NavBB027 { get; set; }
         
