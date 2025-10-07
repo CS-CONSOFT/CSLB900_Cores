@@ -26,12 +26,14 @@ namespace CSCore.Ifs.GG.Repository.GG._07X
         }
 
 
-        public async Task<(IEnumerable<CSICP_GG072>, int)> GetListAsync(int tenant, int pageSize, int page)
+        public async Task<(IEnumerable<CSICP_GG072>, int)> GetListAsync(int tenant, long? InGG071_ID, int pageSize, int page)
         {
             IQueryable<CSICP_GG072> query = CriaQueryBase(tenant);
 
 
             query = query.PaginacaoNoBanco(page, pageSize);
+            if(InGG071_ID != null)
+                query = query.Where(e => e.Gg071Id == InGG071_ID);  
 
             int count = query.GetCountTotal();
 
