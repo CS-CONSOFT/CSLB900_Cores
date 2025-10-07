@@ -85,7 +85,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF106
         public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
         public Dto_GetBB006_Exibicao? NavBB006 { get; set; }
         public Dto_GetBB009_Exibicao? NavBB009 { get; set; }
-        public DtoGetFF102_SemNavs? NavFF102 { get; set; }
+        public DtoGetFF102_ComFF102Sit? NavFF102 { get; set; }
         public DtoGetFF105_SemNavs? NavFF105 { get; set; }
         public CSICP_FF112ApiOcorrencium? NavFF112ApiOcorrencia { get; set; }
         public CSICP_FF112ApiBaixa? NavFF112ApiBaixa { get; set; }

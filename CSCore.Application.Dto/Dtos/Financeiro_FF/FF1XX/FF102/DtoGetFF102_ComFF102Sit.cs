@@ -1,20 +1,9 @@
-﻿using CSBS101._82Application.Dto.BB00X.BB001;
-using CSBS101._82Application.Dto.BB00X.BB005;
-using CSBS101._82Application.Dto.BB00X.BB006;
-using CSBS101._82Application.Dto.BB00X.BB009;
-using CSBS101._82Application.Dto.BB00X.BB012.Get;
-using CSBS101._82Application.Dto.BB00X.BB019;
-using CSBS101._82Application.Dto.BB00X.BB026;
-using CSBS101.C82Application.Dto.BB00X.BB00X.BB008;
-using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF003;
-using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF126;
-using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
-using CSCore.Domain;
+﻿
 using CSCore.Domain.CS_Models.Staticas.FF;
 
 namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
 {
-    public class DtoGetFF102
+    public class DtoGetFF102_ComFF102Sit
     {
         public int TenantId { get; set; }
 
@@ -388,58 +377,6 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
 
         public int? Ff102TrilhaApiid { get; set; }
 
-        public int? CSDiasAtraso { get; set; } = default;
-
-        public decimal? CSValorCorrecaoMonetaria { get; set; } = default;
-
-        public decimal? CSValorMulta { get; set; } = default;
-
-        public decimal? CSValorHonorarios { get; set; } = default;
-
-        public decimal? CSValorJuros { get; set; } = default;
-
-        public decimal? CSValorAPagar { get; set; } = default;
-        public decimal? CSPercentualJurosConfig { get; set; }
-        public decimal? CSPercentualMultaConfig { get; set; }
-        public decimal? CSPercentualCorrecaoMonetariaConfig { get; set; }
-        public decimal? CSPercentualHonorarioConfig { get; set; }
-
-        public DtoGetFF126? NavFF126 { get; set; }
-        public Dto_GetBB001_Exibicao? NavBB001 { get; set; }
-        public Dto_GetBB005_Exibicao? NavBB005 { get; set; } 
-        public Dto_GetBB006_Exibicao? NavBB006 { get; set; }
-        public Dto_GetBB007SemListSimples? NavBB007 { get; set; }
-        public Dto_GetBB008_Exibicao? NavBB008 { get; set; }
-        public Dto_GetBB009_Exibicao? NavBB009 { get; set; }
-        public Dto_GetBB019_Exibicao? NavBB019 { get; set; }
-        public Dto_GetBB012_Exibicao? NavBB012ContaID { get; set; }
-        public Dto_GetBB012_Exibicao? NavBB012ContaRealID { get; set; }
-        public Dto_GetBB012_Exibicao? NavBB012AvalistaID { get; set; }
-        public CSICP_Bb01201Jur? NavBB01201Jur { get; set; }
-        public Dto_GetBB026_Exibicao? NavBB026 { get; set; }
-        public Dto_GetFF003_Exibicao? NavFF003 { get; set; }
-        public CSICP_FF102_C021? NavFF102C021 { get; set; }
-        public CSICP_FF102Des? NavFF102Des { get; set; }
-        public CSICP_FF102Ent? NavFF102Ent { get; set; }
         public CSICP_FF102Sit? NavFF102Sit { get; set; }
-        public CSICP_FF102_C018? NavFF102C018 { get; set; }
-        public CSICP_FF102_G073? NavFF102G073 { get; set; }
-        public CSICP_FF102Cob? NavFF102Cob { get; set; }
-        public CSICP_FF102Aut? NavFF102Aut { get; set; }
-        public CSICP_FF102ApiBanco? NavFF102ApiBanco { get; set; }
-        public CSICP_FF102Adt? NavFF102Adt { get; set; }
-        public CSICP_FF112ApiOcorrencium? NavFF112ApiOcorrencium { get; set; }
-        public CSICP_FF112ApiLiquidacao? NavFF112ApiLiquidacao { get; set; }
-        public CSICP_FF112ApiBaixa? NavFF112ApiBaixa { get; set; }
-        public CSICP_FF120TrackApi? NavFF120Trackapi { get; set; }
-        public Dto_GetSY001Simples? NavSy001Usuario { get; set; }
-        public Dto_GetSY001Simples? NavSy001CodCobrador { get; set; }
-        public Dto_GetSY001Simples? NavSy001Aprovador { get; set; }
-        public Dto_GetSY001Simples? NavSy001CTBUsuarioID { get; set; }
-        public Dto_GetSY001Simples? NavSy001CTBEstUsuarioID { get; set; }
-        public Dto_GetSY001Simples? NavSy001CTLUsuarioID { get; set; }
-        public Dto_GetSY001Simples? NavSy001CTLEstUsuarioID { get; set; }
-        public CSICP_Statica? NavStaticaFluxoCaixa { get; set; }
-        public CSICP_Statica? NavStaticaConfirmadoID { get; set; }
     }
 }

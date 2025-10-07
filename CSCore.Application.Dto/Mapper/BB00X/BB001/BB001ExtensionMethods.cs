@@ -267,7 +267,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB00X.BB001
             };
         }
 
-        public static CSICP_BB001 ToEntity(this Dto_CreateUpdateBB001 dto)
+        public static CSICP_BB001 ToEntity(this Dto_CreateUpdateBB001 dto, string InConfigID, string InEmpresaID, int InTenantID)
         {
             return new CSICP_BB001
             {
@@ -323,6 +323,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB00X.BB001
                 Bb001Capitalmunicipio = dto.Bb001Capitalmunicipio,
                 Bb001Codgcartorio = dto.Bb001Codgcartorio,
                 BB001_IsRegimeRegular = dto.BB001_IsRegimeRegular,
+                NavBB001Cfgfi = dto.CSICP_BB001Cfgfi?.ToEntity(confgID: InConfigID, emrpesaID: InEmpresaID, tenantID: InTenantID),
             };
         }
 

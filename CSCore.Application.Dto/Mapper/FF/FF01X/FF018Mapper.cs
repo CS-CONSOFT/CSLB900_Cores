@@ -28,6 +28,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF01X
                 Ff018Filial = entity.Ff018Filial,
                 Ff018FilialTit = entity.Ff018FilialTit,
                 Ff018Pfx = entity.Ff018Pfx,
+                
                 Ff018Titulo = entity.Ff018Titulo,
                 Ff018Sfx = entity.Ff018Sfx,
                 Ff018Situacao = entity.Ff018Situacao,

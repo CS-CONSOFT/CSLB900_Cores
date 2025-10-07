@@ -1,6 +1,36 @@
 ﻿
 using CSCore.Domain;
 
+public record DtoCreateUpdateBB001CfgFi(
+int? Bb001TptributacaoId,
+decimal? Bb001PercIcms,
+decimal? Bb001PercCsllBc,
+decimal? Bb001PercCsllBcServico,
+decimal? Bb001PercIrpjBc,
+decimal? Bb001PercIrpjBcServico,
+int? Bb001NaturezapjId,
+int? Bb001TpatividadeId,
+int? Bb001Regimetributarioid)
+{
+    public CSICP_BB001Cfgfi ToEntity(int tenantID, string emrpesaID, string confgID)
+    {
+        return new CSICP_BB001Cfgfi
+        {
+            TenantId = tenantID,
+            Bb001CfgId = confgID,
+            Bb001EmpresaId = emrpesaID,
+            Bb001TptributacaoId = Bb001TptributacaoId,
+            Bb001PercIcms = Bb001PercIcms,
+            Bb001PercCsllBc = Bb001PercCsllBc,
+            Bb001PercCsllBcServico = Bb001PercCsllBcServico,
+            Bb001PercIrpjBc = Bb001PercIrpjBc,
+            Bb001PercIrpjBcServico = Bb001PercIrpjBcServico,
+            Bb001NaturezapjId = Bb001NaturezapjId,
+            Bb001TpatividadeId = Bb001TpatividadeId,
+            Bb001Regimetributarioid = Bb001Regimetributarioid
+        };
+    }
+};
 
 
 public partial class CSICP_BB001Cfgfi

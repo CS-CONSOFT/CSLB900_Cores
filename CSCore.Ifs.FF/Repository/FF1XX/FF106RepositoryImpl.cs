@@ -49,11 +49,15 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    from bb009 in bb009_ff106_join.DefaultIfEmpty()
 
                    join ff102 in _appDbContext.OsusrE9aCsicpFf102s
-                   on ff106.Ff102Id equals ff102.Id into ff102_ff106_join //Titulo Verificar
+                   on ff106.Ff102Id equals ff102.Id into ff102_ff106_join
                    from ff102 in ff102_ff106_join.DefaultIfEmpty()
 
+                   join ff102Sit in _appDbContext.OsusrE9aCsicpFf102Sits
+                   on ff102.Ff102Situacaoid equals ff102Sit.Id into ff102Sit_ff102_join
+                   from ff102Sit in ff102Sit_ff102_join.DefaultIfEmpty()
+
                    join ff105 in _appDbContext.OsusrE9aCsicpFf105s
-                   on ff106.Ff105Id equals ff105.Id into ff105_ff106_join //Bordero Verificar
+                   on ff106.Ff105Id equals ff105.Id into ff105_ff106_join
                    from ff105 in ff105_ff106_join.DefaultIfEmpty()
 
                    join ff112OcorrenciaApi in _appDbContext.OsusrE9aCsicpFf112apiOcorrencia
@@ -317,6 +321,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Ff102PixcobQrcode = ff102.Ff102PixcobQrcode,
                            Ff102PixcobStatus = ff102.Ff102PixcobStatus,
                            Ff102TrilhaApiid = ff102.Ff102TrilhaApiid,
+                           NavFF102Sit = ff102Sit != null ? new CSICP_FF102Sit
+                           {
+                               Id = ff102Sit.Id,
+                               Label = ff102Sit.Label,
+                               Order = ff102Sit.Order,
+                               IsActive = ff102Sit.IsActive,
+                               Codgcs = ff102Sit.Codgcs,
+                           } : null,
                        } : null,
 
                        NavFF105 = ff105 != null ? new CSICP_FF105

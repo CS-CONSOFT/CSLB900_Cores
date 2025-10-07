@@ -92,7 +92,11 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Proces
         
         protected virtual async Task PersistirAsync<TEntity>(List<TEntity> entidades)
         {
-            _appDbContext.AddRange(entidades);
+            foreach (var item in entidades)
+            {
+                if (item is null) continue;
+                _appDbContext.Add(item);
+            }
             await _appDbContext.SaveChangesAsync();
         }
     }

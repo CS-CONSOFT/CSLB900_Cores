@@ -2,6 +2,7 @@
 using CSCore.Ifs.InterfaceBase;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,6 +46,9 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF018
         public decimal? Ff018Vjurosorig { get; set; }
 
         public decimal? Ff018Vabertoorig { get; set; }
+
+        [Required]
+        public string FilialLogadaIDParaProtocolo { get; set; } = null!;
 
         public CSICP_FF018 ToEntity(int tenant, string? id)
         {
