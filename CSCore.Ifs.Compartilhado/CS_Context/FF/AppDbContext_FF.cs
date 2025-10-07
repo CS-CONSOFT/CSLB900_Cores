@@ -4820,11 +4820,11 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
                 entity.HasOne(e => e.NavBB001EstabID).WithMany().HasForeignKey(e => e.Ff140Estabid);
-                entity.HasOne(e => e.NavBB005CCustoID).WithMany().HasForeignKey(e => e.Ff140Ccustoid).IsRequired();
+                entity.HasOne(e => e.NavBB005CCustoID).WithMany().HasForeignKey(e => e.Ff140Ccustoid);
                 entity.HasOne(e => e.NavBB006AgCobradorID).WithMany().HasForeignKey(e => e.Ff140Agcobradorid);
                 entity.HasOne(e => e.NavBB008CondicaoID).WithMany().HasForeignKey(e => e.Ff140Condicaoid);
                 entity.HasOne(e => e.NavBB009TpCobrancaID).WithMany().HasForeignKey(e => e.Ff140Tipocobrancaid);
-                entity.HasOne(e => e.NavBB012ContaID).WithMany().HasForeignKey(e => e.Ff140Contaid).IsRequired();
+                entity.HasOne(e => e.NavBB012ContaID).WithMany().HasForeignKey(e => e.Ff140Contaid);
                 entity.HasOne(e => e.NavBB026FPagto).WithMany().HasForeignKey(e => e.Ff140FpagtoId);
                 entity.HasOne(e => e.NavFF003EspecieID).WithMany().HasForeignKey(e => e.Ff140Especieid);
                 entity.HasOne(e => e.NavSY001UsuarioPropID).WithMany().HasForeignKey(e => e.Ff140Usuarioproprieid);

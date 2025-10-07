@@ -10,7 +10,7 @@ namespace CSCore.Domain.Interfaces.GG._07X
 {
     public interface IGG072Repository : IRepositorioBase<CSICP_GG072>
     {
-        Task<(IEnumerable<CSICP_GG072>, int)> GetListAsync(int tenant, int pageSize, int page);
+        Task<(IEnumerable<CSICP_GG072>, int)> GetListAsync(int tenant, long? InGG071_ID, int pageSize, int page);
         Task<CSICP_GG072?> GetByIdAsync(int tenant, long id);
     }
 }
