@@ -134,7 +134,4 @@ public partial class CSICP_DD061Cfgimp
  
     //-------------------------------------------------------//
 
-    public virtual CSICP_DD060 Dd060 { get; set; } = null!;
-
-    public virtual CSICP_DD040Ipre? Dd061Bb027bIndpresNavigation { get; set; }
 }

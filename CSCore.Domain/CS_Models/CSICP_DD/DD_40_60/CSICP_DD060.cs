@@ -307,8 +307,10 @@ public partial class CSICP_DD060
     public CSICP_GG008Kdx? NavGG008Kdx { get; set; }
     [NotMapped]
     public CSICP_GG021? NavGG021 { get; set; }
+    //[NotMapped]
+    //public CSICP_DD040? NavDD040NF { get; set; }
     [NotMapped]
-    public CSICP_DD040? NavDD040NF { get; set; }
+    public CSICP_DD061Cfgimp? NavDD061Cfgimp { get; set; }
     [NotMapped]
     public CSICP_AA031Cstori? NavAA031Cstori { get; set; }
     [NotMapped]
@@ -328,10 +330,6 @@ public partial class CSICP_DD060
     [NotMapped]
     public CSICP_Bb027? NavBB027Reforma { get; set; }
     [NotMapped]
-    public CSICP_DD061Cfgimp? NavDD061Cfgimp { get; set; }
-    [NotMapped]
-    public OsusrE9aCsicpGg021cest? NavGG021Cest { get; set; }
-    [NotMapped]
     public SpedCsicpStrelevancium? NavStRelavancium { get; set; }
     [NotMapped]
     public Osusr66cSpedInCenqIpi? NavSpedInCenqIpi { get; set; }
@@ -345,9 +343,13 @@ public partial class CSICP_DD060
     public CSICP_AA143? NavAA143LeiComp { get; set; }
     [NotMapped]
     public OsusrE9aCsicpAa144? NavAA144ClassTrib { get; set; }
+    [NotMapped]
     public OsusrE9aCsicpAa144? NavAA144ISClassTrib { get; set; }
+    [NotMapped]
     public OsusrE9aCsicpAa144? NavAA144TribReg { get; set; }
+    [NotMapped]
     public OsusrE9aCsicpAa150Ccredpre? NavAA150Ccredpre { get; set; }
+    [NotMapped]
     public IEnumerable<CSICP_DD060combla01> NavListDD060CombsLa01 { get; set; } = [];
 }
 

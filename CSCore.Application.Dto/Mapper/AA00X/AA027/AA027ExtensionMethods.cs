@@ -106,5 +106,12 @@ namespace CSBS101._82Application.Mapper.AA00X.AA027
                 NavAA025Pais = entity.Pais?.ToDtoGet(),
             };
         }
+        public static DtoGetAA027Sigla ToDtoGetAA027Sigla(this CSICP_Aa027 entity)
+        {
+            return new DtoGetAA027Sigla
+            {
+                Aa027Sigla = entity.Aa027Sigla,
+            };
+        }
     }
 }

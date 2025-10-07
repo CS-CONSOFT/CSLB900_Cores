@@ -69,4 +69,5 @@ namespace GG104Materiais.C82Application.Dto.GG00X.GG021
 
         public CSICP_GG007? NavGg007Un { get; set; }
     }
+
 }

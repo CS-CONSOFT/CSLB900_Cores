@@ -44,9 +44,9 @@ namespace GG104Materiais.C82Application.Mapper
             };
         }
 
-        public static DtoGetGG021Simples ToDtoGetSimples(this CSICP_GG021 entity)
+        public static DtoGetGG021Simples_ComGG021Cest ToDtoGetSimples(this CSICP_GG021 entity)
         {
-            return new DtoGetGG021Simples
+            return new DtoGetGG021Simples_ComGG021Cest
             {
                 TenantId = entity.TenantId,
                 Id = entity.Id,
@@ -77,7 +77,7 @@ namespace GG104Materiais.C82Application.Mapper
                 Gg021Ierelevanteid = entity.Gg021Ierelevanteid,
                 Gg021Dtiniciovigencia = entity.Gg021Dtiniciovigencia,
                 Gg021Dtfimvigencia = entity.Gg021Dtfimvigencia,
-
+                NavGG021Cest = entity.NavGg021Cest
             };
         }
     }
