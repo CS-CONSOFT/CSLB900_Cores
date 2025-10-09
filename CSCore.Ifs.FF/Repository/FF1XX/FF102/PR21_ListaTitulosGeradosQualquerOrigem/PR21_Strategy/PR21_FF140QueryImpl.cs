@@ -20,7 +20,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102.PR21_ListaTitulosGeradosQualquerO
 
         protected override IQueryable<CSICP_FF102> ApplySpecificFilters(IQueryable<CSICP_FF102> query, int InTenant)
         {
-            query = query.Where(e => e.NavFF104 != null && e.NavFF104.Ff140Id == this.IDControle);
+            query = query.Where(e => e.NavFF104 != null && e.NavFF104.Ff140Id == long.Parse(this.IDControle));
             return query;
         }
 
