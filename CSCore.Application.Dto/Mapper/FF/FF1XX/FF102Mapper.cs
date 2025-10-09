@@ -213,7 +213,8 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 Ff102PixcobStatus = entity.Ff102PixcobStatus,
                 Ff102TrilhaApiid = entity.Ff102TrilhaApiid,
                 NavFF102Sit = entity.NavFF102Sit,
-                NavFF104 = DtoGetFF104.ToDtoGetFF104(entity.NavFF104)
+                NavFF104 = DtoGetFF104.ToDtoGetFF104(entity.NavFF104),
+                NavBB012 = entity.NavBB012?.ToDtoGetExibSimples()
             };
         }
         public static DtoGetFF102 ToDtoGet(this CSICP_FF102 entity)

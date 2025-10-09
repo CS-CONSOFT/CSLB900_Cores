@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ifs.CS_Context;
 using Microsoft.EntityFrameworkCore;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,22 +18,12 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102.ListaTitulosGeradosQualquerOrigem
             this.IDControle = InIDControle;
         }
 
-        public override async Task<List<CSICP_FF102>> Execute(int InTenant)
-        {
-            var query = GetQuery<CSICP_FF102>();
-            if (query == null)
-                return [];
 
-            query = query.Where(e => e.TenantId == InTenant);
-            return await query.ToListAsync();
-        }
-
-        protected override IQueryable<T>? GetQuery<T>()
+        protected override IQueryable<CSICP_FF102> ApplySpecificFilters(IQueryable<CSICP_FF102> query, int InTenant)
         {
-            var query = base.GetQuery<CSICP_FF102>();
-            query = query?.Where(e => e.NavFF104 != null && e.NavFF104.Bf010Id == long.Parse(this.IDControle))
-                         .Where(e => e.Ff102Tiporegistro == 3);
-            return query as IQueryable<T>;
+            query = query.Where(e => e.NavFF104 != null && e.NavFF104.Bf010Id == long.Parse(this.IDControle))
+                        .Where(e => e.Ff102Tiporegistro == 3);
+            return query;
         }
     }
 }

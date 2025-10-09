@@ -20,7 +20,12 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102.ListaTitulosGeradosQualquerOrigem
             this.appDbContext = appDbContext;
         }
 
-        public async Task<List<CSICP_FF102>> Execute(PR21_EnumTipoOrigem pR21_EnumTipo, string IdControle, int in_tenant)
+        public async Task<(List<CSICP_FF102>, int)> Execute(
+            PR21_EnumTipoOrigem pR21_EnumTipo,
+            string IdControle,
+            int in_tenant,
+            int InPageNumer,
+            int InPageSize)
         {
             PR21_IQueryImpl WorkQueryHandler = PR21_GetQueryImplHandler.GetQueryImpl(
                 pR21_EnumTipo,
@@ -29,8 +34,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102.ListaTitulosGeradosQualquerOrigem
 
                 );
 
-            List<CSICP_FF102> csicpFf102List = await WorkQueryHandler.Execute(in_tenant);
-            return csicpFf102List;
+            (List<CSICP_FF102> csicpFf102List, int count) = await WorkQueryHandler.Execute(in_tenant, InPageNumer, InPageSize);
+            return (csicpFf102List, count);
         }
 
     }

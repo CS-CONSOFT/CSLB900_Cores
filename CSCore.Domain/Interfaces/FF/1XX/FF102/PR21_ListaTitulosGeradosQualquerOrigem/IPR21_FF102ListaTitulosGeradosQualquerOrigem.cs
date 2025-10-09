@@ -10,6 +10,11 @@ namespace CSCore.Domain.Interfaces.FF._1XX.FF102.PR21_ListaTitulosGeradosQualque
 {
     public interface IPR21_FF102ListaTitulosGeradosQualquerOrigem
     {
-        Task<List<CSICP_FF102>> Execute(PR21_EnumTipoOrigem pR21_EnumTipo, string IdControle, int in_tenant);
+        Task<(List<CSICP_FF102>, int)> Execute(
+             PR21_EnumTipoOrigem pR21_EnumTipo,
+             string IdControle,
+             int in_tenant,
+             int InPageNumer,
+             int InPageSize);
     }
 }

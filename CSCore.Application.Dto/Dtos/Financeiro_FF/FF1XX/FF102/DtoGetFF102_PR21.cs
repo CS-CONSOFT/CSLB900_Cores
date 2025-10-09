@@ -6,6 +6,7 @@ using CSBS101._82Application.Dto.BB00X.BB012.Get;
 using CSBS101._82Application.Dto.BB00X.BB019;
 using CSBS101._82Application.Dto.BB00X.BB026;
 using CSBS101.C82Application.Dto.BB00X.BB00X.BB008;
+using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF003;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF126;
 using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
@@ -395,5 +396,6 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
 
         public CSICP_FF102Sit? NavFF102Sit { get; set; }
         public DtoGetFF104? NavFF104 { get; set; }
+        public Dto_GetBB012_ExibSimples? NavBB012 { get; set; }
     }
 }

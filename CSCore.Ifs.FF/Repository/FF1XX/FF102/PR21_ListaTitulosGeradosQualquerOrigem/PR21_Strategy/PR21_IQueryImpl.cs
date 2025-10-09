@@ -18,18 +18,38 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102.ListaTitulosGeradosQualquerOrigem
             AppDbContext = appDbContext;
         }
 
-        public abstract Task<List<CSICP_FF102>> Execute(int InTenant);
-
-        protected virtual IQueryable<T>? GetQuery<T>()
+        // Template Method - define o algoritmo geral
+        public async Task<(List<CSICP_FF102>, int)> Execute(int InTenant, int InPageNumber, int InPageSize)
         {
-            var ff102WithIncludes = AppDbContext.OsusrE9aCsicpFf102s
+            var baseQuery = GetBaseQuery();
+            var filteredQuery = ApplySpecificFilters(baseQuery, InTenant);
+            var queryCount = filteredQuery;
+            var count = await queryCount.CountAsync();
+            var paginatedQuery = ApplyPagination(filteredQuery, InPageNumber, InPageSize);
+            var list = await ExecuteQuery(paginatedQuery);
+            return (list, count);
+        }
+
+
+        protected virtual IQueryable<CSICP_FF102> GetBaseQuery()
+        {
+            return AppDbContext.OsusrE9aCsicpFf102s
                 .Include(e => e.NavFF102Sit)
-                .Include(e => e.NavFF104);
-            if (typeof(T) == typeof(CSICP_FF102))
-            {
-                return ff102WithIncludes as IQueryable<T>;
-            }
-            throw new NotSupportedException($"Tipo não suportado: {typeof(T).Name}");
+                .Include(e => e.NavFF104)
+                .Include(e => e.NavBB012);
+        }
+
+        protected abstract IQueryable<CSICP_FF102> ApplySpecificFilters(IQueryable<CSICP_FF102> query, int InTenant);
+
+        private IQueryable<CSICP_FF102> ApplyPagination(IQueryable<CSICP_FF102> query, int pageNumber, int pageSize)
+        {
+            return query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+        }
+
+
+        private async Task<List<CSICP_FF102>> ExecuteQuery(IQueryable<CSICP_FF102> query)
+        {
+            return await query.ToListAsync();
         }
     }
 }

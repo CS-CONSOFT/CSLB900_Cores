@@ -13,31 +13,20 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102.ListaTitulosGeradosQualquerOrigem
     public class PR21_CC030QueryImpl : PR21_IQueryImpl
     {
         private string IDControle;
-        private AppDbContext _AppDbContext;
+
         public PR21_CC030QueryImpl(AppDbContext appDbContext, string InIDControle) : base(appDbContext)
         {
             this.IDControle = InIDControle;
-            this._AppDbContext = appDbContext;
+
         }
 
-        public override async Task<List<CSICP_FF102>> Execute(int InTenant)
-        {
-            var InSTIDFF102SitProvisao = await _AppDbContext.OsusrE9aCsicpFf102Sits.Where(e => e.Label!.Equals(Entities.FF102_Sit.Provisao)).Select(e => e.Id).FirstAsync();
-            var query = GetQuery<CSICP_FF102>();
-            query = query?.Where(e => e.Ff102Situacaoid != InSTIDFF102SitProvisao);
-            if (query == null)
-                return [];
-            query = query.Where(e => e.TenantId == InTenant);
-            return await query.ToListAsync();
-        }
 
-        protected override IQueryable<T>? GetQuery<T>()
+        protected override IQueryable<CSICP_FF102> ApplySpecificFilters(IQueryable<CSICP_FF102> query, int InTenant)
         {
-
-            var query = base.GetQuery<CSICP_FF102>();
-            query = query?.Where(e => e.NavFF104 != null && e.NavFF104.Cc030Id == this.IDControle)
+            query = query.Where(e => e.NavFF104 != null && e.NavFF104.Cc030Id == this.IDControle)
                          .Where(e => e.Ff102Tiporegistro == 3);
-            return query as IQueryable<T>;
+            return query;
         }
+      
     }
 }
