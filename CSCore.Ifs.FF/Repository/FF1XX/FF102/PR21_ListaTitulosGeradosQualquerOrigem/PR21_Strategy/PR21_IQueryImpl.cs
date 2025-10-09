@@ -36,7 +36,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102.ListaTitulosGeradosQualquerOrigem
             return AppDbContext.OsusrE9aCsicpFf102s
                 .Include(e => e.NavFF102Sit)
                 .Include(e => e.NavFF104)
-                .Include(e => e.NavBB012);
+                .Include(e => e.NavBB012)
+                .Include(e => e.NavBB006);
         }
 
         protected abstract IQueryable<CSICP_FF102> ApplySpecificFilters(IQueryable<CSICP_FF102> query, int InTenant);
