@@ -200,7 +200,6 @@ public partial class AppDbContext : DbContext
     partial void OnModelCreatingStaticaAA(ModelBuilder modelBuilder);
 
     partial void OnModelCreating_CSICP_AA(ModelBuilder modelBuilder);
-    partial void OnModelCreatingRR(ModelBuilder modelBuilder);
     partial void OnModelCreating_CSICP_BB001(ModelBuilder modelBuilder);
     partial void OnModelCreating_CSICP_BB002(ModelBuilder modelBuilder);
     partial void OnModelCreating_CSICP_BB003(ModelBuilder modelBuilder);

@@ -1136,13 +1136,13 @@ namespace CSCore.Ifs.CS_Context
                     .HasForeignKey(d => d.Bb027bFcalcicmsdesId)
                     .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_BB027_IMP_OSUSR_E9A_CSICP_BB027_FDESEN_BB027B_FCALCICMSDES_ID");
 
-                //entity.HasOne(d => d.Bb027bModbc).WithMany(p => p.OsusrE9aCsicpBb027Imps)
-                  //  .HasForeignKey(d => d.Bb027bModbcId)
-                   // .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_BB027_IMP_OSUSR_E9A_CSICP_BB027_MODAL_BB027B_MODBC_ID");
+                entity.HasOne(d => d.Bb027bModbc).WithMany(p => p.OsusrE9aCsicpBb027Imps)
+                    .HasForeignKey(d => d.Bb027bModbcId)
+                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_BB027_IMP_OSUSR_E9A_CSICP_BB027_MODAL_BB027B_MODBC_ID");
 
-                //entity.HasOne(d => d.Bb027bMotdesoneracao).WithMany(p => p.OsusrE9aCsicpBb027Imps)
-                    //.HasForeignKey(d => d.Bb027bMotdesoneracaoid)
-                    //.HasConstraintName("OSFRK_OSUSR_E9A_CSICP_BB027_IMP_OSUSR_E9A_CSICP_BB027_MOTIVO_BB027B_MOTDESONERACAOID");
+                entity.HasOne(d => d.Bb027bMotdesoneracao).WithMany(p => p.OsusrE9aCsicpBb027Imps)
+                    .HasForeignKey(d => d.Bb027bMotdesoneracaoid)
+                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_BB027_IMP_OSUSR_E9A_CSICP_BB027_MOTIVO_BB027B_MOTDESONERACAOID");
             });
 
             modelBuilder.Entity<CSICP_Bb027Modal>(entity =>
