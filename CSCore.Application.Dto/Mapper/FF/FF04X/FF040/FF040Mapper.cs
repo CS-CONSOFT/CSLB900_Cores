@@ -58,5 +58,29 @@ namespace CSCore.Application.Dto.Mapper.FF.FF04X.FF040
                 NavSY001UsuarioPropID = entity.NavSY001UsuarioPropID?.ToDtoGetSimples(),
             };
         }
+
+        public static DtoGetCopyFF040 ToDtoGetCopyFF040(this CSICP_FF040 entity)
+        {
+            return new DtoGetCopyFF040
+            {
+                TenantId = entity.TenantId,
+                Ff040Empresaid = entity.Ff040Empresaid,
+                Ff040Tiporegistro = entity.Ff040Tiporegistro,
+                Ff040DataMovimento = entity.Ff040DataMovimento,
+                Ff040ContaId = entity.Ff040ContaId,
+                Ff040CcustoId = entity.Ff040CcustoId,
+                Ff040EspecieId = entity.Ff040EspecieId,
+                Ff040AgcobradorId = entity.Ff040AgcobradorId,
+                Ff040ResponsavelId = entity.Ff040ResponsavelId,
+                Ff040Tipocobrancaid = entity.Ff040Tipocobrancaid,
+                Ff040Vtransacao = entity.Ff040Vtransacao,
+                Ff040Texto = entity.Ff040Texto,
+                Ff040UsuarioProprId = entity.Ff040UsuarioProprId,
+                Ff040Situacaoid = entity.Ff040Situacaoid,
+                Ff040Protocolnumber = entity.Ff040Protocolnumber,
+                Ff040Dbasevencto = entity.Ff040Dbasevencto,
+                Ff040Isprovisao = entity.Ff040Isprovisao,
+            };
+        }
     }
 }
