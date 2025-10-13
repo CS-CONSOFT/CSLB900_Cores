@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.FF.Repository.FF04X.FF040.Filtros
 {
-    internal class FiltroStatusIDFF040 : ICSFilter<CSICP_FF040>
+    internal class FiltroSituacaoIDFF040 : ICSFilter<CSICP_FF040>
     {
-        private readonly int? _statusID;
-        public FiltroStatusIDFF040(int? statusID)
+        private readonly int? _situacaoID;
+        public FiltroSituacaoIDFF040(int? situacaoID)
         {
-            _statusID = statusID;
+            _situacaoID = situacaoID;
         }
         public IQueryable<CSICP_FF040> Apply(IQueryable<CSICP_FF040> query)
         {
-            if (_statusID.HasValue)
+            if (_situacaoID.HasValue)
             {
-                query = query.Where(e => e.Ff040Situacaoid == _statusID);
+                query = query.Where(e => e.Ff040Situacaoid == _situacaoID);
             }
             return query;
         }
