@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_RR;
 
@@ -22,20 +23,28 @@ public partial class OsusrTo3CsicpRr001
 
     public decimal? Rr001Pesonasc { get; set; }
 
+    [ForeignKey("NavRR001Sexo")]
     public int? Rr001Sexoid { get; set; }
 
+    [ForeignKey("NavRR001Fazenda")]
     public string? Rr001Fazendaid { get; set; }
 
+    [ForeignKey("NavRR001Cat")]
     public long? Rr001Catid { get; set; }
 
+    [ForeignKey("NavRR001Raca")]
     public long? Rr001Racaid { get; set; }
 
+    [ForeignKey("NavRR001Pai")]
     public string? Rr001PaiId { get; set; }
 
+    [ForeignKey("NavRR001Mae")]
     public string? Rr001MaeId { get; set; }
 
+    [ForeignKey("NavRR001Ativo")]
     public int? Rr001Ativoid { get; set; }
 
+    [ForeignKey("NavRR001Situacao")]
     public long? Rr001Situacaoid { get; set; }
 
     public DateTime? Rr001Dtregistro { get; set; }
@@ -44,10 +53,12 @@ public partial class OsusrTo3CsicpRr001
 
     public string? Rr001Observacao { get; set; }
 
+    [ForeignKey("NavRR001Categoria")]
     public int? Rr001Categoriaid { get; set; }
 
     public DateTime? Rr001Dtcategoria { get; set; }
 
+    [ForeignKey("NavRR001Ocorrencia")]
     public long? Rr001Ocorrenciaid { get; set; }
 
     public DateTime? Rr001Dtocorrencia { get; set; }
@@ -58,6 +69,7 @@ public partial class OsusrTo3CsicpRr001
 
     public int? Rr001Ultidadediaspeso { get; set; }
 
+    [ForeignKey("NavRR001Proprietario")]
     public long? Rr001Proprietarioid { get; set; }
 
     //public virtual ICollection<OsusrTo3CsicpRr001> InverseRr001Mae { get; set; } = new List<OsusrTo3CsicpRr001>();
