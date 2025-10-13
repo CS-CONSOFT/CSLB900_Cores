@@ -19,7 +19,7 @@ namespace CSCore.Ifs.FF.Repository.RequisicaoDespesa.PR_32_SoliticacaoRequisicao
             this.appDbContext = appDbContext;
         }
 
-        public async Task<bool> SolicitarRD(int InTenantID, long In140_ID,int InNovoStatudID, int InSTIdFF140_Solicitado)
+        public async Task<bool> SolicitarRD(int InTenantID, long In140_ID, int InSTIdFF140_Solicitado)
         {
             var WorkFF140 = await this.appDbContext.OsusrE9aCsicpFf140s.Where(e => e.TenantId == InTenantID)
                 .Where(e => e.Ff140Id == In140_ID)
@@ -27,7 +27,7 @@ namespace CSCore.Ifs.FF.Repository.RequisicaoDespesa.PR_32_SoliticacaoRequisicao
 
             WorkFF140.ValidaStatusDoMovimentoLancandoErroSeForIgualDoParametro(InSTIdFF140_Solicitado, "O Movimento já está SOLICITADO!");
             WorkFF140.ValidaRequisicaoMenorOuIgualAZeroLancandoErroSeFor("Não é possível solicitar movimento sem valor!");
-            WorkFF140.AlterarStatusDoMovimento(InNovoStatudID);
+            WorkFF140.AlterarStatusDoMovimento(InSTIdFF140_Solicitado);
             return true;
         }
     }

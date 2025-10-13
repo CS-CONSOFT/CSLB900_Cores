@@ -24,7 +24,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF140
             if (CSICP_FF140 == null)
                 throw new KeyNotFoundException("Registro não encontrado.");
             CSICP_FF140.Ff140Execucaoid = In_FF144_ExecucaoID;
-            _appDbContext.OsusrE9aCsicpFf140s.Update(CSICP_FF140);
+            //_appDbContext.OsusrE9aCsicpFf140s.Update(CSICP_FF140);
         }
         public async Task<CSICP_FF140?> GetByIdAsync(int InTenantID, long InFF140ID)
         {

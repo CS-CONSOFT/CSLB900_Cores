@@ -8,6 +8,6 @@ namespace CSCore.Domain.Interfaces.FF.RequisicaoDespesa.PR_32_SoliticacaoRequisi
 {
     public interface IPR_32_SoliticacaoRequisicaoDespesaRepository
     {
-        Task<bool> SolicitarRD(int InTenantID, long In140_ID, int InNovoStatudID, int InSTIdFF140_Solicitado);
+        Task<bool> SolicitarRD(int InTenantID, long In140_ID,int InSTIdFF140_Solicitado);
     }
 }
