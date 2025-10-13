@@ -45,29 +45,29 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF140
 
         public CSICP_FF140 ToEntity(int tenant, string? _)
         {
-            return new CSICP_FF140
-            {
-                TenantId = tenant,
-                Ff140Data = Ff140Data,
-                Ff140Contaid = Ff140Contaid,
-                Ff140Especieid = Ff140Especieid,
-                Ff140Ccustoid = Ff140Ccustoid,
-                Ff140Usuarioproprieid = Ff140Usuarioproprieid,
-                Ff140Agcobradorid = Ff140Agcobradorid,
-                Ff140FpagtoId = Ff140FpagtoId,
-                Ff140Condicaoid = Ff140Condicaoid,
-                Ff140Tipocobrancaid = Ff140Tipocobrancaid,
-                Ff140Descricao = Ff140Descricao,
-                Ff140Protocolnumber = Ff140Protocolnumber,
-                Ff140Vrequisicao = Ff140Vrequisicao,
-                Ff140Projetoid = Ff140Projetoid,
-                Ff140Statusid = Ff140Statusid,
-                Ff140Execucaoid = Ff140Execucaoid,
-                Ff140Tpvinculoid = Ff140Tpvinculoid,
-                Ff140QtdeParcelas = Ff140QtdeParcelas,
-                Ff140Estabid = Ff140Estabid,
-                Ff140AdtoId = Ff140AdtoId,
-            };
+            return CSICP_FF140.CreateInstance(
+                tenant,
+                0,
+                Ff140Data,
+                Ff140Contaid,
+                Ff140Especieid,
+                Ff140Ccustoid,
+                Ff140Usuarioproprieid,
+                Ff140Agcobradorid,
+                Ff140FpagtoId,
+                Ff140Condicaoid,
+                Ff140Tipocobrancaid,
+                Ff140Descricao,
+                Ff140Protocolnumber,
+                Ff140Vrequisicao,
+                Ff140Projetoid,
+                Ff140Statusid,
+                Ff140Execucaoid,
+                Ff140Tpvinculoid,
+                Ff140QtdeParcelas,
+                Ff140Estabid,
+                Ff140AdtoId
+            );
         }
     }
 }

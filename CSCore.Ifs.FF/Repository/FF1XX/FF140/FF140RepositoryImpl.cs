@@ -17,7 +17,15 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF140
         {
             _appDbContext = appDbContext;
         }
-
+        public async Task AssinaExecucao(int InTenantID, long InFF140_ID, int In_FF144_ExecucaoID)
+        {
+            IQueryable<CSICP_FF140> query = GetQueryBase(InTenantID);
+            CSICP_FF140? CSICP_FF140 = await query.FirstOrDefaultAsync(e => e.Ff140Id == InFF140_ID);
+            if (CSICP_FF140 == null)
+                throw new KeyNotFoundException("Registro não encontrado.");
+            CSICP_FF140.Ff140Execucaoid = In_FF144_ExecucaoID;
+            _appDbContext.OsusrE9aCsicpFf140s.Update(CSICP_FF140);
+        }
         public async Task<CSICP_FF140?> GetByIdAsync(int InTenantID, long InFF140ID)
         {
             IQueryable<CSICP_FF140> query = GetQueryBase(InTenantID);
@@ -83,5 +91,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF140
                 new FiltroStatusIDFF140(filtros.InStatusID),
             ];
         }
+
+      
     }
 }

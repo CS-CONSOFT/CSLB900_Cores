@@ -30,7 +30,6 @@ public partial class CSICP_FF144
 
     public static CSICP_FF144 CreateInstance(
          int tenantId,
-         long ff144Id,
          long? ff144RdId = null,
          DateTime? ff144Dhregistro = null,
          string? ff144Usuarioproprieid = null,
@@ -41,7 +40,6 @@ public partial class CSICP_FF144
         return new CSICP_FF144
         {
             TenantId = tenantId,
-            Ff144Id = ff144Id,
             Ff144RdId = ff144RdId,
             Ff144Dhregistro = ff144Dhregistro,
             Ff144Usuarioproprieid = ff144Usuarioproprieid,
@@ -50,5 +48,7 @@ public partial class CSICP_FF144
             F144Observacao = f144Observacao
         };
     }
+
+    
 
 }
