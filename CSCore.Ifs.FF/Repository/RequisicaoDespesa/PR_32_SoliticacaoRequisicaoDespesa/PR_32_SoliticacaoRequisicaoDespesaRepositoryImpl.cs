@@ -1,5 +1,6 @@
 ﻿using CSCore.Domain.Interfaces.FF.PR_32_SoliticacaoRequisicaoDespesa;
 using CSCore.Ifs.CS_Context;
+using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,16 @@ namespace CSCore.Ifs.FF.Repository.RequisicaoDespesa.PR_32_SoliticacaoRequisicao
             this.appDbContext = appDbContext;
         }
 
-        public async Task SolicitarRD(int InTenantID)
+        public async Task<bool> SolicitarRD(int InTenantID, long In140_ID,int InNovoStatudID, int InSTIdFF140_Solicitado)
         {
-            var a = await this.appDbContext.OsusrE9aCsicpFf140s.Where(e => e.TenantId == 135)
-                .Where(e => e.Ff140Statusid == 1).FirstOrDefaultAsync();
+            var WorkFF140 = await this.appDbContext.OsusrE9aCsicpFf140s.Where(e => e.TenantId == InTenantID)
+                .Where(e => e.Ff140Id == In140_ID)
+                .FirstOrDefaultAsync() ?? throw new KeyNotFoundException(HandlerReturnMessages.ENTITY_NOT_FOUND);
+
+            WorkFF140.ValidaStatusDoMovimentoLancandoErroSeForIgualDoParametro(InSTIdFF140_Solicitado, "O Movimento já está SOLICITADO!");
+            WorkFF140.ValidaRequisicaoMenorOuIgualAZeroLancandoErroSeFor("Não é possível solicitar movimento sem valor!");
+            WorkFF140.AlterarStatusDoMovimento(InNovoStatudID);
+            return true;
         }
     }
 }
