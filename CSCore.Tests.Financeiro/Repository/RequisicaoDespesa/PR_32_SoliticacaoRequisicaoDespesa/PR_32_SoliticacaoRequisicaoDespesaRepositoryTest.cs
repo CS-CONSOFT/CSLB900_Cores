@@ -1,6 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.CS_Models.Staticas.FF;
-using CSCore.Domain.Interfaces.FF.PR_32_SoliticacaoRequisicaoDespesa;
+using CSCore.Domain.Interfaces.FF.RequisicaoDespesa.PR_32_SoliticacaoRequisicaoDespesa;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.RequisicaoDespesa.PR_32_SoliticacaoRequisicaoDespesa;
 using Microsoft.EntityFrameworkCore;

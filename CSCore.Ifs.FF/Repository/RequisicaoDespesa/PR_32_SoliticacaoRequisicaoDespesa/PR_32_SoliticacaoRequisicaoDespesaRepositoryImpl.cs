@@ -1,4 +1,4 @@
-﻿using CSCore.Domain.Interfaces.FF.PR_32_SoliticacaoRequisicaoDespesa;
+﻿using CSCore.Domain.Interfaces.FF.RequisicaoDespesa.PR_32_SoliticacaoRequisicaoDespesa;
 using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
