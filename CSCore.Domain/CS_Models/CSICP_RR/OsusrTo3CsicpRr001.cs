@@ -1,7 +1,8 @@
-﻿using System;
+﻿using CSCore.Domain;
+using System;
 using System.Collections.Generic;
 
-namespace CSCore.Domain.DELETAR;
+namespace CSCore.Domain.CS_Models.CSICP_RR;
 
 public partial class OsusrTo3CsicpRr001
 {
@@ -59,37 +60,37 @@ public partial class OsusrTo3CsicpRr001
 
     public long? Rr001Proprietarioid { get; set; }
 
-    public virtual ICollection<OsusrTo3CsicpRr001> InverseRr001Mae { get; set; } = new List<OsusrTo3CsicpRr001>();
+    //public ICollection<OsusrTo3CsicpRr001> InverseRr001Mae { get; set; } = new List<OsusrTo3CsicpRr001>();
 
-    public virtual ICollection<OsusrTo3CsicpRr001> InverseRr001Pai { get; set; } = new List<OsusrTo3CsicpRr001>();
+    //public ICollection<OsusrTo3CsicpRr001> InverseRr001Pai { get; set; } = new List<OsusrTo3CsicpRr001>();
 
-    public virtual ICollection<OsusrTo3CsicpRr021> OsusrTo3CsicpRr021s { get; set; } = new List<OsusrTo3CsicpRr021>();
+    //public ICollection<OsusrTo3CsicpRr021> OsusrTo3CsicpRr021s { get; set; } = new List<OsusrTo3CsicpRr021>();
 
-    public virtual ICollection<OsusrTo3CsicpRr022> OsusrTo3CsicpRr022s { get; set; } = new List<OsusrTo3CsicpRr022>();
+    //public ICollection<OsusrTo3CsicpRr022> OsusrTo3CsicpRr022s { get; set; } = new List<OsusrTo3CsicpRr022>();
 
-    public virtual ICollection<OsusrTo3CsicpRr031> OsusrTo3CsicpRr031Rr031Animals { get; set; } = new List<OsusrTo3CsicpRr031>();
+    //public ICollection<OsusrTo3CsicpRr031> OsusrTo3CsicpRr031Rr031Animals { get; set; } = new List<OsusrTo3CsicpRr031>();
 
-    public virtual ICollection<OsusrTo3CsicpRr031> OsusrTo3CsicpRr031Rr031Montaanimals { get; set; } = new List<OsusrTo3CsicpRr031>();
+    //public ICollection<OsusrTo3CsicpRr031> OsusrTo3CsicpRr031Rr031Montaanimals { get; set; } = new List<OsusrTo3CsicpRr031>();
 
-    public virtual OsusrTo3CsicpRr001Ativo? Rr001Ativo { get; set; }
+    public OsusrTo3CsicpRr001Ativo? NavRR001Ativo { get; set; }
 
-    public virtual OsusrTo3CsicpRr003? Rr001Cat { get; set; }
+    public OsusrTo3CsicpRr003? NavRR001Cat { get; set; }
 
-    public virtual OsusrTo3CsicpRr001Cat? Rr001Categoria { get; set; }
+    public OsusrTo3CsicpRr001Cat? NavRR001Categoria { get; set; }
 
-    public virtual OsusrTo3CsicpRr002? Rr001Fazenda { get; set; }
+    public OsusrTo3CsicpRr002? NavRR001Fazenda { get; set; }
 
-    public virtual OsusrTo3CsicpRr001? Rr001Mae { get; set; }
+    public OsusrTo3CsicpRr001? NavRR001Mae { get; set; }
 
-    public virtual OsusrTo3CsicpRr006? Rr001Ocorrencia { get; set; }
+    public OsusrTo3CsicpRr006? NavRR001Ocorrencia { get; set; }
 
-    public virtual OsusrTo3CsicpRr001? Rr001Pai { get; set; }
+    public OsusrTo3CsicpRr001? NavRR001Pai { get; set; }
 
-    public virtual OsusrTo3CsicpRr007? Rr001Proprietario { get; set; }
+    public OsusrTo3CsicpRr007? NavRR001Proprietario { get; set; }
 
-    public virtual OsusrTo3CsicpRr004? Rr001Raca { get; set; }
+    public OsusrTo3CsicpRr004? NavRR001Raca { get; set; }
 
-    public virtual OsusrTo3CsicpRr001Sexo? Rr001Sexo { get; set; }
+    public OsusrTo3CsicpRr001Sexo? NavRR001Sexo { get; set; }
 
-    public virtual OsusrTo3CsicpRr005? Rr001Situacao { get; set; }
+    public OsusrTo3CsicpRr005? NavRR001Situacao { get; set; }
 }
