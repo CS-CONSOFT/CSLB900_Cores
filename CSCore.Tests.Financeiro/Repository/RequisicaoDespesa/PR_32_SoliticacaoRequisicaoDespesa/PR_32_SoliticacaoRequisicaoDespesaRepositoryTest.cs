@@ -50,7 +50,7 @@ namespace CSCore.Tests.Financeiro.Repository.RequisicaoDespesa.PR_32_Soliticacao
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.SolicitarRD(135, 1,0, 1);
+            var result = await _repository.SolicitarRD(135, 1, 1);
             // Assert
             Assert.True(result);
         }
@@ -79,7 +79,7 @@ namespace CSCore.Tests.Financeiro.Repository.RequisicaoDespesa.PR_32_Soliticacao
             // Assert
             var exeption = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
-                await _repository.SolicitarRD(135, 3,0,1);
+                await _repository.SolicitarRD(135, 3,1);
             });
 
             // Verificar a mensagem da exceção
@@ -97,7 +97,7 @@ namespace CSCore.Tests.Financeiro.Repository.RequisicaoDespesa.PR_32_Soliticacao
             // Assert
             var exeption = await Assert.ThrowsAsync<InvalidOperationException>(async () =>
             {
-                await _repository.SolicitarRD(135, 5, 0, 3);
+                await _repository.SolicitarRD(135, 5, 3);
             });
 
             // Verificar a mensagem da exceção
@@ -114,7 +114,7 @@ namespace CSCore.Tests.Financeiro.Repository.RequisicaoDespesa.PR_32_Soliticacao
             await _context.SaveChangesAsync();
 
             // Assert
-            await _repository.SolicitarRD(135, ff140id,7, 3);
+            await _repository.SolicitarRD(135, ff140id, 3);
             await _context.SaveChangesAsync();
 
             // Verificar a mensagem da exceçã

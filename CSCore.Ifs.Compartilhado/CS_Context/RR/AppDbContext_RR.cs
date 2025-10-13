@@ -140,55 +140,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RR001_USUARIOPROPID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(d => d.Rr001Ativo).WithMany(p => p.OsusrTo3CsicpRr001s)
-                    .HasForeignKey(d => d.Rr001Ativoid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR001_OSUSR_TO3_CSICP_RR001_ATIVO_RR001_ATIVOID");
-
-                entity.HasOne(d => d.Rr001Categoria).WithMany(p => p.OsusrTo3CsicpRr001s)
-                    .HasForeignKey(d => d.Rr001Categoriaid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR001_OSUSR_TO3_CSICP_RR001_CAT_RR001_CATEGORIAID");
-
-                entity.HasOne(d => d.Rr001Cat).WithMany(p => p.OsusrTo3CsicpRr001s)
-                    .HasForeignKey(d => d.Rr001Catid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR001_OSUSR_TO3_CSICP_RR003_RR001_CATID");
-
-                entity.HasOne(d => d.Rr001Fazenda).WithMany(p => p.OsusrTo3CsicpRr001s)
-                    .HasForeignKey(d => d.Rr001Fazendaid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR001_OSUSR_TO3_CSICP_RR002_RR001_FAZENDAID");
-
-                // Configuração do relacionamento com Pai
-                entity.HasOne(d => d.Rr001Pai)
-                    .WithMany()
-                    .HasForeignKey(d => d.Rr001PaiId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR001_PAI_RR001_PAI_ID");
-
-                // Configuração do relacionamento com Mãe
-                entity.HasOne(d => d.Rr001Mae)
-                    .WithMany()
-                    .HasForeignKey(d => d.Rr001MaeId)
-                    .OnDelete(DeleteBehavior.Restrict)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR001_MAE_RR001_MAE_ID");
-
-                entity.HasOne(d => d.Rr001Ocorrencia).WithMany(p => p.OsusrTo3CsicpRr001s)
-                    .HasForeignKey(d => d.Rr001Ocorrenciaid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR001_OSUSR_TO3_CSICP_RR006_RR001_OCORRENCIAID");
-
-                entity.HasOne(d => d.Rr001Proprietario).WithMany(p => p.OsusrTo3CsicpRr001s)
-                    .HasForeignKey(d => d.Rr001Proprietarioid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR001_OSUSR_TO3_CSICP_RR007_RR001_PROPRIETARIOID");
-
-                entity.HasOne(d => d.Rr001Raca).WithMany(p => p.OsusrTo3CsicpRr001s)
-                    .HasForeignKey(d => d.Rr001Racaid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR001_OSUSR_TO3_CSICP_RR004_RR001_RACAID");
-
-                entity.HasOne(d => d.Rr001Sexo).WithMany(p => p.OsusrTo3CsicpRr001s)
-                    .HasForeignKey(d => d.Rr001Sexoid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR001_OSUSR_TO3_CSICP_RR001_SEXO_RR001_SEXOID");
-
-                entity.HasOne(d => d.Rr001Situacao).WithMany(p => p.OsusrTo3CsicpRr001s)
-                    .HasForeignKey(d => d.Rr001Situacaoid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR001_OSUSR_TO3_CSICP_RR005_RR001_SITUACAOID");
+                
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr001Ativo>(entity =>
