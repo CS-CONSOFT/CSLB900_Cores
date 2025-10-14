@@ -1,4 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
+using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.Interfaces.FF._1XX.FF140;
 using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
@@ -42,6 +43,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF140
 
             CSICP_FF140? CSICP_FF140 = await query.FirstOrDefaultAsync(e => e.Ff140Id == InFF140ID);
             return CSICP_FF140;
+        }
+
+        public async Task<List<OsusrE9aCsicpFf140Stum>> GetListStatus()
+        {
+            return await this._appDbContext.OsusrE9aCsicpFf140Sta.ToListAsync();
         }
 
         private IQueryable<CSICP_FF140> GetQueryBase(int InTenantID)

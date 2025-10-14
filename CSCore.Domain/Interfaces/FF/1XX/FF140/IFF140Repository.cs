@@ -1,4 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
+using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.Interfaces.V2;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace CSCore.Domain.Interfaces.FF._1XX.FF140
     {
         Task<CSICP_FF140?> GetByIdAsync(int InTenantID, long InFF140ID);
         Task AssinaExecucao(int InTenantID, long InFF140_ID,int In_FF144_ExecucaoID);
+        Task<List<OsusrE9aCsicpFf140Stum>> GetListStatus();
     }
 }
