@@ -92,7 +92,5 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF04X.FF040
         public Dto_GetSY001Simples? NavSY001UsuarioPropID { get; set; }
         public OsusrE9aCsicpFf040Sit? NavFF040SituacaoID { get; set; }
 
-
-
     }
 }

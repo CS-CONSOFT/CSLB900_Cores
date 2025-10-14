@@ -13,5 +13,5 @@ public partial class OsusrTo3CsicpRr008
 
     public string? Rr008Descritivo { get; set; }
 
-    public virtual ICollection<OsusrTo3CsicpRr020> OsusrTo3CsicpRr020s { get; set; } = new List<OsusrTo3CsicpRr020>();
+    //public virtual ICollection<OsusrTo3CsicpRr020> OsusrTo3CsicpRr020s { get; set; } = new List<OsusrTo3CsicpRr020>();
 }

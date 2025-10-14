@@ -33,7 +33,7 @@ public partial class OsusrTo3CsicpRr022
 
     public string? Rr022Usuarioid { get; set; }
 
-    public virtual OsusrTo3CsicpRr001? Rr022Animal { get; set; }
+    public OsusrTo3CsicpRr001? NavRR001Animal_RR022 { get; set; }
 
-    public virtual OsusrTo3CsicpRr021? Rr022Lote { get; set; }
+    public OsusrTo3CsicpRr021? NavRR021LoteXAnimal_RR022 { get; set; }
 }
