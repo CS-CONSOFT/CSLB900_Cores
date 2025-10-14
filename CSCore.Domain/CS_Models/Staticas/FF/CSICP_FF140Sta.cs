@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.Staticas.FF;
 
-public partial class OsusrE9aCsicpFf140Stum
+public partial class CSICP_FF140Sta
 {
     public int Id { get; set; }
 
@@ -13,5 +13,5 @@ public partial class OsusrE9aCsicpFf140Stum
 
     public bool? IsActive { get; set; }
 
-    public int? Codgcs { get; set; }
+    public int Codgcs { get; set; } = 0;
 }

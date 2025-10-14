@@ -8,7 +8,7 @@ using CSCore.Ifs.InterfaceBase;
 using CSLB900.MSTools.Enumeradores;
 using static CSLB900.MSTools.Enumeradores.EnumTipoRegistroGG008c;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG008.GG008c
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008c
 {
     public class DtoCreateUpdateGG008c
     {

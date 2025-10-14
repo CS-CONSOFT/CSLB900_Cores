@@ -5,7 +5,7 @@ using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.FF1XX.FF125.IncludesFF125List;
 using CSLB900.MSTools.Extensao;
-using GG104Materiais.C82Application.Service.FF1XX.FF125;
+using FF105Financeiro.C82Application.Service.FF1XX.FF125;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX.FF125

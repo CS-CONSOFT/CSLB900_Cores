@@ -4,11 +4,11 @@ using CSBS101._82Application.Dto.BB00X.BB012.Get;
 using CSBS101.C82Application.Dto.BB00X.BB00X.BB001;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.Staticas.GG;
-using GG104Materiais.C82Application.Dto.GG00X.GG001;
-using GG104Materiais.C82Application.Dto.GG00X.GG007;
-using GG104Materiais.C82Application.Dto.GG00X.GG008.GG008p;
+using FF105Financeiro.C82Application.Dto.GG00X.GG001;
+using FF105Financeiro.C82Application.Dto.GG00X.GG007;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008p;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG008.GG008Kdx
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008Kdx
 {
     public class DtoGetGG008Kdx
     {

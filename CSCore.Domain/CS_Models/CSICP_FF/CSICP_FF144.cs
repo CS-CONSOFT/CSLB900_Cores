@@ -24,7 +24,7 @@ public partial class CSICP_FF144
     public string? F144Observacao { get; set; }
 
     public CSICP_FF140? NavFF140 { get; set; }
-    public OsusrE9aCsicpFf140Stum? NavFF140StatusFF144 { get; set; }
+    public CSICP_FF140Sta? NavFF140StatusFF144 { get; set; }
     public OsusrE9aCsicpFf140Exe? NavFF140ExecucaoFF144 { get; set; }
     public Csicp_Sy001? NavSY001UsuarioFF144 { get; set; }
 

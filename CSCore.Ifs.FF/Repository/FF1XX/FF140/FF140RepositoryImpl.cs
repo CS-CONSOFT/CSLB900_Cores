@@ -45,7 +45,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF140
             return CSICP_FF140;
         }
 
-        public async Task<List<OsusrE9aCsicpFf140Stum>> GetListStatus()
+        public async Task<List<CSICP_FF140Sta>> GetListStatus()
         {
             return await this._appDbContext.OsusrE9aCsicpFf140Sta.ToListAsync();
         }

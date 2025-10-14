@@ -3,7 +3,7 @@ using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG071;
 using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using GG104Materiais.C82Application.Mapper;
+using FF105Financeiro.C82Application.Mapper;
 
 namespace CSCore.Application.Dto.Mapper.GG00X
 {

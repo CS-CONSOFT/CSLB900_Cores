@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG010
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG010
 {
     public class DtoGetGG010Simples
     {

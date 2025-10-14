@@ -1,7 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.GG;
-using GG104Materiais.C82Application.Dto.GG00X.GG007;
+using FF105Financeiro.C82Application.Dto.GG00X.GG007;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG019
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG019
 {
     public class DtoGetGG019
     {

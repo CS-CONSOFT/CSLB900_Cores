@@ -61,7 +61,7 @@ public partial class CSICP_FF140
     public CSICP_Bb026? NavBB026FPagto { get; set; }
     public CSICP_FF003? NavFF003EspecieID { get; set; }
     public Csicp_Sy001? NavSY001UsuarioPropID { get; set; }
-    public OsusrE9aCsicpFf140Stum? NavFF140Status { get; set; }
+    public CSICP_FF140Sta? NavFF140Status { get; set; }
     public OsusrE9aCsicpFf140Exe? NavFF140Exe { get; set; }
     public OsusrE9aCsicpFf140Vin? NavFF140Vinculo { get; set; }
 
@@ -138,8 +138,31 @@ public partial class CSICP_FF140
             throw new InvalidOperationException(Messagem);
     }
 
+    public void ValidaSeEstaSemVinculo(int InFF140_TpVinculo_SemVinculoID, string Message)
+    {
+        if(this.Ff140Tpvinculoid != InFF140_TpVinculo_SemVinculoID)
+            throw new InvalidOperationException(Message);
+    }
+
+
+    public void ValidaSeEstaComVinculo(int InFF140_TpVinculo_SemVinculoID, string Message)
+    {
+        if (this.Ff140Tpvinculoid == InFF140_TpVinculo_SemVinculoID)
+            throw new InvalidOperationException(Message);
+    }
+
     public void AlterarStatusDoMovimento(int novoStatusId)
     {
         this.Ff140Statusid = novoStatusId;
+    }
+
+    public void AlterarStatusExecucao(int novoStatusId)
+    {
+        this.Ff140Execucaoid = novoStatusId;
+    }
+
+    public void AlterarVinculo(int novoStatusVinculoId)
+    {
+        this.Ff140Tpvinculoid = novoStatusVinculoId;
     }
 }

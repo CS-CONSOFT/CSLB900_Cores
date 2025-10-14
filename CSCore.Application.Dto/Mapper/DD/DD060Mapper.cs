@@ -2,8 +2,8 @@
 using CSCore.Domain.CS_Models.CSICP_DD;
 using EnviaNFeHercules.C82Application.Dto.DD.DD060;
 using EnviaNFeHercules.C82Application.Mapper.DD00X.DD060;
-using GG104Materiais.C82Application.Mapper;
-using GG104Materiais.C82Application.Mapper.GG008;
+using FF105Financeiro.C82Application.Mapper;
+using FF105Financeiro.C82Application.Mapper.GG008;
 
 namespace EnviaNFeHercules.C82Application.Mapper.DD00X
 {

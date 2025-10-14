@@ -1,6 +1,6 @@
 ﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG100;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using GG104Materiais.C82Application.Mapper;
+using FF105Financeiro.C82Application.Mapper;
 
 namespace CSCore.Application.Dto.Mapper.GG00X
 {

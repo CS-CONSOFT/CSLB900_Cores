@@ -6,11 +6,11 @@ using CSCore.Domain.CS_Models.CSICP_DD;
 using CSCore.Domain.CS_Models.Staticas.AA;
 using CSCore.Domain.CS_Models.Staticas.GG;
 using EnviaNFeHercules.C82Application.Dto.DD.DD061;
-using GG104Materiais.C82Application.Dto.GG00X.GG005;
-using GG104Materiais.C82Application.Dto.GG00X.GG006;
-using GG104Materiais.C82Application.Dto.GG00X.GG007;
-using GG104Materiais.C82Application.Dto.GG00X.GG008;
-using GG104Materiais.C82Application.Dto.GG00X.GG021;
+using FF105Financeiro.C82Application.Dto.GG00X.GG005;
+using FF105Financeiro.C82Application.Dto.GG00X.GG006;
+using FF105Financeiro.C82Application.Dto.GG00X.GG007;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008;
+using FF105Financeiro.C82Application.Dto.GG00X.GG021;
 
 namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
 {

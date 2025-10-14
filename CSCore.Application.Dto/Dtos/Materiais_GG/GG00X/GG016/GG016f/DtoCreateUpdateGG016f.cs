@@ -1,7 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Ifs.InterfaceBase;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG016.GG016f
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG016.GG016f
 {
     public class DtoCreateUpdateGG016f : IConverteParaEntidade<CSICP_GG016f>
     {

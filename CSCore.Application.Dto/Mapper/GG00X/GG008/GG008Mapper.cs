@@ -5,9 +5,9 @@ using CSCore.Application.Dto.Mapper.GG00X;
 using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSSY103.C82Application.Mapper;
-using GG104Materiais.C82Application.Dto.GG00X.GG008;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008;
 
-namespace GG104Materiais.C82Application.Mapper.GG008
+namespace FF105Financeiro.C82Application.Mapper.GG008
 {
     public static class GG008Mapper
     {

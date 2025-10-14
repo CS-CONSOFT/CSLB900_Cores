@@ -1,8 +1,8 @@
 ﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG006;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using GG104Materiais.C82Application.Dto.GG00X.GG006;
+using FF105Financeiro.C82Application.Dto.GG00X.GG006;
 
-namespace GG104Materiais.C82Application.Mapper
+namespace FF105Financeiro.C82Application.Mapper
 {
     public static class GG006Mapper
     {

@@ -34,7 +34,7 @@ namespace CSCore.Tests.Financeiro.Repository.RequisicaoDespesa.PR_32_Soliticacao
         public async Task Testa_Se_FF140_Nao_Esta_Com_Status_Solicitado()
         {
             // Arrange
-            var ff140status = new OsusrE9aCsicpFf140Stum
+            var ff140status = new CSICP_FF140Sta
             {
                 Id = 3,
                 Label = "aberto",
@@ -59,7 +59,7 @@ namespace CSCore.Tests.Financeiro.Repository.RequisicaoDespesa.PR_32_Soliticacao
         public async Task Testa_Se_FF140_Esta_Com_Status_Solicitado()
         {
             // Arrange
-            var ff140status = new OsusrE9aCsicpFf140Stum
+            var ff140status = new CSICP_FF140Sta
             {
                 Id = 1,
                 Label = "Solicitado",

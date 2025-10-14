@@ -2,7 +2,7 @@
 using CSCore.Ifs.InterfaceBase;
 using CSLB900.MSTools.Extensao;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG021
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG021
 {
     public class DtoCreateUpdateGG021 : IConverteParaEntidade<CSICP_GG021>
     {

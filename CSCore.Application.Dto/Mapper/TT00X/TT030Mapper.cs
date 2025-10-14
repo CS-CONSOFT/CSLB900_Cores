@@ -2,7 +2,7 @@
 using CSCore.Application.Dto.Dtos.TT.TT0XX.TT030;
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_Models.CSICP_TT;
-using GG104Materiais.C82Application.Dto.GG00X.GG000;
+using FF105Financeiro.C82Application.Dto.GG00X.GG000;
 using System;
 using System.Collections.Generic;
 using System.Linq;

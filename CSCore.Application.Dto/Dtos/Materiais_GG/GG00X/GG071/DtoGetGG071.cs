@@ -4,7 +4,7 @@ using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_Models.Staticas.GG;
-using GG104Materiais.C82Application.Dto.GG00X.GG001;
+using FF105Financeiro.C82Application.Dto.GG00X.GG001;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG071

@@ -142,7 +142,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF140
         public Dto_GetBB026_Exibicao? NavBB026FPagto { get; set; }
         public Dto_GetFF003_Exibicao? NavFF003EspecieID { get; set; }
         public Dto_GetSY001Simples? NavSY001UsuarioPropID { get; set; }
-        public OsusrE9aCsicpFf140Stum? NavFF140Status { get; set; }
+        public CSICP_FF140Sta? NavFF140Status { get; set; }
         public OsusrE9aCsicpFf140Exe? NavFF140Exe { get; set; }
         public OsusrE9aCsicpFf140Vin? NavFF140Vinculo { get; set; }
 

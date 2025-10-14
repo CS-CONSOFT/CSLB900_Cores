@@ -2,7 +2,7 @@
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_Models.Staticas.GG;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG021
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG021
 {
     public class DtoGetGG021
     {

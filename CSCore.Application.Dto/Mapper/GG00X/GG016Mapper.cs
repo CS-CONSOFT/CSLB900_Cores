@@ -1,11 +1,11 @@
 ﻿using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using GG104Materiais.C82Application.Dto.GG00X.GG016;
-using GG104Materiais.C82Application.Dto.GG00X.GG016.GG016e;
-using GG104Materiais.C82Application.Dto.GG00X.GG016.GG016f;
+using FF105Financeiro.C82Application.Dto.GG00X.GG016;
+using FF105Financeiro.C82Application.Dto.GG00X.GG016.GG016e;
+using FF105Financeiro.C82Application.Dto.GG00X.GG016.GG016f;
 
-namespace GG104Materiais.C82Application.Mapper
+namespace FF105Financeiro.C82Application.Mapper
 {
     public static class GG016Mapper
     {

@@ -3,8 +3,8 @@ using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB02X.BB027;
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520;
 using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
 using CSCore.Domain.CS_Models.Staticas.GG;
-using GG104Materiais.C82Application.Dto.GG00X.GG001;
-using GG104Materiais.C82Application.Dto.GG00X.GG008;
+using FF105Financeiro.C82Application.Dto.GG00X.GG001;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG028
 {

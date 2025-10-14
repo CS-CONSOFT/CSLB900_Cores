@@ -1,4 +1,4 @@
-﻿namespace GG104Materiais.C82Application.Dto.GG00X.GG004
+﻿namespace FF105Financeiro.C82Application.Dto.GG00X.GG004
 {
     public class DtoGetGG004
     {

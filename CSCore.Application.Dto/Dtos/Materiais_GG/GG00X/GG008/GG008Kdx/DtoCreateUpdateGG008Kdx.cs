@@ -1,9 +1,9 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Ifs.InterfaceBase;
 using CSLB900.MSTools.Extensao;
-using GG104Materiais.C82Application.Dto.GG00X.GG008.GG008p;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008p;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG008.GG008Kdx
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008Kdx
 {
     public class DtoCreateUpdateGG008KdxSemNav
     {

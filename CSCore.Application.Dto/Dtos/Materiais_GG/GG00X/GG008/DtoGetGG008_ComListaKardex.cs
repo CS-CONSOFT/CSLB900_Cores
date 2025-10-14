@@ -1,17 +1,17 @@
 ﻿using CSBS101.C82Application.Dto.BB00X.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008Kdx;
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG015;
-using GG104Materiais.C82Application.Dto.GG00X.GG002;
-using GG104Materiais.C82Application.Dto.GG00X.GG003;
-using GG104Materiais.C82Application.Dto.GG00X.GG004;
-using GG104Materiais.C82Application.Dto.GG00X.GG005;
-using GG104Materiais.C82Application.Dto.GG00X.GG006;
-using GG104Materiais.C82Application.Dto.GG00X.GG008.GG008c;
-using GG104Materiais.C82Application.Dto.GG00X.GG009;
-using GG104Materiais.C82Application.Dto.GG00X.GG010;
-using GG104Materiais.C82Application.Dto.GG00X.GG011;
-using GG104Materiais.C82Application.Dto.GG00X.GG014;
-using GG104Materiais.C82Application.Dto.GG00X.GG021;
+using FF105Financeiro.C82Application.Dto.GG00X.GG002;
+using FF105Financeiro.C82Application.Dto.GG00X.GG003;
+using FF105Financeiro.C82Application.Dto.GG00X.GG004;
+using FF105Financeiro.C82Application.Dto.GG00X.GG005;
+using FF105Financeiro.C82Application.Dto.GG00X.GG006;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008c;
+using FF105Financeiro.C82Application.Dto.GG00X.GG009;
+using FF105Financeiro.C82Application.Dto.GG00X.GG010;
+using FF105Financeiro.C82Application.Dto.GG00X.GG011;
+using FF105Financeiro.C82Application.Dto.GG00X.GG014;
+using FF105Financeiro.C82Application.Dto.GG00X.GG021;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008
 {
