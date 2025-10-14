@@ -31,12 +31,12 @@ namespace CSCore.Ifs.GG.Repository.GG._07X
             IQueryable<CSICP_GG072> query = CriaQueryBase(tenant);
 
 
-            query = query.PaginacaoNoBanco(page, pageSize);
+
             if(InGG071_ID != null)
                 query = query.Where(e => e.Gg071Id == InGG071_ID);  
 
             int count = query.GetCountTotal();
-
+            query = query.PaginacaoNoBanco(page, pageSize);
             List<CSICP_GG072> listaCSICP_GG072 = await query.ToListAsync();
             return (listaCSICP_GG072, count);
         }
