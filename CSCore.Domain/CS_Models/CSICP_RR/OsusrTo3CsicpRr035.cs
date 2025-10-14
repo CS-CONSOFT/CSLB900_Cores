@@ -31,7 +31,7 @@ public partial class OsusrTo3CsicpRr035
 
     public string? Rr035Observacao { get; set; }
 
-    public virtual ICollection<OsusrTo3CsicpRr031> OsusrTo3CsicpRr031s { get; set; } = new List<OsusrTo3CsicpRr031>();
+    //public virtual ICollection<OsusrTo3CsicpRr031> OsusrTo3CsicpRr031s { get; set; } = new List<OsusrTo3CsicpRr031>();
 
-    public virtual OsusrTo3CsicpRr004? Rr035Raca { get; set; }
+    public OsusrTo3CsicpRr004? NavRR004Raca_RR035 { get; set; }
 }

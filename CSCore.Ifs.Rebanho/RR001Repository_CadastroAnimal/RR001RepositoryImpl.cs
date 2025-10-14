@@ -7,11 +7,6 @@ using CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal.Filtros;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal
 {
@@ -54,17 +49,17 @@ namespace CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal
                 .AsNoTracking()
                 .AsSplitQuery()
                 .Where(e => e.TenantId == In_TenantID)
-                .Include(e => e.NavRR001Ativo)
-                .Include(e => e.NavRR001Cat)
-                .Include(e => e.NavRR001Categoria)
-                .Include(e => e.NavRR001Fazenda)
+                .Include(e => e.NavRR001Ativo_RR001)
+                .Include(e => e.NavRR003CadastroCat_RR001)
+                .Include(e => e.NavRR001Categoria_RR001)
+                .Include(e => e.NavRR002Fazenda_RR001)
                 .Include(e => e.NavRR001Mae)
-                .Include(e => e.NavRR001Ocorrencia)
+                .Include(e => e.NavRR006Ocorrencia_RR001)
                 .Include(e => e.NavRR001Pai)
-                .Include(e => e.NavRR001Proprietario)
-                .Include(e => e.NavRR001Raca)
-                .Include(e => e.NavRR001Sexo)
-                .Include(e => e.NavRR001Situacao);
+                .Include(e => e.NavRR007Proprietario_RR001)
+                .Include(e => e.NavRR004Raca_RR001)
+                .Include(e => e.NavRR001Sexo_RR001)
+                .Include(e => e.NavRR005Situacao_RR001);
         }
 
         protected override ICSFilter<OsusrTo3CsicpRr001>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)

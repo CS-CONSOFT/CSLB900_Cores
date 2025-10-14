@@ -360,9 +360,9 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Rr020Regalimentarid).HasColumnName("RR020_REGALIMENTARID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(d => d.Rr020Regalimentar).WithMany(p => p.OsusrTo3CsicpRr020s)
-                    .HasForeignKey(d => d.Rr020Regalimentarid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR020_OSUSR_TO3_CSICP_RR008_RR020_REGALIMENTARID");
+                //entity.HasOne(d => d.Rr020Regalimentar).WithMany(p => p.OsusrTo3CsicpRr020s)
+                   // .HasForeignKey(d => d.Rr020Regalimentarid)
+                    //.HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR020_OSUSR_TO3_CSICP_RR008_RR020_REGALIMENTARID");
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr021>(entity =>
@@ -392,9 +392,9 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
             
-                entity.HasOne(d => d.Rr021Lote).WithMany(p => p.OsusrTo3CsicpRr021s)
-                    .HasForeignKey(d => d.Rr021Loteid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR021_OSUSR_TO3_CSICP_RR020_RR021_LOTEID");
+                //entity.HasOne(d => d.Rr021Lote).WithMany(p => p.OsusrTo3CsicpRr021s)
+                    //.HasForeignKey(d => d.Rr021Loteid)
+                   // .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR021_OSUSR_TO3_CSICP_RR020_RR021_LOTEID");
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr022>(entity =>
@@ -450,9 +450,9 @@ namespace CSCore.Ifs.CS_Context
 
          
 
-                entity.HasOne(d => d.Rr022Lote).WithMany(p => p.OsusrTo3CsicpRr022s)
-                    .HasForeignKey(d => d.Rr022Loteid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR022_OSUSR_TO3_CSICP_RR021_RR022_LOTEID");
+               // entity.HasOne(d => d.Rr022Lote).WithMany(p => p.OsusrTo3CsicpRr022s)
+                   // .HasForeignKey(d => d.Rr022Loteid)
+                   // .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR022_OSUSR_TO3_CSICP_RR021_RR022_LOTEID");
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr030>(entity =>
@@ -531,14 +531,14 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
               
-                entity.HasOne(d => d.Rr031Iatf).WithMany(p => p.OsusrTo3CsicpRr031s)
-                    .HasForeignKey(d => d.Rr031IatfId)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR031_OSUSR_TO3_CSICP_RR030_RR031_IATF_ID");
+                //entity.HasOne(d => d.Rr031Iatf).WithMany(p => p.OsusrTo3CsicpRr031s)
+                 //   .HasForeignKey(d => d.Rr031IatfId)
+                //    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR031_OSUSR_TO3_CSICP_RR030_RR031_IATF_ID");
 
             
-                entity.HasOne(d => d.Rr031Semen).WithMany(p => p.OsusrTo3CsicpRr031s)
-                    .HasForeignKey(d => d.Rr031Semenid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR031_OSUSR_TO3_CSICP_RR035_RR031_SEMENID");
+              //  entity.HasOne(d => d.Rr031Semen).WithMany(p => p.OsusrTo3CsicpRr031s)
+                 //   .HasForeignKey(d => d.Rr031Semenid)
+                   // .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR031_OSUSR_TO3_CSICP_RR035_RR031_SEMENID");
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr035>(entity =>
@@ -587,9 +587,9 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RR035_VOLUME");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(d => d.Rr035Raca).WithMany(p => p.OsusrTo3CsicpRr035s)
-                    .HasForeignKey(d => d.Rr035Racaid)
-                    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR035_OSUSR_TO3_CSICP_RR004_RR035_RACAID");
+                //entity.HasOne(d => d.Rr035Raca).WithMany(p => p.OsusrTo3CsicpRr035s)
+                    //.HasForeignKey(d => d.Rr035Racaid)
+                    //.HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR035_OSUSR_TO3_CSICP_RR004_RR035_RACAID");
             });
             modelBuilder.HasSequence("Seq_PK_ID");
 

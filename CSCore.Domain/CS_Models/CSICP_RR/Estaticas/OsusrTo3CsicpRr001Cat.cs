@@ -13,5 +13,5 @@ public partial class OsusrTo3CsicpRr001Cat
 
     public bool? IsActive { get; set; }
 
-    public virtual ICollection<OsusrTo3CsicpRr001> OsusrTo3CsicpRr001s { get; set; } = new List<OsusrTo3CsicpRr001>();
+    //public virtual ICollection<OsusrTo3CsicpRr001> OsusrTo3CsicpRr001s { get; set; } = new List<OsusrTo3CsicpRr001>();
 }

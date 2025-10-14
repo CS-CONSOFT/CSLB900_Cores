@@ -1,11 +1,4 @@
-﻿using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR002;
-using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR003;
-using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR004;
-using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR005;
-using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR006;
-using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR007;
-using CSCore.Domain.CS_Models.CSICP_RR;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR001
 {
-    public class DtoGetRR001
+    public class DtoGetRR001Padrao
     {
-
         public int TenantId { get; set; }
 
         public string Id { get; set; } = null!;
@@ -69,18 +61,5 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR001
         public int? Rr001Ultidadediaspeso { get; set; }
 
         public long? Rr001Proprietarioid { get; set; }
-
-        //NavsGetList
-        public OsusrTo3CsicpRr001Ativo? NavRR001Ativo { get; set; }
-        public DtoGetRR003? NavRR001Cat { get; set; }
-        public OsusrTo3CsicpRr001Cat? NavRR001Categoria { get; set; }
-        public DtoGetRR002Padrao? NavRR001Fazenda { get; set; }
-        public DtoGetRR001Padrao? NavRR001Mae { get; set; }
-        public DtoGetRR006? NavRR001Ocorrencia { get; set; }
-        public DtoGetRR001Padrao? NavRR001Pai { get; set; }
-        public DtoGetRR007? NavRR001Proprietario { get; set; }
-        public DtoGetRR004? NavRR001Raca { get; set; }
-        public OsusrTo3CsicpRr001Sexo? NavRR001Sexo { get; set; }
-        public DtoGetRR005? NavRR001Situacao { get; set; }
     }
 }
