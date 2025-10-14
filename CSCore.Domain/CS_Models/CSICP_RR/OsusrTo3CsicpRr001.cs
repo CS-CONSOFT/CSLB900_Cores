@@ -1,8 +1,4 @@
-﻿using CSCore.Domain;
-using System;
-using System.Collections.Generic;
-
-namespace CSCore.Domain.CS_Models.CSICP_RR;
+﻿namespace CSCore.Domain.CS_Models.CSICP_RR;
 
 public partial class OsusrTo3CsicpRr001
 {
