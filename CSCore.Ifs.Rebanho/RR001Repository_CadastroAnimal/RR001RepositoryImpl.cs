@@ -26,11 +26,9 @@ namespace CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal
                 .FirstOrDefaultAsync(e => e.TenantId == In_TenantID && e.Id == In_IDRR001);
         }
 
-        public async Task<(List<OsusrTo3CsicpRr001>, int)> GetListAsync(int In_TenantID, PrmFiltrosRR001 In_prm)
+        public async Task<(List<OsusrTo3CsicpRr001>, int)> GetListAsync(int In_TenantID, PrmFiltrosRR001 prm)
         {
-            var query = _appDbContext.OsusrTo3CsicpRr001s.AsQueryable();
-
-            query = query.Where(e => e.TenantId == In_TenantID);
+            IQueryable<OsusrTo3CsicpRr001> query = GetQueryBase(In_TenantID);
 
             var totalCount = await query.CountAsync();
             var items = await query.ToListAsync();
@@ -43,7 +41,9 @@ namespace CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal
             return _appDbContext.OsusrTo3CsicpRr001s
                 .AsNoTracking()
                 .Where(e => e.TenantId == In_TenantID)
-                .Include(e => e.NavigationProperty);
+                .Include(e => e.NavRR001Ativo)
+                .Include(e => e.NavRR001Cat)
+                .Include(e => e.NavRR001Categoria);
         }
     }
 }
