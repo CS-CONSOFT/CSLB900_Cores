@@ -5,7 +5,7 @@ using FF105Financeiro.C82Application.Dto.GG00X.GG016;
 using FF105Financeiro.C82Application.Dto.GG00X.GG016.GG016e;
 using FF105Financeiro.C82Application.Dto.GG00X.GG016.GG016f;
 
-namespace FF105Financeiro.C82Application.Mapper
+namespace CSCore.Application.Dto.Mapper.GG00X
 {
     public static class GG016Mapper
     {

@@ -1,9 +1,10 @@
 ﻿using CSCore.Application.Dto.Mapper.DD;
+using CSCore.Application.Dto.Mapper.GG00X;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using EnviaNFeHercules.C82Application.Dto.DD.DD060;
 using EnviaNFeHercules.C82Application.Mapper.DD00X.DD060;
-using FF105Financeiro.C82Application.Mapper;
-using FF105Financeiro.C82Application.Mapper.GG008;
+using CSCore.Application.Dto.Mapper.GG00X;
+using CSCore.Application.Dto.Mapper.GG00X;
 
 namespace EnviaNFeHercules.C82Application.Mapper.DD00X
 {

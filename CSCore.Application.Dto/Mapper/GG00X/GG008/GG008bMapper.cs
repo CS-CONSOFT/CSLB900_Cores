@@ -1,9 +1,8 @@
 ﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008b;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using FF105Financeiro.C82Application.Mapper;
 
-namespace CSCore.Application.Dto.Mapper.GG00X.GG008
-{
+namespace CSCore.Application.Dto.Mapper.GG00X;
+
     public static class GG008bMapper
     {
         public static DtoGetGG008b ToDtoGet(this CSICP_GG008b entity)
@@ -24,4 +23,4 @@ namespace CSCore.Application.Dto.Mapper.GG00X.GG008
                 NavGg006Marca = entity.NavGg006Marca?.ToDtoGetSimples(),
             };
         }
-    }}
+    }

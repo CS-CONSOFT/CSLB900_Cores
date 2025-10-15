@@ -1,8 +1,8 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
 using FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008p;
 
-namespace FF105Financeiro.C82Application.Mapper.GG008
-{
+namespace CSCore.Application.Dto.Mapper.GG00X;
+
     public static class GG008pMapper
     {
         public static DtoGetGG008p ToDtoGet(this CSICP_GG008p entity)
@@ -34,4 +34,4 @@ namespace FF105Financeiro.C82Application.Mapper.GG008
             };
         }
     }
-}
+

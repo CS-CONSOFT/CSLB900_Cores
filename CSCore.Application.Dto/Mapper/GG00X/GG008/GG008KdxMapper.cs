@@ -7,8 +7,8 @@ using CSCore.Application.Dto.Mapper.GG00X;
 using CSCore.Domain.CS_Models.Staticas.GG;
 using FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008Kdx;
 
-namespace FF105Financeiro.C82Application.Mapper.GG008
-{
+namespace CSCore.Application.Dto.Mapper.GG00X;
+
     public static class GG008KdxMapper
     {
         public static DtoGetGG008Kdx ToDtoGet(this CSICP_GG008Kdx entity)
@@ -440,4 +440,4 @@ namespace FF105Financeiro.C82Application.Mapper.GG008
             };
         }
     }
-}
+
