@@ -21,11 +21,11 @@ public partial class OsusrTo3CsicpRr031
 
     public string? Rr031Semenid { get; set; }
 
-    public virtual OsusrTo3CsicpRr001? Rr031Animal { get; set; }
+    public OsusrTo3CsicpRr001? NavRR001Animal_RR031 { get; set; }
 
-    public virtual OsusrTo3CsicpRr030? Rr031Iatf { get; set; }
+    public OsusrTo3CsicpRr030? NavRR030Iatf_RR031 { get; set; }
 
-    public virtual OsusrTo3CsicpRr001? Rr031Montaanimal { get; set; }
+    public OsusrTo3CsicpRr001? NavRR001MontaAnimal_RR031 { get; set; }
 
-    public virtual OsusrTo3CsicpRr035? Rr031Semen { get; set; }
+    public OsusrTo3CsicpRr035? NavRR035Semen_RR031 { get; set; }
 }
