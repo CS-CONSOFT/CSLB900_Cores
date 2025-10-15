@@ -60,18 +60,18 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF140
         public async Task<(List<CSICP_FF140>, int)> GetListAsync(int InTenantID, PrmFiltrosFF140Repo prm)
         {
             IQueryable<CSICP_FF140> query = GetQueryBase(InTenantID).AsNoTracking().AsSplitQuery()
-            .Include(e => e.NavBB001EstabID)
-            .Include(e => e.NavBB005CCustoID)
-            .Include(e => e.NavBB006AgCobradorID)
-            .Include(e => e.NavBB008CondicaoID)
-            .Include(e => e.NavBB009TpCobrancaID)
-            .Include(e => e.NavBB012ContaID)
-            .Include(e => e.NavBB026FPagto)
-            .Include(e => e.NavFF003EspecieID)
-            .Include(e => e.NavSY001UsuarioPropID)
-            .Include(e => e.NavFF140Status)
-            .Include(e => e.NavFF140Exe)
-            .Include(e => e.NavFF140Vinculo);
+                .Include(e => e.NavBB001EstabID)
+                .Include(e => e.NavBB005CCustoID)
+                .Include(e => e.NavBB006AgCobradorID)
+                .Include(e => e.NavBB008CondicaoID)
+                .Include(e => e.NavBB009TpCobrancaID)
+                .Include(e => e.NavBB012ContaID)
+                .Include(e => e.NavBB026FPagto)
+                .Include(e => e.NavFF003EspecieID)
+                .Include(e => e.NavSY001UsuarioPropID)
+                .Include(e => e.NavFF140Status)
+                .Include(e => e.NavFF140Exe)
+                .Include(e => e.NavFF140Vinculo);
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(InTenantID, prm));
