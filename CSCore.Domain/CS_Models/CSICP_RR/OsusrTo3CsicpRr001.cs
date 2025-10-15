@@ -84,28 +84,16 @@ public partial class OsusrTo3CsicpRr001
     //public virtual ICollection<OsusrTo3CsicpRr031> OsusrTo3CsicpRr031Rr031Animals { get; set; } = new List<OsusrTo3CsicpRr031>();
 
     //public virtual ICollection<OsusrTo3CsicpRr031> OsusrTo3CsicpRr031Rr031Montaanimals { get; set; } = new List<OsusrTo3CsicpRr031>();
-
-    public OsusrTo3CsicpRr001Ativo? NavRR001Ativo_RR001 { get; set; }
-
-    public OsusrTo3CsicpRr003? NavRR003CadastroCat_RR001 { get; set; }
-
-    public OsusrTo3CsicpRr001Cat? NavRR001Categoria_RR001 { get; set; }
-
-    public OsusrTo3CsicpRr002? NavRR002Fazenda_RR001 { get; set; }
-
-    public OsusrTo3CsicpRr001? NavRR001Mae { get; set; }
-
-    public OsusrTo3CsicpRr006? NavRR006Ocorrencia_RR001 { get; set; }
-
     public OsusrTo3CsicpRr001? NavRR001Pai { get; set; }
-
-    public OsusrTo3CsicpRr007? NavRR007Proprietario_RR001 { get; set; }
-
+    public OsusrTo3CsicpRr001? NavRR001Mae { get; set; }
+    public OsusrTo3CsicpRr002? NavRR002Fazenda_RR001 { get; set; }
+    public OsusrTo3CsicpRr003? NavRR003CadastroCat_RR001 { get; set; }
     public OsusrTo3CsicpRr004? NavRR004Raca_RR001 { get; set; }
-
-    public OsusrTo3CsicpRr001Sexo? NavRR001Sexo_RR001 { get; set; }
-
     public OsusrTo3CsicpRr005? NavRR005Situacao_RR001 { get; set; }
-
+    public OsusrTo3CsicpRr006? NavRR006Ocorrencia_RR001 { get; set; }
+    public OsusrTo3CsicpRr007? NavRR007Proprietario_RR001 { get; set; }
+    public OsusrTo3CsicpRr001Ativo? NavRR001Ativo_RR001 { get; set; }
+    public OsusrTo3CsicpRr001Cat? NavRR001Categoria_RR001 { get; set; }
+    public OsusrTo3CsicpRr001Sexo? NavRR001Sexo_RR001 { get; set; }
     public Csicp_Sy001? NavSy001_RR001 { get; set; }
 }
