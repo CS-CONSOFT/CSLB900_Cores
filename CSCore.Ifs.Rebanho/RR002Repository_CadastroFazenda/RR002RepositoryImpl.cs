@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CSCore.Domain.CS_Models.CSICP_RR;
+﻿using CSCore.Domain.CS_Models.CSICP_RR;
 using CSCore.Domain.Interfaces.RR._00X.IRR002;
 using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
@@ -53,7 +48,10 @@ namespace CSCore.Ifs.Rebanho.RR002Repository_CadastroFazenda
             return _appDbContext.OsusrTo3CsicpRr002s
                 .AsNoTracking()
                 .AsSplitQuery()
-                .Where(e => e.TenantId == In_TenantID);
+                .Where(e => e.TenantId == In_TenantID)
+                .Include(e => e.NavAA028Cidade)
+                .Include(e => e.NavAA027UF)
+                .Include(e => e.NavAA025Pais);
         }
 
         protected override ICSFilter<OsusrTo3CsicpRr002>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)

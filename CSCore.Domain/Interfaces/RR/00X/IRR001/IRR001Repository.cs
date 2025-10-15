@@ -1,6 +1,4 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_RR;
-using CSCore.Domain.DELETAR;
-using CSCore.Domain.Interfaces.RR._00X.IRR001;
 using CSCore.Domain.Interfaces.V2;
 
 namespace CSCore.Domain.Interfaces.RR._00X
