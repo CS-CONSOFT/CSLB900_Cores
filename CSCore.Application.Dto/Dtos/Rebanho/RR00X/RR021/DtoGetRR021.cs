@@ -16,7 +16,7 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR021
         public DateTime? Rr021Dtregistro { get; set; }
 
         // Navegações
-        public DtoGetRR001? NavRR001Animal { get; set; } //trocar para o DtoGet Completo com as navegações
+        public DtoGetRR001? NavRR001Animal { get; set; }
         //public DtoGetRR020Padrao? NavRR020RegLote { get; set; }
     }
 }
