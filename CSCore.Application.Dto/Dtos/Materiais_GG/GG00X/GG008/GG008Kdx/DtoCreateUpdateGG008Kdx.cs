@@ -1,6 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.GG;
-using CSCore.Ifs.InterfaceBase;
 using CSLB900.MSTools.Extensao;
+using CSLB900.MSTools.InterfaceBase;
 using FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008p;
 
 namespace FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008Kdx

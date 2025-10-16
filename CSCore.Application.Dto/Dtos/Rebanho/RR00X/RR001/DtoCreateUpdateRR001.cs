@@ -1,5 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_RR;
-using CSCore.Ifs.InterfaceBase;
+using CSLB900.MSTools.InterfaceBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;

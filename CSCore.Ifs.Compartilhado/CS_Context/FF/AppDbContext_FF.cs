@@ -4861,7 +4861,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF141_VUNITARIO");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(e => e.NavFF140).WithMany(e => e.NavListFF141).HasForeignKey(e => e.Ff140RdId);
+                //entity.HasOne(e => e.NavFF140).WithMany(e => e.NavListFF141).HasForeignKey(e => e.Ff140RdId);
 
             });
 

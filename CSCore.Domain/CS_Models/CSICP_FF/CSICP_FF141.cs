@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CSCore.Domain.CS_Models.CSICP_FF;
+﻿namespace CSCore.Domain.CS_Models.CSICP_FF;
 
 public partial class CSICP_FF141
 {
@@ -19,6 +16,6 @@ public partial class CSICP_FF141
 
     public decimal? Ff141Total { get; set; }
 
-    public CSICP_FF140? NavFF140 { get; set; }
+
 
     }

@@ -1,6 +1,4 @@
-﻿using CSCore.Ifs.InterfaceBase;
-
-namespace CSLB900.MSTools.InterfaceBase
+﻿namespace CSLB900.MSTools.InterfaceBase
 {
     public interface IServicoBase<TDtoCreateUpdate, TEntity>
         where TDtoCreateUpdate : class, IConverteParaEntidade<TEntity>

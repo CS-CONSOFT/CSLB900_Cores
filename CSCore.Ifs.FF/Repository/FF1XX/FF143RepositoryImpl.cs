@@ -14,9 +14,9 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
     public interface IFF143Repository : IRepositorioBase<CSICP_FF143>
     {
     }
-    public class IFF143RepositoryImpl : RepositorioBaseImpl<CSICP_FF143>, IFF143Repository
+    public class FF143RepositoryImpl : RepositorioBaseImpl<CSICP_FF143>, IFF143Repository
     {
-        public IFF143RepositoryImpl(AppDbContext context) : base(context)
+        public FF143RepositoryImpl(AppDbContext context) : base(context)
         {
         }
     }

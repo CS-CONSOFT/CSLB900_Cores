@@ -1,5 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
-using CSCore.Ifs.InterfaceBase;
+using CSLB900.MSTools.InterfaceBase;
 using System.Text.Json.Serialization;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008e

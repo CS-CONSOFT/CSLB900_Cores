@@ -1,5 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_DD;
-using CSCore.Ifs.InterfaceBase;
+using CSLB900.MSTools.InterfaceBase;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
