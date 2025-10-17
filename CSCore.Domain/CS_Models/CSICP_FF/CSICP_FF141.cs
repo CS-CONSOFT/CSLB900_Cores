@@ -1,4 +1,6 @@
-﻿namespace CSCore.Domain.CS_Models.CSICP_FF;
+﻿using System.Text.Json.Serialization;
+
+namespace CSCore.Domain.CS_Models.CSICP_FF;
 
 public partial class CSICP_FF141
 {
@@ -16,6 +18,7 @@ public partial class CSICP_FF141
 
     public decimal? Ff141Total { get; set; }
 
+    [JsonIgnore]
+    public CSICP_FF140 NavFF140 { get; set; }
 
-
-    }
+}
