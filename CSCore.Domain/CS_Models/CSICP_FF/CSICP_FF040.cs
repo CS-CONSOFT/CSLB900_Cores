@@ -73,6 +73,9 @@ public partial class    CSICP_FF040
     public long? Ff040CtlIdlancto { get; set; }
 
     public string? Ff040CtlMsg { get; set; }
+
+    public CSICP_BB001? NavBB001Estabelecimento { get; set; }
+
     public CSICP_Bb005? NavBB005CCustoID { get; set; }
 
     public CSICP_BB012? NavBB012ContaID { get; set; }

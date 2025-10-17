@@ -1891,6 +1891,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("FF040_VTRANSACAO");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
+                entity.HasOne(e => e.NavBB001Estabelecimento).WithMany().HasForeignKey(e => e.Ff040Empresaid);
                 entity.HasOne(e => e.NavBB005CCustoID).WithMany().HasForeignKey(e => e.Ff040CcustoId);
                 entity.HasOne(e => e.NavBB012ContaID).WithMany().HasForeignKey(e => e.Ff040ContaId);
                 entity.HasOne(e => e.NavBB006AgCobradorID).WithMany().HasForeignKey(e => e.Ff040AgcobradorId);

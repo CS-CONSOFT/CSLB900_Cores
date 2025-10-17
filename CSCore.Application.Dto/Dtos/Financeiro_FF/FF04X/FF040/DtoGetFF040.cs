@@ -1,4 +1,5 @@
-﻿using CSBS101._82Application.Dto.BB00X.BB005;
+﻿using CSBS101._82Application.Dto.BB00X.BB001;
+using CSBS101._82Application.Dto.BB00X.BB005;
 using CSBS101._82Application.Dto.BB00X.BB006;
 using CSBS101._82Application.Dto.BB00X.BB009;
 using CSBS101._82Application.Dto.BB00X.BB012.Get;
@@ -83,6 +84,8 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF04X.FF040
         public long? Ff040CtlIdlancto { get; set; }
 
         public string? Ff040CtlMsg { get; set; }
+
+        public Dto_GetBB001_Exibicao? NavBB001Estabelecimento { get; set; }
         public Dto_GetBB005_Exibicao? NavBB005CCustoID { get; set; }
         public Dto_GetBB012_ExibSimples? NavBB012ContaID { get; set; }
         public Dto_GetBB006_Exibicao? NavBB006AgCobradorID { get; set; }
