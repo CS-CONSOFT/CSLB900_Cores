@@ -1,5 +1,6 @@
 ﻿using CSBS101._82Application.Mapper.BB00X;
 using CSBS101._82Application.Mapper.BB00X.BB009;
+using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSBS101._82Application.Mapper.BB00X.BB012;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF04X.FF040;
 using CSCore.Application.Dto.Mapper.FF.FF00X;
@@ -48,6 +49,7 @@ namespace CSCore.Application.Dto.Mapper.FF.FF04X.FF040
                 Ff040CtlEstdtreg = entity.Ff040CtlEstdtreg,
                 Ff040CtlIdlancto = entity.Ff040CtlIdlancto,
                 Ff040CtlMsg = entity.Ff040CtlMsg,
+                NavBB001Estabelecimento = entity.NavBB001Estabelecimento?.ToDtoGetExibicao(),
                 NavBB005CCustoID = entity.NavBB005CCustoID?.ToDtoGetBB005_Exibicao(),
                 NavBB006AgCobradorID = entity.NavBB006AgCobradorID?.ToDtoGetExibicao(),
                 NavBB007ResponsavelID = entity.NavBB007ResponsavelID?.ToDtoGetSimples(),
