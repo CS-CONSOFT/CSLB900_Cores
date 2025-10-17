@@ -7,22 +7,21 @@
         int BB008_Tipo_ID,
         decimal? Prm_Total_Fatura,
         decimal? Prm_Valor_Entrada,
-        DateOnly Prm_1o_Vencto,
-        CS_Get_Qtd_ParcelasParameters PrmCS_Get_Qtd_ParcelasParameters
+        DateOnly Prm_1o_Vencto
         );
 
     public record Rec_Memoria(int Parcela, DateOnly Data_Vencto, decimal Valor_Parcela, int Nro_Parcelas);
 
     public static class MemoriaCalculoGenerator
     {
-        public static List<Rec_Memoria> GerarMemoriaCalculo(MemoriaCalculoItem prm)
+        public static List<Rec_Memoria> GerarMemoriaCalculo(MemoriaCalculoItem prm, CS_Get_Qtd_ParcelasParameters prm2)
         {
             var numeroParcelas = prm.InNumeroParcelas;
 
             if (numeroParcelas == null || numeroParcelas == 0)
             {
                 CS_Get_Qtd_ParcelasResult resultadoCS_Get_Qtd_Parcelas
-                    = CS_Get_Qtd_Parcelas.Executar(prm.CondicaoPagamento, prm.BB008_Tipo_ID, prm.PrmCS_Get_Qtd_ParcelasParameters);
+                    = CS_Get_Qtd_Parcelas.Executar(prm.CondicaoPagamento, prm.BB008_Tipo_ID, prm2);
                 numeroParcelas = resultadoCS_Get_Qtd_Parcelas.Qtd_Parcelas;
 
             }
@@ -37,14 +36,14 @@
             List<Rec_Memoria> listaMemoriaCalculo = new List<Rec_Memoria>();
 
             var condicaoPagtoDividida = prm.CondicaoPagamento.Split(';');
-            if (EhTipoDiasPagamento(prm))
+            if (EhTipoDiasPagamento(prm, prm2))
                 GerarMemoriaCalculoPorDias(numeroParcelas, V_Valor_Parcela, V_Valor_Resto_Parcela, listaMemoriaCalculo, prm.Prm_1o_Vencto,condicaoPagtoDividida);
 
-            if (EhTipoPagamentoAVista(prm))
+            if (EhTipoPagamentoAVista(prm, prm2))
                 GerarMemoriaCalculoAVista(numeroParcelas, V_Valor_Financiado, prm.Prm_1o_Vencto, listaMemoriaCalculo);
 
-            if (EhTipoPagamentoPorPeriodo(prm))
-                GerarMemoriaCalculoPorPeriodo(prm, numeroParcelas, V_Valor_Financiado, V_Valor_Resto_Parcela, listaMemoriaCalculo, condicaoPagtoDividida);
+            if (EhTipoPagamentoPorPeriodo(prm, prm2))
+                GerarMemoriaCalculoPorPeriodo(prm,prm2, numeroParcelas, V_Valor_Financiado, V_Valor_Resto_Parcela, listaMemoriaCalculo, condicaoPagtoDividida);
             
 
             return listaMemoriaCalculo;
@@ -52,7 +51,8 @@
         }
 
         private static void GerarMemoriaCalculoPorPeriodo(
-            MemoriaCalculoItem prm, 
+            MemoriaCalculoItem prm,
+            CS_Get_Qtd_ParcelasParameters prm2,
             int? numeroParcelas, decimal V_ValorFinanciado, decimal V_Valor_Resto_Parcela, List<Rec_Memoria> listaMemoriaCalculo, string[] condicaoPagtoDividida)
         {
             var entrada = int.Parse(condicaoPagtoDividida[1]);
@@ -73,7 +73,7 @@
                 }
                 else
                 {
-                    V_Data_Vencto_Aux = prm.BB008_Tipo_ID == prm.PrmCS_Get_Qtd_ParcelasParameters.InStID_BB008_ParcelaDias ?
+                    V_Data_Vencto_Aux = prm.BB008_Tipo_ID == prm2.InStID_BB008_ParcelaDias ?
                         V_Data_Vencto_Aux.AddDays(intervalo) :
                         V_Data_Vencto_Aux.AddMonths(intervalo);
 
@@ -92,9 +92,9 @@
             }
         }
 
-        private static bool EhTipoPagamentoPorPeriodo(MemoriaCalculoItem prm)
+        private static bool EhTipoPagamentoPorPeriodo(MemoriaCalculoItem prm, CS_Get_Qtd_ParcelasParameters prm2)
         {
-            return prm.BB008_Tipo_ID == prm.PrmCS_Get_Qtd_ParcelasParameters.InStID_BB008_ParcelaDias || prm.BB008_Tipo_ID == prm.PrmCS_Get_Qtd_ParcelasParameters.InStID_BB008_ParcelaMes;
+            return prm.BB008_Tipo_ID == prm2.InStID_BB008_ParcelaDias || prm.BB008_Tipo_ID == prm2.InStID_BB008_ParcelaMes;
         }
 
         private static void GerarMemoriaCalculoAVista(
@@ -112,9 +112,9 @@
             listaMemoriaCalculo.Add(recMemoria);
         }
 
-        private static bool EhTipoPagamentoAVista(MemoriaCalculoItem prm)
+        private static bool EhTipoPagamentoAVista(MemoriaCalculoItem prm, CS_Get_Qtd_ParcelasParameters prm2)
         {
-            return prm.BB008_Tipo_ID == prm.PrmCS_Get_Qtd_ParcelasParameters.InStID_BB008_AVista;
+            return prm.BB008_Tipo_ID == prm2.InStID_BB008_AVista;
         }
 
 
@@ -141,9 +141,9 @@
             }
         }
 
-        private static bool EhTipoDiasPagamento(MemoriaCalculoItem prm)
+        private static bool EhTipoDiasPagamento(MemoriaCalculoItem prm, CS_Get_Qtd_ParcelasParameters prm2)
         {
-            return prm.BB008_Tipo_ID == prm.PrmCS_Get_Qtd_ParcelasParameters.InStID_BB008_TP_DIAS;
+            return prm.BB008_Tipo_ID == prm2.InStID_BB008_TP_DIAS;
         }
     }
 }
