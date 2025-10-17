@@ -5,12 +5,8 @@ using CSCore.Application.Dto.Mapper.Rebanho.RR004;
 using CSCore.Application.Dto.Mapper.Rebanho.RR005;
 using CSCore.Application.Dto.Mapper.Rebanho.RR006;
 using CSCore.Application.Dto.Mapper.Rebanho.RR007;
+using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_RR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSCore.Application.Dto.Mapper.Rebanho.RR001
 {
@@ -48,17 +44,19 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR001
                 Rr001Ultpeso = entity.Rr001Ultpeso,
                 Rr001Ultidadediaspeso = entity.Rr001Ultidadediaspeso,
                 Rr001Proprietarioid = entity.Rr001Proprietarioid,
-                NavRR001Ativo = entity.NavRR001Ativo_RR001,
-                NavRR001Cat = entity.NavRR003CadastroCat_RR001?.ToDtoGetRR003(),
-                NavRR001Categoria = entity.NavRR001Categoria_RR001,
-                NavRR001Fazenda = entity.NavRR002Fazenda_RR001?.ToDtoGetRR002Padrao(),
-                NavRR001Mae = entity.NavRR001Mae?.ToDtoGetRR001Padrao(),
-                NavRR001Ocorrencia = entity.NavRR006Ocorrencia_RR001?.ToDtoGetRR006(),
+
                 NavRR001Pai = entity.NavRR001Pai?.ToDtoGetRR001Padrao(),
-                NavRR001Proprietario = entity.NavRR007Proprietario_RR001?.ToDtoGetRR007(),
+                NavRR001Mae = entity.NavRR001Mae?.ToDtoGetRR001Padrao(),
+                NavRR001Fazenda = entity.NavRR002Fazenda_RR001?.ToDtoGetRR002Padrao(),
+                NavRR001Cat = entity.NavRR003CadastroCat_RR001?.ToDtoGetRR003(),
                 NavRR001Raca = entity.NavRR004Raca_RR001?.ToDtoGetRR004(),
-                NavRR001Sexo = entity.NavRR001Sexo_RR001,
                 NavRR001Situacao = entity.NavRR005Situacao_RR001?.ToDtoGetRR005(),
+                NavRR001Ocorrencia = entity.NavRR006Ocorrencia_RR001?.ToDtoGetRR006(),
+                NavRR001Proprietario = entity.NavRR007Proprietario_RR001?.ToDtoGetRR007(),
+                NavRR001Ativo = entity.NavRR001Ativo_RR001,
+                NavRR001Categoria = entity.NavRR001Categoria_RR001,
+                NavRR001Sexo = entity.NavRR001Sexo_RR001,
+                NavSy001 = entity.NavSy001_RR001?.ToDtoGetSimples()
             };
         }
 

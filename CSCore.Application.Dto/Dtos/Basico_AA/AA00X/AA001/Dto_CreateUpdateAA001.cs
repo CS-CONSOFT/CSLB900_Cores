@@ -1,6 +1,6 @@
 ﻿using CSCore.Domain;
-using CSCore.Ifs.InterfaceBase;
 using CSLB900.MSTools.Extensao;
+using CSLB900.MSTools.InterfaceBase;
 using System.ComponentModel.DataAnnotations;
 
 namespace CSBS101._82Application.Dto.AA00X.AA001

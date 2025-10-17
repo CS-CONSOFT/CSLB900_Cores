@@ -1,6 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_RR;
 using CSCore.Domain.Interfaces.RR._00X;
-using CSCore.Domain.Interfaces.RR._00X.IRR001;
 using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal.Filtros;
@@ -49,17 +48,18 @@ namespace CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal
                 .AsNoTracking()
                 .AsSplitQuery()
                 .Where(e => e.TenantId == In_TenantID)
-                .Include(e => e.NavRR001Ativo_RR001)
-                .Include(e => e.NavRR003CadastroCat_RR001)
-                .Include(e => e.NavRR001Categoria_RR001)
-                .Include(e => e.NavRR002Fazenda_RR001)
-                .Include(e => e.NavRR001Mae)
-                .Include(e => e.NavRR006Ocorrencia_RR001)
                 .Include(e => e.NavRR001Pai)
-                .Include(e => e.NavRR007Proprietario_RR001)
+                .Include(e => e.NavRR001Mae)
+                .Include(e => e.NavRR002Fazenda_RR001)
+                .Include(e => e.NavRR003CadastroCat_RR001)
                 .Include(e => e.NavRR004Raca_RR001)
+                .Include(e => e.NavRR005Situacao_RR001)
+                .Include(e => e.NavRR006Ocorrencia_RR001)
+                .Include(e => e.NavRR007Proprietario_RR001)
+                .Include(e => e.NavRR001Ativo_RR001)
+                .Include(e => e.NavRR001Categoria_RR001)
                 .Include(e => e.NavRR001Sexo_RR001)
-                .Include(e => e.NavRR005Situacao_RR001);
+                .Include(e => e.NavSy001_RR001);
         }
 
         protected override ICSFilter<OsusrTo3CsicpRr001>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)
@@ -71,6 +71,10 @@ namespace CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal
             return [
                 new FiltroNomeAnimalRR001(filtros.In_Nomeanimal),
                 new FiltroNumeroRGNRR001(filtros.In_NumeroRGN),
+                new FiltroSerieRR001(filtros.In_Serie),
+                new FiltroRacaIDRR001(filtros.In_RacaID),
+                new FiltroSexoIDRR001(filtros.In_SexoID),
+                new FiltroSituacaoIDRR001(filtros.In_SituacaoID),
                 new FiltroApelidoRR001(filtros.In_Apelido),
                 new FiltroAtivoIDRR001(filtros.In_AtivoID),
                 new FiltroDataNascimentoRR001(filtros.In_DataNascimento),

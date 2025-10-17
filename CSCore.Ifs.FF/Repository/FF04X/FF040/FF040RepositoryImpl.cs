@@ -32,6 +32,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
         {
             IQueryable<CSICP_FF040> query = _appDbContext.OsusrE9aCsicpFf040s
                 .AsNoTracking()
+                .Include(e => e.NavBB001Estabelecimento)
                 .Include(e => e.NavBB005CCustoID)
                 .Include(e => e.NavBB012ContaID)
                 .Include(e => e.NavBB006AgCobradorID)
