@@ -31,6 +31,17 @@ namespace CSCore.Ifs.Repository.BB
             IQueryable<CSICP_Bb008> q1 = CreateBaseQuery(tenant).AsQueryable();
 
             q1 = FiltraQuandoExisteFiltros(search, searchCode, isActive, q1);
+
+            return await q1.ToListAsync();
+        }
+
+
+        public async Task<IEnumerable<CSICP_Bb008>> GetListAsync(int tenant, string? search, int? searchCode, bool? isActive, string? FormaPagamentoID)
+        {
+            IQueryable<CSICP_Bb008> q1 = CreateBaseQuery2(tenant).AsQueryable();
+            
+            q1 = FiltraQuandoExisteFiltros(search, searchCode, isActive, q1);
+
             return await q1.ToListAsync();
         }
 
@@ -101,6 +112,27 @@ namespace CSCore.Ifs.Repository.BB
             .Where(e => e.TenantId == tenant)
             .OrderBy(e => e.Bb008CondicaoPagto);
         }
+
+        private IQueryable<CSICP_Bb008> CreateBaseQuery2(int tenant)
+        {
+            var query = from bb026 in _appDbContext.OsusrE9aCsicpBb026s
+                        join bb008 in _appDbContext.OsusrE9aCsicpBb008s
+                        on bb026.Bb026Condpagtofixoid equals bb008.Id
+                        where bb008.TenantId == tenant
+                        select bb008;
+
+            return query
+                .AsSplitQuery()
+                .Include(e => e.NavBB008_Aprova_Venda)
+                .Include(e => e.NavBB008_EntLiquidada)
+                .Include(e => e.NavBB008_ParcLiquidadas)
+                .Include(e => e.CSICP_BB001)
+                .Include(e => e.CSICP_Bb008Tipo)
+                .AsNoTracking()
+            .Where(e => e.TenantId == tenant)
+            .OrderBy(e => e.Bb008CondicaoPagto);
+        }
+
 
 
         private async Task<CSICP_Bb008?> GetEntityById(string id, int tenant)
