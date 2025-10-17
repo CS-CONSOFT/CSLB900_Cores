@@ -4,6 +4,7 @@
     {
         Task<CSICP_Bb008?> GetByIdAsync(string id, int tenant);
         Task<IEnumerable<CSICP_Bb008>> GetListAsync(int tenant, string? search, int? searchCode, bool? isActive);
+        Task<IEnumerable<CSICP_Bb008>> GetListAsync(int tenant, string? search, int? searchCode, bool? isActive, string? FormaPagamentoID);
         Task<CSICP_Bb008> ChangeActive(CSICP_Bb008 entity);
     }
 }

@@ -62,7 +62,7 @@ namespace CSCore.Ifs.Repository.BB
             return await GetEntityById(id, tenant);
         }
 
-        public async Task<(IEnumerable<CSICP_Bb035>, int)> GetListAsync(int tenant, string? search, bool? isActive, ParametrosBaseFiltro parametrosBaseFiltro)
+        public async Task<(IEnumerable<CSICP_Bb035>, int)> GetListAsync(int tenant, string? search, bool? isActive, FiltrosTextoIsAtivo parametrosBaseFiltro)
         {
             IQueryable<CSICP_Bb035> q1 = CreateBaseQuery(tenant).AsQueryable();
 
