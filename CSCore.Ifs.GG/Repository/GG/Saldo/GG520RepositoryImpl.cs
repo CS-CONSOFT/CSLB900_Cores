@@ -39,9 +39,9 @@ namespace CSCore.Ifs.GG.Repository.GG.Saldo
 
         //produto-por-codigo-barra
         public async Task<(IEnumerable<CSICP_GG520>, IEnumerable<CSICP_GG520>)> PesquisProdutoPorCodigo(
-            int in_tenant, string in_almoxID, string? in_almoxIDSaida, string in_estabID, int n_codBarra)
+            int in_tenant, string in_almoxID, string? in_almoxIDSaida, string in_estabID, int n_codBarra, bool PermiteSaldoZerado = false)
         {
-            IQueryable<CSICP_GG520> query = GetQueryGG520ParaProdutoPorCodigo(in_tenant, in_almoxID, in_estabID, n_codBarra);
+            IQueryable<CSICP_GG520> query = GetQueryGG520ParaProdutoPorCodigo(in_tenant, in_almoxID, in_estabID, n_codBarra, PermiteSaldoZerado);
 
             List<CSICP_GG520> Saldos_Almoxarifado1 = await query.ToListAsync();
             List<CSICP_GG520> Saldos_Almoxarifado2 = [];
@@ -49,7 +49,7 @@ namespace CSCore.Ifs.GG.Repository.GG.Saldo
             if (in_almoxIDSaida != null)
             {
                 IQueryable<CSICP_GG520> query_lista_Saida
-                    = GetQueryGG520ParaProdutoPorCodigo(in_tenant, in_almoxIDSaida, in_estabID, n_codBarra);
+                    = GetQueryGG520ParaProdutoPorCodigo(in_tenant, in_almoxIDSaida, in_estabID, n_codBarra, PermiteSaldoZerado);
                 Saldos_Almoxarifado2 = await query_lista_Saida.ToListAsync();
             }
 
@@ -106,7 +106,7 @@ namespace CSCore.Ifs.GG.Repository.GG.Saldo
         }
 
 
-        private IQueryable<CSICP_GG520> GetQueryGG520ParaProdutoPorCodigo(int in_tenant, string in_almox_id, string in_estabID, int n_codBarra)
+        private IQueryable<CSICP_GG520> GetQueryGG520ParaProdutoPorCodigo(int in_tenant, string in_almox_id, string in_estabID, int n_codBarra, bool PermiteSaldoZerado = false)
         {
             return from _gg520 in _appDbContext.OsusrE9aCsicpGg520s
 
@@ -150,7 +150,7 @@ namespace CSCore.Ifs.GG.Repository.GG.Saldo
                    where _gg520.TenantId == in_tenant
                    where _gg520.Gg520Filialid == in_estabID
                    where _gg520.Gg520Almoxid == in_almox_id
-                   where _gg520.Gg520Saldo > 0
+                   where PermiteSaldoZerado || _gg520.Gg520Saldo > 0
                    where _gg019Cod.Gg019CodigoBarras == n_codBarra
 
                    select new CSICP_GG520
