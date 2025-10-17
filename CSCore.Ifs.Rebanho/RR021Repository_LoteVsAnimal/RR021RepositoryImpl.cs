@@ -18,9 +18,9 @@ namespace CSCore.Ifs.Rebanho.RR021Repository_LoteVsAnimal
             _appDbContext = appDbContext;
         }
 
-        public async Task<(List<OsusrTo3CsicpRr021>, int)> GetListRR021LoteIdAsync(int In_TenantID, string In_LoteID, PrmFiltrosRR021 prm)
+        public async Task<(List<OsusrTo3CsicpRr021>, int)> GetListRR021LoteIdAsync(int In_TenantID, string In_LoteRR020ID, PrmFiltrosRR021 prm)
         {
-            IQueryable<OsusrTo3CsicpRr021> query = GetQueryBase(In_TenantID, In_LoteID);
+            IQueryable<OsusrTo3CsicpRr021> query = GetQueryBase(In_TenantID, In_LoteRR020ID);
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));
