@@ -1,8 +1,10 @@
-﻿using CSCore.Domain.CS_Models.CSICP_DD;
+﻿using CSCore.Application.Dto.Mapper.DD;
+using CSCore.Application.Dto.Mapper.GG00X;
+using CSCore.Domain.CS_Models.CSICP_DD;
 using EnviaNFeHercules.C82Application.Dto.DD.DD060;
 using EnviaNFeHercules.C82Application.Mapper.DD00X.DD060;
-using GG104Materiais.C82Application.Mapper;
-using GG104Materiais.C82Application.Mapper.GG008;
+using CSCore.Application.Dto.Mapper.GG00X;
+using CSCore.Application.Dto.Mapper.GG00X;
 
 namespace EnviaNFeHercules.C82Application.Mapper.DD00X
 {
@@ -148,6 +150,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 Dd060CashbackPvendaliq = entity.Dd060CashbackPvendaliq,
                 Dd060CashbackVpremio = entity.Dd060CashbackVpremio,
                 Dd060Nroprctabela = entity.Dd060Nroprctabela,
+                DD060_RFTRANSACAO_ID = entity.DD060_RFTRANSACAO_ID,
                 NavGG005 = entity.NavGG005?.ToDtoGetSemFilial(),
                 NavGG006 = entity.NavGG006?.ToDtoGet(),
                 NavGG007Unidade = entity.NavGG007Unidade?.ToDtoGetSimples(),
@@ -155,6 +158,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 NavGG008Produto = entity.NavGG008Produto?.ToDtoGetSimples(),
                 NavGG008Kdx = entity.NavGG008Kdx?.ToDtoGetSimples(),
                 NavGG021 = entity.NavGG021?.ToDtoGetSimples(),
+                NavDD061Cfgimp = entity.NavDD061Cfgimp?.ToDtoGetDD061CfgImp(),
                 NavAA031Cstori = entity.NavAA031Cstori,
                 NavAA032Csticm = entity.NavAA032Csticm,
                 NavAA033Cstipi = entity.NavAA033Cstipi,
@@ -162,14 +166,17 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 NavAA038Modst = entity.NavAA038Modst,
                 NavBB027Modal = entity.NavBB027Modal,
                 NavBB027Motivo = entity.NavBB027Motivo,
-                NavDD061Cfgimp = entity.NavDD061Cfgimp,
-                NavGG021Cest = entity.NavGG021Cest,
                 NavSpedInCenqIpi = entity.NavSpedInCenqIpi,
                 NavSpedInCfop = entity.NavSpedInCfop,
-                NavListDD061 = entity.NavListDD061.Select(e => e.ToDtoGetDD061()),
+                NavAA143LeiComp = entity.NavAA143LeiComp,
+                NavAA144ClassTrib = entity.NavAA144ClassTrib,
+                NavAA144ISClassTrib = entity.NavAA144ISClassTrib,
+                NavAA144TribReg = entity.NavAA144TribReg,
+                NavAA150Ccredpre = entity.NavAA150Ccredpre,
+                NavBB027Reforma = entity.NavBB027Reforma,
                 NavDD060Combs = entity.NavDD060Combs?.ToDtoGetDD060Comb(),
                 NavListDD060CombsLa01 = entity.NavListDD060CombsLa01.Select(e => e.ToDtoGetDD060CombLa01()),
-                DD080_RFTRANSACAO_ID = entity.DD080_RFTRANSACAO_ID
+                NavListDD061 = entity.NavListDD061.Select(e => e.ToDtoGetDD061()),
 
             };
         }

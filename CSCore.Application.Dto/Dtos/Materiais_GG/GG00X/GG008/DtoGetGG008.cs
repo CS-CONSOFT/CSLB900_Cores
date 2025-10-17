@@ -6,22 +6,22 @@ using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Domain.CS_Models.Staticas.NFS;
-using GG104Materiais.C82Application.Dto.GG00X.GG002;
-using GG104Materiais.C82Application.Dto.GG00X.GG003;
-using GG104Materiais.C82Application.Dto.GG00X.GG004;
-using GG104Materiais.C82Application.Dto.GG00X.GG005;
-using GG104Materiais.C82Application.Dto.GG00X.GG006;
-using GG104Materiais.C82Application.Dto.GG00X.GG008.GG008c;
-using GG104Materiais.C82Application.Dto.GG00X.GG008.GG008Kdx;
-using GG104Materiais.C82Application.Dto.GG00X.GG009;
-using GG104Materiais.C82Application.Dto.GG00X.GG010;
-using GG104Materiais.C82Application.Dto.GG00X.GG011;
-using GG104Materiais.C82Application.Dto.GG00X.GG014;
-using GG104Materiais.C82Application.Dto.GG00X.GG021;
-using GG104Materiais.C82Application.Dto.GG00X.GG029;
+using FF105Financeiro.C82Application.Dto.GG00X.GG002;
+using FF105Financeiro.C82Application.Dto.GG00X.GG003;
+using FF105Financeiro.C82Application.Dto.GG00X.GG004;
+using FF105Financeiro.C82Application.Dto.GG00X.GG005;
+using FF105Financeiro.C82Application.Dto.GG00X.GG006;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008c;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008Kdx;
+using FF105Financeiro.C82Application.Dto.GG00X.GG009;
+using FF105Financeiro.C82Application.Dto.GG00X.GG010;
+using FF105Financeiro.C82Application.Dto.GG00X.GG011;
+using FF105Financeiro.C82Application.Dto.GG00X.GG014;
+using FF105Financeiro.C82Application.Dto.GG00X.GG021;
+using FF105Financeiro.C82Application.Dto.GG00X.GG029;
 using System.Text.Json.Serialization;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG008
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG008
 {
     public class DtoGetGG008
     {
@@ -198,7 +198,7 @@ namespace GG104Materiais.C82Application.Dto.GG00X.GG008
         public DtoGetGG011Simples? NavQualidadeProdutoGG011 { get; set; }
         public DtoGetGG014Simples? NavLinhaProdutoGG014 { get; set; }
         public DtoGetGG015? NavSubGrupoProdutoGG015 { get; set; }
-        public DtoGetGG021Simples? NavNCMProdutoGG021 { get; set; }
+        public DtoGetGG021Simples_ComGG021Cest? NavNCMProdutoGG021 { get; set; }
         public DtoGetGG008c? NavGG008cCaracteristica { get; set; }
         public DtoGetGG008c? NavGG008cFichaTecnica { get; set; }
 

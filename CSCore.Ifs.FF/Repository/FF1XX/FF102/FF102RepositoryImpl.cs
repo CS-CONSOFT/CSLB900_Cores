@@ -1,11 +1,11 @@
 ﻿using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.CS_Models.Staticas.FF;
+using CSCore.Domain.Interfaces.Calculos.CalculoAtrasoMultaJurosTitulos;
+using CSCore.Domain.Interfaces.Calculos.CalculoAtrasoMultaJurosTitulos.Parametros;
 using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.Processos.CS_Atualiza_Cobrador_Todos;
-using CSCore.Ifs.LB900.Calculos;
-using CSCore.Ifs.LB900.Calculos.Parametros;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using MathNet.Numerics.Providers.LinearAlgebra;

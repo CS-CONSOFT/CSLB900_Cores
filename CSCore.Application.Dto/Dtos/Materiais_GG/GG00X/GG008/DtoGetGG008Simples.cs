@@ -1,9 +1,9 @@
-﻿using GG104Materiais.C82Application.Dto.GG00X.GG003;
-using GG104Materiais.C82Application.Dto.GG00X.GG004;
-using GG104Materiais.C82Application.Dto.GG00X.GG005;
-using GG104Materiais.C82Application.Dto.GG00X.GG006;
+﻿using FF105Financeiro.C82Application.Dto.GG00X.GG003;
+using FF105Financeiro.C82Application.Dto.GG00X.GG004;
+using FF105Financeiro.C82Application.Dto.GG00X.GG005;
+using FF105Financeiro.C82Application.Dto.GG00X.GG006;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG008
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG008
 {
     public class DtoGetGG008Simples
     {

@@ -129,7 +129,7 @@ namespace CSCore.Ifs.CS_Context
 
         public DbSet<OsusrE9aCsicpFf140Exe> OsusrE9aCsicpFf140Exes { get; set; }
 
-        public DbSet<OsusrE9aCsicpFf140Stum> OsusrE9aCsicpFf140Sta { get; set; }
+        public DbSet<CSICP_FF140Sta> OsusrE9aCsicpFf140Sta { get; set; }
 
         public DbSet<OsusrE9aCsicpFf140Vin> OsusrE9aCsicpFf140Vins { get; set; }
 
@@ -1105,7 +1105,7 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Order).HasColumnName("ORDER");
             });
 
-            modelBuilder.Entity<OsusrE9aCsicpFf140Stum>(entity =>
+            modelBuilder.Entity<CSICP_FF140Sta>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_FF140_STA");
 

@@ -175,7 +175,8 @@ namespace CSCore.Ex
                 lowerMessage.Contains("regra") ||
                 lowerMessage.Contains("validação") ||
                 lowerMessage.Contains("publicado") ||
-                lowerMessage.Contains("inventario não foi gerado"))
+                lowerMessage.Contains("inventario não foi gerado") ||
+                lowerMessage.Contains("o movimento já está"))
             {
                 return StatusCodes.Status422UnprocessableEntity;
             }

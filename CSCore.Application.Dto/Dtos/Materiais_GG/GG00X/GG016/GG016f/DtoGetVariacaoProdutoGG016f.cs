@@ -1,4 +1,4 @@
-﻿using GG104Materiais.C82Application.Dto.GG00X.GG016.GG016f;
+﻿using FF105Financeiro.C82Application.Dto.GG00X.GG016.GG016f;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG016.GG016f
 {

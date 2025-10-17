@@ -1,4 +1,5 @@
 ﻿using CSBS101._82Application.ExtensionsMethods.BB00X;
+using CSCore.Application.Dto.Mapper.BB00X.BB012.BB012MDFe;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using EnviaNFeHercules.C82Application.Dto.DD.DD042;
 using System;
@@ -11,7 +12,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
 {
     public static class DD042Mapper
     {
-        public static DtoGetDD042 ToDtoGetDD042(this RepoCSICP_DD042 entity)
+        public static DtoGetDD042 ToDtoGetDD042(this CSICP_DD042 entity)
         {
             return new DtoGetDD042
             {
@@ -53,9 +54,10 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 Dd042RetCompcanc = entity.Dd042RetCompcanc,
                 Dd042Nrotitulo = entity.Dd042Nrotitulo,
                 Dd042Fatoracresc = entity.Dd042Fatoracresc,
-                NavBB026 = entity.NavBB026?.ToDtoGetBB026ComBB026Classe(),
-                NavBb026Classe = entity.NavBb026Classe,
-                NavDD043 = entity.NavDD043.Select(e => e.ToDtoGetDD043()),
+                NavBB012Conta = entity.NavBB012Conta?.ToDtoGetBB012MDFe(),
+                NavBB019 = entity.NavBB019?.ToDtoGet(),
+                NavBB026 = entity.NavBB026?.ToDtoGetBB026ClasseETipo(),
+                NavDD043 = entity.NavDD043.Select(e => e.ToDtoGetDD043()).ToList(), // verificar essa reclamação
             };
         }
     }

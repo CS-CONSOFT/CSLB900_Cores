@@ -14,8 +14,7 @@ using CSCore.Domain.CS_Models.Staticas.FF;
 
 namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102
 {
-    public class 
-        DtoGetFF102
+    public class DtoGetFF102
     {
         public int TenantId { get; set; }
 

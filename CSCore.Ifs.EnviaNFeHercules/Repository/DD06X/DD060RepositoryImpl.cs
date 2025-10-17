@@ -1,12 +1,13 @@
 ﻿using CSCore.Domain;
+using CSCore.Domain.CS_Models.CSICP_AA;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using CSCore.Domain.CS_Models.CSICP_GG;
+using CSCore.Domain.CS_Models.Staticas.AA;
 using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Domain.Interfaces.DD._06X;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using Microsoft.EntityFrameworkCore;
-using static CSCore.Domain.CS_Models.CSICP_DD.CSICP_DD060;
 
 namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
 {
@@ -16,93 +17,132 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
         private readonly AppDbContext _appDbContext = appDbContext;
 
         public async Task<(List<CSICP_DD060>, int)> GetListAsync(
-            int in_tenant,string in_dd040id, int in_page, int in_pageSize)
+            int in_tenant, string in_dd040id, int in_page, int in_pageSize)
         {
             var query = from dd060 in _appDbContext.OsusrTeiCsicpDd060s
 
                         where dd060.TenantId == in_tenant
                         && dd060.Dd040Id == in_dd040id
 
+                        join gg520 in _appDbContext.OsusrE9aCsicpGg520s
+                        on dd060.Dd060Saldoid equals gg520.Id into dd060_gg520_join
+                        from gg520 in dd060_gg520_join.DefaultIfEmpty()
+
                         join gg008Kdx in _appDbContext.OsusrE9aCsicpGg008Kdxes
+                        on gg520.Gg520KardexId equals gg008Kdx.Gg008Kardexid into dd060_gg008Kdx_join
+                        from gg008Kdx in dd060_gg008Kdx_join.DefaultIfEmpty()
+
+                        // AQUI TINHA UM JOIN COMENTADO, VERIFICAR SE VAI SER USADO DEPOIS
+                        /*join gg008Kdx in _appDbContext.OsusrE9aCsicpGg008Kdxes
                         on new { ProdutoId = dd060.Dd060Produtoid }
-                        equals new { ProdutoId = gg008Kdx.Gg008Produtoid } 
-                        into gg008Kdx_dd060_join
-                        from gg008Kdx in gg008Kdx_dd060_join.DefaultIfEmpty()
+                        equals new { ProdutoId = gg008Kdx.Gg008Produtoid } into gg008Kdx_dd060_join 
+                        from gg008Kdx in gg008Kdx_dd060_join.DefaultIfEmpty()*/
 
                         join gg008Produto in _appDbContext.OsusrE9aCsicpGg008s
-                            on dd060.Dd060Produtoid equals gg008Produto.Id into dd060_gg008Produto_join
+                        on dd060.Dd060Produtoid equals gg008Produto.Id into dd060_gg008Produto_join
                         from gg008Produto in dd060_gg008Produto_join.DefaultIfEmpty()
 
                         join gg005 in _appDbContext.OsusrE9aCsicpGg005s
-                            on gg008Produto.Gg008Artigoid equals gg005.Id into gg008Produto_gg005_join
+                        on gg008Produto.Gg008Artigoid equals gg005.Id into gg008Produto_gg005_join
                         from gg005 in gg008Produto_gg005_join.DefaultIfEmpty()
 
                         join gg006 in _appDbContext.OsusrE9aCsicpGg006s
-                            on gg008Produto.Gg008Marcaid equals gg006.Id into gg008Produto_gg006_join
+                        on gg008Produto.Gg008Marcaid equals gg006.Id into gg008Produto_gg006_join
                         from gg006 in gg008Produto_gg006_join.DefaultIfEmpty()
 
+                            //------Leitura da DD061Cfgimp e tabelas relacionadas------------//
                         join dd061_cfgimp in _appDbContext.OsusrTeiCsicpDd061Cfgimps
-                            on dd060.Dd060Id equals dd061_cfgimp.Dd060Id into dd060_dd061_cfgimp_join
+                        on dd060.Dd060Id equals dd061_cfgimp.Dd060Id into dd060_dd061_cfgimp_join
                         from dd061_cfgimp in dd060_dd061_cfgimp_join.DefaultIfEmpty()
 
                         join aa031_cstori in _appDbContext.E9ACSICP_AA031Cstoris
-                            on dd061_cfgimp.Dd061Bb027bOrigemId equals aa031_cstori.Id into dd061_cfgimp_aa031_cstori_join
+                        on dd061_cfgimp.Dd061Bb027bOrigemId equals aa031_cstori.Id into dd061_cfgimp_aa031_cstori_join
                         from aa031_cstori in dd061_cfgimp_aa031_cstori_join.DefaultIfEmpty()
 
                         join aa032_csticm in _appDbContext.E9ACSICP_AA032Csticms
-                            on dd061_cfgimp.Dd061Bb027bCstIcmsId equals aa032_csticm.Id into dd061_cfgimp_aa032_csticm_join
+                        on dd061_cfgimp.Dd061Bb027bCstIcmsId equals aa032_csticm.Id into dd061_cfgimp_aa032_csticm_join
                         from aa032_csticm in dd061_cfgimp_aa032_csticm_join.DefaultIfEmpty()
 
                         join bb027_modal in _appDbContext.OsusrE9aCsicpBb027Modals
-                            on dd061_cfgimp.Dd061Bb027bModbcId equals bb027_modal.Id into dd061_cfgimp_bb027_modal_join
+                        on dd061_cfgimp.Dd061Bb027bModbcId equals bb027_modal.Id into dd061_cfgimp_bb027_modal_join
                         from bb027_modal in dd061_cfgimp_bb027_modal_join.DefaultIfEmpty()
 
                         join aa038_modst in _appDbContext.E9ACSICP_AA038Modsts
-                            on dd061_cfgimp.Dd061Bb027bModalbcIcmsSt equals aa038_modst.Id into dd061_cfgimp_aa038_modst_join
+                        on dd061_cfgimp.Dd061Bb027bModalbcIcmsSt equals aa038_modst.Id into dd061_cfgimp_aa038_modst_join
                         from aa038_modst in dd061_cfgimp_aa038_modst_join.DefaultIfEmpty()
 
                         join bb027_motivo in _appDbContext.OsusrE9aCsicpBb027Motivos
-                            on dd061_cfgimp.Dd061Bb027bMotdesoneracao equals bb027_motivo.Id into dd061_cfgimp_bb027_motivo_join
+                        on dd061_cfgimp.Dd061Bb027bMotdesoneracao equals bb027_motivo.Id into dd061_cfgimp_bb027_motivo_join
                         from bb027_motivo in dd061_cfgimp_bb027_motivo_join.DefaultIfEmpty()
 
                         join aa033_cstipi in _appDbContext.E9ACSICP_AA033Cstipis
-                            on dd061_cfgimp.Dd061Bb027bCstIpiId equals aa033_cstipi.Id into dd061_cfgimp_aa033_cstipi_join
+                        on dd061_cfgimp.Dd061Bb027bCstIpiId equals aa033_cstipi.Id into dd061_cfgimp_aa033_cstipi_join
                         from aa033_cstipi in dd061_cfgimp_aa033_cstipi_join.DefaultIfEmpty()
 
                         join aa034_cstpis in _appDbContext.E9ACSICP_AA034Cstpis
-                            on dd061_cfgimp.Dd061Bb027bCstPisId equals aa034_cstpis.Id into dd061_cfgimp_aa034_cstpis_join
+                        on dd061_cfgimp.Dd061Bb027bCstPisId equals aa034_cstpis.Id into dd061_cfgimp_aa034_cstpis_join
                         from aa034_cstpis in dd061_cfgimp_aa034_cstpis_join.DefaultIfEmpty()
 
                         join aa035_cstcof in _appDbContext.E9ACSICP_AA035Cstcofs
-                            on dd061_cfgimp.Dd061Bb027bCstCofinsId equals aa035_cstcof.Id into dd061_cfgimp_aa035_cstcof_join
+                        on dd061_cfgimp.Dd061Bb027bCstCofinsId equals aa035_cstcof.Id into dd061_cfgimp_aa035_cstcof_join
                         from aa035_cstcof in dd061_cfgimp_aa035_cstcof_join.DefaultIfEmpty()
 
                         join spedInCfop in _appDbContext.Osusr66cSpedInCfops
-                            on dd061_cfgimp.Dd061Bb027bCfopStaticaId equals spedInCfop.Id into dd061_cfgimp_spedInCfop_join
+                        on dd061_cfgimp.Dd061Bb027bCfopStaticaId equals spedInCfop.Id into dd061_cfgimp_spedInCfop_join
                         from spedInCfop in dd061_cfgimp_spedInCfop_join.DefaultIfEmpty()
 
+                        //fazer dto e mapeamento
+                        join aa144_classtrib in _appDbContext.OsusrE9aCsicpAa144s
+                        on dd061_cfgimp.Ub13Ub14RfclasstribId equals aa144_classtrib.Id into dd061_cfgimp_aa144_classtrib_join
+                        from aa144_classtrib in dd061_cfgimp_aa144_classtrib_join.DefaultIfEmpty()
+
+                        join aa143_leicomp in _appDbContext.CSICP_AA143
+                        on dd061_cfgimp.Dd061RflcId equals aa143_leicomp.Id into dd061_cfgimp_aa143_leicomp_join
+                        from aa143_leicomp in dd061_cfgimp_aa143_leicomp_join.DefaultIfEmpty()
+
+                        join aa144_ISclasstrib in _appDbContext.OsusrE9aCsicpAa144s
+                        on dd061_cfgimp.Ub03IsRfclasstribId equals aa144_ISclasstrib.Id into dd061_cfgimp_aa144_ISclasstrib_join
+                        from aa144_ISclasstrib in dd061_cfgimp_aa144_ISclasstrib_join.DefaultIfEmpty()
+
+                        join aa144_tribreg in _appDbContext.OsusrE9aCsicpAa144s
+                        on dd061_cfgimp.Ub6970RfclasstribregId equals aa144_tribreg.Id into dd061_cfgimp_aa144_tribreg_join
+                        from aa144_tribreg in dd061_cfgimp_aa144_tribreg_join.DefaultIfEmpty()
+
+                        join aa150_ccredpres in _appDbContext.OsusrE9aCsicpAa150Ccredpres
+                        on dd061_cfgimp.Ub7479Ccredpresid equals aa150_ccredpres.Id into dd061_cfgimp_aa150_ccredpres_join
+                        from aa150_ccredpres in dd061_cfgimp_aa150_ccredpres_join.DefaultIfEmpty()
+
+                        join bb027_reforma in _appDbContext.OsusrE9aCsicpBb027s
+                        on dd061_cfgimp.Dd061RfBb027Id equals bb027_reforma.Id into dd061_cfgimp_bb027_reforma_join
+                        from bb027_reforma in dd061_cfgimp_bb027_reforma_join.DefaultIfEmpty()
+
+                        join bb027Imp in _appDbContext.OsusrE9aCsicpBb027Imps
+                        on dd061_cfgimp.Dd061RfBb027bCfgimpId equals bb027Imp.Bb027bId into dd061_cfgimp_bb027Imp_join
+                        from bb027Imp in dd061_cfgimp_bb027Imp_join.DefaultIfEmpty()
+
+                            //-----------------------FINAL--------------------------//
                         join gg021 in _appDbContext.OsusrE9aCsicpGg021s
-                            on gg008Produto.Gg008Ncmid equals gg021.Id into gg008Produto_gg021_join
+                        on gg008Produto.Gg008Ncmid equals gg021.Id into gg008Produto_gg021_join
                         from gg021 in gg008Produto_gg021_join.DefaultIfEmpty()
 
                         join gg007 in _appDbContext.OsusrE9aCsicpGg007s
-                            on dd060.Dd060UnId equals gg007.Id into dd060_gg007_join
+                        on dd060.Dd060UnId equals gg007.Id into dd060_gg007_join
                         from gg007 in dd060_gg007_join.DefaultIfEmpty()
 
                         join gg007_UNSec in _appDbContext.OsusrE9aCsicpGg007s
-                            on dd060.Dd060UnSecId equals gg007_UNSec.Id into dd060_gg007_UNSec_join
+                        on dd060.Dd060UnSecId equals gg007_UNSec.Id into dd060_gg007_UNSec_join
                         from gg007_UNSec in dd060_gg007_UNSec_join.DefaultIfEmpty()
 
                         join spedIncenq_IPI in _appDbContext.Osusr66cSpedInCenqIpis
-                            on dd061_cfgimp.Dd061Bb027bCenquadIpiId equals spedIncenq_IPI.Id into dd061_cfgimp_in_cEnq_IPI_join
+                        on dd061_cfgimp.Dd061Bb027bCenquadIpiId equals spedIncenq_IPI.Id into dd061_cfgimp_in_cEnq_IPI_join
                         from spedIncenq_IPI in dd061_cfgimp_in_cEnq_IPI_join.DefaultIfEmpty()
 
                         join gg021cest in _appDbContext.OsusrE9aCsicpGg021cests
-                            on gg021.Gg021CestId equals gg021cest.Id into gg021_gg021cest_join
+                        on gg021.Gg021CestId equals gg021cest.Id into gg021_gg021cest_join
                         from gg021cest in gg021_gg021cest_join.DefaultIfEmpty()
 
                         join stRelevancia in _appDbContext.OsusrSpedNnxCsicpStrelevancia
-                            on dd060.Dd060Ierelevanteid equals stRelevancia.Id into dd060_stRelevancia_join
+                        on dd060.Dd060Ierelevanteid equals stRelevancia.Id into dd060_stRelevancia_join
                         from stRelevancia in dd060_stRelevancia_join.DefaultIfEmpty()
 
                         /*UTILIZANDO TÉCNICA LET PARA EVITAR REGISTROS DUPLICADOS NA QUERY, A DD061 É UMA FILHA DA DD060,
@@ -114,102 +154,169 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                                          on dd061.Dd061ImpostoId equals aa037Imp.Id into dd061_aa037Imp_join
                                          from aa037Imp in dd061_aa037Imp_join.DefaultIfEmpty()
 
+                                         //fazer dto e mapeamento
+                                         join aa027Uf in _appDbContext.OsusrE9aCsicpAa027s
+                                         on dd061.UB17_UFID equals aa027Uf.Id into dd061_aa027Uf_join
+                                         from aa027Uf in dd061_aa027Uf_join.DefaultIfEmpty()
+
+                                         join aa028cidade in _appDbContext.OsusrE9aCsicpAa028s // apenas o campo CDGIBGE, desccidade
+                                         on dd061.UB36_MUNICIPIOID equals aa028cidade.Id into dd061_aa028cidade_join
+                                         from aa028cidade in dd061_aa028cidade_join.DefaultIfEmpty()
+
                                          where dd061.TenantId == in_tenant && dd061.Dd060Id == dd060.Dd060Id
 
                                          select new CSICP_DD061
                                          {
-                                             TenantId = dd061.TenantId,
-                                             Dd061Id = dd061.Dd061Id,
-                                             Dd060Id = dd061.Dd060Id,
-                                             Dd061ImpostoId = dd061.Dd061ImpostoId,
-                                             Dd061Produtoid = dd061.Dd061Produtoid,
-                                             Dd061Codgproduto = dd061.Dd061Codgproduto,
-                                             Dd061ImpostoidGeneric = dd061.Dd061ImpostoidGeneric,
-                                             Dd061CodgImposto = dd061.Dd061CodgImposto,
-                                             Dd061Cst = dd061.Dd061Cst,
-                                             Dd061Cfop = dd061.Dd061Cfop,
-                                             Dd061Descimposto = dd061.Dd061Descimposto,
-                                             Dd061ValorContabil = dd061.Dd061ValorContabil,
-                                             Dd061BaseCalculo = dd061.Dd061BaseCalculo,
-                                             Dd061Aliquota = dd061.Dd061Aliquota,
-                                             Dd061Valorimposto = dd061.Dd061Valorimposto,
-                                             Dd061Percreducbase = dd061.Dd061Percreducbase,
-                                             Dd061Vredbcicms = dd061.Dd061Vredbcicms,
-                                             Dd061Isento = dd061.Dd061Isento,
-                                             Dd061Outros = dd061.Dd061Outros,
-                                             Dd061Cancelamentos = dd061.Dd061Cancelamentos,
-                                             Dd061Descontos = dd061.Dd061Descontos,
-                                             Dd061Lucroestimado = dd061.Dd061Lucroestimado,
-                                             Dd061Vltribaux = dd061.Dd061Vltribaux,
-                                             Dd061Predbcst = dd061.Dd061Predbcst,
-                                             Dd061Vbcst = dd061.Dd061Vbcst,
-                                             Dd061Picmsst = dd061.Dd061Picmsst,
-                                             Dd061Vicmsst = dd061.Dd061Vicmsst,
-                                             Dd061Vbcfcp = dd061.Dd061Vbcfcp,
-                                             Dd061Pfcp = dd061.Dd061Pfcp,
-                                             Dd061Vfcp = dd061.Dd061Vfcp,
-                                             Dd061Vbcfcpst = dd061.Dd061Vbcfcpst,
-                                             Dd061Pfcpst = dd061.Dd061Pfcpst,
-                                             Dd061Vfcpst = dd061.Dd061Vfcpst,
-                                             Dd061Agregasubtribut = dd061.Dd061Agregasubtribut,
-                                             Dd061QtdTributada = dd061.Dd061QtdTributada,
-                                             Dd061VlrUnidade = dd061.Dd061VlrUnidade,
-                                             Dd061VlrImposto = dd061.Dd061VlrImposto,
-                                             Dd061SomaIpiBaseId = dd061.Dd061SomaIpiBaseId,
-                                             Dd061BaseliqbrutaId = dd061.Dd061BaseliqbrutaId,
-                                             Dd061Vbcstret = dd061.Dd061Vbcstret,
-                                             Dd061Vicmsstret = dd061.Dd061Vicmsstret,
-                                             Dd061Vbcfcpstret = dd061.Dd061Vbcfcpstret,
-                                             Dd061Pfcpstret = dd061.Dd061Pfcpstret,
-                                             Dd061Vfcpstret = dd061.Dd061Vfcpstret,
-                                             Dd061Vsuframa = dd061.Dd061Vsuframa,
-                                             Dd061Psuframa = dd061.Dd061Psuframa,
-                                             Dd061Vbcsuframa = dd061.Dd061Vbcsuframa,
-                                             Dd061VicmsDesonerado = dd061.Dd061VicmsDesonerado,
-                                             Dd061VpautaIcms = dd061.Dd061VpautaIcms,
-                                             Dd061Vbcufdest = dd061.Dd061Vbcufdest,
-                                             Dd061Picmsufdest = dd061.Dd061Picmsufdest,
-                                             Dd061Picmsinter = dd061.Dd061Picmsinter,
-                                             Dd061Picmsinterpart = dd061.Dd061Picmsinterpart,
-                                             Dd061Vbcfcpufdest = dd061.Dd061Vbcfcpufdest,
-                                             Dd061Pfcpufdest = dd061.Dd061Pfcpufdest,
-                                             Dd061Vfcpufdest = dd061.Dd061Vfcpufdest,
-                                             Dd061Vicmsufremet = dd061.Dd061Vicmsufremet,
-                                             Dd061Vicmsufdest = dd061.Dd061Vicmsufdest,
-                                             Dd061Pcredsn = dd061.Dd061Pcredsn,
-                                             Dd061Vcredicmssn = dd061.Dd061Vcredicmssn,
-                                             Dd061Impostodevol = dd061.Dd061Impostodevol,
-                                             Dd061Pdevol = dd061.Dd061Pdevol,
-                                             Dd061Ipi = dd061.Dd061Ipi,
-                                             Dd061Vipidevol = dd061.Dd061Vipidevol,
-                                             Dd061Vbcefet = dd061.Dd061Vbcefet,
-                                             Dd061Picmsefet = dd061.Dd061Picmsefet,
-                                             Dd061Vicmsefet = dd061.Dd061Vicmsefet,
-                                             Dd061Predbcefet = dd061.Dd061Predbcefet,
-                                             Dd061Pst = dd061.Dd061Pst,
-                                             Dd061Vicmssubstituto = dd061.Dd061Vicmssubstituto,
-                                             Dd061Vicmsop = dd061.Dd061Vicmsop,
-                                             Dd061Pdif = dd061.Dd061Pdif,
-                                             Dd061Vicmsdif = dd061.Dd061Vicmsdif,
-                                             N37aQbcmono = dd061.N37aQbcmono,
-                                             N38Adremicms = dd061.N38Adremicms,
-                                             N39Vicmsmono = dd061.N39Vicmsmono,
-                                             N39aQbcmonoreten = dd061.N39aQbcmonoreten,
-                                             N40Adremicmsreten = dd061.N40Adremicmsreten,
-                                             N41Vicmsmonoreten = dd061.N41Vicmsmonoreten,
-                                             N47Predadrem = dd061.N47Predadrem,
-                                             N48Motredadrem = dd061.N48Motredadrem,
-                                             N41aVicmsmonoop = dd061.N41aVicmsmonoop,
-                                             N42Pdif = dd061.N42Pdif,
-                                             N43Vicmsmonodif = dd061.N43Vicmsmonodif,
-                                             N43aQbcmonoret = dd061.N43aQbcmonoret,
-                                             N44Adremicmsret = dd061.N44Adremicmsret,
-                                             N45Vicmsmonoret = dd061.N45Vicmsmonoret,
+                                            TenantId = dd061.TenantId,
+                                            Dd061Id = dd061.Dd061Id,
+                                            Dd060Id = dd061.Dd060Id,
+                                            Dd061ImpostoId = dd061.Dd061ImpostoId,
+                                            Dd061Produtoid = dd061.Dd061Produtoid,
+                                            Dd061Codgproduto = dd061.Dd061Codgproduto,
+                                            Dd061ImpostoidGeneric = dd061.Dd061ImpostoidGeneric,
+                                            Dd061CodgImposto = dd061.Dd061CodgImposto,
+                                            Dd061Cst = dd061.Dd061Cst,
+                                            Dd061Cfop = dd061.Dd061Cfop,
+                                            Dd061Descimposto = dd061.Dd061Descimposto,
+                                            Dd061ValorContabil = dd061.Dd061ValorContabil,
+                                            Dd061BaseCalculo = dd061.Dd061BaseCalculo,
+                                            Dd061Aliquota = dd061.Dd061Aliquota,
+                                            Dd061Valorimposto = dd061.Dd061Valorimposto,
+                                            Dd061Percreducbase = dd061.Dd061Percreducbase,
+                                            Dd061Vredbcicms = dd061.Dd061Vredbcicms,
+                                            Dd061Isento = dd061.Dd061Isento,
+                                            Dd061Outros = dd061.Dd061Outros,
+                                            Dd061Cancelamentos = dd061.Dd061Cancelamentos,
+                                            Dd061Descontos = dd061.Dd061Descontos,
+                                            Dd061Lucroestimado = dd061.Dd061Lucroestimado,
+                                            Dd061Vltribaux = dd061.Dd061Vltribaux,
+                                            Dd061Predbcst = dd061.Dd061Predbcst,
+                                            Dd061Vbcst = dd061.Dd061Vbcst,
+                                            Dd061Picmsst = dd061.Dd061Picmsst,
+                                            Dd061Vicmsst = dd061.Dd061Vicmsst,
+                                            Dd061Vbcfcp = dd061.Dd061Vbcfcp,
+                                            Dd061Pfcp = dd061.Dd061Pfcp,
+                                            Dd061Vfcp = dd061.Dd061Vfcp,
+                                            Dd061Vbcfcpst = dd061.Dd061Vbcfcpst,
+                                            Dd061Pfcpst = dd061.Dd061Pfcpst,
+                                            Dd061Vfcpst = dd061.Dd061Vfcpst,
+                                            Dd061Agregasubtribut = dd061.Dd061Agregasubtribut,
+                                            Dd061QtdTributada = dd061.Dd061QtdTributada,
+                                            Dd061VlrUnidade = dd061.Dd061VlrUnidade,
+                                            Dd061VlrImposto = dd061.Dd061VlrImposto,
+                                            Dd061SomaIpiBaseId = dd061.Dd061SomaIpiBaseId,
+                                            Dd061BaseliqbrutaId = dd061.Dd061BaseliqbrutaId,
+                                            Dd061Vbcstret = dd061.Dd061Vbcstret,
+                                            Dd061Vicmsstret = dd061.Dd061Vicmsstret,
+                                            Dd061Vbcfcpstret = dd061.Dd061Vbcfcpstret,
+                                            Dd061Pfcpstret = dd061.Dd061Pfcpstret,
+                                            Dd061Vfcpstret = dd061.Dd061Vfcpstret,
+                                            Dd061Vsuframa = dd061.Dd061Vsuframa,
+                                            Dd061Psuframa = dd061.Dd061Psuframa,
+                                            Dd061Vbcsuframa = dd061.Dd061Vbcsuframa,
+                                            Dd061VicmsDesonerado = dd061.Dd061VicmsDesonerado,
+                                            Dd061VpautaIcms = dd061.Dd061VpautaIcms,
+                                            Dd061Vbcufdest = dd061.Dd061Vbcufdest,
+                                            Dd061Picmsufdest = dd061.Dd061Picmsufdest,
+                                            Dd061Picmsinter = dd061.Dd061Picmsinter,
+                                            Dd061Picmsinterpart = dd061.Dd061Picmsinterpart,
+                                            Dd061Vbcfcpufdest = dd061.Dd061Vbcfcpufdest,
+                                            Dd061Pfcpufdest = dd061.Dd061Pfcpufdest,
+                                            Dd061Vfcpufdest = dd061.Dd061Vfcpufdest,
+                                            Dd061Vicmsufremet = dd061.Dd061Vicmsufremet,
+                                            Dd061Vicmsufdest = dd061.Dd061Vicmsufdest,
+                                            Dd061Pcredsn = dd061.Dd061Pcredsn,
+                                            Dd061Vcredicmssn = dd061.Dd061Vcredicmssn,
+                                            Dd061Impostodevol = dd061.Dd061Impostodevol,
+                                            Dd061Pdevol = dd061.Dd061Pdevol,
+                                            Dd061Ipi = dd061.Dd061Ipi,
+                                            Dd061Vipidevol = dd061.Dd061Vipidevol,
+                                            Dd061Vbcefet = dd061.Dd061Vbcefet,
+                                            Dd061Picmsefet = dd061.Dd061Picmsefet,
+                                            Dd061Vicmsefet = dd061.Dd061Vicmsefet,
+                                            Dd061Predbcefet = dd061.Dd061Predbcefet,
+                                            Dd061Pst = dd061.Dd061Pst,
+                                            Dd061Vicmssubstituto = dd061.Dd061Vicmssubstituto,
+                                            Dd061Vicmsop = dd061.Dd061Vicmsop,
+                                            Dd061Pdif = dd061.Dd061Pdif,
+                                            Dd061Vicmsdif = dd061.Dd061Vicmsdif,
+                                            N37aQbcmono = dd061.N37aQbcmono,
+                                            N38Adremicms = dd061.N38Adremicms,
+                                            N39Vicmsmono = dd061.N39Vicmsmono,
+                                            N39aQbcmonoreten = dd061.N39aQbcmonoreten,
+                                            N40Adremicmsreten = dd061.N40Adremicmsreten,
+                                            N41Vicmsmonoreten = dd061.N41Vicmsmonoreten,
+                                            N47Predadrem = dd061.N47Predadrem,
+                                            N48Motredadrem = dd061.N48Motredadrem,
+                                            N41aVicmsmonoop = dd061.N41aVicmsmonoop,
+                                            N42Pdif = dd061.N42Pdif,
+                                            N43Vicmsmonodif = dd061.N43Vicmsmonodif,
+                                            N43aQbcmonoret = dd061.N43aQbcmonoret,
+                                            N44Adremicmsret = dd061.N44Adremicmsret,
+                                            N45Vicmsmonoret = dd061.N45Vicmsmonoret,
+                                            UB16_VBC = dd061.UB16_VBC,
+                                            UB17_UFID = dd061.UB17_UFID,
+                                            UB36_MUNICIPIOID = dd061.UB36_MUNICIPIOID,
+                                            UB18_37_56_PIBSCBS = dd061.UB18_37_56_PIBSCBS,
+                                            UB22_41_60_PDIF = dd061.UB22_41_60_PDIF,
+                                            UB23_42_61_VDIF = dd061.UB23_42_61_VDIF,
+                                            UB25_44_63_VDEVTRIB = dd061.UB25_44_63_VDEVTRIB,
+                                            UB27_46_65_PREDALIQ = dd061.UB27_46_65_PREDALIQ,
+                                            UB28_47_66_PALIQEFET = dd061.UB28_47_66_PALIQEFET,
+                                            UB35_54_67_VIBSCBS = dd061.UB35_54_67_VIBSCBS,
+                                            UB77_82_VCREDPRESCONDSUS = dd061.UB77_82_VCREDPRESCONDSUS,
+                                            UB71_72A_72C_PIBSCBS = dd061.UB71_72A_72C_PIBSCBS,
+                                            UB72_72B_72D_VTRIBREGIBS = dd061.UB72_72B_72D_VTRIBREGIBS,
+                                            UB75_80_PCREDPRES = dd061.UB75_80_PCREDPRES,
+                                            UB76_81_VCREDPRES = dd061.UB76_81_VCREDPRES,
+                                            UB82B_82D_82F_PIBS = dd061.UB82B_82D_82F_PIBS,
+                                            UB82C_82E_82G_VIBS = dd061.UB82C_82E_82G_VIBS,
+                                            UB85_QBCMONO = dd061.UB85_QBCMONO,
+                                            UB86_ADREMIBS = dd061.UB86_ADREMIBS,
+                                            UB87_ADREMCBS = dd061.UB87_ADREMCBS,
+                                            UB88_VIBSMONO = dd061.UB88_VIBSMONO,
+                                            UB88_VCBSMONO = dd061.UB88_VCBSMONO,
+                                            UB91_QBCMONORETEN = dd061.UB91_QBCMONORETEN,
+                                            UB92_ADREMIBSRETEN = dd061.UB92_ADREMIBSRETEN,
+                                            UB93_VIBSMONORETEN = dd061.UB93_VIBSMONORETEN,
+                                            UB93A_ADREMCBSRETEN = dd061.UB93A_ADREMCBSRETEN,
+                                            UB93B_VCBSMONORETEN = dd061.UB93B_VCBSMONORETEN,
+                                            UB95_QBCMONORET = dd061.UB95_QBCMONORET,
+                                            UB96_ADREMIBSRET = dd061.UB96_ADREMIBSRET,
+                                            UB97_VIBSMONORET = dd061.UB97_VIBSMONORET,
+                                            UB98_ADREMCBSRET = dd061.UB98_ADREMCBSRET,
+                                            UB98A_VCBSMONORET = dd061.UB98A_VCBSMONORET,
+                                            UB100_PDIFIBS = dd061.UB100_PDIFIBS,
+                                            UB101_VIBSMONODIF = dd061.UB101_VIBSMONODIF,
+                                            UB102_PDIFCBS = dd061.UB102_PDIFCBS,
+                                            UB103_VCBSMONODIF = dd061.UB103_VCBSMONODIF,
+                                            UB104_VTOTIBSMONOITEM = dd061.UB104_VTOTIBSMONOITEM,
+                                            UB105_VTOTCBSMONOITEM = dd061.UB105_VTOTCBSMONOITEM,
+                                            UB05_VBCIS = dd061.UB05_VBCIS,
+                                            UB06_PIS = dd061.UB06_PIS,
+                                            UB06_PISESPEC = dd061.UB06_PISESPEC,
+                                            UB10_QTRIB = dd061.UB10_QTRIB,
+                                            UB11_VIS = dd061.UB11_VIS,
+                                            UB107_108_VIBS = dd061.UB107_108_VIBS,
+                                            UB110_TPCREDPRESIBSZFM = dd061.UB110_TPCREDPRESIBSZFM,
+                                            UB111_VCREDPRESIBSZFM = dd061.UB111_VCREDPRESIBSZFM,
+                                            RF_MemoriaCalculo = dd061.RF_MemoriaCalculo,
 
                                              NavAA037Imp = aa037Imp != null ? new CSICP_AA037Imp
                                              {
                                                  Id = aa037Imp.Id,
                                                  Label = aa037Imp.Label,
+                                             } : null,
+
+                                             NavAa027 = aa027Uf != null ? new CSICP_Aa027
+                                             {
+                                                 Aa027Sigla = aa027Uf.Aa027Sigla,
+                                             } : null,
+
+                                             NavAa028 = aa028cidade != null ? new CSICP_Aa028
+                                             {
+                                                 Aa028Codgibge = aa028cidade.Aa028Codgibge,
+                                                 Aa028Cidade = aa028cidade.Aa028Cidade,
                                              } : null,
                                          }).ToList()
 
@@ -359,9 +466,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                             Dd060CashbackPvendaliq = dd060.Dd060CashbackPvendaliq,
                             Dd060CashbackVpremio = dd060.Dd060CashbackVpremio,
                             Dd060Nroprctabela = dd060.Dd060Nroprctabela,
-                            NavListDD061 = listdd061,
-                            NavDD060Combs = dd060Combs,
-                            NavListDD060CombsLa01 = listdd060CombLa01,
+                            DD060_RFTRANSACAO_ID = dd060.DD060_RFTRANSACAO_ID,
 
                             NavGG005 = gg005 != null ? new CSICP_GG005
                             {
@@ -643,16 +748,109 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                                 Gg021Ierelevanteid = gg021.Gg021Ierelevanteid,
                                 Gg021Dtiniciovigencia = gg021.Gg021Dtiniciovigencia,
                                 Gg021Dtfimvigencia = gg021.Gg021Dtfimvigencia,
+
+                                NavGg021Cest = gg021cest != null ? new OsusrE9aCsicpGg021cest
+                                {
+                                    Id = gg021cest.Id,
+                                    Label = gg021cest.Label,
+                                    Order = gg021cest.Order,
+                                    IsActive = gg021cest.IsActive,
+                                    CsCodg = gg021cest.CsCodg,
+                                } : null,
                             } : null,
 
-                            NavGG021Cest = gg021cest != null ? new OsusrE9aCsicpGg021cest
+                            NavDD061Cfgimp = dd061_cfgimp != null ? new CSICP_DD061Cfgimp
                             {
-                                Id = gg021cest.Id,
-                                Label = gg021cest.Label,
-                                Order = gg021cest.Order,
-                                IsActive = gg021cest.IsActive,
-                                CsCodg = gg021cest.CsCodg,
-                            } : null,
+                                TenantId = dd061_cfgimp.TenantId,
+                                Dd060Id = dd061_cfgimp.Dd060Id,
+                                Dd061Bb027Id = dd061_cfgimp.Dd061Bb027Id,
+                                Dd061Bb027bCfgimpId = dd061_cfgimp.Dd061Bb027bCfgimpId,
+                                Dd061Bb027bCodgcst = dd061_cfgimp.Dd061Bb027bCodgcst,
+                                Dd061Bb027bRegimeId = dd061_cfgimp.Dd061Bb027bRegimeId,
+                                Dd061Bb027bOrigemId = dd061_cfgimp.Dd061Bb027bOrigemId,
+                                Dd061Bb027bCstIcmsId = dd061_cfgimp.Dd061Bb027bCstIcmsId,
+                                Dd061Bb027bCstIpiId = dd061_cfgimp.Dd061Bb027bCstIpiId,
+                                Dd061Bb027bCstPisId = dd061_cfgimp.Dd061Bb027bCstPisId,
+                                Dd061NatBcCredPis = dd061_cfgimp.Dd061NatBcCredPis,
+                                Dd061Bb027bCstCofinsId = dd061_cfgimp.Dd061Bb027bCstCofinsId,
+                                Dd061NatBcCredCofins = dd061_cfgimp.Dd061NatBcCredCofins,
+                                Dd061Bb027bInfornf = dd061_cfgimp.Dd061Bb027bInfornf,
+                                Dd061Bb027bInforipi = dd061_cfgimp.Dd061Bb027bInforipi,
+                                Dd061Bb027bInforpis = dd061_cfgimp.Dd061Bb027bInforpis,
+                                Dd061Bb027bInforcofins = dd061_cfgimp.Dd061Bb027bInforcofins,
+                                Dd061Bb027bModbcId = dd061_cfgimp.Dd061Bb027bModbcId,
+                                Dd061Bb027bMotdesoneracao = dd061_cfgimp.Dd061Bb027bMotdesoneracao,
+                                Dd061Bb027bUfDestId = dd061_cfgimp.Dd061Bb027bUfDestId,
+                                Dd061Bb027bClassecontaId = dd061_cfgimp.Dd061Bb027bClassecontaId,
+                                Dd061Bb027bCfopStaticaId = dd061_cfgimp.Dd061Bb027bCfopStaticaId,
+                                Dd061Bb027bModalbcIcmsSt = dd061_cfgimp.Dd061Bb027bModalbcIcmsSt,
+                                Dd061Bb027bAliquota = dd061_cfgimp.Dd061Bb027bAliquota,
+                                Dd061Bb027bReducaobase = dd061_cfgimp.Dd061Bb027bReducaobase,
+                                Dd061Bb027bMp255Id = dd061_cfgimp.Dd061Bb027bMp255Id,
+                                Dd061Bb027bReducaobcst = dd061_cfgimp.Dd061Bb027bReducaobcst,
+                                Dd061Bb027CfopId = dd061_cfgimp.Dd061Bb027CfopId,
+                                Dd061Bb027bCfopExcecaoId = dd061_cfgimp.Dd061Bb027bCfopExcecaoId,
+                                Dd061Bb027bCenquadIpiId = dd061_cfgimp.Dd061Bb027bCenquadIpiId,
+                                Dd061Bb027bAliqInternauf = dd061_cfgimp.Dd061Bb027bAliqInternauf,
+                                Dd061Bb027bIndpres = dd061_cfgimp.Dd061Bb027bIndpres,
+                                CSICP_BB027_imp = bb027Imp != null ? new CSICP_Bb027Imp
+                                {
+                                    TenantId = bb027Imp.TenantId,
+                                    Bb027bId = bb027Imp.Bb027bId,
+                                    Bb027Id = bb027Imp.Bb027Id,
+                                    Bb027bImpostosId = bb027Imp.Bb027bImpostosId,
+                                    Bb027bCodgfilial = bb027Imp.Bb027bCodgfilial,
+                                    Bb027bCodgtransacao = bb027Imp.Bb027bCodgtransacao,
+                                    Bb027bCodgcst = bb027Imp.Bb027bCodgcst,
+                                    Bb027bRegimeId = bb027Imp.Bb027bRegimeId,
+                                    Bb027bOrigemId = bb027Imp.Bb027bOrigemId,
+                                    Bb027bCstIcmsId = bb027Imp.Bb027bCstIcmsId,
+                                    Bb027bCstIpiId = bb027Imp.Bb027bCstIpiId,
+                                    Bb027bCstPisId = bb027Imp.Bb027bCstPisId,
+                                    Bb027bNatBcCredPis = bb027Imp.Bb027bNatBcCredPis,
+                                    Bb027bCstCofinsId = bb027Imp.Bb027bCstCofinsId,
+                                    Bb027bNatBcCredCofins = bb027Imp.Bb027bNatBcCredCofins,
+                                    Bb027bInformacoesnf = bb027Imp.Bb027bInformacoesnf,
+                                    Bb027bInformacoesipi = bb027Imp.Bb027bInformacoesipi,
+                                    Bb027bInformacoespis = bb027Imp.Bb027bInformacoespis,
+                                    Bb027bInformacoescofins = bb027Imp.Bb027bInformacoescofins,
+                                    Bb027bModbcId = bb027Imp.Bb027bModbcId,
+                                    Bb027bMotdesoneracaoid = bb027Imp.Bb027bMotdesoneracaoid,
+                                    Bb027bUfDestId = bb027Imp.Bb027bUfDestId,
+                                    Bb027bClassecontaId = bb027Imp.Bb027bClassecontaId,
+                                    Bb027bModalbcIcmsStId = bb027Imp.Bb027bModalbcIcmsStId,
+                                    Bb027bAliquota = bb027Imp.Bb027bAliquota,
+                                    Bb027bReducaobase = bb027Imp.Bb027bReducaobase,
+                                    Bb027bMp255Id = bb027Imp.Bb027bMp255Id,
+                                    Bb027bReducaobcst = bb027Imp.Bb027bReducaobcst,
+                                    Bb027bCfopStaticaId = bb027Imp.Bb027bCfopStaticaId,
+                                    Bb027bCenquadIpiId = bb027Imp.Bb027bCenquadIpiId,
+                                    Bb027bAliqInternauf = bb027Imp.Bb027bAliqInternauf,
+                                    Bb027bHashid = bb027Imp.Bb027bHashid,
+                                    Bb027bIsvicmsdesSubtrai = bb027Imp.Bb027bIsvicmsdesSubtrai,
+                                    Bb027bFcalcicmsdesId = bb027Imp.Bb027bFcalcicmsdesId,
+                                    Bb027bPicmsDiferido = bb027Imp.Bb027bPicmsDiferido,
+                                    Bb027bVicmsdesonsubId = bb027Imp.Bb027bVicmsdesonsubId,
+                                    Bb027cIndpres = bb027Imp.Bb027cIndpres,
+                                    Bb027bCbenef = bb027Imp.Bb027bCbenef,
+                                    Bb027bPpropocaodestino = bb027Imp.Bb027bPpropocaodestino,
+                                    Bb027bRfclasstribId = bb027Imp.Bb027bRfclasstribId,
+                                    Bb027bRflcId = bb027Imp.Bb027bRflcId,
+                                    Bb027bTpdebcreid = bb027Imp.Bb027bTpdebcreid,
+                                    Bb027bPaliqefetregIbsUf = bb027Imp.Bb027bPaliqefetregIbsUf,
+                                    Bb027bPaliqefetregIbsMun = bb027Imp.Bb027bPaliqefetregIbsMun,
+                                    Bb027bPcredpresIbsUf = bb027Imp.Bb027bPcredpresIbsUf,
+                                    Bb027bPcredpresIbsMun = bb027Imp.Bb027bPcredpresIbsMun,
+                                    Bb027bPcredpresCbs = bb027Imp.Bb027bPcredpresCbs,
+                                    Bb027bPdifCbs = bb027Imp.Bb027bPdifCbs,
+                                    Bb027bPaliqefetregCbs = bb027Imp.Bb027bPaliqefetregCbs,
+                                    Bb027bPdifIbs = bb027Imp.Bb027bPdifIbs,
+                                    Bb027bIsRfclasstribId2 = bb027Imp.Bb027bIsRfclasstribId2,
+                                    Bb027bPreducaoibs = bb027Imp.Bb027bPreducaoibs,
+                                    Bb027bPreducaocbs = bb027Imp.Bb027bPreducaocbs,
+                                    Bb027bCcredpreid = bb027Imp.Bb027bCcredpreid
+                                } : null,
+                            }: null,
 
                             NavAA031Cstori = aa031_cstori != null ? new CSICP_AA031Cstori
                             {
@@ -720,40 +918,55 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                                 Conteudo = bb027_motivo.Conteudo,
                             } : null,
 
-                            NavDD061Cfgimp = dd061_cfgimp != null ? new CSICP_DD061Cfgimp
+                            NavBB027Reforma = bb027_reforma != null ? new CSICP_Bb027
                             {
-                                TenantId = dd061_cfgimp.TenantId,
-                                Dd060Id = dd061_cfgimp.Dd060Id,
-                                Dd061Bb027Id = dd061_cfgimp.Dd061Bb027Id,
-                                Dd061Bb027bCfgimpId = dd061_cfgimp.Dd061Bb027bCfgimpId,
-                                Dd061Bb027bCodgcst = dd061_cfgimp.Dd061Bb027bCodgcst,
-                                Dd061Bb027bRegimeId = dd061_cfgimp.Dd061Bb027bRegimeId,
-                                Dd061Bb027bOrigemId = dd061_cfgimp.Dd061Bb027bOrigemId,
-                                Dd061Bb027bCstIcmsId = dd061_cfgimp.Dd061Bb027bCstIcmsId,
-                                Dd061Bb027bCstIpiId = dd061_cfgimp.Dd061Bb027bCstIpiId,
-                                Dd061Bb027bCstPisId = dd061_cfgimp.Dd061Bb027bCstPisId,
-                                Dd061NatBcCredPis = dd061_cfgimp.Dd061NatBcCredPis,
-                                Dd061Bb027bCstCofinsId = dd061_cfgimp.Dd061Bb027bCstCofinsId,
-                                Dd061NatBcCredCofins = dd061_cfgimp.Dd061NatBcCredCofins,
-                                Dd061Bb027bInfornf = dd061_cfgimp.Dd061Bb027bInfornf,
-                                Dd061Bb027bInforipi = dd061_cfgimp.Dd061Bb027bInforipi,
-                                Dd061Bb027bInforpis = dd061_cfgimp.Dd061Bb027bInforpis,
-                                Dd061Bb027bInforcofins = dd061_cfgimp.Dd061Bb027bInforcofins,
-                                Dd061Bb027bModbcId = dd061_cfgimp.Dd061Bb027bModbcId,
-                                Dd061Bb027bMotdesoneracao = dd061_cfgimp.Dd061Bb027bMotdesoneracao,
-                                Dd061Bb027bUfDestId = dd061_cfgimp.Dd061Bb027bUfDestId,
-                                Dd061Bb027bClassecontaId = dd061_cfgimp.Dd061Bb027bClassecontaId,
-                                Dd061Bb027bCfopStaticaId = dd061_cfgimp.Dd061Bb027bCfopStaticaId,
-                                Dd061Bb027bModalbcIcmsSt = dd061_cfgimp.Dd061Bb027bModalbcIcmsSt,
-                                Dd061Bb027bAliquota = dd061_cfgimp.Dd061Bb027bAliquota,
-                                Dd061Bb027bReducaobase = dd061_cfgimp.Dd061Bb027bReducaobase,
-                                Dd061Bb027bMp255Id = dd061_cfgimp.Dd061Bb027bMp255Id,
-                                Dd061Bb027bReducaobcst = dd061_cfgimp.Dd061Bb027bReducaobcst,
-                                Dd061Bb027CfopId = dd061_cfgimp.Dd061Bb027CfopId,
-                                Dd061Bb027bCfopExcecaoId = dd061_cfgimp.Dd061Bb027bCfopExcecaoId,
-                                Dd061Bb027bCenquadIpiId = dd061_cfgimp.Dd061Bb027bCenquadIpiId,
-                                Dd061Bb027bAliqInternauf = dd061_cfgimp.Dd061Bb027bAliqInternauf,
-                                Dd061Bb027bIndpres = dd061_cfgimp.Dd061Bb027bIndpres,
+                                TenantId = bb027_reforma.TenantId,
+                                Id = bb027_reforma.Id,
+                                Bb027Filial = bb027_reforma.Bb027Filial,
+                                Bb027Codigo = bb027_reforma.Bb027Codigo,
+                                Bb027Descricao = bb027_reforma.Bb027Descricao,
+                                Bb027Baixaestoque = bb027_reforma.Bb027Baixaestoque,
+                                Bb027Geracreceber = bb027_reforma.Bb027Geracreceber,
+                                Bb027Atualizaprcompra = bb027_reforma.Bb027Atualizaprcompra,
+                                Bb027Calcsubstituicao = bb027_reforma.Bb027Calcsubstituicao,
+                                Bb027Calculaiss = bb027_reforma.Bb027Calculaiss,
+                                Bb027Cfopdentroestado = bb027_reforma.Bb027Cfopdentroestado,
+                                Bb027Cfopforaestado = bb027_reforma.Bb027Cfopforaestado,
+                                Bb027Agregasubstrib = bb027_reforma.Bb027Agregasubstrib,
+                                Bb027Difa = bb027_reforma.Bb027Difa,
+                                Bb027Icst = bb027_reforma.Bb027Icst,
+                                Bb027Irrf = bb027_reforma.Bb027Irrf,
+                                Bb027Pis = bb027_reforma.Bb027Pis,
+                                Bb027Cofins = bb027_reforma.Bb027Cofins,
+                                Bb027Irpj = bb027_reforma.Bb027Irpj,
+                                Bb027Icmsdiferido = bb027_reforma.Bb027Icmsdiferido,
+                                Bb027Geraestatistica = bb027_reforma.Bb027Geraestatistica,
+                                Bb027Codgcst = bb027_reforma.Bb027Codgcst,
+                                Bb027Transdevolucao = bb027_reforma.Bb027Transdevolucao,
+                                Bb027Reducaoicms = bb027_reforma.Bb027Reducaoicms,
+                                Bb027Reducaoipi = bb027_reforma.Bb027Reducaoipi,
+                                Bb027Reducaoicmsst = bb027_reforma.Bb027Reducaoicmsst,
+                                Bb027Reducaoiss = bb027_reforma.Bb027Reducaoiss,
+                                Empresaid = bb027_reforma.Empresaid,
+                                Bb027EntsaiId = bb027_reforma.Bb027EntsaiId,
+                                Bb027PodertercId = bb027_reforma.Bb027PodertercId,
+                                Bb027CalcicmsId = bb027_reforma.Bb027CalcicmsId,
+                                Bb027CalcipiId = bb027_reforma.Bb027CalcipiId,
+                                Bb027SomaipiBaseicmsId = bb027_reforma.Bb027SomaipiBaseicmsId,
+                                Bb027IpiBrutoId = bb027_reforma.Bb027IpiBrutoId,
+                                Bb027BaseicmsbrutaliqId = bb027_reforma.Bb027BaseicmsbrutaliqId,
+                                Bb027BasesubsbrutaliqId = bb027_reforma.Bb027BasesubsbrutaliqId,
+                                Bb027CfopStaticaId = bb027_reforma.Bb027CfopStaticaId,
+                                Bb027TdevolucaoId = bb027_reforma.Bb027TdevolucaoId,
+                                Bb027RegimeId = bb027_reforma.Bb027RegimeId,
+                                Bb027CfopForaestadoId = bb027_reforma.Bb027CfopForaestadoId,
+                                Bb027Hashid = bb027_reforma.Bb027Hashid,
+                                Bb027Descnatoper = bb027_reforma.Bb027Descnatoper,
+                                Bb027CalcajusteicmsId = bb027_reforma.Bb027CalcajusteicmsId,
+                                Bb027CodgajusteicmsId = bb027_reforma.Bb027CodgajusteicmsId,
+                                //Bb027Icmsdiferidoid = bb027_reforma.Bb027Icmsdiferidoid,
+                                Bb027PicmsDiferido = bb027_reforma.Bb027PicmsDiferido,
+                                Bb027Tdevolucao = bb027_reforma.Bb027Tdevolucao,
                             } : null,
 
                             NavSpedInCenqIpi = spedIncenq_IPI != null ? new Osusr66cSpedInCenqIpi
@@ -782,6 +995,60 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                                 IsActive = stRelevancia.IsActive,
                                 Codgcs = stRelevancia.Codgcs,
                             } : null,
+
+                            NavAA143LeiComp = aa143_leicomp != null ? new CSICP_AA143
+                            {
+                                Id = aa143_leicomp.Id,
+                                Aa043Artigo = aa143_leicomp.Aa043Artigo,
+                                Aa043LcRedacao = aa143_leicomp.Aa043LcRedacao,
+                                Aa043Ec = aa143_leicomp.Aa043Ec
+
+                            } : null,
+
+                            NavAA144ClassTrib = aa144_classtrib != null ? new OsusrE9aCsicpAa144
+                            {
+                                Id = aa144_classtrib.Id,
+                                CstibsCbs = aa144_classtrib.CstibsCbs,
+                                DescricaocstibsCbs = aa144_classtrib.DescricaocstibsCbs,
+                                Cclasstrib = aa144_classtrib.Cclasstrib,
+                                Descricaocclasstrib = aa144_classtrib.Descricaocclasstrib,
+                                Isactive = aa144_classtrib.Isactive
+
+                            } : null,
+
+                            NavAA144ISClassTrib = aa144_ISclasstrib != null ? new OsusrE9aCsicpAa144
+                            {
+                                Id = aa144_ISclasstrib.Id,
+                                CstibsCbs = aa144_ISclasstrib.CstibsCbs,
+                                DescricaocstibsCbs = aa144_ISclasstrib.DescricaocstibsCbs,
+                                Cclasstrib = aa144_ISclasstrib.Cclasstrib,
+                                Descricaocclasstrib = aa144_ISclasstrib.Descricaocclasstrib,
+                                Isactive = aa144_ISclasstrib.Isactive
+
+                            } : null,
+
+                            NavAA144TribReg = aa144_tribreg != null ? new OsusrE9aCsicpAa144
+                            {
+                                Id = aa144_tribreg.Id,
+                                CstibsCbs = aa144_tribreg.CstibsCbs,
+                                DescricaocstibsCbs = aa144_tribreg.DescricaocstibsCbs,
+                                Cclasstrib = aa144_tribreg.Cclasstrib,
+                                Descricaocclasstrib = aa144_tribreg.Descricaocclasstrib,
+                                Isactive = aa144_tribreg.Isactive
+                            } : null,
+
+                            NavAA150Ccredpre = aa150_ccredpres != null ? new OsusrE9aCsicpAa150Ccredpre
+                            {
+                                Id = aa150_ccredpres.Id,
+                                Label = aa150_ccredpres.Label,
+                                Order = aa150_ccredpres.Order,
+                                IsActive = aa150_ccredpres.IsActive,
+                                CodgCs = aa150_ccredpres.CodgCs
+                            } : null,
+
+                            NavListDD061 = listdd061,
+                            NavDD060Combs = dd060Combs,
+                            NavListDD060CombsLa01 = listdd060CombLa01,
                         };
 
             var result = await query.ToListAsync();

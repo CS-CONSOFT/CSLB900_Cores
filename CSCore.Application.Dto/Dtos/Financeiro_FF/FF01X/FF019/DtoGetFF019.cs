@@ -1,9 +1,12 @@
-﻿using System;
+﻿using CSBS101._82Application.Dto.BB00X.BB026;
+using CSBS101.C82Application.Dto.BB00X.BB00X.BB008;
+using CSCore.Domain;
+using CSCore.Domain.CS_Models.CSICP_FF;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CSCore.Domain.CS_Models.CSICP_FF;
 
 namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF019
 {
@@ -19,6 +22,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF019
 
         public string? Ff019Condicaoid { get; set; }
 
-        public virtual CSICP_FF000? Ff000 { get; set; }
+        public Dto_GetBB008_Exibicao? NavCondicaoPgto { get; set; }
+        public Dto_GetBB026_Exibicao? NavFormaPgto { get; set; }
     }
 }

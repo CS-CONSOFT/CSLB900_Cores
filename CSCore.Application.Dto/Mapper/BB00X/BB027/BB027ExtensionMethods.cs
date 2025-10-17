@@ -126,5 +126,66 @@ namespace CSBS101._82Application.ExtensionsMethods.BB00X
                 Bb027Descnatoper = entity.Bb027Descnatoper
             };
         }
+
+        public static DtoGetBB027Imp ToDtoGetBB027ImpSemNavs(this CSICP_Bb027Imp entity)
+        {
+            return new DtoGetBB027Imp
+            {
+                TenantId = entity.TenantId,
+                Bb027bId = entity.Bb027bId,
+                Bb027Id = entity.Bb027Id,
+                Bb027bImpostosId = entity.Bb027bImpostosId,
+                Bb027bCodgfilial = entity.Bb027bCodgfilial,
+                Bb027bCodgtransacao = entity.Bb027bCodgtransacao,
+                Bb027bCodgcst = entity.Bb027bCodgcst,
+                Bb027bRegimeId = entity.Bb027bRegimeId,
+                Bb027bOrigemId = entity.Bb027bOrigemId,
+                Bb027bCstIcmsId = entity.Bb027bCstIcmsId,
+                Bb027bCstIpiId = entity.Bb027bCstIpiId,
+                Bb027bCstPisId = entity.Bb027bCstPisId,
+                Bb027bNatBcCredPis = entity.Bb027bNatBcCredPis,
+                Bb027bCstCofinsId = entity.Bb027bCstCofinsId,
+                Bb027bNatBcCredCofins = entity.Bb027bNatBcCredCofins,
+                Bb027bInformacoesnf = entity.Bb027bInformacoesnf,
+                Bb027bInformacoesipi = entity.Bb027bInformacoesipi,
+                Bb027bInformacoespis = entity.Bb027bInformacoespis,
+                Bb027bInformacoescofins = entity.Bb027bInformacoescofins,
+                Bb027bModbcId = entity.Bb027bModbcId,
+                Bb027bMotdesoneracaoid = entity.Bb027bMotdesoneracaoid,
+                Bb027bUfDestId = entity.Bb027bUfDestId,
+                Bb027bClassecontaId = entity.Bb027bClassecontaId,
+                Bb027bModalbcIcmsStId = entity.Bb027bModalbcIcmsStId,
+                Bb027bAliquota = entity.Bb027bAliquota,
+                Bb027bReducaobase = entity.Bb027bReducaobase,
+                Bb027bMp255Id = entity.Bb027bMp255Id,
+                Bb027bReducaobcst = entity.Bb027bReducaobcst,
+                Bb027bCfopStaticaId = entity.Bb027bCfopStaticaId,
+                Bb027bCenquadIpiId = entity.Bb027bCenquadIpiId,
+                Bb027bAliqInternauf = entity.Bb027bAliqInternauf,
+                Bb027bHashid = entity.Bb027bHashid,
+                Bb027bIsvicmsdesSubtrai = entity.Bb027bIsvicmsdesSubtrai,
+                Bb027bFcalcicmsdesId = entity.Bb027bFcalcicmsdesId,
+                Bb027bPicmsDiferido = entity.Bb027bPicmsDiferido,
+                Bb027bVicmsdesonsubId = entity.Bb027bVicmsdesonsubId,
+                Bb027cIndpres = entity.Bb027cIndpres,
+                Bb027bCbenef = entity.Bb027bCbenef,
+                Bb027bPpropocaodestino = entity.Bb027bPpropocaodestino,
+                Bb027bRfclasstribId = entity.Bb027bRfclasstribId,
+                Bb027bRflcId = entity.Bb027bRflcId,
+                Bb027bTpdebcreid = entity.Bb027bTpdebcreid,
+                Bb027bPaliqefetregIbsUf = entity.Bb027bPaliqefetregIbsUf,
+                Bb027bPaliqefetregIbsMun = entity.Bb027bPaliqefetregIbsMun,
+                Bb027bPcredpresIbsUf = entity.Bb027bPcredpresIbsUf,
+                Bb027bPcredpresIbsMun = entity.Bb027bPcredpresIbsMun,
+                Bb027bPcredpresCbs = entity.Bb027bPcredpresCbs,
+                Bb027bPdifCbs = entity.Bb027bPdifCbs,
+                Bb027bPaliqefetregCbs = entity.Bb027bPaliqefetregCbs,
+                Bb027bPdifIbs = entity.Bb027bPdifIbs,
+                Bb027bIsRfclasstribId2 = entity.Bb027bIsRfclasstribId2,
+                Bb027bPreducaoibs = entity.Bb027bPreducaoibs,
+                Bb027bPreducaocbs = entity.Bb027bPreducaocbs,
+                Bb027bCcredpreid = entity.Bb027bCcredpreid,
+            };
+        }
     }
 }

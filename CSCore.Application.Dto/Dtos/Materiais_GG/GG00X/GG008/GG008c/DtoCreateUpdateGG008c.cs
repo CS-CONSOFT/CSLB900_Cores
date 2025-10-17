@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CSCore.Domain.CS_Models.CSICP_GG;
-using CSCore.Ifs.InterfaceBase;
+﻿using CSCore.Domain.CS_Models.CSICP_GG;
 using CSLB900.MSTools.Enumeradores;
 using static CSLB900.MSTools.Enumeradores.EnumTipoRegistroGG008c;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG008.GG008c
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008c
 {
     public class DtoCreateUpdateGG008c
     {

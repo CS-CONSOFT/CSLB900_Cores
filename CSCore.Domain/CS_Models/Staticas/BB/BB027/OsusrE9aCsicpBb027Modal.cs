@@ -15,5 +15,5 @@ public partial class CSICP_Bb027Modal
 
     public string? Digito { get; set; }
 
-    public ICollection<CSICP_Bb027Imp> OsusrE9aCsicpBb027Imps { get; set; } = new List<CSICP_Bb027Imp>();
+    //public ICollection<CSICP_Bb027Imp> OsusrE9aCsicpBb027Imps { get; set; } = new List<CSICP_Bb027Imp>();
 }

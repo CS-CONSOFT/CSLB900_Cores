@@ -1,6 +1,8 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
 using System.ComponentModel.DataAnnotations.Schema;
 using CSCore.Domain.CS_Models.Staticas.GG;
+using CSCore.Domain.CS_Models.CSICP_AA;
+using CSCore.Domain.CS_Models.Staticas.AA;
 
 namespace CSCore.Domain.CS_Models.CSICP_DD;
 
@@ -279,9 +281,13 @@ public partial class CSICP_DD060
     public int? Dd060Nroprctabela { get; set; }
 
     //--------------------Reforma Tributária--------------------//
+  // Define relacionamento com CSICP_BB027
+    [ForeignKey("CSICP_BB027")]
 
-    [Column("DD080_RFTRANSACAO_ID", TypeName = "nvarchar(72)")]
-    public string? DD080_RFTRANSACAO_ID { get; set; }
+    [Column("DD060_RFTRANSACAO_ID", TypeName = "nvarchar(72)")]
+    public string? DD060_RFTRANSACAO_ID { get; set; }
+    public CSICP_Bb027? CSICP_BB027 { get; set; }
+    // fim relacionamento
 
     //-------------------------------------------------------//
 
@@ -301,8 +307,10 @@ public partial class CSICP_DD060
     public CSICP_GG008Kdx? NavGG008Kdx { get; set; }
     [NotMapped]
     public CSICP_GG021? NavGG021 { get; set; }
+    //[NotMapped]
+    //public CSICP_DD040? NavDD040NF { get; set; }
     [NotMapped]
-    public CSICP_DD040? NavDD040NF { get; set; }
+    public CSICP_DD061Cfgimp? NavDD061Cfgimp { get; set; }
     [NotMapped]
     public CSICP_AA031Cstori? NavAA031Cstori { get; set; }
     [NotMapped]
@@ -320,9 +328,7 @@ public partial class CSICP_DD060
     [NotMapped]
     public CSICP_Bb027Motivo? NavBB027Motivo { get; set; }
     [NotMapped]
-    public CSICP_DD061Cfgimp? NavDD061Cfgimp { get; set; }
-    [NotMapped]
-    public OsusrE9aCsicpGg021cest? NavGG021Cest { get; set; }
+    public CSICP_Bb027? NavBB027Reforma { get; set; }
     [NotMapped]
     public SpedCsicpStrelevancium? NavStRelavancium { get; set; }
     [NotMapped]
@@ -333,6 +339,17 @@ public partial class CSICP_DD060
     public IEnumerable<CSICP_DD061> NavListDD061 { get; set; } = [];
     [NotMapped]
     public CSICP_DD060comb? NavDD060Combs { get; set; }
+    [NotMapped]
+    public CSICP_AA143? NavAA143LeiComp { get; set; }
+    [NotMapped]
+    public OsusrE9aCsicpAa144? NavAA144ClassTrib { get; set; }
+    [NotMapped]
+    public OsusrE9aCsicpAa144? NavAA144ISClassTrib { get; set; }
+    [NotMapped]
+    public OsusrE9aCsicpAa144? NavAA144TribReg { get; set; }
+    [NotMapped]
+    public OsusrE9aCsicpAa150Ccredpre? NavAA150Ccredpre { get; set; }
+    [NotMapped]
     public IEnumerable<CSICP_DD060combla01> NavListDD060CombsLa01 { get; set; } = [];
 }
 

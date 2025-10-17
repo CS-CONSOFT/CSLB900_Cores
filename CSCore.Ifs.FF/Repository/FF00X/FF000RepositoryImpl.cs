@@ -14,10 +14,16 @@ namespace CSCore.Ifs.FF.Repository.FF00X
     {
         private readonly AppDbContext _appDbContext = appDbContext;
 
-        public async Task<CSICP_FF000?> GetByIdAsync(int tenant, string id)
+        public async Task<CSICP_FF000?> GetByIdAsync(int tenant, string? id, string? estabID)
         {
             IQueryable<CSICP_FF000> query = GetQueryBase(tenant);
-            CSICP_FF000? cSICP_FF000 = await query.FirstOrDefaultAsync(e => e.Ff000Id == id);
+            if(estabID != null)
+                query = query.Where(e => e.Ff000EstabId!.Equals(estabID));
+
+            if(id != null)
+                query = query.Where(e => e.Ff000Id!.Equals(id));
+
+            CSICP_FF000? cSICP_FF000 = await query.FirstOrDefaultAsync();
             return cSICP_FF000;
         }
 

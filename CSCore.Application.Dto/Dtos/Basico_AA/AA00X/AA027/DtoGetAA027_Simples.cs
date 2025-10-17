@@ -36,4 +36,9 @@ namespace CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA027
 
         public string? Aa027Naturalidade { get; set; }
     }
+
+    public class DtoGetAA027Sigla
+    {
+        public string? Aa027Sigla { get; set; }
+    }
 }

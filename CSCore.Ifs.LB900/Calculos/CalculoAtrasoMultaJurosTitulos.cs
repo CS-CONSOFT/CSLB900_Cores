@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
+using CSCore.Domain.Interfaces.Calculos.CalculoAtrasoMultaJurosTitulos;
+using CSCore.Domain.Interfaces.Calculos.CalculoAtrasoMultaJurosTitulos.Parametros;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.LB900.Calculos.Parametros;
 using CSLB900.MSTools.Calculos;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,12 @@ namespace CSCore.Ifs.LB900.Calculos
             _appDbContext = appDbContext;
         }
 
+
+        /// <summary>
+        /// Utilizar esse método quando for calcular títulos de contas a receber, pois ele busca os parâmetros padrão na tabela FF000
+        /// </summary>
+        /// <param name="InEntradaCalculo"></param>
+        /// <returns></returns>
         public async Task<PrmRetornoCalculo> CalcularContasAReceber(PrmEntradaCalculo InEntradaCalculo)
         {
             CSICP_FF000? WorkFF000 = await RecuperarParametrosTitulo(InEntradaCalculo);
@@ -22,6 +29,12 @@ namespace CSCore.Ifs.LB900.Calculos
             return CalcularTitulos(InEntradaCalculo, WorkFF000);
         }
 
+
+        /// <summary>
+        /// Utilizar esse método quando for calcular títulos de contas a pagar, pois ele usa os parametros enviados
+        /// </summary>
+        /// <param name="InEntradaCalculo"></param>
+        /// <returns></returns>
         public PrmRetornoCalculo CalcularContasAPagar(PrmEntradaCalculo InEntradaCalculo)
         {
             return CalcularTitulos(InEntradaCalculo, InCSICPFF000: null);

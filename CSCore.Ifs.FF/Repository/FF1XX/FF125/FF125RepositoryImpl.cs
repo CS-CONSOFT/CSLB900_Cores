@@ -5,7 +5,7 @@ using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.FF.Repository.FF1XX.FF125.IncludesFF125List;
 using CSLB900.MSTools.Extensao;
-using GG104Materiais.C82Application.Service.FF1XX.FF125;
+using FF105Financeiro.C82Application.Service.FF1XX.FF125;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
@@ -71,7 +71,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF125
 
         
 
-        private IQueryable<CSICP_FF125> FiltraQuandoExisteFiltro(IQueryable<CSICP_FF125> query, PrmFiltrosFF125Repo InPrmFiltrosFF125, params ICSFilter<CSICP_FF125>[] InFiltros)
+        private IQueryable<CSICP_FF125> FiltraQuandoExisteFiltro(IQueryable<CSICP_FF125> query,
+            PrmFiltrosFF125Repo InPrmFiltrosFF125, params ICSFilter<CSICP_FF125>[] InFiltros)
         {
             foreach (var filtro in InFiltros)
             {

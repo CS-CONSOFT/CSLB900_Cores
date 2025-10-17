@@ -1,6 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.StaticaSped;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG002
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG002
 {
     public class DtoGetGG002
     {

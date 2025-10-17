@@ -1,7 +1,7 @@
 ﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG074;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using GG104Materiais.C82Application.Mapper;
-using GG104Materiais.C82Application.Mapper.GG008;
+using CSCore.Application.Dto.Mapper.GG00X;
+using CSCore.Application.Dto.Mapper.GG00X;
 
 namespace CSCore.Application.Dto.Mapper.GG00X
 {

@@ -1,5 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_DD;
-using CSCore.Ifs.InterfaceBase;
+using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.DD
 {

@@ -5,10 +5,10 @@ using CSBS101._82Application.Mapper.BB00X.BB012;
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008Kdx;
 using CSCore.Application.Dto.Mapper.GG00X;
 using CSCore.Domain.CS_Models.Staticas.GG;
-using GG104Materiais.C82Application.Dto.GG00X.GG008.GG008Kdx;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008Kdx;
 
-namespace GG104Materiais.C82Application.Mapper.GG008
-{
+namespace CSCore.Application.Dto.Mapper.GG00X;
+
     public static class GG008KdxMapper
     {
         public static DtoGetGG008Kdx ToDtoGet(this CSICP_GG008Kdx entity)
@@ -440,4 +440,4 @@ namespace GG104Materiais.C82Application.Mapper.GG008
             };
         }
     }
-}
+

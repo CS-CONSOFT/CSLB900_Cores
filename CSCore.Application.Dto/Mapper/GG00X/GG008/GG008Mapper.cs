@@ -5,10 +5,10 @@ using CSCore.Application.Dto.Mapper.GG00X;
 using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSSY103.C82Application.Mapper;
-using GG104Materiais.C82Application.Dto.GG00X.GG008;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008;
 
-namespace GG104Materiais.C82Application.Mapper.GG008
-{
+namespace CSCore.Application.Dto.Mapper.GG00X;
+
     public static class GG008Mapper
     {
         public static DtoGetGG008 ToDtoGet(this CSICP_GG008 entity)
@@ -331,5 +331,5 @@ namespace GG104Materiais.C82Application.Mapper.GG008
             };
         }
     }
-}
+
 

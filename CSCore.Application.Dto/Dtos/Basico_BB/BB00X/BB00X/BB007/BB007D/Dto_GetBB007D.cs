@@ -1,5 +1,5 @@
 ﻿using CSBS101.C82Application.Dto.BB00X.BB00X.BB001;
-using GG104Materiais.C82Application.Dto.GG00X.GG001;
+using FF105Financeiro.C82Application.Dto.GG00X.GG001;
 
 namespace CSBS101.C82Application.Dto.BB00X.BB00X.BB007.BB007D
 {

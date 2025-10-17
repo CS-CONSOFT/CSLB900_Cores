@@ -15,7 +15,7 @@ namespace CSCore.Ifs.GG.Repository.GG._05X.GG055
     public class GG055RepositoryImpl : RepositorioBaseImpl<CSICP_GG055>, IGG055Repository
     {
         private readonly AppDbContext _appDbContext;
-        public GG055RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
+        public GG055RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Gg055Id", "TenantId")
         {
             _appDbContext = appDbContext;
         }

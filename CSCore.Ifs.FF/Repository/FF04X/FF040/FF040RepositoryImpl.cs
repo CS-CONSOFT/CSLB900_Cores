@@ -32,6 +32,7 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
         {
             IQueryable<CSICP_FF040> query = _appDbContext.OsusrE9aCsicpFf040s
                 .AsNoTracking()
+                .Include(e => e.NavBB001Estabelecimento)
                 .Include(e => e.NavBB005CCustoID)
                 .Include(e => e.NavBB012ContaID)
                 .Include(e => e.NavBB006AgCobradorID)
@@ -63,8 +64,9 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
                 new FiltroEstabIDFF040(filtros.InEstabID),
                 new FiltroContaIDFF040(filtros.InContaID),
                 new FiltroProtocoloNumberFF040(filtros.InProtocoloNumber),
-                new FiltroDataMovtFF040(filtros.DataInicio, filtros.DataFim),
-                new FiltroStatusIDFF040(filtros.InStatusID),
+                new FiltroDataMovtFF040(filtros.InDataInicio, filtros.InDataFim),
+                new FiltroSituacaoIDFF040(filtros.InSituacaoID),
+                new FiltroTipoRegistroIDFF040(filtros.InTipoRegistro)
             ];
         }
     }

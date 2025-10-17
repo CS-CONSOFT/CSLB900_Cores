@@ -25,6 +25,77 @@ namespace CSCore.Ifs.FF.Repository.FF01X
             return cSICP_FF017;
         }
 
+        public async Task<bool> SumarizarOsTotais(CSICP_FF017 WorkFF017)
+        {
+            var WorkQuery = _appDbContext.OsusrE9aCsicpFf018s
+                .Where(e => e.TenantId == WorkFF017.TenantId && e.Ff017Id == WorkFF017.Id);
+
+            var WorkSumValorTitulo = await WorkQuery.SumAsync(e => e.Ff018ValorTitulo);
+            var WorkSumValorJuros = await WorkQuery.SumAsync(e => e.Ff018ValorJuros);
+            var WorkSumValorMulta = await WorkQuery.SumAsync(e => e.Ff018ValorMulta);
+            var WorkTotalEmAberto = await WorkQuery.SumAsync(e => e.Ff018ValorAberto);
+            var WorkValorRenegociado = WorkTotalEmAberto - WorkFF017.Ff017TotalDescontos;
+
+
+            WorkFF017.Ff017TotalTitulos = WorkSumValorTitulo;
+            WorkFF017.Ff017TotalJuros = WorkSumValorJuros;
+            WorkFF017.Ff017TotalMulta = WorkSumValorMulta;
+            WorkFF017.Ff017TotalAberto = WorkTotalEmAberto;
+            WorkFF017.Ff017Totrenegociado = WorkValorRenegociado < 0 ? WorkValorRenegociado * -1 : WorkValorRenegociado;
+            LimparNavegacoes(WorkFF017);
+
+            _appDbContext.OsusrE9aCsicpFf017s.Update(WorkFF017);
+
+            return true;
+        }
+
+        private static void LimparNavegacoes(CSICP_FF017 WorkFF017)
+        {
+            WorkFF017.NavBB001 = null;
+            WorkFF017.NavBB005 = null;
+            WorkFF017.NavBB006 = null;
+            WorkFF017.NavBB001 = null;
+            WorkFF017.NavBB005 = null;
+            WorkFF017.NavBB006 = null;
+            WorkFF017.NavBB008 = null;
+            WorkFF017.NavBB009 = null;
+            WorkFF017.NavBB012 = null;
+            WorkFF017.NavBB026 = null;
+            WorkFF017.NavDD125 = null;
+            WorkFF017.NavFF107vc = null;
+            WorkFF017.NavFF003 = null;
+            WorkFF017.NavSY001 = null;
+        }
+
+        public async Task<(List<CSICP_FF017>, int)> GetListAsync(int in_tenant, string in_estabId,
+            string? in_nomeCliente, DateTime? in_dataInicial, DateTime? in_dataFinal, int in_page, int in_pageSize)
+        {
+            IQueryable<CSICP_FF017> query = GetQueryBase(in_tenant);
+            query = FiltraQuandoExisteFiltro(in_estabId, in_nomeCliente, in_dataInicial, in_dataFinal, query);
+
+            var queryCount = query;
+            var count = queryCount.Count();
+            query = query.PaginacaoNoBanco(in_page, in_pageSize);
+
+            return (await query.ToListAsync(), count);
+        }
+
+        private IQueryable<CSICP_FF017> FiltraQuandoExisteFiltro(string in_estabId, string? in_nomeCliente,
+            DateTime? in_dataInicial, DateTime? in_dataFinal, IQueryable<CSICP_FF017> query)
+        {
+            if (!string.IsNullOrEmpty(in_estabId))
+                query = query.Where(e => e.Ff017Filialid == in_estabId);
+            if (!string.IsNullOrEmpty(in_nomeCliente))
+                query = query.Where(e => e.NavBB012 != null && e.NavBB012.Bb012NomeCliente.Contains(in_nomeCliente));
+            if (in_dataInicial != null)
+                query = query.Where(e => e.Ff017DataRenegociacao >= in_dataInicial);
+            if (in_dataFinal != null)
+                query = query.Where(e => e.Ff017DataRenegociacao <= in_dataFinal);
+            return query;
+        }
+
+
+
         private IQueryable<CSICP_FF017> GetQueryBase(int in_tenant)
         {
             return from ff017 in _appDbContext.OsusrE9aCsicpFf017s
@@ -75,6 +146,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                    from sy001 in sy001_ff017_join.DefaultIfEmpty()
 
                    where ff017.TenantId == in_tenant
+
                    select new CSICP_FF017
                    {
                        TenantId = ff017.TenantId,
@@ -211,32 +283,5 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                    };
         }
 
-        public async Task<(List<CSICP_FF017>, int)> GetListAsync(int in_tenant, string in_estabId,
-            string? in_nomeCliente, DateTime? in_dataInicial, DateTime? in_dataFinal, int in_page, int in_pageSize)
-        {
-            IQueryable<CSICP_FF017> query = GetQueryBase(in_tenant);
-            query = FiltraQuandoExisteFiltro(in_estabId, in_nomeCliente, in_dataInicial, in_dataFinal, query);
-
-            var queryCount = query;
-            var count = queryCount.Count();
-            query = query.PaginacaoNoBanco(in_page, in_pageSize);
-
-            return (await query.ToListAsync(), count);
-        }
-
-        private IQueryable<CSICP_FF017> FiltraQuandoExisteFiltro(string in_estabId, string? in_nomeCliente,
-            DateTime? in_dataInicial, DateTime? in_dataFinal, IQueryable<CSICP_FF017> query)
-        {
-            if (in_estabId != null)
-                query = query.Where(e => e.Id!.Equals(in_estabId));
-            if (!string.IsNullOrEmpty(in_nomeCliente))
-                query = query.Where(e => e.NavBB012.Bb012NomeCliente.Contains(in_nomeCliente));
-            if (in_dataInicial != null)
-                query = query.Where(e => e.Ff017DataRenegociacao >= in_dataInicial);
-            if (in_dataFinal != null)
-                query = query.Where(e => e.Ff017DataRenegociacao <= in_dataFinal);
-            //tem outros filtros? Perguntar ao Agnaldo.
-            return query;
-        }
     }
 }

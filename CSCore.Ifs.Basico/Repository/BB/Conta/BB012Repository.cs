@@ -4,6 +4,7 @@ using CSCore.Ifs.Compartilhado.Utilidade;
 using CSCore.Ifs.Compartilhado.Utilidade.SiteProperties;
 using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.CS_QueryFilters;
+using CSLB900.MSTools.CS_QueryFilters.Specific;
 using CSLB900.MSTools.Extensao;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
@@ -55,7 +56,7 @@ namespace CSCore.Ifs.Repository.BB.Conta
             int? StatusId,
             int? GrupoId,
             string? CPF_CNPJ,
-            ParametrosBaseFiltro parametrosBaseFiltro
+            BB012ContaParameters parametrosBaseFiltro
             )
         {
             IQueryable<CSICP_BB012> queryCount;

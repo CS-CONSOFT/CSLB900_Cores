@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using GG104Materiais.C82Application.Dto.GG00X.GG029;
+using FF105Financeiro.C82Application.Dto.GG00X.GG029;
 
-namespace GG104Materiais.C82Application.Mapper
+namespace CSCore.Application.Dto.Mapper.GG00X
 {
     public static class GG029Mapper
     {

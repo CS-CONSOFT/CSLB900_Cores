@@ -1,4 +1,4 @@
-﻿namespace CSCore.Ifs.InterfaceBase
+﻿namespace CSLB900.MSTools.InterfaceBase
 {
     public interface IConverteParaEntidade<TEntity>
         where TEntity : class

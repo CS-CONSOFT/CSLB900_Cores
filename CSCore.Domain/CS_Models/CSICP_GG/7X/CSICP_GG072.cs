@@ -1,4 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.GG;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_GG;
 
@@ -39,6 +40,9 @@ public partial class CSICP_GG072
     public string? Dd080Id { get; set; }
 
     public decimal? Gg072Qtdsolicitada { get; set; }
+
+    [NotMapped]
+    public string? GG008ProdutoDescricao { get; set; }
 
     public CSICP_GG071? Gg071 { get; set; }
 

@@ -1,5 +1,4 @@
 using CSBS101._82Application.Dto.BB00X.BB006;
-using CSBS101._82Application.Dto.BB00X.BB012.Get;
 using CSBS101._82Application.Dto.BB00X.BB029;
 using CSBS101._82Application.ExtensionsMethods.BB00X;
 using CSBS101._82Application.Mapper.BB00X;

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using CSCore.Domain.CS_Models.Staticas.AA;
 
 namespace CSCore.Domain.CS_Models.CSICP_DD;
 
@@ -374,96 +375,106 @@ public partial class CSICP_DD040
 
     public string? Dd040Keyecommerce { get; set; }
 
-
     //NAV
+    public CSICP_BB012? NavBB012Conta { get; set; }
     public CSICP_BB001? NavBB001 { get; set; }
-    public CSICP_DD040Tnt? NavDD040Tnt { get; set; }
     public OsusrNnxSpedInDocIcm? NavSpedIcm { get; set; }
     public CSICP_DD909? NavDD909 { get; set; }
+    public CSICP_DD040Tnt? NavDD040Tnt { get; set; }
     public CSICP_DD040Ipre? NavDD040Ipre { get; set; }
     public CSICP_DD041Frete? NavDD041Frete { get; set; }
+    public List<CSICP_DD042> NavListDD042 { get; set; } = new List<CSICP_DD042>();
     //public List<CSICP_DD044> NavListDD044 { get; set; } = new List<CSICP_DD044>();
     //public List<CSICP_DD045> NavListDD045 { get; set; } = new List<CSICP_DD045>();
     //public List<CSICP_DD048> NavListDD048 { get; set; } = new List<CSICP_DD048>();
     //public List<CSICP_BB001_AXML> NavListBB001AXML { get; set; } = new List<CSICP_BB001_AXML>();
-    //public List<RepoCSICP_DD042> NavListDD042 { get; set; } = new List<RepoCSICP_DD042>();
-
-
-
 
     //---------------------Reforma Tributária---------------------//
 
-    //[Column("W33_VIS", TypeName = "decimal(15,yes)")]
-    //public decimal? W33_VIS { get; set; }
+    [Column("W33_VIS", TypeName = "decimal(15,2)")]
+    public decimal? W33_VIS { get; set; }
 
-    [Column("W35_VBCIBSCBS", TypeName = "decimal(15,yes)")]
+    [Column("W35_VBCIBSCBS", TypeName = "decimal(15,2)")]
     public decimal? W35_VBCIBSCBS { get; set; }
 
-    [Column("W38_IBSUF_VDIF", TypeName = "decimal(15,yes)")]
+    [Column("W38_IBSUF_VDIF", TypeName = "decimal(15,2)")]
     public decimal? W38_IBSUF_VDIF { get; set; }
 
-    [Column("W39_IBSUF_VDEVTRIB", TypeName = "decimal(15,yes)")]
+    [Column("W39_IBSUF_VDEVTRIB", TypeName = "decimal(15,2)")]
     public decimal? W39_IBSUF_VDEVTRIB { get; set; }
 
-    [Column("W41_VIBSUF", TypeName = "decimal(15,yes)")]
+    [Column("W41_VIBSUF", TypeName = "decimal(15,2)")]
     public decimal? W41_VIBSUF { get; set; }
 
-    [Column("W43_IBSMUN_VDIF", TypeName = "decimal(15,yes)")]
+    [Column("W43_IBSMUN_VDIF", TypeName = "decimal(15,2)")]
     public decimal? W43_IBSMUN_VDIF { get; set; }
 
-    [Column("W44_IBSMUN__VDEVTRIB", TypeName = "decimal(15,yes)")]
+    [Column("W44_IBSMUN__VDEVTRIB", TypeName = "decimal(15,2)")]
     public decimal? W44_IBSMUN__VDEVTRIB { get; set; }
 
-    [Column("W46_VIBSMUN", TypeName = "decimal(15,yes)")]
+    [Column("W46_VIBSMUN", TypeName = "decimal(15,2)")]
     public decimal? W46_VIBSMUN { get; set; }
 
-    //[Column("W47_VIBSTOT", TypeName = "decimal(15,yes)")]
-    //public decimal? W47_VIBSTOT { get; set; }
+    [Column("W47_VIBSTOT", TypeName = "decimal(15,2)")]
+    public decimal? W47_VIBSTOT { get; set; }
 
-    //[Column("W48_VCREDPRES", TypeName = "decimal(15,yes)")]
-    //public decimal? W48_VCREDPRES { get; set; }
+    [Column("W48_VCREDPRES", TypeName = "decimal(15,2)")]
+    public decimal? W48_VCREDPRES { get; set; }
 
-    //[Column("W49_VCREDPRESCONDSUS", TypeName = "decimal(15,yes)")]
-    //public decimal? W49_VCREDPRESCONDSUS { get; set; }
+    [Column("W49_VCREDPRESCONDSUS", TypeName = "decimal(15,2)")]
+    public decimal? W49_VCREDPRESCONDSUS { get; set; }
 
-    [Column("W53_CBS_VDIF", TypeName = "decimal(15,yes)")]
+    [Column("W53_CBS_VDIF", TypeName = "decimal(15,2)")]
     public decimal? W53_CBS_VDIF { get; set; }
 
-    [Column("W54_CBS_VDEVTRIB", TypeName = "decimal(15,yes)")]
+    [Column("W54_CBS_VDEVTRIB", TypeName = "decimal(15,2)")]
     public decimal? W54_CBS_VDEVTRIB { get; set; }
 
-    [Column("W56A_CBS_VCREDPRES", TypeName = "decimal(15,yes)")]
+    [Column("W56_VCBS", TypeName = "decimal(15,2)")]
+    public decimal? W56_VCBS { get; set; }
+
+    [Column("W56A_CBS_VCREDPRES", TypeName = "decimal(15,2)")]
     public decimal? W56A_CBS_VCREDPRES { get; set; }
 
-    [Column("W56B_CBS_VCREDPRESCONDSUS", TypeName = "decimal(15,yes)")]
+    [Column("W56B_CBS_VCREDPRESCONDSUS", TypeName = "decimal(15,2)")]
     public decimal? W56B_CBS_VCREDPRESCONDSUS { get; set; }
 
-    [Column("W58_VTOTIBSMONO", TypeName = "decimal(15,yes)")]
+    [Column("W58_VTOTIBSMONO", TypeName = "decimal(15,2)")]
     public decimal? W58_VTOTIBSMONO { get; set; }
 
-    [Column("W59_VTOTCBSMONO", TypeName = "decimal(15,yes)")]
+    [Column("W59_VTOTCBSMONO", TypeName = "decimal(15,2)")]
     public decimal? W59_VTOTCBSMONO { get; set; }
 
-    [Column("DD070_TPDEBCREID", TypeName = "int")]
-    public int? DD070_TPDEBCREID { get; set; }
+    // Define foreign key to OsusrE9aCsicpAa145Tpdebcre
+    [ForeignKey("NavAa145Tpdebcre")]
 
-    [Column("W59B_VCBSMONORETEN", TypeName = "decimal(15,yes)")]
+    [Column("DD040_TPDEBCREID", TypeName = "int")]
+    public int? DD040_TPDEBCREID { get; set; }
+    public OsusrE9aCsicpAa145Tpdebcre? NavAa145Tpdebcre { get; set; }
+    // foreign key definition end
+
+
+    [Column("W59B_VCBSMONORETEN", TypeName = "decimal(15,2)")]
     public decimal? W59B_VCBSMONORETEN { get; set; }
 
-    [Column("W59C_VIBSMONORETEN", TypeName = "decimal(15,yes)")]
+    [Column("W59C_VIBSMONORETEN", TypeName = "decimal(15,2)")]
     public decimal? W59C_VIBSMONORETEN { get; set; }
 
-    [Column("W59D_VCBSMONORET", TypeName = "decimal(15,yes)")]
+    [Column("W59D_VCBSMONORET", TypeName = "decimal(15,2)")]
     public decimal? W59D_VCBSMONORET { get; set; }
 
-    [Column("W60_VTOTNF", TypeName = "decimal(15,yes)")]
+    [Column("W60_VTOTNF", TypeName = "decimal(15,2)")]
     public decimal? W60_VTOTNF { get; set; }
 
-    [Column("B33_PREDUTOR", TypeName = "decimal(7,yes)")]
+    [Column("B33_PREDUTOR", TypeName = "decimal(7,4)")]
     public decimal? B33_PREDUTOR { get; set; }
 
+// define foreign key to OsusrE9aCsicpAa149Tpopgov
+    [ForeignKey("NavAa149Tpopgov")]
     [Column("B34_TPOPERGOVID", TypeName = "int")]
     public int? B34_TPOPERGOVID { get; set; }
+    public OsusrE9aCsicpAa149Tpopgov? NavAa149Tpopgov { get; set; }
+    // foreign key definition end
 
     //-------------------------------------------------------//
 }

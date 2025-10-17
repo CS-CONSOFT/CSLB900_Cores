@@ -1,7 +1,7 @@
 ﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008Kdx;
-using GG104Materiais.C82Application.Dto.GG00X.GG001;
-using GG104Materiais.C82Application.Dto.GG00X.GG016;
-using GG104Materiais.C82Application.Dto.GG00X.GG019;
+using FF105Financeiro.C82Application.Dto.GG00X.GG001;
+using FF105Financeiro.C82Application.Dto.GG00X.GG016;
+using FF105Financeiro.C82Application.Dto.GG00X.GG019;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520
 {

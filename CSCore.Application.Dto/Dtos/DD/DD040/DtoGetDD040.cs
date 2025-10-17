@@ -2,10 +2,13 @@
 using CSBS101._82Application.Dto.BB00X.BB001;
 using CSBS101._82Application.Dto.BB00X.BB001.BB001Xml;
 using CSBS101.C82Application.Dto.BB00X.BB012.Get;
+using CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA028;
 using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get.BB012MDFe;
 using CSCore.Application.Dto.Dtos.DD.DD041;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_DD;
+using CSCore.Domain.CS_Models.Staticas.AA;
 using EnviaNFeHercules.C82Application.Dto.DD.DD042;
 using EnviaNFeHercules.C82Application.Dto.DD.DD043;
 using EnviaNFeHercules.C82Application.Dto.DD.DD044;
@@ -411,7 +414,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD040
         public decimal? W56B_CBS_VCREDPRESCONDSUS { get; set; }
         public decimal? W58_VTOTIBSMONO { get; set; }
         public decimal? W59_VTOTCBSMONO { get; set; }
-        public int? DD070_TPDEBCREID { get; set; }
+        public int? DD040_TPDEBCREID { get; set; }
         public decimal? W59B_VCBSMONORETEN { get; set; }
         public decimal? W59C_VIBSMONORETEN { get; set; }
         public decimal? W59D_VCBSMONORET { get; set; }
@@ -419,26 +422,25 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD040
         public decimal? B33_PREDUTOR { get; set; }
         public int? B34_TPOPERGOVID { get; set; }
 
-        //------------------------------------------------------------//
-        public Dto_GetBB001ListSimples? NavBB001 { get; set; }
-        public Dto_GetBB012Convenio? NavBB012Conta { get; set; }
+        //---Navs Reforma Tributária---//
+        public OsusrE9aCsicpAa145Tpdebcre? NavAa145Tpdebcre { get; set; }
+        public OsusrE9aCsicpAa149Tpopgov? NavAa149Tpopgov { get; set; }
 
-        public Dto_GetAA028? NavAA028byBB001 { get; set; }
-        public Dto_GetAA027? NavAA027byBB001 { get; set; }
-        public Dto_GetAA025? NavAA025byBB001 { get; set; }
-        public CSICP_DD040Tnt? NavDD040Tnt { get; set; }
-        public CSICP_BB001Cfgfi? NavBB001Cfgfi { get; set; }
-        public CSICP_AA030Regime? NavAA030Regime { get; set; }
+
+        //------------------------------------------------------------//
+        public DtoGet_BB012MDFe? NavBB012Conta { get; set; }
+        public DtoGet_BB001paraMDFe? NavBB001 { get; set; }
         public OsusrNnxSpedInDocIcm? NavSpedIcm { get; set; }
         public CSICP_DD909? NavDD909 { get; set; }
+        public CSICP_DD040Tnt? NavDD040Tnt { get; set; }
         public CSICP_DD040Ipre? NavDD040Ipre { get; set; }
         public CSICP_DD041Frete? NavDD041Frete { get; set; }
         public List<DtoGetDD041> NavListDD041 { get; set; } = new List<DtoGetDD041>();
+        public List<DtoGetDD042> NavListDD042 { get; set; } = new List<DtoGetDD042>();
         public List<DtoGetDD044> NavListDD044 { get; set; } = new List<DtoGetDD044>();
         public List<DtoGetDD045> NavListDD045 { get; set; } = new List<DtoGetDD045>();
         public List<DtoGetDD048> NavListDD048 { get; set; } = new List<DtoGetDD048>();
         public List<Dto_GetXmlFromBB001> NavListBB001AXML { get; set; } = new List<Dto_GetXmlFromBB001>();
-        public List<DtoGetDD042> NavListDD042 { get; set; } = new List<DtoGetDD042>();
 
     }
 }

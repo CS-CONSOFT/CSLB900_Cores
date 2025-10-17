@@ -1,7 +1,7 @@
 ﻿using CSBS101.C82Application.Dto.BB00X.BB00X.BB001;
 using CSCore.Domain.CS_Models.Staticas.GG;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG001
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG001
 {
     public class DtoGetGG001
     {

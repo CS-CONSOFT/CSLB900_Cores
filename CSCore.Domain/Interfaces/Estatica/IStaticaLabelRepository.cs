@@ -71,6 +71,7 @@
 
 
         Task<int> GetIDStaticaByLabel<T>(string label, string idPropertyName = "Id") where T : class;
+        Task<T?> GetIDStaticaById<T>(int Id, string idPropertyName = "Id") where T : class;
         Task<int> GetIDStaticaByLabelWithoutIsActive<T>(string label, string idPropertyName = "Id") where T : class;
         Task<int> GetIDStaticaByCodCS<T>(int codCs, string idPropertyName = "Id") where T : class;
     }

@@ -1,7 +1,7 @@
 ﻿using CSBS101._82Application.Dto.BB00X.BB005;
 using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
 using CSCore.Domain.CS_Models.Staticas.GG;
-using GG104Materiais.C82Application.Dto.GG00X.GG001;
+using FF105Financeiro.C82Application.Dto.GG00X.GG001;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG073
 {

@@ -1,11 +1,12 @@
 using System;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX;
+using CSCore.Domain.CS_Models.CSICP_FF;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF1XX;
 
 public static class FF127Mapper
 {
-    public static DtoGetCSICP_FF127Simples? ToDtoGetSimples(this CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF127 entity)
+    public static DtoGetCSICP_FF127Simples? ToDtoGetSimples(this CSICP_FF127 entity)
     {
         if (entity == null) return null;
 

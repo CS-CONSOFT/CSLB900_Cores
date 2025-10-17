@@ -72,19 +72,14 @@ public partial class CSICP_FF106
 
     public int? Ff106BaixaApi { get; set; }
 
-    public virtual CSICP_FF102? Ff102 { get; set; }
-
-    public virtual CSICP_FF105? Ff105 { get; set; }
-
-    public class RepoDtoCSICP_FF106 : CSICP_FF106
-    {
-        public CSICP_BB001? NavBB001 { get; set; }
-        public CSICP_Bb006? NavBB006 { get; set; }
-        public CSICP_Bb009? NavBB009 { get; set; }
-        public CSICP_FF102? NavFF102 { get; set; }
-        public CSICP_FF105? NavFF105 { get; set; }
-        public CSICP_FF112ApiOcorrencium? NavFF112ApiOcorrencia { get; set; }
-        public CSICP_FF112ApiBaixa? NavFF112ApiBaixa { get; set; }
-        public CSICP_FF112ApiLiquidacao? NavFF112ApiLiquidacao { get; set; }
-    }
+    // Navs Movidas do RepoDtoFF106
+    public CSICP_BB001? NavBB001 { get; set; }
+    public CSICP_Bb006? NavBB006 { get; set; }
+    public CSICP_Bb009? NavBB009 { get; set; }
+    public CSICP_FF102? NavFF102 { get; set; }
+    public CSICP_FF105? NavFF105 { get; set; }
+    public CSICP_FF112ApiOcorrencium? NavFF112ApiOcorrencia { get; set; }
+    public CSICP_FF112ApiBaixa? NavFF112ApiBaixa { get; set; }
+    public CSICP_FF112ApiLiquidacao? NavFF112ApiLiquidacao { get; set; }
+    
 }

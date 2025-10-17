@@ -1,4 +1,6 @@
 ﻿using CSCore.Application.Dto.Dtos.Basico_AA.AA00X;
+using CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA027;
+using CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA028;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EnviaNFeHercules.C82Application.Dto.DD.DD061
@@ -225,7 +227,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD061
 
         public decimal? UB88_VCBSMONO { get; set; }
 
-        public decimal? UB91_QBCMONORET { get; set; }
+        public decimal? UB91_QBCMONORETEN { get; set; }
 
         public decimal? UB92_ADREMIBSRETEN { get; set; }
 
@@ -272,8 +274,11 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD061
         public string? UB110_TPCREDPRESIBSZFM { get; set; }
 
         public decimal? UB111_VCREDPRESIBSZFM { get; set; }
+        public string? RF_MemoriaCalculo { get; set; }
 
         //-------------------------------------------------------//
         public DtoGetAA037Imp? NavAA037Imp { get; set; }
+        public DtoGetAA027Sigla? NavAA027Uf { get; set; }
+        public DtoGetAA028Cidade_IBGEeDesc? NavAA028Cidade { get; set; }
     }
 }

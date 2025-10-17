@@ -1,7 +1,8 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
-using CSCore.Ifs.InterfaceBase;
+using CSLB900.MSTools.InterfaceBase;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF018
 {
     public class DtoCreateUpdateFF018 : IConverteParaEntidade<CSICP_FF018>
     {
-        public string? Ff017Id { get; set; }
+        public string Ff017Id { get; set; } = null!;
 
         public string? Ff102Tituloid { get; set; }
 
@@ -46,6 +47,9 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF018
 
         public decimal? Ff018Vabertoorig { get; set; }
 
+        [Required]
+        public string FilialLogadaIDParaProtocolo { get; set; } = null!;
+
         public CSICP_FF018 ToEntity(int tenant, string? id)
         {
             return new CSICP_FF018
@@ -72,5 +76,10 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF01X.FF018
                 Ff018Vabertoorig = Ff018Vabertoorig
                 };
         }
+    }
+
+    public class DtoCreateUpdateFF018List
+    {
+        public List<DtoCreateUpdateFF018>? ListaCreate { get; set; }
     }
 }

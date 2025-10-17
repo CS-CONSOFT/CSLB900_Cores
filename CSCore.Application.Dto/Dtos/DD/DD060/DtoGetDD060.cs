@@ -1,13 +1,16 @@
-﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008Kdx;
+﻿using CSCore.Application.Dto.Dtos.DD.DD061;
+using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008Kdx;
 using CSCore.Domain;
+using CSCore.Domain.CS_Models.CSICP_AA;
 using CSCore.Domain.CS_Models.CSICP_DD;
+using CSCore.Domain.CS_Models.Staticas.AA;
 using CSCore.Domain.CS_Models.Staticas.GG;
 using EnviaNFeHercules.C82Application.Dto.DD.DD061;
-using GG104Materiais.C82Application.Dto.GG00X.GG005;
-using GG104Materiais.C82Application.Dto.GG00X.GG006;
-using GG104Materiais.C82Application.Dto.GG00X.GG007;
-using GG104Materiais.C82Application.Dto.GG00X.GG008;
-using GG104Materiais.C82Application.Dto.GG00X.GG021;
+using FF105Financeiro.C82Application.Dto.GG00X.GG005;
+using FF105Financeiro.C82Application.Dto.GG00X.GG006;
+using FF105Financeiro.C82Application.Dto.GG00X.GG007;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008;
+using FF105Financeiro.C82Application.Dto.GG00X.GG021;
 
 namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
 {
@@ -285,7 +288,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
         public int? Dd060Nroprctabela { get; set; }
         //--------------------Reforma Tributária--------------------//
 
-        public string? DD080_RFTRANSACAO_ID { get; set; }
+        public string? DD060_RFTRANSACAO_ID { get; set; }
 
         //----------------------------------------------------------//
 
@@ -295,7 +298,8 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
         public DtoGetGG007Simples? NavGG007UnidadeSec { get; set; }
         public DtoGetGG008Simples? NavGG008Produto { get; set; }
         public DtoGetGG008Kdx_Simples? NavGG008Kdx { get; set; }
-        public DtoGetGG021Simples? NavGG021 { get; set; }
+        public DtoGetGG021Simples_ComGG021Cest? NavGG021 { get; set; }
+        public DtoGetDD061CfgImp? NavDD061Cfgimp { get; set; }
         public CSICP_AA031Cstori? NavAA031Cstori { get; set; }
         public CSICP_AA032Csticm? NavAA032Csticm { get; set; }
         public CSICP_AA033Cstipi? NavAA033Cstipi { get; set; }
@@ -304,15 +308,19 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
         public CSICP_AA038Modst? NavAA038Modst { get; set; }
         public CSICP_Bb027Modal? NavBB027Modal { get; set; }
         public CSICP_Bb027Motivo? NavBB027Motivo { get; set; }
-        public CSICP_DD040? NavDD040NF { get; set; }
-        public CSICP_DD061Cfgimp? NavDD061Cfgimp { get; set; }
-        public OsusrE9aCsicpGg021cest? NavGG021Cest { get; set; }
+        public CSICP_Bb027? NavBB027Reforma { get; set; }
         public SpedCsicpStrelevancium? NavStRelavancium { get; set; }
         public Osusr66cSpedInCenqIpi? NavSpedInCenqIpi { get; set; }
         public Osusr66cSpedInCfop? NavSpedInCfop { get; set; }
-        public IEnumerable<DtoGetDD061> NavListDD061 { get; set; } = [];
+        public CSICP_AA143? NavAA143LeiComp { get; set; }
+        public OsusrE9aCsicpAa144? NavAA144ClassTrib { get; set; }
+        public OsusrE9aCsicpAa144? NavAA144ISClassTrib { get; set; }
+        public OsusrE9aCsicpAa144? NavAA144TribReg { get; set; }
+        public OsusrE9aCsicpAa150Ccredpre? NavAA150Ccredpre { get; set; }
         public DtoGetDD060Comb? NavDD060Combs { get; set; }
         public IEnumerable<DtoGetDD060CombLa01> NavListDD060CombsLa01 { get; set; } = [];
+        public IEnumerable<DtoGetDD061> NavListDD061 { get; set; } = [];
+
 
 
     }

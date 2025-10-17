@@ -1,6 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG016
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG016
 {
     public class DtoGetGG016
     {

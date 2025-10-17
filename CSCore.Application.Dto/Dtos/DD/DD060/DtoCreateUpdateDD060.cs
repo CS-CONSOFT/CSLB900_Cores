@@ -1,5 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_DD;
-using CSCore.Ifs.InterfaceBase;
+using CSLB900.MSTools.InterfaceBase;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -423,7 +423,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
                 Dd060CashbackPvendaliq = this.Dd060CashbackPvendaliq,
                 Dd060CashbackVpremio = this.Dd060CashbackVpremio,
                 Dd060Nroprctabela = this.Dd060Nroprctabela,
-                DD080_RFTRANSACAO_ID = this.DD080_RFTRANSACAO_ID
+                DD060_RFTRANSACAO_ID = this.DD080_RFTRANSACAO_ID
             };
         }
     }

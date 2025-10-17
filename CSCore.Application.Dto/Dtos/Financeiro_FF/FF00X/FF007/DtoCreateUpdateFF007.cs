@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSCore.Domain.CS_Models.CSICP_FF;
-using CSCore.Ifs.InterfaceBase;
+using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF007
 {
