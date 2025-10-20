@@ -336,8 +336,3 @@
 //        Assert.Equal(12000m, somaTotal);
 //    }
 
-
-    #endregion
-    #endregion
-}
-
