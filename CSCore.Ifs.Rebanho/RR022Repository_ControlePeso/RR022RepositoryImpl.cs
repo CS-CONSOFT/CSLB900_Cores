@@ -34,7 +34,14 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
 
         public async Task<(List<OsusrTo3CsicpRr022>, int)> GetListRR022ByRR021IdAsync(int In_TenantID, string In_RR021ID, PrmFiltrosRR022 prm)
         {
-            IQueryable<OsusrTo3CsicpRr022> query = GetQueryBase(In_TenantID, In_RR021ID);
+            IQueryable<OsusrTo3CsicpRr022> query = _appDbContext.OsusrTo3CsicpRr022s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.TenantId == In_TenantID)
+                .Include(e => e.NavRR001Animal_RR022)
+                .Include(e => e.NavRR021LoteXAnimal_RR022)
+                .Where(e => e.NavRR021LoteXAnimal_RR022 != null &&
+                           e.NavRR021LoteXAnimal_RR022.Id == In_RR021ID);
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));
@@ -48,20 +55,6 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             return (listItems, count);
         }
 
-        private IQueryable<OsusrTo3CsicpRr022> GetQueryBase(int In_TenantID, string In_RR021ID)
-        {
-            // Busca pelo campo que liga à RR021 - ajuste conforme necessário
-            // Assumindo que existe um campo de ligação, pode ser através do LoteId + AnimalId
-            return _appDbContext.OsusrTo3CsicpRr022s
-                .AsNoTracking()
-                .AsSplitQuery()
-                .Where(e => e.TenantId == In_TenantID)
-                .Include(e => e.NavRR001Animal_RR022)
-                .Include(e => e.NavRR021LoteXAnimal_RR022)
-                .Where(e => e.NavRR021LoteXAnimal_RR022 != null && 
-                           e.NavRR021LoteXAnimal_RR022.Id == In_RR021ID);
-        }
-
         protected override ICSFilter<OsusrTo3CsicpRr022>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)
         {
             var filtros = Filtros as PrmFiltrosRR022;
@@ -70,8 +63,7 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
 
             return [
                 new FiltroAnimalIdRR022(filtros.In_AnimalId),
-                //new FiltroDtPesoRR022(filtros.In_DtPesoInicio, filtros.In_DtPesoFim),
-                //new FiltroPesoRR022(filtros.In_PesoMinimo, filtros.In_PesoMaximo)
+                new FiltroPesoRR022(filtros.In_PesoMinimo, filtros.In_PesoMaximo)
             ];
         }
     }

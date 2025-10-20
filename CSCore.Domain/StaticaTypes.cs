@@ -321,5 +321,11 @@
             UltimaBaixa = 3,
         }
 
+        public enum StaticTypeRR
+        {
+            Csicp_RR001_Ativo,
+            Csicp_RR001_Cat,
+            Csicp_RR001_Sexo
+        }
     }
 }
