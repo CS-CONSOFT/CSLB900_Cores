@@ -321,7 +321,7 @@
             UltimaBaixa = 3,
         }
 
-        public enum StaticTypeRR
+        public enum ComboTypeRR
         {
             Csicp_RR001_Ativo,
             Csicp_RR001_Cat,
