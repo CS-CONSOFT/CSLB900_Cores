@@ -37,11 +37,9 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             IQueryable<OsusrTo3CsicpRr022> query = _appDbContext.OsusrTo3CsicpRr022s
                 .AsNoTracking()
                 .AsSplitQuery()
-                .Where(e => e.TenantId == In_TenantID)
+                .Where(e => e.Rr022Loteid == In_RR021ID)
                 .Include(e => e.NavRR001Animal_RR022)
-                .Include(e => e.NavRR021LoteXAnimal_RR022)
-                .Where(e => e.NavRR021LoteXAnimal_RR022 != null &&
-                           e.NavRR021LoteXAnimal_RR022.Id == In_RR021ID);
+                .Include(e => e.NavRR021LoteXAnimal_RR022);
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));

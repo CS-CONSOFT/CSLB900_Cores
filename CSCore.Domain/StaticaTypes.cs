@@ -223,6 +223,12 @@
             CSICP_SY994Padrao
 
         }
+        public enum StaticTypeRR
+        {
+            Csicp_RR001_Ativo,
+            Csicp_RR001_Cat,
+            Csicp_RR001_Sexo
+        }
 
     }
 
@@ -319,13 +325,6 @@
             Emissao = 1,
             Vencimento = 2,
             UltimaBaixa = 3,
-        }
-
-        public enum ComboTypeRR
-        {
-            Csicp_RR001_Ativo,
-            Csicp_RR001_Cat,
-            Csicp_RR001_Sexo
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_RR;
 
@@ -9,8 +10,10 @@ public partial class OsusrTo3CsicpRr021
 
     public string Id { get; set; } = null!;
 
+    [ForeignKey("NavRR020RegLote_RR021")]
     public string? Rr021Loteid { get; set; }
 
+    [ForeignKey("NavRR001Animal_RR021")]
     public string? Rr021Animalid { get; set; }
 
     public DateTime? Rr021Dtregistro { get; set; }

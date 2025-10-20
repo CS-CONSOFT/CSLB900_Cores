@@ -20,7 +20,13 @@ namespace CSCore.Ifs.Rebanho.RR002Repository_CadastroFazenda
 
         public async Task<OsusrTo3CsicpRr002?> GetByIdAsync(int In_TenantID, string In_IDRR002)
         {
-            IQueryable<OsusrTo3CsicpRr002> query = GetQueryBase(In_TenantID);
+            IQueryable<OsusrTo3CsicpRr002> query = _appDbContext.OsusrTo3CsicpRr002s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.TenantId == In_TenantID)
+                .Include(e => e.NavAA028Cidade)
+                .Include(e => e.NavAA027UF)
+                .Include(e => e.NavAA025Pais);
 
             OsusrTo3CsicpRr002? CSICP_RR002 = await query
                 .FirstOrDefaultAsync(e => e.Id == In_IDRR002);
@@ -29,7 +35,12 @@ namespace CSCore.Ifs.Rebanho.RR002Repository_CadastroFazenda
 
         public async Task<(List<OsusrTo3CsicpRr002>, int)> GetListAsync(int In_TenantID, PrmFiltrosRR002 prm)
         {
-            IQueryable<OsusrTo3CsicpRr002> query = GetQueryBase(In_TenantID);
+            IQueryable<OsusrTo3CsicpRr002> query = _appDbContext.OsusrTo3CsicpRr002s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Include(e => e.NavAA028Cidade)
+                .Include(e => e.NavAA027UF)
+                .Include(e => e.NavAA025Pais);
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));
@@ -41,17 +52,6 @@ namespace CSCore.Ifs.Rebanho.RR002Repository_CadastroFazenda
             var listItems = await query.ToListAsync();
 
             return (listItems, count);
-        }
-
-        private IQueryable<OsusrTo3CsicpRr002> GetQueryBase(int In_TenantID)
-        {
-            return _appDbContext.OsusrTo3CsicpRr002s
-                .AsNoTracking()
-                .AsSplitQuery()
-                .Where(e => e.TenantId == In_TenantID)
-                .Include(e => e.NavAA028Cidade)
-                .Include(e => e.NavAA027UF)
-                .Include(e => e.NavAA025Pais);
         }
 
         protected override ICSFilter<OsusrTo3CsicpRr002>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)

@@ -20,7 +20,11 @@ namespace CSCore.Ifs.Rebanho.RR021Repository_LoteVsAnimal
 
         public async Task<(List<OsusrTo3CsicpRr021>, int)> GetListRR021LoteIdAsync(int In_TenantID, string In_LoteRR020ID, PrmFiltrosRR021 prm)
         {
-            IQueryable<OsusrTo3CsicpRr021> query = GetQueryBase(In_TenantID, In_LoteRR020ID);
+            IQueryable<OsusrTo3CsicpRr021> query = _appDbContext.OsusrTo3CsicpRr021s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.TenantId == In_TenantID && e.Rr021Loteid == In_LoteRR020ID)
+                .Include(e => e.NavRR001Animal_RR021);
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));
@@ -32,15 +36,6 @@ namespace CSCore.Ifs.Rebanho.RR021Repository_LoteVsAnimal
             var listItems = await query.ToListAsync();
 
             return (listItems, count);
-        }
-
-        private IQueryable<OsusrTo3CsicpRr021> GetQueryBase(int In_TenantID, string In_LoteID)
-        {
-            return _appDbContext.OsusrTo3CsicpRr021s
-                .AsNoTracking()
-                .AsSplitQuery()
-                .Where(e => e.TenantId == In_TenantID && e.Rr021Loteid == In_LoteID)
-                .Include(e => e.NavRR001Animal_RR021);
         }
 
         protected override ICSFilter<OsusrTo3CsicpRr021>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)
