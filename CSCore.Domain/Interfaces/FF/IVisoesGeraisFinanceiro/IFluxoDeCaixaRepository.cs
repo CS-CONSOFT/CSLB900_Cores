@@ -27,10 +27,6 @@ namespace CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro
     {
         public DateTime Data { get; set; }
         public DateTime DataEmissao { get; set; }
-        public string? Prefixo { get; set; }
-        public decimal? Titulo { get; set; }
-        public string? Sufixo { get; set; }
-        public string? NomeConta { get; set; }
         public decimal ValorTitulo { get; set; }
         public decimal TotalDia { get; set; }
         public decimal SaldoAnterior { get; set; }

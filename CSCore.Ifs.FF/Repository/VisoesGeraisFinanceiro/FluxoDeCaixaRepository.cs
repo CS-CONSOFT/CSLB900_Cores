@@ -35,10 +35,6 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                         {
                             Data = ff102.Ff102DataVencimento,
                             DataEmissao = ff102.Ff102DataEmissao,
-                            Prefixo = ff102.Ff102Pfx,
-                            Titulo = ff102.Ff102NoTitulo,
-                            Sufixo = ff102.Ff102Sfx,
-                            NomeConta = conta.Bb012NomeCliente,
                             ValorLiq = ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo * -1 : ff102.Ff102VlLiqTitulo,
                             IdentificadorTitulo = ff102.Ff102Tiporegistro == 1 
                                                || ff102.Ff102Tiporegistro == 2 ? "A receber" :
@@ -58,10 +54,6 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                 {
                     x.Data.Date,
                     x.DataEmissao,
-                    x.Prefixo,
-                    x.Titulo,
-                    x.Sufixo,
-                    x.NomeConta,
                     x.ValorLiq,
                     x.TipoReg,
                     x.IdentificadorTitulo,
@@ -71,10 +63,6 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                 {
                     Data = g.Key.Date,
                     g.Key.DataEmissao,
-                    g.Key.Prefixo,
-                    g.Key.Titulo,
-                    g.Key.Sufixo,
-                    g.Key.NomeConta,
                     ValorTitulo = g.Key.ValorLiq,
                     g.Key.TipoReg,
                     g.Key.IdentificadorTitulo,
@@ -96,10 +84,6 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                 {
                     Data = item.Data,
                     DataEmissao = item.DataEmissao,
-                    Prefixo = item.Prefixo,
-                    Titulo = item.Titulo,
-                    Sufixo = item.Sufixo,
-                    NomeConta = item.NomeConta,
                     IdentificadorTitulo = item.IdentificadorTitulo,
                     Label = item.Label,
                     ValorTitulo = item.ValorTitulo,
