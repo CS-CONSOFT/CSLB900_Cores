@@ -10,6 +10,7 @@
         DateOnly Prm_1o_Vencto
         );
 
+    public record MemoriaCalculoController();
     public record Rec_Memoria(int Parcela, DateOnly Data_Vencto, decimal Valor_Parcela, int Nro_Parcelas);
 
     public static class MemoriaCalculoGenerator
