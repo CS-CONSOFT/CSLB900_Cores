@@ -19,4 +19,9 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR021
             };
         }
     }
+
+    public class DtoCreateRR021List
+    {
+        public List<DtoCreateRR021>? CreateListRR021 { get; set; }
+    }
 }
