@@ -1,23 +1,32 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
-using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX
 {
     public interface IFF143Repository : IRepositorioBase<CSICP_FF143>
     {
+        Task<List<CSICP_FF143>> GetByFF140IdAsync(long? ff140Id, int tenantId, int pageNumber, int pageSize);
     }
     public class FF143RepositoryImpl : RepositorioBaseImpl<CSICP_FF143>, IFF143Repository
     {
-        public FF143RepositoryImpl(AppDbContext context) : base(context)
+        private AppDbContext AppDbContext;
+
+        public FF143RepositoryImpl(AppDbContext context, AppDbContext appDbContext) : base(context)
         {
+            AppDbContext = appDbContext;
+        }
+
+        public async Task<List<CSICP_FF143>> GetByFF140IdAsync(long? ff140Id, int tenantId, int pageNumber, int pageSize)
+        {
+            var query = AppDbContext.OsusrE9aCsicpFf143s.Where(e => e.TenantId == tenantId);
+            if(ff140Id != null)
+                    query = query.Where(e => e.Ff140RdId == ff140Id);
+            query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
+            return await query.ToListAsync();
         }
     }
 }
