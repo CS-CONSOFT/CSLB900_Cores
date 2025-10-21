@@ -85,21 +85,19 @@ namespace CSCore.Ifs.Repository.Combo
 
         public async Task<IEnumerable<object>> GetCommonListForComboBB008(int tenant, string FormaPagamentoID)
         {
-            var query = _appDbContext.OsusrE9aCsicpBb026s
-                .Where(c => c.TenantId == tenant);
-            long idCorrent = 0;
-            if (ESPECIE == TIPO_ESPECIE.AReceber)
-            {
-                idCorrent = _appDbContext.OsusrE9aCsicpFf003Tpesps.Where(e => e.Label == "A Receber").Select(e => e.Id).FirstOrDefault();
+            var query = from bb026 in _appDbContext.OsusrE9aCsicpBb026s
+                        join bb008 in _appDbContext.OsusrE9aCsicpBb008s
+                        on bb026.Bb026Condpagtofixoid equals bb008.Id
+                        where bb008.TenantId == tenant
+                        where bb026.Id == FormaPagamentoID
 
-            }
-            else
-            {
-                idCorrent = _appDbContext.OsusrE9aCsicpFf003Tpesps.Where(e => e.Label == "A Pagar").Select(e => e.Id).FirstOrDefault();
 
-            }
-            query = query.Where(e => e.Bb026Tipoespecie == idCorrent);
-            return await query.Select(e => new { Id = e.Id, Title = e.Bb026Formapagamento }).ToListAsync();
+                        select new
+                        {
+                            Id = bb008.Id,
+                            Title = bb008.Bb008Condicao
+                        };
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<object>> GetCommonListForComboFF(int tenant, ComboTypeFF comboType)
