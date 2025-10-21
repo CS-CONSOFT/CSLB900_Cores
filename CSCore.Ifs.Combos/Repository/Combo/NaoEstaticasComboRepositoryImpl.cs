@@ -85,19 +85,11 @@ namespace CSCore.Ifs.Repository.Combo
 
         public async Task<IEnumerable<object>> GetCommonListForComboBB008(int tenant, string FormaPagamentoID)
         {
-            var query = from bb026 in _appDbContext.OsusrE9aCsicpBb026s
-                        join bb008 in _appDbContext.OsusrE9aCsicpBb008s
-                        on bb026.Bb026Condpagtofixoid equals bb008.Id
-                        where bb008.TenantId == tenant
-                        where bb026.Id == FormaPagamentoID
-
-
-                        select new
-                        {
-                            Id = bb008.Id,
-                            Title = bb008.Bb008Condicao
-                        };
-            return await query.ToListAsync();
+            var query = _appDbContext.OsusrE9aCsicpBb017s
+                .Where(e => e.TenantId == tenant && e.Bb017Fpagtoid == FormaPagamentoID)
+                .Include(e => e.NavBb008Condicao);
+            
+            return await query.Select(e => new { Id = e.Bb017Condicaoid, Title = e.NavBb008Condicao!.Bb008Condicao }).ToListAsync();
         }
 
         public async Task<IEnumerable<object>> GetCommonListForComboFF(int tenant, ComboTypeFF comboType)
