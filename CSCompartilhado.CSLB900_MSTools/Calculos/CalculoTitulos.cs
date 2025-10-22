@@ -91,7 +91,7 @@
             decimal? Percentual,
             int? DiasLiberacao)
         {
-            if (Percentual is null) throw new Exception("Percentual nao pode ser nulo");
+            if (Percentual is null) return (0,0);
             int DiasAtraso = CalculaDiasDeAtraso(DataVencimento, DiasLiberacao);
             if (DiasAtraso < 0) return (0, DiasAtraso);
             if (Percentual == 0) return (0, DiasAtraso);
