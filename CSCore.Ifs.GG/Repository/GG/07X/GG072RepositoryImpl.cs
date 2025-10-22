@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.GG.Repository.GG._07X
 {
-    public class GG072RepositoryImpl(AppDbContext appDbContext) : RepositorioBaseImpl<CSICP_GG072>(appDbContext), IGG072Repository
+    public class GG072RepositoryImpl(AppDbContext appDbContext) : RepositorioBaseImpl<CSICP_GG072>(appDbContext, "Gg072Id"), IGG072Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
         public async Task<CSICP_GG072?> GetByIdAsync(int tenant, long id)
