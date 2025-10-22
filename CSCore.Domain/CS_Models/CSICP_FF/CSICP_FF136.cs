@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
 
@@ -35,9 +36,10 @@ public partial class CSICP_FF136
 
     public int? Ff136Statusid { get; set; }
 
+    [JsonIgnore]
     public virtual CSICP_FF102? Ff102 { get; set; }
-
+    [JsonIgnore]
     public virtual CSICP_FF103? Ff103 { get; set; }
-
+    [JsonIgnore]
     public virtual CSICP_FF135? Ff136Cdebito { get; set; }
 }
