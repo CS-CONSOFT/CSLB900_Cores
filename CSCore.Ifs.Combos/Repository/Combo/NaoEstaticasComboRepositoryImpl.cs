@@ -89,7 +89,7 @@ namespace CSCore.Ifs.Repository.Combo
                 .Where(e => e.TenantId == tenant && e.Bb017Fpagtoid == FormaPagamentoID)
                 .Include(e => e.NavBb008Condicao);
             
-            return await query.Select(e => new { Id = e.Bb017Condicaoid, Title = e.NavBb008Condicao!.Bb008Condicao }).ToListAsync();
+            return await query.Select(e => new { Id = e.Bb017Condicaoid, Title = e.NavBb008Condicao!.Bb008CondicaoPagto }).ToListAsync();
         }
 
         public async Task<IEnumerable<object>> GetCommonListForComboFF(int tenant, ComboTypeFF comboType)
