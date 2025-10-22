@@ -64,7 +64,7 @@
 
             for (int i = 1; i <= numeroParcelas; i++)
             {
-                var parcelasRestantes = entrada != 0 ? numeroParcelas - 1 : numeroParcelas;
+                var parcelasRestantes = entrada != 0 && numeroParcelas > 1? numeroParcelas - 1 : numeroParcelas;
                 var valorParcela = Decimal.Round(V_ValorFinanciado / parcelasRestantes ?? 0, 2);
 
                 if (V_Nro_Parcela_Atual == 1)
