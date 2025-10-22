@@ -9,12 +9,14 @@ public partial class CSICP_GG072
 
     public long Gg072Id { get; set; }
 
+    [ForeignKey("Gg071")]
     public long? Gg071Id { get; set; }
 
     public string? Gg072Codbarrasalfa { get; set; }
 
     public string? Gg072KardexId { get; set; }
 
+    [ForeignKey("NavGG520Saidasaldo")]
     public string? Gg072Saidasaldoid { get; set; }
 
     public string? Gg072UnId { get; set; }
@@ -25,6 +27,7 @@ public partial class CSICP_GG072
 
     public string? Gg072QtdAnterior { get; set; }
 
+    [ForeignKey("Gg072Entradasaldo")]
     public string? Gg072Entradasaldoid { get; set; }
 
     public string? Gg072UnSecId { get; set; }
@@ -48,15 +51,5 @@ public partial class CSICP_GG072
 
     public CSICP_GG520? Gg072Entradasaldo { get; set; }
 
-    public CSICP_GG008Kdx? Gg072Kardex { get; set; }
-
     public CSICP_GG520? NavGG520Saidasaldo { get; set; }
-
-    public CSICP_GG072Stq? Gg072Statusestq { get; set; }
-
-    public CSICP_GG007? Gg072Un { get; set; }
-
-    public CSICP_GG007? Gg072UnSec { get; set; }
-
-    public CSICP_GG008Con? Gg072UnSecTipoconv { get; set; }
 }
