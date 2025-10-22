@@ -23,5 +23,7 @@ namespace CSLB900.MSTools.Util
         public const string CODE_ALREADY_REGISTER = "Código já registrado!";
         public const string METHOD_NOT_ALLOWED = "Esse método não está permitido nessa classe";
         public const string LABEL_NOT_FOUND = "Label não encontrada";
+        public const string ENTITIES_CREATED_MESSAGE = "Entidades foram geradas com sucesso!";
+        public const string ENTITIES_DELETED_MESSAGE = "Entidades foram deletadas com sucesso!";
     }
 }
