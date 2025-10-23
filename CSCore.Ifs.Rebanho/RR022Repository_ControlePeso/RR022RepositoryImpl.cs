@@ -62,6 +62,7 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             return [
                 new FiltroAnimalIdRR022(filtros.In_AnimalId),
                 new FiltroPesoRR022(filtros.In_PesoMinimo, filtros.In_PesoMaximo)
+
             ];
         }
     }
