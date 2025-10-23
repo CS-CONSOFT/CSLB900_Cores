@@ -1,5 +1,6 @@
 ﻿using CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
 using CSCore.Ifs.CS_Context;
+using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             public string? IdEstabelecimento { get; set; }
         }
 
-        public async Task<List<DtoTitulosAgrupadosAnoMes>> GetTitulosAgrupadosAnoMesAsync(DtoTitulosAgrupadosAnoMesRequest request)
+        public async Task<(List<DtoTitulosAgrupadosAnoMes>,int)> GetTitulosAgrupadosAnoMesAsync(DtoTitulosAgrupadosAnoMesRequest request)
         {
             var dataAtual = DateTime.Now.Date;
             var dataInicio = request.DataVencimentoInicio ?? dataAtual.AddYears(-2);
@@ -65,9 +66,14 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                 query = query.Where(t => t.IdEstabelecimento != null && request.FiltroEstabelecimentos.Contains(t.IdEstabelecimento));
             }
 
-            var titulos = await query.ToListAsync();
+            var queryCount = query;
+            int totalRegistros = await queryCount.CountAsync();
 
-            return ProcessarAgrupamentoAnoMes(titulos);
+            query = query.PaginacaoNoBanco(request.PageNumber, request.PageSize);
+
+            var titulos = await query.ToListAsync();
+            var lista = ProcessarAgrupamentoAnoMes(titulos);
+            return (lista, totalRegistros);
         }
 
         private List<DtoTitulosAgrupadosAnoMes> ProcessarAgrupamentoAnoMes(List<TituloAgrupadoInfo> titulos)

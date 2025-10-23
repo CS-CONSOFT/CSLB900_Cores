@@ -1,6 +1,8 @@
 ﻿using CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro;
 using CSCore.Ifs.CS_Context;
+using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
+using NPOI.SS.UserModel;
 using static CSCore.Domain.EstaticasLabel.GG.Entities;
 
 namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
@@ -17,8 +19,9 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             public string? IdEstabelecimento { get; set; }
         }
 
-        public async Task<List<DtoAnaliseIdadeContasReceber>> GetAnaliseIdadeContasReceberAsync(
+        public async Task<(List<DtoAnaliseIdadeContasReceber>, int)> GetAnaliseIdadeContasReceberAsync(
             int in_tenant,
+                        int PageNumber, int PageSize,
             bool in_agruparPorEstabelecimento = false,
             List<string>? in_filtroEstabelecimentos = null)
         {
@@ -51,20 +54,30 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             {
                 query = query.Where(t => t.IdEstabelecimento != null && in_filtroEstabelecimentos.Contains(t.IdEstabelecimento));
             }
+
+
+            var queryCount = query;
+            int totalRegistros = await queryCount.CountAsync();
+
+            query = query.PaginacaoNoBanco(PageNumber, PageSize);
+
             var titulos = await query.ToListAsync();
 
             if (in_agruparPorEstabelecimento)
             {
-                return ProcessarAnaliseAgrupadaPorEstabelecimento(titulos, dataAtual);
+                var lista = ProcessarAnaliseAgrupadaPorEstabelecimento(titulos, dataAtual);
+                return (lista, totalRegistros);
             }
             else
             {
-                return ProcessarAnaliseGeral(titulos, dataAtual);
+                var lista = ProcessarAnaliseGeral(titulos, dataAtual);
+                return (lista, totalRegistros);
             }
         }
 
-        public async Task<List<DtoTotalizadorEstabelecimento>> GetTotalizadorPorEstabelecimentoAsync(
+        public async Task<(List<DtoTotalizadorEstabelecimento>, int)> GetTotalizadorPorEstabelecimentoAsync(
             int in_tenant,
+                    int PageNumber, int PageSize,
             List<string>? in_filtroEstabelecimentos = null)
         {
             var dataAtual = DateTime.Now.Date;
@@ -98,6 +111,12 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                 titulos = titulos.Where(t => t.IdEstabelecimento != null && in_filtroEstabelecimentos.Contains(t.IdEstabelecimento)).ToList();
             }
 
+            var queryCount = query;
+            int totalRegistros = await queryCount.CountAsync();
+
+            query = query.PaginacaoNoBanco(PageNumber, PageSize);
+
+
             var estabelecimentos = titulos
                 .GroupBy(t => new { t.IdEstabelecimento, t.NomeEmpresa, t.CodigoEmpresa })
                 .Select(g => new DtoTotalizadorEstabelecimento
@@ -112,7 +131,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                 .OrderBy(e => e.CodigoEmpresa)
                 .ToList();
 
-            return estabelecimentos;
+            return (estabelecimentos, totalRegistros);
         }
 
         private List<DtoAnaliseIdadeContasReceber> ProcessarAnaliseGeral
