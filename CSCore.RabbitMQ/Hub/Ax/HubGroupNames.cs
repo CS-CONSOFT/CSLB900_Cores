@@ -3,6 +3,7 @@
     public static class HubGroupNames
     {
         public static string BANCO_BRASIL_HUB_GRUPO = "BANCO_BRASIL_HUB_GRUPO";
+        public static string FINANCEIRO_CONTAS_A_PAGAR = "FINANCEIRO_CONTAS_A_PAGAR";
     }
 
     public static class HubMethodNames
@@ -16,5 +17,8 @@
         public static string PROCESSA_BAIXA_GG071 = "PROCESSA_BAIXA_GG071";
         public static string PROCESSAR_INVENTARIO_GG032 = "PROCESSAR_INVENTARIO_GG032";
         public static string GERAR_INVENTARIO_EM_MASSA_GG032 = "GERAR_INVENTARIO_EM_MASSA_GG032";
+
+        //FINANCEIRO
+        public static string FINANCEIRO_CONTAS_A_PAGAR_PROCESSAR_CARTA_DEBITO = "FINANCEIRO_CONTAS_A_PAGAR_PROCESSAR_CARTA_DEBITO";
     }
 }

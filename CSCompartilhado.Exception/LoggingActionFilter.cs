@@ -15,7 +15,7 @@ namespace CSS_FF105Financeiro.C10API.Filtros
                 hora = DateTime.UtcNow.ToLocalTime()
             };
             var json = JsonSerializer.Serialize(jsonLog);
-            Console.WriteLine($"LOG em {context.Controller.GetType().Name}: {json}");
+            //Console.WriteLine($"LOG em {context.Controller.GetType().Name}: {json}");
         }
 
         public void OnActionExecuted(ActionExecutedContext context)

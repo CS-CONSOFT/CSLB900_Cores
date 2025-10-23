@@ -76,6 +76,14 @@ namespace CSCore.RabbitMQ
         public static string BBEnvioTituloResponse => "Action_BB_EnvioTitulo_Response";
         public static string ExBBEnvioTituloResponse => "Exchange_BB_EnvioTitulo_Response";
         public static string FilaBBEnvioTituloResponse => "Queue_BB_EnvioTitulo_Response";
+
+
+
+
+        //FINANCEIRO
+        public static string FilaProcessaCartaDebito => "Queue_ProcessaCartaDebito";
+        public static string ExProcessaCartaDebito => "Exchange_ProcessaCartaDebito";
+        public static string ActionProcessaCartaDebito => "Action_ProcessaCartaDebito";
     }
 }
 
