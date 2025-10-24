@@ -4,6 +4,7 @@
     {
         public static string BANCO_BRASIL_HUB_GRUPO = "BANCO_BRASIL_HUB_GRUPO";
         public static string FINANCEIRO_CONTAS_A_PAGAR = "FINANCEIRO_CONTAS_A_PAGAR";
+        public static string FINANCEIRO_AGENDA_COBRANCA = "FINANCEIRO_AGENDA_COBRANCA";
     }
 
     public static class HubMethodNames
@@ -20,5 +21,6 @@
 
         //FINANCEIRO
         public static string FINANCEIRO_CONTAS_A_PAGAR_PROCESSAR_CARTA_DEBITO = "FINANCEIRO_CONTAS_A_PAGAR_PROCESSAR_CARTA_DEBITO";
+        public static string FINANCEIRO_AGENDA_COBRANCA_PREVISAO_GERAL = "FINANCEIRO_AGENDA_COBRANCA_PREVISAO_GERAL";
     }
 }

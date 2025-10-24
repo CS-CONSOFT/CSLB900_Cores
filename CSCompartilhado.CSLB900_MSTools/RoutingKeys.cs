@@ -82,8 +82,13 @@ namespace CSCore.RabbitMQ
 
         //FINANCEIRO
         public static string FilaProcessaCartaDebito => "Queue_ProcessaCartaDebito";
-        public static string ExProcessaCartaDebito => "Exchange_ProcessaCartaDebito";
+        public static string ExchangeProcessaCartaDebito => "Exchange_ProcessaCartaDebito";
         public static string ActionProcessaCartaDebito => "Action_ProcessaCartaDebito";
+
+        //PREVISAO GERAL
+        public static string FilaProcessaPrevisaoGeral => "Queue_ProcessaPrevisaoGeral";
+        public static string ExchangeProcessaPrevisaoGeral => "Exchange_ProcessaPrevisaoGeral";
+        public static string ActionProcessaPrevisaoGeral => "Action_ProcessaPrevisaoGeral";
     }
 }
 
