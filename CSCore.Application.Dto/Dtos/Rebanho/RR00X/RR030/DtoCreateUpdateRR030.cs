@@ -11,16 +11,19 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR030
 
         public DateTime? Rr030IaData { get; set; }
 
+        [Range(0, 999, ErrorMessage = "O número de dias deve ser de 0 a 999")]
         public int? Rr030IaNrodias { get; set; }
 
         public DateTime? Rr030IaDatadg { get; set; }
 
         public DateTime? Rr030Datamontainicial { get; set; }
 
+        [Range(0, 999, ErrorMessage = "O número de dias deve ser de 0 a 999")]
         public int? Rr030Montainicialdias { get; set; }
 
         public DateTime? Rr030Datamontafinal { get; set; }
 
+        [Range(0, 999, ErrorMessage = "O número de dias deve ser de 0 a 999")]
         public int? Rr030Montafinaldias { get; set; }
 
         public DateTime? Rr030Dataprovontainicial { get; set; }

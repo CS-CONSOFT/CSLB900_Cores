@@ -23,4 +23,6 @@ public partial class OsusrTo3CsicpRr021
     public OsusrTo3CsicpRr001? NavRR001Animal_RR021 { get; set; }
 
     public OsusrTo3CsicpRr020? NavRR020RegLote_RR021 { get; set; }
+
+    public OsusrTo3CsicpRr022? NavRR022ControlePeso_RR021 { get; set; }
 }
