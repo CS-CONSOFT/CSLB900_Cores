@@ -6,8 +6,6 @@ namespace CSCore.Domain.Interfaces.RR._00X.IRR022
     public class PrmFiltrosRR022 : ParametrosBaseFiltro
     {
         public string? In_AnimalId { get; set; }
-        public DateTime? In_DtPesoInicio { get; set; }
-        public DateTime? In_DtPesoFim { get; set; }
         public decimal? In_PesoMinimo { get; set; }
         public decimal? In_PesoMaximo { get; set; }
     }
