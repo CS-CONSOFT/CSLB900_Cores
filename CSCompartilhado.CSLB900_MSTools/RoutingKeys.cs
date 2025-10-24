@@ -89,6 +89,31 @@ namespace CSCore.RabbitMQ
         public static string FilaProcessaPrevisaoGeral => "Queue_ProcessaPrevisaoGeral";
         public static string ExchangeProcessaPrevisaoGeral => "Exchange_ProcessaPrevisaoGeral";
         public static string ActionProcessaPrevisaoGeral => "Action_ProcessaPrevisaoGeral";
+
+        //MEMORIA CALCULO FF043
+        public static string FilaGeraMemoriaCalculoFF043 => "Queue_GeraMemoriaCalculoFF043";
+        public static string ExchangeGeraMemoriaCalculoFF043 => "Exchange_GeraMemoriaCalculoFF043";
+        public static string ActionGeraMemoriaCalculoFF043 => "Action_GeraMemoriaCalculoFF043";
+
+        //MovtoTituloBaixarKernel
+        public static string FilaMovtoTituloBaixarKernel => "Queue_MovtoTituloBaixarKernel";
+        public static string ExchangeMovtoTituloBaixarKernel => "Exchange_MovtoTituloBaixarKernel";
+        public static string ActionMovtoTituloBaixarKernel => "Action_MovtoTituloBaixarKernel";
+
+        //SimulacaoRenegociacao
+        public static string FilaSimulacaoRenegociacao => "Queue_SimulacaoRenegociacao";
+        public static string ExchangeSimulacaoRenegociacao => "Exchange_SimulacaoRenegociacao";
+        public static string ActionSimulacaoRenegociacao => "Action_SimulacaoRenegociacao";
+
+        //RenegociacaoCriaTitulos
+        public static string FilaRenegociacaoCriaTitulos => "Queue_RenegociacaoCriaTitulos";
+        public static string ExchangeRenegociacaoCriaTitulos => "Exchange_RenegociacaoCriaTitulos";
+        public static string ActionRenegociacaoCriaTitulos => "Action_RenegociacaoCriaTitulos";
+
+        //PR34_GerarContasAPagar
+        public static string FilaPR34_GerarContasAPagar => "Queue_PR34_GerarContasAPagar";
+        public static string ExchangePR34_GerarContasAPagar => "Exchange_PR34_GerarContasAPagar";
+        public static string ActionPR34_GerarContasAPagar => "Action_PR34_GerarContasAPagar";
     }
 }
 
