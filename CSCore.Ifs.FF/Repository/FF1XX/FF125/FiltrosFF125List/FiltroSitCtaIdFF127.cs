@@ -1,7 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.Interfaces.V2;
 
-namespace GG104Materiais.C82Application.Service.FF1XX.FF125
+namespace FF105Financeiro.C82Application.Service.FF1XX.FF125
 {
     internal class FiltroSitCtaIdFF127 : ICSFilter<CSICP_FF125>
     {

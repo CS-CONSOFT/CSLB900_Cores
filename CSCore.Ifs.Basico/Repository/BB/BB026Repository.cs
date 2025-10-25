@@ -3,9 +3,11 @@ using CSCore.Domain.Interfaces.BB;
 using CSCore.Ifs.Compartilhado.Utilidade;
 using CSCore.Ifs.CS_Context;
 using Microsoft.EntityFrameworkCore;
+using System.Security.AccessControl;
 
 namespace CSCore.Ifs.Repository.BB
 {
+
     public class BB026Repository(AppDbContext context) : IBB026Repository
     {
         private readonly AppDbContext _appDbContext = context;
@@ -32,6 +34,28 @@ namespace CSCore.Ifs.Repository.BB
             IQueryable<CSICP_Bb026> q1 = CreateBaseQuery(tenant).AsQueryable();
 
             q1 = FiltraQuandoExisteFiltros(search, searchCode, isActive, q1);
+            return await q1.ToListAsync();
+        }
+
+        public async Task<IEnumerable<CSICP_Bb026>> GetListAsyncPorTipoEspecie(int tenant, string? search, int? searchCode, bool? isActive, TIPO_ESPECIE tIPO_ESPECIE)
+        {
+            IQueryable<CSICP_Bb026> q1 = CreateBaseQuery(tenant).AsQueryable();
+
+            q1 = FiltraQuandoExisteFiltros(search, searchCode, isActive, q1);
+
+            long idCorrent = 0;
+            if (tIPO_ESPECIE == TIPO_ESPECIE.AReceber)
+            {
+                idCorrent = _appDbContext.OsusrE9aCsicpFf003Tpesps.Where(e => e.Label == "A Receber").Select(e => e.Id).FirstOrDefault();
+               
+            }
+            else
+            {
+               idCorrent= _appDbContext.OsusrE9aCsicpFf003Tpesps.Where(e => e.Label == "A Pagar").Select(e => e.Id).FirstOrDefault();
+               
+            }
+            q1 = q1.Where(e => e.Bb026Tipoespecie == idCorrent);
+
             return await q1.ToListAsync();
         }
 

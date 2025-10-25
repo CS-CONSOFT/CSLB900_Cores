@@ -355,5 +355,20 @@ namespace CSCore.Ifs.Estatica.Repository.Statica
                 .Select(e => EF.Property<int>(e, idPropertyName))
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<T?> GetIDStaticaById<T>(int Id, string idPropertyName = "Id") where T : class
+        {
+            var query = _appDbContext.Set<T>().AsQueryable();
+
+            var entityType = _appDbContext.Model.FindEntityType(typeof(T));
+            var isActiveProperty = entityType?.FindProperty("IsActive");
+
+            if (isActiveProperty != null)
+                query = query.Where(e => EF.Property<bool?>(e, "IsActive") == true);
+
+            return await _appDbContext.Set<T>()
+                .Where(e => EF.Property<int>(e, idPropertyName) == Id)
+                .FirstOrDefaultAsync();
+        }
     }
 }

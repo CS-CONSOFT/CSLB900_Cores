@@ -72,6 +72,7 @@ public partial class CSICP_FF105
 
     public DateTime? Ff105DataCriacao { get; set; }
 
+
     public class RepoDtoCSICP_FF105 : CSICP_FF105
     {
         public CSICP_BB001? NavBB001 { get; set; }

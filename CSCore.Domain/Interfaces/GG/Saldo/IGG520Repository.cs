@@ -16,7 +16,7 @@ namespace CSCore.Domain.Interfaces.GG.Saldo
           string Kardex_ID, int tenant);
 
         Task<(IEnumerable<CSICP_GG520>, IEnumerable<CSICP_GG520>)> PesquisProdutoPorCodigo(
-            int tenant, string almoxID, string? in_almoxIDSaida, string estabID, int codBarra);
+            int tenant, string almoxID, string? in_almoxIDSaida, string estabID, int codBarra, bool PermiteSaldoZerado = false);
 
 
         Task<CSICP_GG520?> GetByIdAsync

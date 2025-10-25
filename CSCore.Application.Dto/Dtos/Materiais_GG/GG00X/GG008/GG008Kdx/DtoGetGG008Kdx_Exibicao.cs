@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GG104Materiais.C82Application.Dto.GG00X.GG008;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008Kdx
 {

@@ -2,11 +2,7 @@
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520;
 using CSCore.Application.Dto.Mapper.GG00X;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using CSCore.Domain.CS_Models.Staticas.GG;
-using GG104Materiais.C82Application.Dto.GG00X.GG001;
-using GG104Materiais.C82Application.Dto.GG00X.GG008;
-using GG104Materiais.C82Application.Mapper;
-using GG104Materiais.C82Application.Mapper.GG008;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008;
 using System;
 using System.Collections.Generic;
 using System.Linq;

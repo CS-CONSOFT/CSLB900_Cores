@@ -32,6 +32,9 @@ namespace CSCore.Application.Dto.Mapper.GG00X
                 Gg072Statusestqid = entity.Gg072Statusestqid,
                 Dd080Id = entity.Dd080Id,
                 Gg072Qtdsolicitada = entity.Gg072Qtdsolicitada,
+                Gg072Entradasaldo = entity.Gg072Entradasaldo?.ToDtoGetSimples(),
+                NavGG520Saidasaldo = entity.NavGG520Saidasaldo?.ToDtoGetSimples(),
+                GG008ProdutoDescricao = entity.GG008ProdutoDescricao
             };
         }
     }

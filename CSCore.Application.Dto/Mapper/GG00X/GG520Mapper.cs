@@ -1,13 +1,14 @@
 ﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008Kdx;
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520;
+using CSCore.Application.Dto.Mapper.GG00X;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using GG104Materiais.C82Application.Dto.GG00X.GG003;
-using GG104Materiais.C82Application.Dto.GG00X.GG004;
-using GG104Materiais.C82Application.Dto.GG00X.GG005;
-using GG104Materiais.C82Application.Dto.GG00X.GG006;
-using GG104Materiais.C82Application.Dto.GG00X.GG008;
-using GG104Materiais.C82Application.Mapper;
-using GG104Materiais.C82Application.Mapper.GG008;
+using FF105Financeiro.C82Application.Dto.GG00X.GG003;
+using FF105Financeiro.C82Application.Dto.GG00X.GG004;
+using FF105Financeiro.C82Application.Dto.GG00X.GG005;
+using FF105Financeiro.C82Application.Dto.GG00X.GG006;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008;
+using CSCore.Application.Dto.Mapper.GG00X;
+using CSCore.Application.Dto.Mapper.GG00X;
 
 namespace CSCore.Application.Dto.Mapper.GG00X
 {

@@ -1,10 +1,4 @@
-﻿using CSCore.Domain.CS_Models.CSICP_FF;
-using CSLB900.MSTools.CS_QueryFilters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CSLB900.MSTools.CS_QueryFilters;
 
 namespace CSCore.Ifs.FF.Repository.FF04X.FF040
 {
@@ -13,9 +7,9 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
         public string? InEstabID { get; set; }
         public string? InContaID { get; set; } 
         public string? InProtocoloNumber { get; set; }
-        public DateTime? DataInicio { get; set; }
-        public DateTime? DataFim { get; set; }
-        public string? InTipoCobrancaID { get; set; }
-        public int? InStatusID { get; set; }
+        public DateTime? InDataInicio { get; set; }
+        public DateTime? InDataFim { get; set; }
+        public int? InTipoRegistro { get; set; }
+        public int? InSituacaoID { get; set; }
         }
 }

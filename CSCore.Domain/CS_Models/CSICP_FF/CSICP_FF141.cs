@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
 
@@ -19,5 +18,7 @@ public partial class CSICP_FF141
 
     public decimal? Ff141Total { get; set; }
 
-    public virtual CSICP_FF140? Ff140Rd { get; set; }
+    [JsonIgnore]
+    public CSICP_FF140 NavFF140 { get; set; }
+
 }

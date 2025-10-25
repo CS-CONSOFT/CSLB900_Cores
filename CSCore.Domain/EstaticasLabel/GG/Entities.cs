@@ -26,6 +26,13 @@ namespace CSCore.Domain.EstaticasLabel.GG
             public const string Suspenso = "Suspenso";
         }
 
+        public static class GG041_TPREQ
+        {
+            public const string Outros = "Outros";
+            public const string Reposicao = "Reposicao";
+            public const string Vendas = "Vendas";
+        }
+
         public static class CSICP_Statica_Labels
         {
             public const string Sim = "Sim";
@@ -327,9 +334,36 @@ namespace CSCore.Domain.EstaticasLabel.GG
 
         public static class Csicp_FF040_status
         {
-            public const string Aberto = "Aberto";
-            public const string Registrado = "Registrado";
-            public const string Cancelado = "Cancelado";
+            public const string Aberto = "Aberto"; 
+            public const string Registrado = "Registrado"; 
+            public const string Cancelado = "Cancelado"; 
         }
+
+        public static class Csicp_FF140_status
+        {
+            public const string Solicitado = "Solicitado";
+            public const string Aprovado = "Aprovado";
+            public const string NaoAprovado = "Não Aprovado";
+            public const string Cancelado = "Cancelado";
+            public const string Aberto = "Aberto";
+            public const string Encerrado = "Encerrado";
+            public const string PreAprovado = "Pré_Aprovado";
+        }
+
+        public static class Csicp_FF140_TpVinculo
+        {
+            public const string NotaEntrada = "Nota Entrada";
+            public const string ContasPagar = "Contas Pagar";
+            public const string GeradoCP = "Gerado C.Pagar";
+            public const string SemVinculo = "Sem Vinculo";
+        }
+
+        public static class Csicp_FF140_Execucao
+        {
+            public const string Aberto = "Aberto";
+            public const string Iniciado = "Iniciado";
+            public const string Pausado = "Pausado";
+            public const string Encerrado = "Encerrado";
+        }   
     }
 }

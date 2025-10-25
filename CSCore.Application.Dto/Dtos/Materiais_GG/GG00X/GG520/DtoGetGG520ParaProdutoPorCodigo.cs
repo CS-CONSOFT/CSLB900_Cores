@@ -1,5 +1,5 @@
 ﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008Kdx;
-using GG104Materiais.C82Application.Dto.GG00X.GG008.GG008Kdx;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008Kdx;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520
 {

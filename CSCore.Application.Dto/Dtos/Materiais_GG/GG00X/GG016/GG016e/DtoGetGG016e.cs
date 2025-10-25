@@ -1,6 +1,6 @@
 ﻿using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG016.GG016e
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG016.GG016e
 {
     public class DtoGetGG016e
     {

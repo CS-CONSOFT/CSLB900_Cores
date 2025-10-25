@@ -5,10 +5,7 @@ using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
-using CSLB900.MSTools.GenerateId;
-using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
-using static CSCore.Domain.CS_Models.CSICP_FF.CSICP_FF106;
 
 namespace CSCore.Ifs.FF.Repository.FF1XX
 {
@@ -16,10 +13,10 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         : RepositorioBaseImpl<CSICP_FF106>(appDbContext, "Id"), IFF106Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-        public async Task<(List<RepoDtoCSICP_FF106>, int)> GetListAsync(int in_tenant,
+        public async Task<(List<CSICP_FF106>, int)> GetListAsync(int in_tenant,
             string in_ff105Id, int in_pageNumber, int in_pageSize)
         {
-            IQueryable<RepoDtoCSICP_FF106> query = GetQueryBase(in_tenant);
+            IQueryable<CSICP_FF106> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_ff105Id, query);
             var queryCount = query;
             var count = queryCount.Count();
@@ -27,14 +24,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
             return (await query.ToListAsync(), count);
         }
 
-        private IQueryable<RepoDtoCSICP_FF106> FiltraQuandoExisteFiltro(string in_ff105Id, IQueryable<RepoDtoCSICP_FF106> query)
+        private IQueryable<CSICP_FF106> FiltraQuandoExisteFiltro(string in_ff105Id, IQueryable<CSICP_FF106> query)
         {
             if (in_ff105Id != null)
                 query = query.Where(e => e.Ff105Id!.Equals(in_ff105Id));
             return query;
         }
 
-        private IQueryable<RepoDtoCSICP_FF106> GetQueryBase(int in_tenant)
+        private IQueryable<CSICP_FF106> GetQueryBase(int in_tenant)
         {
             return from ff106 in _appDbContext.OsusrE9aCsicpFf106s
                    .AsNoTracking()
@@ -52,27 +49,31 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                    from bb009 in bb009_ff106_join.DefaultIfEmpty()
 
                    join ff102 in _appDbContext.OsusrE9aCsicpFf102s
-                   on ff106.Ff102Id equals ff102.Id into ff102_ff106_join //Titulo? Verificar
+                   on ff106.Ff102Id equals ff102.Id into ff102_ff106_join
                    from ff102 in ff102_ff106_join.DefaultIfEmpty()
 
+                   join ff102Sit in _appDbContext.OsusrE9aCsicpFf102Sits
+                   on ff102.Ff102Situacaoid equals ff102Sit.Id into ff102Sit_ff102_join
+                   from ff102Sit in ff102Sit_ff102_join.DefaultIfEmpty()
+
                    join ff105 in _appDbContext.OsusrE9aCsicpFf105s
-                   on ff106.Ff105Id equals ff105.Id into ff105_ff106_join //Bordero? Verificar
+                   on ff106.Ff105Id equals ff105.Id into ff105_ff106_join
                    from ff105 in ff105_ff106_join.DefaultIfEmpty()
 
-                   join ff102OcorrenciaApi in _appDbContext.OsusrE9aCsicpFf112apiOcorrencia
-                   on ff102.Ff102OcorrenciaApi equals ff102OcorrenciaApi.Id into ff102OcorrenciaApi_ff102_join
-                   from ff102OcorrenciaApi in ff102OcorrenciaApi_ff102_join.DefaultIfEmpty()
+                   join ff112OcorrenciaApi in _appDbContext.OsusrE9aCsicpFf112apiOcorrencia
+                   on ff106.Ff106OcorrenciaApi equals ff112OcorrenciaApi.Id into ff112OcorrenciaApi_ff106_join
+                   from ff112OcorrenciaApi in ff112OcorrenciaApi_ff106_join.DefaultIfEmpty()
 
-                   join ff102LiqApi in _appDbContext.OsusrE9aCsicpFf112apiLiquidacaos
-                   on ff102.Ff102LiqApi equals ff102LiqApi.Id into ff102LiqApi_ff102_join
-                   from ff102LiqApi in ff102LiqApi_ff102_join.DefaultIfEmpty()
+                   join ff112LiqApi in _appDbContext.OsusrE9aCsicpFf112apiLiquidacaos
+                   on ff106.Ff106LiqApi equals ff112LiqApi.Id into ff112LiqApi_ff106_join
+                   from ff112LiqApi in ff112LiqApi_ff106_join.DefaultIfEmpty()
 
-                   join ff102BaixaApi in _appDbContext.OsusrE9aCsicpFf112apiBaixas
-                   on ff102.Ff102BaixaApi equals ff102BaixaApi.Id into ff102BaixaApi_ff102_join
-                   from ff102BaixaApi in ff102BaixaApi_ff102_join.DefaultIfEmpty()
+                   join ff112BaixaApi in _appDbContext.OsusrE9aCsicpFf112apiBaixas
+                   on ff106.Ff106BaixaApi equals ff112BaixaApi.Id into ff112BaixaApi_ff106_join
+                   from ff112BaixaApi in ff112BaixaApi_ff106_join.DefaultIfEmpty()
 
                    where ff106.TenantId == in_tenant
-                   select new RepoDtoCSICP_FF106
+                   select new CSICP_FF106
                    {
                        TenantId = ff106.TenantId,
                        Id = ff106.Id,
@@ -320,6 +321,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Ff102PixcobQrcode = ff102.Ff102PixcobQrcode,
                            Ff102PixcobStatus = ff102.Ff102PixcobStatus,
                            Ff102TrilhaApiid = ff102.Ff102TrilhaApiid,
+                           NavFF102Sit = ff102Sit != null ? new CSICP_FF102Sit
+                           {
+                               Id = ff102Sit.Id,
+                               Label = ff102Sit.Label,
+                               Order = ff102Sit.Order,
+                               IsActive = ff102Sit.IsActive,
+                               Codgcs = ff102Sit.Codgcs,
+                           } : null,
                        } : null,
 
                        NavFF105 = ff105 != null ? new CSICP_FF105
@@ -359,34 +368,34 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
                            Ff105DataCriacao = ff105.Ff105DataCriacao,
                        } : null,
 
-                       NavFF112ApiOcorrencia = ff102OcorrenciaApi != null ? new CSICP_FF112ApiOcorrencium
+                       NavFF112ApiOcorrencia = ff112OcorrenciaApi != null ? new CSICP_FF112ApiOcorrencium
                        {
-                           Id = ff102OcorrenciaApi.Id,
-                           Label = ff102OcorrenciaApi.Label,
-                           Order = ff102OcorrenciaApi.Order,
-                           IsActive = ff102OcorrenciaApi.IsActive,
-                           CodgOcorrencia = ff102OcorrenciaApi.CodgOcorrencia,
-                           BancoApi = ff102OcorrenciaApi.BancoApi,
+                           Id = ff112OcorrenciaApi.Id,
+                           Label = ff112OcorrenciaApi.Label,
+                           Order = ff112OcorrenciaApi.Order,
+                           IsActive = ff112OcorrenciaApi.IsActive,
+                           CodgOcorrencia = ff112OcorrenciaApi.CodgOcorrencia,
+                           BancoApi = ff112OcorrenciaApi.BancoApi,
                        } : null,
 
-                       NavFF112ApiLiquidacao = ff102LiqApi != null ? new CSICP_FF112ApiLiquidacao
+                       NavFF112ApiLiquidacao = ff112LiqApi != null ? new CSICP_FF112ApiLiquidacao
                        {
-                           Id = ff102LiqApi.Id,
-                           Label = ff102LiqApi.Label,
-                           Order = ff102LiqApi.Order,
-                           IsActive = ff102LiqApi.IsActive,
-                           CodgLiquidacao = ff102LiqApi.CodgLiquidacao,
-                           BancoApi = ff102LiqApi.BancoApi,
+                           Id = ff112LiqApi.Id,
+                           Label = ff112LiqApi.Label,
+                           Order = ff112LiqApi.Order,
+                           IsActive = ff112LiqApi.IsActive,
+                           CodgLiquidacao = ff112LiqApi.CodgLiquidacao,
+                           BancoApi = ff112LiqApi.BancoApi,
                        } : null,
 
-                       NavFF112ApiBaixa = ff102BaixaApi != null ? new CSICP_FF112ApiBaixa
+                       NavFF112ApiBaixa = ff112BaixaApi != null ? new CSICP_FF112ApiBaixa
                        {
-                           Id = ff102BaixaApi.Id,
-                           Label = ff102BaixaApi.Label,
-                           Order = ff102BaixaApi.Order,
-                           IsActive = ff102BaixaApi.IsActive,
-                           CodgBaixa = ff102BaixaApi.CodgBaixa,
-                           BancoApi = ff102BaixaApi.BancoApi,
+                           Id = ff112BaixaApi.Id,
+                           Label = ff112BaixaApi.Label,
+                           Order = ff112BaixaApi.Order,
+                           IsActive = ff112BaixaApi.IsActive,
+                           CodgBaixa = ff112BaixaApi.CodgBaixa,
+                           BancoApi = ff112BaixaApi.BancoApi,
                        } : null,
                    };
         }

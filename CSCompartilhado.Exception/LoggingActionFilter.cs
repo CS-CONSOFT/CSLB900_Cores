@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using System.Text.Json;
 
-namespace CSS_GG104Materiais.C10API.Filtros
+namespace CSS_FF105Financeiro.C10API.Filtros
 {
     public class LoggingActionFilter : IActionFilter
     {

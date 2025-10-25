@@ -1,6 +1,6 @@
 ﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG060;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG003
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG003
 {
     public class DtoGetGG003
     {

@@ -2,7 +2,7 @@
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008Kdx;
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG030;
 using CSCore.Domain.CS_Models.Staticas.GG;
-using GG104Materiais.C82Application.Dto.GG00X.GG008;
+using FF105Financeiro.C82Application.Dto.GG00X.GG008;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG031
 {

@@ -1,5 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
-using CSCore.Ifs.InterfaceBase;
+using CSLB900.MSTools.InterfaceBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -111,5 +111,11 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF106
                 Ff106BaixaApi = Ff106BaixaApi,
             };
         }
+    }
+
+    public class DtoCreateUpdateFF106List
+    {
+         public List<DtoCreateUpdateFF106>? ListaCreate { get; set; }
+
     }
 }

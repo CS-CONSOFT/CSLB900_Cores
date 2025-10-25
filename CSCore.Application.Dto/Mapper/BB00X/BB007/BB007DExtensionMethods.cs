@@ -4,7 +4,7 @@ using CSBS101._82Application.Dto.BB00X.BB007.BB007D;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSBS101.C82Application.Dto.BB00X.BB00X.BB007.BB007D;
 using CSCore.Domain;
-using GG104Materiais.C82Application.Mapper;
+using CSCore.Application.Dto.Mapper.GG00X;
 
 namespace CSBS101._82Application.Mapper.BB00X
 {

@@ -21,5 +21,5 @@ public partial class CSICP_FF143
 
     public string? Ff143Path { get; set; }
 
-    public virtual CSICP_FF140? Ff140Rd { get; set; }
+    public CSICP_FF140? NavFF140 { get; set; }
 }

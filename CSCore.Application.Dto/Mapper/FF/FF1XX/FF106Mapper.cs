@@ -1,10 +1,8 @@
-﻿using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF106;
+﻿using CSBS101._82Application.Mapper.BB00X;
+using CSBS101._82Application.Mapper.BB00X.BB009;
+using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF106;
 using CSCore.Domain.CS_Models.CSICP_FF;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSCore.Application.Dto.Mapper.FF.FF1XX
 {
@@ -47,6 +45,14 @@ namespace CSCore.Application.Dto.Mapper.FF.FF1XX
                 Ff106OcorrenciaApi = entity.Ff106OcorrenciaApi,
                 Ff106LiqApi = entity.Ff106LiqApi,
                 Ff106BaixaApi = entity.Ff106BaixaApi,
+                NavBB001 = entity.NavBB001?.ToDtoGetExibicao(),
+                NavBB006 = entity.NavBB006?.ToDtoGetExibicao(),
+                NavBB009 = entity.NavBB009?.ToDtoGetBB009_Exibicao(),
+                NavFF102 = entity.NavFF102?.ToDtoGetFF102_ComFF102Sit(),
+                NavFF105 = entity.NavFF105?.ToDtoGet_SemNavs(),
+                NavFF112ApiBaixa = entity.NavFF112ApiBaixa,
+                NavFF112ApiOcorrencia = entity.NavFF112ApiOcorrencia,
+                NavFF112ApiLiquidacao = entity.NavFF112ApiLiquidacao
             };
         }
     }

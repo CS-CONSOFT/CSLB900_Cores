@@ -187,6 +187,7 @@ public partial class AppDbContext : DbContext
         OnModelCreating_CSICP_GG03X(modelBuilder);
         OnModelCreating_CSICP_FF003(modelBuilder);
         OnModelCreating_CSICP_Systems(modelBuilder);
+        OnModelCreatingRR(modelBuilder); // Adicionando a chamada para as configurações RR
 
         base.OnModelCreating(modelBuilder);
     }
@@ -200,6 +201,7 @@ public partial class AppDbContext : DbContext
     partial void OnModelCreatingStaticaAA(ModelBuilder modelBuilder);
 
     partial void OnModelCreating_CSICP_AA(ModelBuilder modelBuilder);
+    partial void OnModelCreatingRR(ModelBuilder modelBuilder);
     partial void OnModelCreating_CSICP_BB001(ModelBuilder modelBuilder);
     partial void OnModelCreating_CSICP_BB002(ModelBuilder modelBuilder);
     partial void OnModelCreating_CSICP_BB003(ModelBuilder modelBuilder);

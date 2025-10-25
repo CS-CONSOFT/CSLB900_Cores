@@ -32,7 +32,7 @@ namespace CSCore.Ifs.FF.Repository
 
         private IQueryable<CSICP_FF999> FiltraQuandoExisteFiltro(string in_ff017Id, IQueryable<CSICP_FF999> query)
         {
-            if (in_ff017Id == null)
+            if (in_ff017Id != null)
                 query = query.Where(e => e.Ff999IdControle!.Equals(in_ff017Id));
             return query;
         }

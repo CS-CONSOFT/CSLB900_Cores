@@ -1,5 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
-using CSCore.Ifs.InterfaceBase;
+using CSLB900.MSTools.InterfaceBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF04X.FF040
 
         public int? Ff040Tiporegistro { get; set; }
 
-        public DateTime? Ff040DataMovimento { get; set; }
+        public DateTime Ff040DataMovimento { get; set; }
 
         public string? Ff040ContaId { get; set; }
 

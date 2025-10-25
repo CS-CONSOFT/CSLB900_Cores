@@ -1,5 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_TT;
-using CSCore.Ifs.InterfaceBase;
+using CSLB900.MSTools.InterfaceBase;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 

@@ -1,5 +1,9 @@
-﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG071;
+﻿using CSBS101._82Application.Mapper.BB00X;
+using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG071;
+using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_GG;
+using CSCore.Application.Dto.Mapper.GG00X;
 
 namespace CSCore.Application.Dto.Mapper.GG00X
 {
@@ -26,10 +30,14 @@ namespace CSCore.Application.Dto.Mapper.GG00X
                 Gg071Datendimento = entity.Gg071Datendimento,
                 Gg071Tpreqid = entity.Gg071Tpreqid,
                 Gg071Dhsolicitacao = entity.Gg071Dhsolicitacao,
-                Gg071Almoxent = entity.Gg071Almoxent,
-                Gg071Almoxsaida = entity.Gg071Almoxsaida,
-                Gg071Status = entity.Gg071Status,
-                Gg071Tpreq = entity.Gg071Tpreq,
+                NavGg071Almoxent = entity.NavGg071Almoxent?.ToDtoGetSimples(),
+                NavGg071Almoxsaida = entity.NavGg071Almoxsaida?.ToDtoGetSimples(),
+                NavGG071Status = entity.NavGG071Status,
+                NavGG071TipoReq = entity.NavGG071TipoReq,
+                NavAtendenteUsuarioSY001 = entity.NavAtendenteUsuarioSY001?.ToDtoGetSimples(),
+                NavBB001Estab = entity.NavBB001Estab?.ToDtoGetSimples(),
+                NavBB005CentroCusto = entity.NavBB005CentroCusto?.ToDtoGetBB005_Exibicao(),
+                NavUsuarioProprietarioSY001 = entity.NavUsuarioProprietarioSY001?.ToDtoGetSimples()
             };
         }
     }

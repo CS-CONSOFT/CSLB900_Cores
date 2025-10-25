@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CSCore.Domain.CS_Models.CSICP_GG;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG022
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG022
 {
     public class DtoGetGG022
     {

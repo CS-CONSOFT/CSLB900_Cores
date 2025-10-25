@@ -1,6 +1,6 @@
 ﻿using CSBS101._82Application.Dto.BB00X.BB001;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG001
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG001
 {
     public class DtoGetGG001Simples
     {

@@ -1,6 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.GG;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG008.GG008c
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008c
 {
     public class DtoGetGG008c
     {

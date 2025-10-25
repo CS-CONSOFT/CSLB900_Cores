@@ -1,4 +1,5 @@
 ﻿using CSLB900.MSTools.CS_QueryFilters;
+using CSLB900.MSTools.CS_QueryFilters.Specific;
 
 namespace CSCore.Domain.Interfaces.BB.Conta
 {
@@ -29,7 +30,7 @@ namespace CSCore.Domain.Interfaces.BB.Conta
             int? StatusId,
             int? GrupoId,
             string? CPF_CNPJ,
-            ParametrosBaseFiltro parametrosBaseFiltro
+            BB012ContaParameters parametrosBaseFiltro
             );
         Task<CSICP_BB012> ChangeActive(CSICP_BB012 entity);
         Task<List<CSICP_BB01203>> GetNotas(string id, int tenant);

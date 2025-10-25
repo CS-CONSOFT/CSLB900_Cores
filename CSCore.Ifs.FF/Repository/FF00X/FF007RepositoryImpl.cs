@@ -37,8 +37,8 @@ namespace CSCore.Ifs.FF.Repository.FF00X
 
         private static IQueryable<CSICP_FF007> FiltraQuandoExisteFiltro(string? estabelecimentoId, IQueryable<CSICP_FF007> query)
         {
-            if (estabelecimentoId != null)
-                query = query.Where(e => e.Ff007Estabid!.Equals(estabelecimentoId));
+          
+            query = query.Where(e => e.Ff007Estabid!.Equals(estabelecimentoId));
             return query;
         }
 
@@ -66,6 +66,8 @@ namespace CSCore.Ifs.FF.Repository.FF00X
                            Id = bb001.Id,
                            Bb001Codigoempresa = bb001.Bb001Codigoempresa,
                            Bb001Razaosocial = bb001.Bb001Razaosocial,
+                           Bb001Nomefantasia = bb001.Bb001Nomefantasia,
+                           BB001_IsRegimeRegular = bb001.BB001_IsRegimeRegular,
                        } : null,
                    };
         }

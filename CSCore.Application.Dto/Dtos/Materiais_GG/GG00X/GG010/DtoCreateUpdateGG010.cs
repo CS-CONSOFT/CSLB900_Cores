@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using CSCore.Ifs.InterfaceBase;
+using CSLB900.MSTools.InterfaceBase;
 
-namespace GG104Materiais.C82Application.Dto.GG00X.GG010
+namespace FF105Financeiro.C82Application.Dto.GG00X.GG010
 {
     public class DtoCreateUpdateGG010 : IConverteParaEntidade<CSICP_GG010>
     {
