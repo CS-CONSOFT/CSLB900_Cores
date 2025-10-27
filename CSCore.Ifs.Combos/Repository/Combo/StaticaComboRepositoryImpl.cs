@@ -287,7 +287,7 @@ namespace CSCore.Ifs.Repository.Combo
         // ComboRR
         public async Task<IReadOnlyCollection<object>> GetComboStaticasByTypeRR(StaticTypeRR staticTypeRR)
         {
-            IQueryable query = staticTypeRR switch
+            IQueryable<object> query = staticTypeRR switch
             {
                 StaticTypeRR.Csicp_RR001_Ativo => _appDbContext.OsusrTo3CsicpRr001Ativos.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, Id = c.Id }),
                 StaticTypeRR.Csicp_RR001_Cat => _appDbContext.OsusrTo3CsicpRr001Cats.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, Id = c.Id }),
@@ -295,7 +295,7 @@ namespace CSCore.Ifs.Repository.Combo
 
                 _ => throw new ArgumentOutOfRangeException(nameof(staticTypeRR), "Tipo estático inválido")
             };
-            return await query.Cast<object>().ToListAsync();
+            return await query.ToListAsync();
         }
     }
 

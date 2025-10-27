@@ -306,6 +306,17 @@
             Csicp_ff019
         }
 
+        public enum ComboTypeRR
+        {
+            Csicp_RR002,
+            Csicp_RR003,
+            Csicp_RR004,
+            Csicp_RR005,
+            Csicp_RR006,
+            Csicp_RR007,
+            Csicp_RR008
+        }
+
         public enum ComboTypeSYS
         {
             Csicp_SY001
