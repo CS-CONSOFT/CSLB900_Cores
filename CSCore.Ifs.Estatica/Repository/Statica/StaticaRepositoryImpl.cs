@@ -203,7 +203,7 @@ namespace CSCore.Ifs.Repository.Statica
             };
             return await query.Cast<object>().ToListAsync();
         }
-
+        
         public async Task<IReadOnlyCollection<object>> GetStaticasByTypeSys(StaticaTypes.StaticTypeSys staticTypeSys)
         {
             IQueryable query = staticTypeSys switch
