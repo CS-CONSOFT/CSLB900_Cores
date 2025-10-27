@@ -175,6 +175,19 @@ namespace CSCore.Ifs.Repository.Statica
             return await query.Cast<object>().ToListAsync();
         }
 
+        public async Task<IReadOnlyCollection<object>> GetStaticasByTypeRR(StaticTypeRR staticTypeRR)
+            {
+            IQueryable query = staticTypeRR switch
+            {
+                StaticTypeRR.Csicp_RR001_Ativo => _appDbContext.OsusrTo3CsicpRr001Ativos.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeRR.Csicp_RR001_Cat => _appDbContext.OsusrTo3CsicpRr001Cats.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeRR.Csicp_RR001_Sexo => _appDbContext.OsusrTo3CsicpRr001Sexos.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+
+                _ => throw new ArgumentOutOfRangeException(nameof(staticTypeRR), "Tipo estático inválido")
+            };
+            return await query.Cast<object>().ToListAsync();
+        }
+
         public async Task<IReadOnlyCollection<object>> GetStaticasByTypeSped(StaticaTypes.StaticSpedType staticSpedType)
         {
             IQueryable query = staticSpedType switch
