@@ -130,9 +130,9 @@ namespace CSCore.Ifs.Repository.Statica
             return await query.Cast<object>().ToListAsync();
         }
 
-        public async Task<IReadOnlyCollection<object>> GetStaticasByTypeGG(StaticTypeGG staticTypeFF)
+        public async Task<IReadOnlyCollection<object>> GetStaticasByTypeGG(StaticTypeGG staticTypeGG)
         {
-            IQueryable query = staticTypeFF switch
+            IQueryable query = staticTypeGG switch
             {
                 StaticTypeGG.CSICP_GG007_FRA => ApplyActiveFilter(_appDbContext.OsusrE9aCsicpGg007Fras).OrderBy(c => c.Label),
                 StaticTypeGG.CSICP_GG021_CEST => ApplyActiveFilter(_appDbContext.OsusrE9aCsicpGg021cests).OrderBy(c => c.Label),
@@ -170,7 +170,7 @@ namespace CSCore.Ifs.Repository.Statica
                 StaticTypeGG.CSICP_Gg902St => ApplyActiveFilter(_appDbContext.OsusrE9aCsicpGg902Sts).OrderBy(c => c.Label),
                 StaticTypeGG.CSICP_Gg903tp => ApplyActiveFilter(_appDbContext.OsusrE9aCsicpGg903tps).OrderBy(c => c.Label),
 
-                _ => throw new ArgumentOutOfRangeException(nameof(staticTypeFF), "Tipo estático inválido")
+                _ => throw new ArgumentOutOfRangeException(nameof(staticTypeGG), "Tipo estático inválido")
             };
             return await query.Cast<object>().ToListAsync();
         }
