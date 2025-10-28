@@ -14,13 +14,15 @@ namespace CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro
            int in_tenant,
            DateTime? in_dataVencimentoInicio = null,
            DateTime? in_dataVencimentoFim = null,
-           decimal in_saldoAnterior = 0);
+           decimal in_saldoAnterior = 0,
+           List<string>? in_estabIDs = null);
 
         Task<List<FluxoDeCaixaMensalDto>> GetFluxoDeCaixaMensalAsync(
             int in_tenant,
             DateTime? in_dataVencimentoInicio = null,
             DateTime? in_dataVencimentoFim = null,
-            decimal in_saldoAnterior = 0);
+            decimal in_saldoAnterior = 0,
+            List<string>? in_estabIDs = null);
     }
 
     public class FluxoDeCaixaDiarioDto
@@ -33,6 +35,8 @@ namespace CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro
         public decimal ReceitaProvisao { get; set; }
         public decimal DespesaProvisao { get; set; }
         public decimal SaldoAcumulado { get; set; }
+        public List<string> EstabIDs { get; set; }
+
     }
 
     public class FluxoDeCaixaMensalDto
@@ -46,5 +50,7 @@ namespace CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro
         public decimal APagar { get; set; }
         public decimal ReceitaProvisao { get; set; }
         public decimal DespesaProvisao { get; set; }
+        public List<string> EstabIDs { get; set; }
+
     }
 }
