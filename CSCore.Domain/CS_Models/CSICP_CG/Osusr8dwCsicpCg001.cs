@@ -24,5 +24,5 @@ public partial class Osusr8dwCsicpCg001
 
     public int? Cg001Status { get; set; }
 
-    public virtual Osusr8dwCsicpCg002Stat? Cg001StatusNavigation { get; set; }
+    //public virtual Osusr8dwCsicpCg002Stat? Cg001StatusNavigation { get; set; }
 }

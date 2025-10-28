@@ -15,7 +15,7 @@ public partial class Osusr8dwCsicpCg073
 
     public string? Cg073Conteventopartp { get; set; }
 
-    public virtual Osusr8dwCsicpCg071? Cg073ContlancinterNavigation { get; set; }
+    //public virtual Osusr8dwCsicpCg071? Cg073ContlancinterNavigation { get; set; }
 
-    public virtual Osusr8dwCsicpCg052? Cg073ContparametroNavigation { get; set; }
+    //public virtual Osusr8dwCsicpCg052? Cg073ContparametroNavigation { get; set; }
 }

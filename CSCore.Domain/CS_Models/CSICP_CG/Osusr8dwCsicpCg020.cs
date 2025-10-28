@@ -41,11 +41,11 @@ public partial class Osusr8dwCsicpCg020
 
     public int? Cg020UltSeq { get; set; }
 
-    public virtual Osusr8dwCsicpCg992? Cg020Situacaolote { get; set; }
+    //public virtual Osusr8dwCsicpCg992? Cg020Situacaolote { get; set; }
 
-    public virtual Osusr8dwCsicpCg008? Cg020Tiposaldo { get; set; }
+    //public virtual Osusr8dwCsicpCg008? Cg020Tiposaldo { get; set; }
 
-    public virtual ICollection<Osusr8dwCsicpCg021> Osusr8dwCsicpCg021s { get; set; } = new List<Osusr8dwCsicpCg021>();
+    //public virtual ICollection<Osusr8dwCsicpCg021> Osusr8dwCsicpCg021s { get; set; } = new List<Osusr8dwCsicpCg021>();
 
-    public virtual ICollection<Osusr8dwCsicpCg022> Osusr8dwCsicpCg022s { get; set; } = new List<Osusr8dwCsicpCg022>();
+    //public virtual ICollection<Osusr8dwCsicpCg022> Osusr8dwCsicpCg022s { get; set; } = new List<Osusr8dwCsicpCg022>();
 }

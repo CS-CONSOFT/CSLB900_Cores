@@ -15,9 +15,9 @@ public partial class Osusr8dwCsicpCg051
 
     public bool? Flobrigatorio { get; set; }
 
-    public virtual Osusr8dwCsicpCg050? Cg051Eventotp { get; set; }
+    //public virtual Osusr8dwCsicpCg050? Cg051Eventotp { get; set; }
 
-    public virtual Osusr8dwCsicpCg052? Cg051Parametrotp { get; set; }
+    //public virtual Osusr8dwCsicpCg052? Cg051Parametrotp { get; set; }
 
-    public virtual ICollection<Osusr8dwCsicpCg063> Osusr8dwCsicpCg063s { get; set; } = new List<Osusr8dwCsicpCg063>();
+    //public virtual ICollection<Osusr8dwCsicpCg063> Osusr8dwCsicpCg063s { get; set; } = new List<Osusr8dwCsicpCg063>();
 }

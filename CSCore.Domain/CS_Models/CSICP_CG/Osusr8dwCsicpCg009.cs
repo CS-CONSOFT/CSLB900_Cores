@@ -25,7 +25,7 @@ public partial class Osusr8dwCsicpCg009
 
     public decimal? Cg009Saldo { get; set; }
 
-    public virtual Osusr8dwCsicpCg006? Cg009Conta { get; set; }
+    //public virtual Osusr8dwCsicpCg006? Cg009Conta { get; set; }
 
-    public virtual Osusr8dwCsicpCg008? Cg009TipoSaldo { get; set; }
+    //public virtual Osusr8dwCsicpCg008? Cg009TipoSaldo { get; set; }
 }

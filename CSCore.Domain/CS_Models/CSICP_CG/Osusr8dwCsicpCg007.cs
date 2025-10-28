@@ -28,7 +28,7 @@ public partial class Osusr8dwCsicpCg007
 
     public int? Cg007StatusId { get; set; }
 
-    public virtual Osusr8dwCsicpCg007Stat? Cg007Status { get; set; }
+    //public virtual Osusr8dwCsicpCg007Stat? Cg007Status { get; set; }
 
-    public virtual ICollection<Osusr8dwCsicpCg021> Osusr8dwCsicpCg021s { get; set; } = new List<Osusr8dwCsicpCg021>();
+    //public virtual ICollection<Osusr8dwCsicpCg021> Osusr8dwCsicpCg021s { get; set; } = new List<Osusr8dwCsicpCg021>();
 }

@@ -13,5 +13,5 @@ public partial class Osusr8dwCsicpCg998
 
     public bool? IsActive { get; set; }
 
-    public virtual ICollection<Osusr8dwCsicpCg004> Osusr8dwCsicpCg004s { get; set; } = new List<Osusr8dwCsicpCg004>();
+    //public virtual ICollection<Osusr8dwCsicpCg004> Osusr8dwCsicpCg004s { get; set; } = new List<Osusr8dwCsicpCg004>();
 }

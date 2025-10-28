@@ -13,5 +13,5 @@ public partial class Osusr8dwCsicpCg061
 
     public string? Cg061Estabid { get; set; }
 
-    public virtual Osusr8dwCsicpCg060? Cg061Regramento { get; set; }
+    //public virtual Osusr8dwCsicpCg060? Cg061Regramento { get; set; }
 }

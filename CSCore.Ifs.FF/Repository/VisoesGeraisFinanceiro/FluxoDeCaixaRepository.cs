@@ -44,7 +44,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                             EstabID = ff102.Ff102Filialid,
                         };
 
-            if (in_estabIDs != null && in_estabIDs.Any())
+            if (in_estabIDs != null && in_estabIDs.Count != 0)
                 query = query.Where(x => in_estabIDs.Contains(x.EstabID ?? string.Empty));
 
             if (in_dataVencimentoInicio.HasValue)
@@ -84,7 +84,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                     ReceitaProvisao = item.ReceitaProvisao,
                     DespesaProvisao = item.DespesaProvisao,
                     SaldoAcumulado = saldoAcumulado,
-                    EstabIDs = in_estabIDs ?? new List<string>()
+                    EstabIDs = in_estabIDs ?? new List<string>(),
                 });
                 saldoAnteriorLinha = saldoAcumulado;
             }
@@ -124,7 +124,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                             EstabID = ff102.Ff102Filialid,
                         };
 
-            if (in_estabIDs != null && in_estabIDs.Any())
+            if (in_estabIDs != null && in_estabIDs.Count != 0)
                 query = query.Where(x => in_estabIDs.Contains(x.EstabID ?? string.Empty));
 
             if (in_dataVencimentoInicio.HasValue)
@@ -169,7 +169,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                     APagar = item.APagar,
                     ReceitaProvisao = item.ReceitaProvisao,
                     DespesaProvisao = item.DespesaProvisao,
-                    EstabIDs = in_estabIDs ?? new List<string>()
+                    EstabIDs = in_estabIDs ?? new List<string>(),
                 });
                 saldoAnteriorLinha = saldoAcumulado;
             }

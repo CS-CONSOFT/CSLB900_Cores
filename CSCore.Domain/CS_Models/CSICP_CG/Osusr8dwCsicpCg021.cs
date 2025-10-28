@@ -60,29 +60,29 @@ public partial class Osusr8dwCsicpCg021
 
     public int? Cg021Sequencia { get; set; }
 
-    public virtual Osusr8dwCsicpCg006? Cg021ContacontabilNavigation { get; set; }
+    //public virtual Osusr8dwCsicpCg006? Cg021ContacontabilNavigation { get; set; }
 
-    public virtual Osusr8dwCsicpCg011? Cg021CtagerencialN2 { get; set; }
+    //public virtual Osusr8dwCsicpCg011? Cg021CtagerencialN2 { get; set; }
 
-    public virtual Osusr8dwCsicpCg011? Cg021CtagerencialN3 { get; set; }
+    //public virtual Osusr8dwCsicpCg011? Cg021CtagerencialN3 { get; set; }
 
-    public virtual Osusr8dwCsicpCg011? Cg021CtagerencialN4 { get; set; }
+    //public virtual Osusr8dwCsicpCg011? Cg021CtagerencialN4 { get; set; }
 
-    public virtual Osusr8dwCsicpCg993? Cg021DebcreNavigation { get; set; }
+    //public virtual Osusr8dwCsicpCg993? Cg021DebcreNavigation { get; set; }
 
-    public virtual Osusr8dwCsicpCg020? Cg021Lote { get; set; }
+    //public virtual Osusr8dwCsicpCg020? Cg021Lote { get; set; }
 
-    public virtual Osusr8dwCsicpCg007? Cg021Projeto { get; set; }
+    //public virtual Osusr8dwCsicpCg007? Cg021Projeto { get; set; }
 
-    public virtual Osusr8dwCsicpCg070? Cg021ProtocoloNavigation { get; set; }
+    //public virtual Osusr8dwCsicpCg070? Cg021ProtocoloNavigation { get; set; }
 
-    public virtual Osusr8dwCsicpCg008? Cg021Tiposaldo { get; set; }
+    //public virtual Osusr8dwCsicpCg008? Cg021Tiposaldo { get; set; }
 
-    public virtual OsusrE9aCsicpNn010? Nn010 { get; set; }
+    //public virtual OsusrE9aCsicpNn010? Nn010 { get; set; }
 
-    public virtual CSICP_NN015? Nn015 { get; set; }
+    //public virtual CSICP_NN015? Nn015 { get; set; }
 
-    public virtual ICollection<Osusr8dwCsicpCg022> Osusr8dwCsicpCg022s { get; set; } = new List<Osusr8dwCsicpCg022>();
+    //public virtual ICollection<Osusr8dwCsicpCg022> Osusr8dwCsicpCg022s { get; set; } = new List<Osusr8dwCsicpCg022>();
 
-    public virtual ICollection<Osusr8dwCsicpCg074> Osusr8dwCsicpCg074s { get; set; } = new List<Osusr8dwCsicpCg074>();
+    //public virtual ICollection<Osusr8dwCsicpCg074> Osusr8dwCsicpCg074s { get; set; } = new List<Osusr8dwCsicpCg074>();
 }

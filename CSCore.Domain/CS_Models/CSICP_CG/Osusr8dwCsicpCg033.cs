@@ -17,7 +17,7 @@ public partial class Osusr8dwCsicpCg033
 
     public decimal? Cg033Operador { get; set; }
 
-    public virtual Osusr8dwCsicpCg032? Cg032 { get; set; }
+    //public virtual Osusr8dwCsicpCg032? Cg032 { get; set; }
 
-    public virtual Osusr8dwCsicpCg006? Cg033InCtaplano { get; set; }
+    //public virtual Osusr8dwCsicpCg006? Cg033InCtaplano { get; set; }
 }

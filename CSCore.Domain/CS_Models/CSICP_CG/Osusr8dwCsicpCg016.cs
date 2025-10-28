@@ -27,17 +27,17 @@ public partial class Osusr8dwCsicpCg016
 
     public string? Cg016ContagerN4 { get; set; }
 
-    public virtual Osusr8dwCsicpCg006? Cg016Conta { get; set; }
+    //public virtual Osusr8dwCsicpCg006? Cg016Conta { get; set; }
 
-    public virtual Osusr8dwCsicpCg011? Cg016ContagerN2Navigation { get; set; }
+    //public virtual Osusr8dwCsicpCg011? Cg016ContagerN2Navigation { get; set; }
 
-    public virtual Osusr8dwCsicpCg011? Cg016ContagerN3Navigation { get; set; }
+    //public virtual Osusr8dwCsicpCg011? Cg016ContagerN3Navigation { get; set; }
 
-    public virtual Osusr8dwCsicpCg011? Cg016ContagerN4Navigation { get; set; }
+    //public virtual Osusr8dwCsicpCg011? Cg016ContagerN4Navigation { get; set; }
 
-    public virtual Osusr8dwCsicpCg993? Cg016Debcre { get; set; }
+    //public virtual Osusr8dwCsicpCg993? Cg016Debcre { get; set; }
 
-    public virtual Osusr8dwCsicpCg005? Cg016Historico { get; set; }
+    //public virtual Osusr8dwCsicpCg005? Cg016Historico { get; set; }
 
-    public virtual Osusr8dwCsicpCg015? Cg016Rateio { get; set; }
+    //public virtual Osusr8dwCsicpCg015? Cg016Rateio { get; set; }
 }

@@ -19,7 +19,7 @@ public partial class Osusr8dwCsicpCg052
 
     public int? Cg052Moduloid { get; set; }
 
-    public virtual ICollection<Osusr8dwCsicpCg051> Osusr8dwCsicpCg051s { get; set; } = new List<Osusr8dwCsicpCg051>();
+    //public virtual ICollection<Osusr8dwCsicpCg051> Osusr8dwCsicpCg051s { get; set; } = new List<Osusr8dwCsicpCg051>();
 
-    public virtual ICollection<Osusr8dwCsicpCg073> Osusr8dwCsicpCg073s { get; set; } = new List<Osusr8dwCsicpCg073>();
+    //public virtual ICollection<Osusr8dwCsicpCg073> Osusr8dwCsicpCg073s { get; set; } = new List<Osusr8dwCsicpCg073>();
 }
