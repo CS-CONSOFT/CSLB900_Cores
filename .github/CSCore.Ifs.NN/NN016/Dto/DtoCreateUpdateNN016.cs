@@ -91,7 +91,7 @@ namespace CSCore.Ifs.NN.NN016.Dto
                 Nn016ValorMulta = this.Nn016ValorMulta,
                 Nn016ValorTaxa = this.Nn016ValorTaxa,
                 Nn016ValorPago = this.Nn016ValorPago,
-                Nn016SituacaotitId = this.Nn016SituacaotitId,
+
                 Nn016BaixarSn = this.Nn016BaixarSn,
                 Nn016CliFor = this.Nn016CliFor,
                 Nn016Historico = this.Nn016Historico,
