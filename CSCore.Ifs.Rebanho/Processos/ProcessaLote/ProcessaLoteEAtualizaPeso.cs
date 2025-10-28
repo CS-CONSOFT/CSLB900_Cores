@@ -2,7 +2,7 @@
 using CSCore.Ifs.CS_Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace CSCore.Ifs.Rebanho.RR021Repository_LoteVsAnimal.ProcessaLote
+namespace CSCore.Ifs.Rebanho.Processos.ProcessaLote
 {
     public class ProcessaLoteEAtualizaPeso : IProcessaLoteEAtualizaPeso
     {
