@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSCore.Ifs.Rebanho.RR021Repository_LoteVsAnimal.ProcessaLote
+namespace CSCore.Ifs.Rebanho.Processos.ProcessaLote
 {
     public interface IProcessaLoteEAtualizaPeso
     {
