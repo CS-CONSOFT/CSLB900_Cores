@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_NN;
 
-public partial class OsusrE9aCsicpNn016
+public partial class CSICP_NN016
 {
     public int TenantId { get; set; }
 
@@ -73,5 +73,7 @@ public partial class OsusrE9aCsicpNn016
 
     public decimal? Nn016Vhonorarios { get; set; }
 
-    public virtual CSICP_NN015? Nn016Crcp { get; set; }
+    public  CSICP_NN015? Nn016Crcp { get; set; }
+        
+
 }
