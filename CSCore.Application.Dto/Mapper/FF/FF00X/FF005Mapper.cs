@@ -28,7 +28,6 @@ namespace CSCore.Application.Dto.Mapper.FF.FF00X
                 Ff005Diavencimento = entity.Ff005Diavencimento,
                 Ff005Pfx = entity.Ff005Pfx,
                 Ff005ImpostoId = entity.Ff005ImpostoId,
-                Ff003Especie = entity.Ff003Especie,
                 NavFF003 = entity.NavFF003?.ToDtoGetExibicao(),
                 NavFF003TpEsp = entity.NavFF003TpEsp,
                 NavAA037Imp = entity.NavAA037Imp,

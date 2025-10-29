@@ -49,6 +49,14 @@ namespace CSCore.Ifs.FF.Repository.FF00X
         {
             return from ff005 in _appDbContext.OsusrE9aCsicpFf005s
 
+            join bb001 in _appDbContext.E9ACSICP_BB001s
+            on ff005.Ff005Filialid equals bb001.Id into bb001_ff005_join
+            from bb001 in bb001_ff005_join.DefaultIfEmpty()
+
+            join bb012 in _appDbContext.OsusrE9aCsicpBb012s
+            on ff005.Ff005Contafornid equals bb012.Id into bb012_ff005_join
+            from bb012 in bb012_ff005_join.DefaultIfEmpty()
+
             join ff003 in _appDbContext.OsusrE9aCsicpFf003s
             on ff005.Ff003Especieid equals ff003.Id into ff003_ff005_join
             from ff003 in ff003_ff005_join.DefaultIfEmpty()
@@ -75,6 +83,23 @@ namespace CSCore.Ifs.FF.Repository.FF00X
                 Ff005Diavencimento = ff005.Ff005Diavencimento,
                 Ff005Pfx = ff005.Ff005Pfx,
                 Ff005ImpostoId = ff005.Ff005ImpostoId,
+
+                NavBB001Filial = bb001 != null ? new CSICP_BB001
+                {
+                    TenantId = bb001.TenantId,
+                    Id = bb001.Id,
+                    Bb001Codigoempresa = bb001.Bb001Codigoempresa,
+                    Bb001Razaosocial = bb001.Bb001Razaosocial,
+                    BB001_IsRegimeRegular = bb001.BB001_IsRegimeRegular,
+                } : null,
+
+                NavBB012ContaFornecedor = bb012 != null ? new CSICP_BB012
+                {
+                    TenantId = bb012.TenantId,
+                    Id = bb012.Id,
+                    Bb012Codigo = bb012.Bb012Codigo,
+                    Bb012NomeCliente = bb012.Bb012NomeCliente,
+                } : null,
 
                 NavFF003 = ff003 != null ? new CSICP_FF003
                 {
