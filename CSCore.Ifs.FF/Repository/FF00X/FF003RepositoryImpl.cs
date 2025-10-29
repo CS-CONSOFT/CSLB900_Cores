@@ -45,7 +45,7 @@ namespace CSCore.Ifs.FF.Repository.FF00X
             if (descricao != null)
                 query = query.Where(e => e.Ff003Descricao!.Equals(descricao));
             if (tipoEspecie != null)
-                query = query.Where(e => e.NavFF003TpEsp != null && e.NavFF003TpEsp.Id!.Equals(tipoEspecie));
+                query = query.Where(e => e.Ff003Tipoespecie.Equals(tipoEspecie));
 
             return query;
         }
