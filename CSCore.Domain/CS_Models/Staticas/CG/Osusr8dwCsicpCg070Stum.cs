@@ -14,7 +14,7 @@ public partial class Osusr8dwCsicpCg070Stum
 
     public bool? IsActive { get; set; }
 
-    public virtual ICollection<Osusr8dwCsicpCg070> Osusr8dwCsicpCg070s { get; set; } = new List<Osusr8dwCsicpCg070>();
+    //public virtual ICollection<Osusr8dwCsicpCg070> Osusr8dwCsicpCg070s { get; set; } = new List<Osusr8dwCsicpCg070>();
 
-    public virtual ICollection<Osusr8dwCsicpCg071> Osusr8dwCsicpCg071s { get; set; } = new List<Osusr8dwCsicpCg071>();
+    //public virtual ICollection<Osusr8dwCsicpCg071> Osusr8dwCsicpCg071s { get; set; } = new List<Osusr8dwCsicpCg071>();
 }

@@ -19,5 +19,4 @@ public partial class Osusr8dwCsicpCg002
 
     public int? Cg002Controlasaldo { get; set; }
 
-    //public virtual ICollection<Osusr8dwCsicpCg011> Osusr8dwCsicpCg011s { get; set; } = new List<Osusr8dwCsicpCg011>();
 }

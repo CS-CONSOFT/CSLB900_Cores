@@ -15,5 +15,4 @@ public partial class Osusr8dwCsicpCg064
 
     public int? Cg064Maxpars { get; set; }
 
-    //public virtual Osusr8dwCsicpCg050? Cg064Evento { get; set; }
 }

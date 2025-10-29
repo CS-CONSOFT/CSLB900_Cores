@@ -40,8 +40,4 @@ public partial class Osusr8dwCsicpCg038
     public decimal? Cg038Vmes12 { get; set; }
 
     public decimal? Cg038Sldatual { get; set; }
-
-    //public virtual Osusr8dwCsicpCg032? Cg032Contadre { get; set; }
-
-    //public virtual Osusr8dwCsicpCg037? Cg037 { get; set; }
 }

@@ -329,7 +329,7 @@ namespace CSCore.Ifs.CS_Context
                         .HasColumnName("CG005_HISTORICORESUMIDO");
                     entity.Property(e => e.Cg005Isactive).HasColumnName("CG005_ISACTIVE");
                     entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-                     });
+                    });
 
                     modelBuilder.Entity<Osusr8dwCsicpCg006>(entity =>
                     {
@@ -2151,10 +2151,10 @@ namespace CSCore.Ifs.CS_Context
                         .HasColumnType("decimal(37, 8)")
                         .HasColumnName("VALOR9");
 
-                });
+                    });
 
                     modelBuilder.Entity<Osusr8dwCsicpCg991>(entity =>
-                {
+                    {
                     entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG991");
 
                     entity.ToTable("OSUSR_8DW_CSICP_CG991");
@@ -2165,10 +2165,10 @@ namespace CSCore.Ifs.CS_Context
                         .HasMaxLength(50)
                         .HasColumnName("LABEL");
                     entity.Property(e => e.Order).HasColumnName("ORDER");
-                });
+                    });
 
                     modelBuilder.Entity<Osusr8dwCsicpCg992>(entity =>
-                {
+                    {
                     entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG992");
 
                     entity.ToTable("OSUSR_8DW_CSICP_CG992");
@@ -2179,10 +2179,10 @@ namespace CSCore.Ifs.CS_Context
                         .HasMaxLength(50)
                         .HasColumnName("LABEL");
                     entity.Property(e => e.Order).HasColumnName("ORDER");
-                });
+                    });
 
                     modelBuilder.Entity<Osusr8dwCsicpCg993>(entity =>
-                {
+                    {
                     entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG993");
 
                     entity.ToTable("OSUSR_8DW_CSICP_CG993");
@@ -2199,10 +2199,10 @@ namespace CSCore.Ifs.CS_Context
                     entity.Property(e => e.Resumido2)
                         .HasMaxLength(2)
                         .HasColumnName("RESUMIDO2");
-                });
+                    });
 
                     modelBuilder.Entity<Osusr8dwCsicpCg994>(entity =>
-                {
+                    {
                     entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG994");
 
                     entity.ToTable("OSUSR_8DW_CSICP_CG994");
@@ -2213,10 +2213,10 @@ namespace CSCore.Ifs.CS_Context
                         .HasMaxLength(50)
                         .HasColumnName("LABEL");
                     entity.Property(e => e.Order).HasColumnName("ORDER");
-                });
+                    });
 
                     modelBuilder.Entity<Osusr8dwCsicpCg995>(entity =>
-                {
+                    {
                     entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG995");
 
                     entity.ToTable("OSUSR_8DW_CSICP_CG995");
@@ -2227,10 +2227,10 @@ namespace CSCore.Ifs.CS_Context
                         .HasMaxLength(50)
                         .HasColumnName("LABEL");
                     entity.Property(e => e.Order).HasColumnName("ORDER");
-                });
+                    });
 
                     modelBuilder.Entity<Osusr8dwCsicpCg996>(entity =>
-                {
+                    {
                     entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG996");
 
                     entity.ToTable("OSUSR_8DW_CSICP_CG996");
@@ -2241,10 +2241,10 @@ namespace CSCore.Ifs.CS_Context
                         .HasMaxLength(50)
                         .HasColumnName("LABEL");
                     entity.Property(e => e.Order).HasColumnName("ORDER");
-                });
+                    });
 
                     modelBuilder.Entity<Osusr8dwCsicpCg997>(entity =>
-                {
+                    {
                     entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG997");
 
                     entity.ToTable("OSUSR_8DW_CSICP_CG997");
@@ -2255,10 +2255,10 @@ namespace CSCore.Ifs.CS_Context
                         .HasMaxLength(50)
                         .HasColumnName("LABEL");
                     entity.Property(e => e.Order).HasColumnName("ORDER");
-                });
+                    });
 
                     modelBuilder.Entity<Osusr8dwCsicpCg998>(entity =>
-                {
+                    {
                     entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG998");
 
                     entity.ToTable("OSUSR_8DW_CSICP_CG998");
@@ -2269,10 +2269,10 @@ namespace CSCore.Ifs.CS_Context
                         .HasMaxLength(50)
                         .HasColumnName("LABEL");
                     entity.Property(e => e.Order).HasColumnName("ORDER");
-                });
+                    });
 
                     modelBuilder.Entity<Osusr8dwCsicpCg999>(entity =>
-                {
+                    {
                     entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG999");
 
                     entity.ToTable("OSUSR_8DW_CSICP_CG999");

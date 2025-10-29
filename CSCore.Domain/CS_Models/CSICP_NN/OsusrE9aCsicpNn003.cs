@@ -29,5 +29,4 @@ public partial class OsusrE9aCsicpNn003
 
     public decimal? Nn003Vlrrealizadodesp { get; set; }
 
-    public virtual OsusrE9aCsicpNn002? Nn003Grupo { get; set; }
 }

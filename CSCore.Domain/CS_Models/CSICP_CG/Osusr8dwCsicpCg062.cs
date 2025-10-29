@@ -39,31 +39,5 @@ public partial class Osusr8dwCsicpCg062
 
     public string? Cg062CtagerencialCren4Id { get; set; }
 
-    //public virtual Osusr8dwCsicpCg006? Cg062Contacred { get; set; }
-
-    //public virtual Osusr8dwCsicpCg006? Cg062Contadeb { get; set; }
-
-    //public virtual Osusr8dwCsicpCg011? Cg062CtagerencialCren2 { get; set; }
-
-    //public virtual Osusr8dwCsicpCg011? Cg062CtagerencialCren3 { get; set; }
-
-    //public virtual Osusr8dwCsicpCg011? Cg062CtagerencialCren4 { get; set; }
-
-    //public virtual Osusr8dwCsicpCg011? Cg062CtagerencialDebn2 { get; set; }
-
-    //public virtual Osusr8dwCsicpCg011? Cg062CtagerencialDebn3 { get; set; }
-
-    //public virtual Osusr8dwCsicpCg011? Cg062CtagerencialDebn4 { get; set; }
-
-    //public virtual Osusr8dwCsicpCg054? Cg062Eventovalortp { get; set; }
-
-    //public virtual Osusr8dwCsicpCg054? Cg062Eventovalortpcred { get; set; }
-
-    //public virtual Osusr8dwCsicpCg054? Cg062Eventovalortpdeb { get; set; }
-
-    //public virtual Osusr8dwCsicpCg005? Cg062Histcred { get; set; }
-
-    //public virtual Osusr8dwCsicpCg005? Cg062Histdeb { get; set; }
-
-    //public virtual Osusr8dwCsicpCg060? Cg062Regramento { get; set; }
+    
 }

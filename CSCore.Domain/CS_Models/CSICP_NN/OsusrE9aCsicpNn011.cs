@@ -35,9 +35,5 @@ public partial class OsusrE9aCsicpNn011
 
     public string? Nn011PkSldanteriorId { get; set; }
 
-    public virtual ICollection<OsusrE9aCsicpNn011> InverseNn011PkSldanterior { get; set; } = new List<OsusrE9aCsicpNn011>();
-
-    public virtual OsusrE9aCsicpNn001? Nn011Ctacorrente { get; set; }
-
-    public virtual OsusrE9aCsicpNn011? Nn011PkSldanterior { get; set; }
+    
 }

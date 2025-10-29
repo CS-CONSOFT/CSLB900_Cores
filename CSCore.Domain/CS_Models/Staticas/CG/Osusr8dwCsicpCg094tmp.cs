@@ -39,9 +39,9 @@ public partial class Osusr8dwCsicpCg094tmp
 
     public long? Cg094Contrelconfid { get; set; }
 
-    public virtual ICollection<Osusr8dwCsicpCg092tmp> Osusr8dwCsicpCg092tmps { get; set; } = new List<Osusr8dwCsicpCg092tmp>();
+    //public virtual ICollection<Osusr8dwCsicpCg092tmp> Osusr8dwCsicpCg092tmps { get; set; } = new List<Osusr8dwCsicpCg092tmp>();
 
-    public virtual ICollection<Osusr8dwCsicpCg095tmp> Osusr8dwCsicpCg095tmps { get; set; } = new List<Osusr8dwCsicpCg095tmp>();
+    //public virtual ICollection<Osusr8dwCsicpCg095tmp> Osusr8dwCsicpCg095tmps { get; set; } = new List<Osusr8dwCsicpCg095tmp>();
 
-    public virtual ICollection<Osusr8dwCsicpCg096tmp> Osusr8dwCsicpCg096tmps { get; set; } = new List<Osusr8dwCsicpCg096tmp>();
+    //public virtual ICollection<Osusr8dwCsicpCg096tmp> Osusr8dwCsicpCg096tmps { get; set; } = new List<Osusr8dwCsicpCg096tmp>();
 }

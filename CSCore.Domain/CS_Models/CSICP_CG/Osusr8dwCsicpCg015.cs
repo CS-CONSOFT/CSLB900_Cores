@@ -22,10 +22,4 @@ public partial class Osusr8dwCsicpCg015
     public decimal? Cg015Totalrateiodeb { get; set; }
 
     public decimal? Cg015Totalrateiocre { get; set; }
-
-    //public virtual Osusr8dwCsicpCg994? Cg015Rateio { get; set; }
-
-    //public virtual Osusr8dwCsicpCg008? Cg015Tiposaldo { get; set; }
-
-    //public virtual ICollection<Osusr8dwCsicpCg016> Osusr8dwCsicpCg016s { get; set; } = new List<Osusr8dwCsicpCg016>();
 }

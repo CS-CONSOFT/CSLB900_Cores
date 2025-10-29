@@ -22,8 +22,4 @@ public partial class Osusr8dwCsicpCg037
     public int? Cg037Mesinicial { get; set; }
 
     public int? Cg037Mesfinal { get; set; }
-
-    //public virtual Osusr8dwCsicpCg031? Cg031 { get; set; }
-
-    //public virtual ICollection<Osusr8dwCsicpCg038> Osusr8dwCsicpCg038s { get; set; } = new List<Osusr8dwCsicpCg038>();
 }

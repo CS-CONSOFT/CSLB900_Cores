@@ -14,6 +14,4 @@ public partial class Osusr8dwCsicpCg055
     public string? Cg055Txdescricao { get; set; }
 
     public int? Cg055Moduloid { get; set; }
-
-    //public virtual ICollection<Osusr8dwCsicpCg054> Osusr8dwCsicpCg054s { get; set; } = new List<Osusr8dwCsicpCg054>();
 }

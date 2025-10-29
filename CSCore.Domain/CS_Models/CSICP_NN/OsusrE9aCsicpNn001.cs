@@ -58,17 +58,5 @@ public partial class OsusrE9aCsicpNn001
 
     public string? Nn001Agcobradorid { get; set; }
 
-    public virtual OsusrE9aCsicpNn001Tp? Nn001Tpconta { get; set; }
-
-    public virtual ICollection<OsusrE9aCsicpNn005> OsusrE9aCsicpNn005s { get; set; } = new List<OsusrE9aCsicpNn005>();
-
-    public virtual ICollection<OsusrE9aCsicpNn010> OsusrE9aCsicpNn010Nn001Ctacorrentes { get; set; } = new List<OsusrE9aCsicpNn010>();
-
-    public virtual ICollection<OsusrE9aCsicpNn010> OsusrE9aCsicpNn010Nn001TransfCcorrs { get; set; } = new List<OsusrE9aCsicpNn010>();
-
-    public virtual ICollection<OsusrE9aCsicpNn011> OsusrE9aCsicpNn011s { get; set; } = new List<OsusrE9aCsicpNn011>();
-
-    public virtual ICollection<CSICP_NN015> OsusrE9aCsicpNn015s { get; set; } = new List<CSICP_NN015>();
-
-    public virtual ICollection<OsusrE9aCsicpNn020> OsusrE9aCsicpNn020s { get; set; } = new List<OsusrE9aCsicpNn020>();
+    
 }

@@ -21,5 +21,4 @@ public partial class OsusrE9aCsicpNn019
 
     public string? Nn015Protocolonumber { get; set; }
 
-    public virtual CSICP_NN015? Nn015Estorno { get; set; }
 }

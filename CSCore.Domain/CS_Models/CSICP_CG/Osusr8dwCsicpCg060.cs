@@ -32,18 +32,4 @@ public partial class Osusr8dwCsicpCg060
     public int? Cg060Idprevia { get; set; }
 
     public int? Cg060Qparprenchidos { get; set; }
-
-    //public virtual Osusr8dwCsicpCg050? Cg060Evento { get; set; }
-
-    //public virtual Osusr8dwCsicpCg050? Cg060Eventotpcred { get; set; }
-
-    //public virtual Osusr8dwCsicpCg050? Cg060Eventotpdeb { get; set; }
-
-    //public virtual ICollection<Osusr8dwCsicpCg061> Osusr8dwCsicpCg061s { get; set; } = new List<Osusr8dwCsicpCg061>();
-
-    //public virtual ICollection<Osusr8dwCsicpCg062> Osusr8dwCsicpCg062s { get; set; } = new List<Osusr8dwCsicpCg062>();
-
-    //public virtual ICollection<Osusr8dwCsicpCg063> Osusr8dwCsicpCg063s { get; set; } = new List<Osusr8dwCsicpCg063>();
-
-    //public virtual ICollection<Osusr8dwCsicpCg074> Osusr8dwCsicpCg074s { get; set; } = new List<Osusr8dwCsicpCg074>();
 }

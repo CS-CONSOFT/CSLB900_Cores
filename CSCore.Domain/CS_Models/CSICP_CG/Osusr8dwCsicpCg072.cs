@@ -18,10 +18,4 @@ public partial class Osusr8dwCsicpCg072
     public string? Cg072Txhistdeb { get; set; }
 
     public string? Cg072Txhistcred { get; set; }
-
-    //public virtual Osusr8dwCsicpCg054? Cg072ConteventovalortpNavigation { get; set; }
-
-    //public virtual Osusr8dwCsicpCg071? Cg072ContlancinterNavigation { get; set; }
-
-    //public virtual ICollection<Osusr8dwCsicpCg074> Osusr8dwCsicpCg074s { get; set; } = new List<Osusr8dwCsicpCg074>();
 }

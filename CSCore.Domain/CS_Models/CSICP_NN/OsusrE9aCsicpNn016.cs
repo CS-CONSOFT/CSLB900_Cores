@@ -73,5 +73,4 @@ public partial class OsusrE9aCsicpNn016
 
     public decimal? Nn016Vhonorarios { get; set; }
 
-    public virtual CSICP_NN015? Nn016Crcp { get; set; }
 }

@@ -33,10 +33,4 @@ public partial class OsusrE9aCsicpNn020
     public int? Nn020Statusid { get; set; }
 
     public decimal? Nn020Balamt { get; set; }
-
-    public virtual OsusrE9aCsicpNn001? Nn001Ctacorrente { get; set; }
-
-    public virtual OsusrE9aCsicpNn020Stat? Nn020Status { get; set; }
-
-    public virtual ICollection<OsusrE9aCsicpNn021> OsusrE9aCsicpNn021s { get; set; } = new List<OsusrE9aCsicpNn021>();
 }

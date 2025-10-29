@@ -37,20 +37,4 @@ public partial class Osusr8dwCsicpCg081
     public bool? Cg081Isnewpage { get; set; }
 
     public int? Cg081Treeorder { get; set; }
-
-    //public virtual Osusr8dwCsicpCg997? Cg081As { get; set; }
-
-    //public virtual Osusr8dwCsicpCg080? Cg081Contrelconf { get; set; }
-
-    //public virtual Osusr8dwCsicpCg081? Cg081ContrelregistrosupNavigation { get; set; }
-
-    //public virtual Osusr8dwCsicpCg993? Cg081NaturezasaldoNavigation { get; set; }
-
-    //public virtual ICollection<Osusr8dwCsicpCg081> InverseCg081ContrelregistrosupNavigation { get; set; } = new List<Osusr8dwCsicpCg081>();
-
-    //public virtual ICollection<Osusr8dwCsicpCg082> Osusr8dwCsicpCg082s { get; set; } = new List<Osusr8dwCsicpCg082>();
-
-    //public virtual ICollection<Osusr8dwCsicpCg090tmp> Osusr8dwCsicpCg090tmps { get; set; } = new List<Osusr8dwCsicpCg090tmp>();
-
-    //public virtual ICollection<Osusr8dwCsicpCg096tmp> Osusr8dwCsicpCg096tmps { get; set; } = new List<Osusr8dwCsicpCg096tmp>();
 }

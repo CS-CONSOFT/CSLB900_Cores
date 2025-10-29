@@ -17,7 +17,7 @@ public partial class Osusr8dwCsicpCg092tmp
 
     public long? Cg092Headerid { get; set; }
 
-    public virtual Osusr8dwCsicpCg094tmp? Cg092Header { get; set; }
+    //public virtual Osusr8dwCsicpCg094tmp? Cg092Header { get; set; }
 
-    public virtual ICollection<Osusr8dwCsicpCg091tmp> Osusr8dwCsicpCg091tmps { get; set; } = new List<Osusr8dwCsicpCg091tmp>();
+    //public virtual ICollection<Osusr8dwCsicpCg091tmp> Osusr8dwCsicpCg091tmps { get; set; } = new List<Osusr8dwCsicpCg091tmp>();
 }
