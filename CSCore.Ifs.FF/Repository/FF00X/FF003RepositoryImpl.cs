@@ -43,7 +43,7 @@ namespace CSCore.Ifs.FF.Repository.FF00X
             int? tipoEspecie, IQueryable<CSICP_FF003> query)
         {
             if (descricao != null)
-                query = query.Where(e => e.Ff003Descricao!.Equals(descricao));
+                query = query.Where(e => e.Ff003Descricao!.Contains(descricao));
             if (tipoEspecie != null)
                 query = query.Where(e => e.Ff003Tipoespecie.Equals(tipoEspecie));
 
