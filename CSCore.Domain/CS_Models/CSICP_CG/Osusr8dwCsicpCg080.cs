@@ -19,5 +19,4 @@ public partial class Osusr8dwCsicpCg080
 
     public bool? Cg080Isprojfromprov { get; set; }
 
-    public virtual ICollection<Osusr8dwCsicpCg081> Osusr8dwCsicpCg081s { get; set; } = new List<Osusr8dwCsicpCg081>();
 }

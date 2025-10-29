@@ -16,7 +16,7 @@ public partial class Osusr8dwCsicpCg093tmp
 
     public decimal? Cg093Valor { get; set; }
 
-    public virtual Osusr8dwCsicpCg006? Cg093Conta { get; set; }
+    //public virtual Osusr8dwCsicpCg006? Cg093Conta { get; set; }
 
-    public virtual Osusr8dwCsicpCg091tmp? Cg093Tempdemcol { get; set; }
+    //public virtual Osusr8dwCsicpCg091tmp? Cg093Tempdemcol { get; set; }
 }

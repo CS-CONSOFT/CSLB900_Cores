@@ -105,25 +105,5 @@ public partial class OsusrE9aCsicpNn010
 
     public string? Nn010CixAutenticador { get; set; }
 
-    public virtual OsusrE9aCsicpNn004? Nn001Classe { get; set; }
-
-    public virtual OsusrE9aCsicpNn001? Nn001Ctacorrente { get; set; }
-
-    public virtual OsusrE9aCsicpNn002? Nn001Grupo { get; set; }
-
-    public virtual OsusrE9aCsicpNn001? Nn001TransfCcorr { get; set; }
-
-    public virtual OsusrE9aCsicpNn010Est? Nn010Estorno { get; set; }
-
-    public virtual OsusrE9aCsicpNn010Tplan? Nn010Tplancto { get; set; }
-
-    public virtual OsusrE9aCsicpNn010Tmov? Nn010Tpmovto { get; set; }
-
-    public virtual ICollection<Osusr8dwCsicpCg021> Osusr8dwCsicpCg021s { get; set; } = new List<Osusr8dwCsicpCg021>();
-
-    public virtual ICollection<OsusrE9aCsicpNn010o> OsusrE9aCsicpNn010os { get; set; } = new List<OsusrE9aCsicpNn010o>();
-
-    public virtual ICollection<OsusrE9aCsicpNn018> OsusrE9aCsicpNn018s { get; set; } = new List<OsusrE9aCsicpNn018>();
-
-    public virtual ICollection<OsusrE9aCsicpNn021> OsusrE9aCsicpNn021s { get; set; } = new List<OsusrE9aCsicpNn021>();
+    
 }

@@ -16,8 +16,4 @@ public partial class Osusr8dwCsicpCg022
     public string? Cg022LanctoId { get; set; }
 
     public int? Cg022Nrolancto { get; set; }
-
-    public virtual Osusr8dwCsicpCg021? Cg022Lancto { get; set; }
-
-    public virtual Osusr8dwCsicpCg020? Cg022Lote { get; set; }
 }

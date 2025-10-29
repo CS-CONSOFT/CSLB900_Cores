@@ -35,14 +35,4 @@ public partial class Osusr8dwCsicpCg071
     public int? Cg071Version { get; set; }
 
     public long? Cg071Protocoloprovisaoid { get; set; }
-
-    public virtual Osusr8dwCsicpCg050? Cg071Contevento { get; set; }
-
-    public virtual Osusr8dwCsicpCg070Stum? Cg071Continstatusinter { get; set; }
-
-    public virtual Osusr8dwCsicpCg070? Cg071ProtocolocontabilizacaNavigation { get; set; }
-
-    public virtual ICollection<Osusr8dwCsicpCg072> Osusr8dwCsicpCg072s { get; set; } = new List<Osusr8dwCsicpCg072>();
-
-    public virtual ICollection<Osusr8dwCsicpCg073> Osusr8dwCsicpCg073s { get; set; } = new List<Osusr8dwCsicpCg073>();
 }

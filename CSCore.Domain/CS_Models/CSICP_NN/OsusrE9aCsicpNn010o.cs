@@ -25,5 +25,4 @@ public partial class OsusrE9aCsicpNn010o
 
     public string? Nn010oPath { get; set; }
 
-    public virtual OsusrE9aCsicpNn010? Nn010 { get; set; }
 }

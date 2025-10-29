@@ -24,8 +24,4 @@ public partial class Osusr8dwCsicpCg013
     public decimal? Cg013Totalcredito { get; set; }
 
     public decimal? Cg013Saldo { get; set; }
-
-    public virtual Osusr8dwCsicpCg011? Cg013Contagerencial { get; set; }
-
-    public virtual Osusr8dwCsicpCg008? Cg013TipoSaldo { get; set; }
 }

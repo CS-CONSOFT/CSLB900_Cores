@@ -13,5 +13,5 @@ public partial class Osusr8dwCsicpCg095tmp
 
     public string? Cg095Estabid { get; set; }
 
-    public virtual Osusr8dwCsicpCg094tmp? Cg095Tempheader { get; set; }
+    //public virtual Osusr8dwCsicpCg094tmp? Cg095Tempheader { get; set; }
 }

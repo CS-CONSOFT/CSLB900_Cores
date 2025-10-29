@@ -18,8 +18,4 @@ public partial class OsusrE9aCsicpNn018
     public string? Nn010Protocolnumber { get; set; }
 
     public string? Nn015Protocolnumber { get; set; }
-
-    public virtual OsusrE9aCsicpNn010? Nn010 { get; set; }
-
-    public virtual CSICP_NN015? Nn015 { get; set; }
 }

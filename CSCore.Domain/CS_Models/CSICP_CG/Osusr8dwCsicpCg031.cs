@@ -18,10 +18,4 @@ public partial class Osusr8dwCsicpCg031
     public string? Cg031UserpropId { get; set; }
 
     public DateTime? Cg031Dinclusao { get; set; }
-
-    public virtual Osusr8dwCsicpCg008? Cg031TipoSaldo { get; set; }
-
-    public virtual ICollection<Osusr8dwCsicpCg032> Osusr8dwCsicpCg032s { get; set; } = new List<Osusr8dwCsicpCg032>();
-
-    public virtual ICollection<Osusr8dwCsicpCg037> Osusr8dwCsicpCg037s { get; set; } = new List<Osusr8dwCsicpCg037>();
 }

@@ -188,6 +188,8 @@ public partial class AppDbContext : DbContext
         OnModelCreating_CSICP_FF003(modelBuilder);
         OnModelCreating_CSICP_Systems(modelBuilder);
         OnModelCreatingRR(modelBuilder); // Adicionando a chamada para as configurações RR
+        OnModelCreating_CSICP_CG(modelBuilder);
+        OnModelCreating_CSICP_NN(modelBuilder);
 
         base.OnModelCreating(modelBuilder);
     }

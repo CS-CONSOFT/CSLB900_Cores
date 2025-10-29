@@ -53,4 +53,9 @@ namespace CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro
         public List<string> EstabIDs { get; set; }
 
     }
+
+    public class FluxoDeCaixaListaEstabIDs
+    {
+        public List<string> ListaEstabIDs { get; set; } = [];
+    }
 }

@@ -15,9 +15,9 @@ public partial class Osusr8dwCsicpCg091tmp
 
     public decimal? Cg091Vlvalor { get; set; }
 
-    public virtual Osusr8dwCsicpCg090tmp? Cg091Conttempdem { get; set; }
+    //public virtual Osusr8dwCsicpCg090tmp? Cg091Conttempdem { get; set; }
 
-    public virtual Osusr8dwCsicpCg092tmp? Cg091ConttempdemcabNavigation { get; set; }
+    //public virtual Osusr8dwCsicpCg092tmp? Cg091ConttempdemcabNavigation { get; set; }
 
-    public virtual ICollection<Osusr8dwCsicpCg093tmp> Osusr8dwCsicpCg093tmps { get; set; } = new List<Osusr8dwCsicpCg093tmp>();
+    //public virtual ICollection<Osusr8dwCsicpCg093tmp> Osusr8dwCsicpCg093tmps { get; set; } = new List<Osusr8dwCsicpCg093tmp>();
 }

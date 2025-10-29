@@ -15,10 +15,4 @@ public partial class Osusr8dwCsicpCg070
     public int? Cg070Continstatusinterid { get; set; }
 
     public bool? Cg070Processalista { get; set; }
-
-    public virtual Osusr8dwCsicpCg070Stum? Cg070Continstatusinter { get; set; }
-
-    public virtual ICollection<Osusr8dwCsicpCg021> Osusr8dwCsicpCg021s { get; set; } = new List<Osusr8dwCsicpCg021>();
-
-    public virtual ICollection<Osusr8dwCsicpCg071> Osusr8dwCsicpCg071s { get; set; } = new List<Osusr8dwCsicpCg071>();
 }
