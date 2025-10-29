@@ -20,11 +20,4 @@ public partial class OsusrE9aCsicpNn002
 
     public bool? Nn002Isactive { get; set; }
 
-    public virtual OsusrE9aCsicpNn002Tpgru? Nn002Tipogrupo { get; set; }
-
-    public virtual ICollection<OsusrE9aCsicpNn003> OsusrE9aCsicpNn003s { get; set; } = new List<OsusrE9aCsicpNn003>();
-
-    public virtual ICollection<OsusrE9aCsicpNn010> OsusrE9aCsicpNn010s { get; set; } = new List<OsusrE9aCsicpNn010>();
-
-    public virtual ICollection<CSICP_NN015> OsusrE9aCsicpNn015s { get; set; } = new List<CSICP_NN015>();
 }

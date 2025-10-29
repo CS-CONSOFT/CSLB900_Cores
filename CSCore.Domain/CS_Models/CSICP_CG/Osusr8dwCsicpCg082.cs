@@ -16,8 +16,4 @@ public partial class Osusr8dwCsicpCg082
     public DateTime? Cg082Dateinicial { get; set; }
 
     public DateTime? Cg082Datefinal { get; set; }
-
-    public virtual Osusr8dwCsicpCg006? Cg082Contconta { get; set; }
-
-    public virtual Osusr8dwCsicpCg081? Cg082Contrelreg { get; set; }
 }

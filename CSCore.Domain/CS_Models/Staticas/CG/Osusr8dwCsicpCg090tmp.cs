@@ -18,7 +18,7 @@ public partial class Osusr8dwCsicpCg090tmp
 
     public string? Cg090Estabid { get; set; }
 
-    public virtual Osusr8dwCsicpCg081? Cg090ContrelregistroNavigation { get; set; }
+    //public virtual Osusr8dwCsicpCg081? Cg090ContrelregistroNavigation { get; set; }
 
-    public virtual ICollection<Osusr8dwCsicpCg091tmp> Osusr8dwCsicpCg091tmps { get; set; } = new List<Osusr8dwCsicpCg091tmp>();
+    //public virtual ICollection<Osusr8dwCsicpCg091tmp> Osusr8dwCsicpCg091tmps { get; set; } = new List<Osusr8dwCsicpCg091tmp>();
 }

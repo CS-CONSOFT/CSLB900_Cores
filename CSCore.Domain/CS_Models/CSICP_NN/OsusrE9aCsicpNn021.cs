@@ -28,8 +28,4 @@ public partial class OsusrE9aCsicpNn021
     public string? Nn010Id { get; set; }
 
     public bool? Nn021Isrepetido { get; set; }
-
-    public virtual OsusrE9aCsicpNn010? Nn010 { get; set; }
-
-    public virtual OsusrE9aCsicpNn020? Nn020 { get; set; }
 }

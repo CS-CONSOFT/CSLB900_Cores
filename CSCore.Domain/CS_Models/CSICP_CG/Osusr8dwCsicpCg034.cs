@@ -14,6 +14,4 @@ public partial class Osusr8dwCsicpCg034
     public int? Cg034Operandoid { get; set; }
 
     public decimal? Cg034Operador { get; set; }
-
-    public virtual Osusr8dwCsicpCg032? Cg032InCtadre { get; set; }
 }

@@ -133,10 +133,6 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Nn001Tpcontaid).HasColumnName("NN001_TPCONTAID");
                 entity.Property(e => e.Nn001Usacix).HasColumnName("NN001_USACIX");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-
-                entity.HasOne(d => d.Nn001Tpconta).WithMany(p => p.OsusrE9aCsicpNn001s)
-                    .HasForeignKey(d => d.Nn001Tpcontaid)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN001_OSUSR_E9A_CSICP_NN001_TP_NN001_TPCONTAID");
             });
 
             modelBuilder.Entity<OsusrE9aCsicpNn001Tp>(entity =>
@@ -180,10 +176,6 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Nn002Isactive).HasColumnName("NN002_ISACTIVE");
                 entity.Property(e => e.Nn002TipogrupoId).HasColumnName("NN002_TIPOGRUPO_ID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-
-                entity.HasOne(d => d.Nn002Tipogrupo).WithMany(p => p.OsusrE9aCsicpNn002s)
-                    .HasForeignKey(d => d.Nn002TipogrupoId)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN002_OSUSR_E9A_CSICP_NN002_TPGRU_NN002_TIPOGRUPO_ID");
             });
 
             modelBuilder.Entity<OsusrE9aCsicpNn002Tpgru>(entity =>
@@ -238,11 +230,6 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnType("decimal(37, 8)")
                     .HasColumnName("NN003_VLRREALIZADOREC");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-
-                entity.HasOne(d => d.Nn003Grupo).WithMany(p => p.OsusrE9aCsicpNn003s)
-                    .HasForeignKey(d => d.Nn003GrupoId)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN003_OSUSR_E9A_CSICP_NN002_NN003_GRUPO_ID");
             });
 
             modelBuilder.Entity<OsusrE9aCsicpNn004>(entity =>
@@ -298,10 +285,6 @@ namespace CSCore.Ifs.CS_Context
                     .HasMaxLength(36)
                     .HasColumnName("NN005_USUARIOPROPID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-
-                entity.HasOne(d => d.Nn001Ctacorrente).WithMany(p => p.OsusrE9aCsicpNn005s)
-                    .HasForeignKey(d => d.Nn001CtacorrenteId)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN005_OSUSR_E9A_CSICP_NN001_NN001_CTACORRENTE_ID");
             });
 
             modelBuilder.Entity<OsusrE9aCsicpNn010>(entity =>
@@ -441,34 +424,6 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnType("decimal(37, 8)")
                     .HasColumnName("NN010_VLR_MOVTO_ANTERIOR");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-
-                entity.HasOne(d => d.Nn001Classe).WithMany(p => p.OsusrE9aCsicpNn010s)
-                    .HasForeignKey(d => d.Nn001ClasseId)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN010_OSUSR_E9A_CSICP_NN004_NN001_CLASSE_ID");
-
-                entity.HasOne(d => d.Nn001Ctacorrente).WithMany(p => p.OsusrE9aCsicpNn010Nn001Ctacorrentes)
-                    .HasForeignKey(d => d.Nn001CtacorrenteId)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN010_OSUSR_E9A_CSICP_NN001_NN001_CTACORRENTE_ID");
-
-                entity.HasOne(d => d.Nn001Grupo).WithMany(p => p.OsusrE9aCsicpNn010s)
-                    .HasForeignKey(d => d.Nn001GrupoId)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN010_OSUSR_E9A_CSICP_NN002_NN001_GRUPO_ID");
-
-                entity.HasOne(d => d.Nn001TransfCcorr).WithMany(p => p.OsusrE9aCsicpNn010Nn001TransfCcorrs)
-                    .HasForeignKey(d => d.Nn001TransfCcorrId)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN010_OSUSR_E9A_CSICP_NN001_NN001_TRANSF_CCORR_ID");
-
-                entity.HasOne(d => d.Nn010Estorno).WithMany(p => p.OsusrE9aCsicpNn010s)
-                    .HasForeignKey(d => d.Nn010EstornoId)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN010_OSUSR_E9A_CSICP_NN010_EST_NN010_ESTORNO_ID");
-
-                entity.HasOne(d => d.Nn010Tplancto).WithMany(p => p.OsusrE9aCsicpNn010s)
-                    .HasForeignKey(d => d.Nn010TplanctoId)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN010_OSUSR_E9A_CSICP_NN010_TPLAN_NN010_TPLANCTO_ID");
-
-                entity.HasOne(d => d.Nn010Tpmovto).WithMany(p => p.OsusrE9aCsicpNn010s)
-                    .HasForeignKey(d => d.Nn010TpmovtoId)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN010_OSUSR_E9A_CSICP_NN010_TMOV_NN010_TPMOVTO_ID");
             });
 
             modelBuilder.Entity<OsusrE9aCsicpNn010Est>(entity =>
@@ -550,10 +505,7 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Nn010oTipoarq).HasColumnName("NN010O_TIPOARQ");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(d => d.Nn010).WithMany(p => p.OsusrE9aCsicpNn010os)
-                    .HasForeignKey(d => d.Nn010Id)
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN010O_OSUSR_E9A_CSICP_NN010_NN010_ID");
+               
             });
 
             modelBuilder.Entity<OsusrE9aCsicpNn011>(entity =>
@@ -610,13 +562,6 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("NN011_TOTAL_SAIDAS");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(d => d.Nn011Ctacorrente).WithMany(p => p.OsusrE9aCsicpNn011s)
-                    .HasForeignKey(d => d.Nn011CtacorrenteId)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN011_OSUSR_E9A_CSICP_NN001_NN011_CTACORRENTE_ID");
-
-                entity.HasOne(d => d.Nn011PkSldanterior).WithMany(p => p.InverseNn011PkSldanterior)
-                    .HasForeignKey(d => d.Nn011PkSldanteriorId)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN011_OSUSR_E9A_CSICP_NN011_NN011_PK_SLDANTERIOR_ID");
             });
 
             modelBuilder.Entity<CSICP_NN015>(entity =>
@@ -971,9 +916,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("NN015_PROTOCOLNUMBER");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(d => d.Nn010).WithMany(p => p.OsusrE9aCsicpNn018s)
-                    .HasForeignKey(d => d.Nn010Id)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN018_OSUSR_E9A_CSICP_NN010_NN010_ID");
+                
 
              
             });
@@ -1064,14 +1007,6 @@ namespace CSCore.Ifs.CS_Context
                     .HasMaxLength(36)
                     .HasColumnName("NN020_USUARIOPROPID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-
-                entity.HasOne(d => d.Nn001Ctacorrente).WithMany(p => p.OsusrE9aCsicpNn020s)
-                    .HasForeignKey(d => d.Nn001Ctacorrenteid)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN020_OSUSR_E9A_CSICP_NN001_NN001_CTACORRENTEID");
-
-                entity.HasOne(d => d.Nn020Status).WithMany(p => p.OsusrE9aCsicpNn020s)
-                    .HasForeignKey(d => d.Nn020Statusid)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN020_OSUSR_E9A_CSICP_NN020_STAT_NN020_STATUSID");
             });
 
             modelBuilder.Entity<OsusrE9aCsicpNn020Stat>(entity =>
@@ -1129,13 +1064,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("NN021_TRNTYPE");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(d => d.Nn010).WithMany(p => p.OsusrE9aCsicpNn021s)
-                    .HasForeignKey(d => d.Nn010Id)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN021_OSUSR_E9A_CSICP_NN010_NN010_ID");
-
-                entity.HasOne(d => d.Nn020).WithMany(p => p.OsusrE9aCsicpNn021s)
-                    .HasForeignKey(d => d.Nn020Id)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_NN021_OSUSR_E9A_CSICP_NN020_NN020_ID");
+                
             });
             modelBuilder.HasSequence("Seq_PK_ID");
 

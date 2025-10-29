@@ -27,8 +27,4 @@ public partial class Osusr8dwCsicpCg007
     public string? Cg007UserpropId { get; set; }
 
     public int? Cg007StatusId { get; set; }
-
-    public virtual Osusr8dwCsicpCg007Stat? Cg007Status { get; set; }
-
-    public virtual ICollection<Osusr8dwCsicpCg021> Osusr8dwCsicpCg021s { get; set; } = new List<Osusr8dwCsicpCg021>();
 }

@@ -17,5 +17,4 @@ public partial class OsusrE9aCsicpNn005
 
     public DateTime? Nn005Dinclusao { get; set; }
 
-    public virtual OsusrE9aCsicpNn001? Nn001Ctacorrente { get; set; }
 }

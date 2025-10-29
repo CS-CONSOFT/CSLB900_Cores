@@ -14,8 +14,4 @@ public partial class Osusr8dwCsicpCg063
     public string? Cg063Parametroid { get; set; }
 
     public long? Cg063Eventopartpid { get; set; }
-
-    public virtual Osusr8dwCsicpCg051? Cg063Eventopartp { get; set; }
-
-    public virtual Osusr8dwCsicpCg060? Cg063Regramento { get; set; }
 }
