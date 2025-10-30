@@ -14,5 +14,5 @@ public partial class OsusrE9aCsicpNn015Stum
 
     public bool? IsActive { get; set; }
 
-    public virtual ICollection<CSICP_NN015> OsusrE9aCsicpNn015s { get; set; } = new List<CSICP_NN015>();
+   
 }

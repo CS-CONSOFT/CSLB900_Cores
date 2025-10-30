@@ -29,6 +29,20 @@ namespace CSCore.Ifs.Repository
             return addedEntity;
         }
 
+        public virtual async Task<int> BulkCreateAsync(List<TEntity> entities)
+        {
+            ArgumentNullException.ThrowIfNull(entities);
+            await _appDbContext.Set<TEntity>().BulkInsertOptimizedAsync(entities);
+            return entities.Count;
+        }
+
+        public virtual async Task<int> BulkCreateAsync(IEnumerable<TEntity> entities)
+        {
+            ArgumentNullException.ThrowIfNull(entities);
+            await _appDbContext.Set<TEntity>().BulkInsertOptimizedAsync(entities);
+            return entities.Count();
+        }
+
         public virtual async Task<TEntity?> RemoveAsync(string id, int tenant)
         {
             TEntity? entity = await GetEntityForUpdateAsync(id, tenant);

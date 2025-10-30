@@ -4,6 +4,8 @@
         where TEntity : class
     {
         TEntity Create(TEntity entity);
+        Task<int> BulkCreateAsync(List<TEntity> entities);
+        Task<int> BulkCreateAsync(IEnumerable<TEntity> entities);
         Task<TEntity?> UpdateAsync(string id, int tenant, TEntity entity);
         Task<TEntity?> UpdateAsync(long id, int tenant, TEntity entity);
         Task<TEntity?> RemoveAsync(string id, int tenant);
@@ -16,6 +18,8 @@
     where TEntity : class
     {
         TEntity Create(TEntity entity);
+        Task<int> BulkCreateAsync(List<TEntity> entities);
+        Task<int> BulkCreateAsync(IEnumerable<TEntity> entities);
         Task<TEntity?> UpdateAsync(string id, int tenant, TEntity entity);
         Task<TEntity?> UpdateAsync(long id, int tenant, TEntity entity);
         Task<TEntity?> RemoveAsync(string id, int tenant);
