@@ -18,28 +18,39 @@ namespace CSCore.Ifs.NN.CSICP_NN015
 
         public async Task CS_AtualizaValoresBaixaTesouraria(int tenant, string NN015_id)
         {
-            var historicoTeste = "Historico atualizado na baixa de tesouraria";
+            /*
+                Autor: Valter e Agnaldo
+                Data:  30/10/2025
+                Obs:   A query abaixo está desenvolvida para MSSQL Server.
+             */
             FormattableString sql = $@"
-                UPDATE OSUSR_E9A_CSICP_NN015
-                SET 
-                    NN015_TOTAL_DESCONTOS = nn015.NN015_TOTAL_DESCONTOS + nn016.NN016_VALOR_DESCONTO,
-                    NN015_TOTAL_TITULO = nn015.NN015_TOTAL_TITULO + nn016.NN016_VLRABERTOTITULOS,
-                    NN015_TOTAL_JUROS = nn015.NN015_TOTAL_JUROS + nn016.NN016_VALOR_JUROS,
-                    NN015_TOTAL_MULTA = nn015.NN015_TOTAL_MULTA + nn016.NN016_VALOR_MULTA,
-                    NN015_TOTAL_TAXA = nn015.NN015_TOTAL_TAXA + nn016.NN016_VALOR_TAXA,
-                    NN015_TOTAL_PAGO = nn015.NN015_TOTAL_PAGO + nn016.NN016_VALOR_PAGO,
-                    NN015_TOTALJUROS_CALC = nn015.NN015_TOTALJUROS_CALC + nn016.NN016_VALOR_JUROS_CALC,
-                    NN015_TOTALMULTA_CALC = nn015.NN015_TOTALMULTA_CALC + nn016.NN016_VALOR_MULTA_CALC,
-                    NN015_HISTORICO = {historicoTeste},
-                    NN015_TOTALTAXA_CALC = nn015.NN015_TOTALTAXA_CALC + nn016.NN016_VALOR_TAXA_CALC
-                FROM OSUSR_E9A_CSICP_NN015 nn015
-                INNER JOIN OSUSR_E9A_CSICP_NN016 nn016
-                    ON nn015.NN015_CRCP_ID = nn016.NN016_CRCP_ID
-                WHERE nn015.TENANT_ID = {tenant} AND nn015.NN015_CRCP_ID = {NN015_id}";
+               UPDATE OSUSR_E9A_CSICP_NN015
+                    SET 
+                        NN015_TOTAL_DESCONTOS     = agg.NN016_VALOR_DESCONTO,
+                        NN015_TOTAL_TITULO        = agg.NN016_VLRABERTOTITULOS,
+                        NN015_TOTAL_JUROS         = agg.NN016_VALOR_JUROS,
+                        NN015_TOTAL_MULTA         = agg.NN016_VALOR_MULTA,
+                        NN015_TOTAL_TAXA          = agg.NN016_VALOR_TAXA,
+                        NN015_TOTAL_PAGO          = agg.NN016_VALOR_PAGO,
+                        NN015_TOTALJUROS_CALC     = agg.NN016_VALOR_JUROS_CALC,
+                        NN015_TOTALMULTA_CALC     = agg.NN016_VALOR_MULTA_CALC
+                    FROM (
+                        SELECT
+                            SUM(NN016_VALOR_DESCONTO)      AS NN016_VALOR_DESCONTO,
+                            SUM(NN016_VLRABERTOTITULOS)    AS NN016_VLRABERTOTITULOS,
+                            SUM(NN016_VALOR_JUROS)         AS NN016_VALOR_JUROS,
+                            SUM(NN016_VALOR_MULTA)         AS NN016_VALOR_MULTA,
+                            SUM(NN016_VALOR_TAXA)          AS NN016_VALOR_TAXA,
+                            SUM(NN016_VALOR_PAGO)          AS NN016_VALOR_PAGO,
+                            SUM(NN016_VALOR_JUROS_CALC)    AS NN016_VALOR_JUROS_CALC,
+                            SUM(NN016_VALOR_MULTA_CALC)    AS NN016_VALOR_MULTA_CALC
+                        FROM OSUSR_E9A_CSICP_NN016
+                        WHERE TENANT_ID = {tenant} AND NN016_CRCP_ID = {NN015_id}
+                    ) agg
+                    WHERE TENANT_ID = {tenant} AND NN015_CRCP_ID = {NN015_id}";
 
             //ja executa
             await this._appDbContext.Database.ExecuteSqlInterpolatedAsync(sql);
-
         }
 
         public Task<Domain.CS_Models.CSICP_NN.CSICP_NN015?> GetByIdAsync(int tenant, string id)
