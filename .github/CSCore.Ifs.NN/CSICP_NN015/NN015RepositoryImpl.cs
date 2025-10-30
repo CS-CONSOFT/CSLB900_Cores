@@ -18,23 +18,24 @@ namespace CSCore.Ifs.NN.CSICP_NN015
 
         public async Task CS_AtualizaValoresBaixaTesouraria(int tenant, string NN015_id)
         {
+            var historicoTeste = "Historico atualizado na baixa de tesouraria";
             FormattableString sql = $@"
-                UPDATE nn015
+                UPDATE OSUSR_E9A_CSICP_NN015
                 SET 
-                    Nn015TotalDescontos = nn015.Nn015TotalDescontos + nn016.Nn016ValorDesconto,
-                    Nn015TotalTitulo = nn015.Nn015TotalTitulo + nn016.Nn016Vlrabertotitulos,
-                    Nn015TotalJuros = nn015.Nn015TotalJuros + nn016.Nn016ValorJuros,
-                    Nn015TotalMulta = nn015.Nn015TotalMulta + nn016.Nn016ValorMulta,
-                    Nn015TotalTaxa = nn015.Nn015TotalTaxa + nn016.Nn016ValorTaxa,
-                    Nn015TotalPago = nn015.Nn015TotalPago + nn016.Nn016ValorPago,
-                    Nn015TotaljurosCalc = nn015.Nn015TotaljurosCalc + nn016.Nn016ValorJurosCalc,
-                    Nn015TotalmultaCalc = nn015.Nn015TotalmultaCalc + nn016.Nn016ValorMultaCalc,
-                    Nn015TotaltaxaCalc = nn015.Nn015TotaltaxaCalc + nn016.Nn016ValorTaxaCalc, 
-                FROM CSICP_NN015 nn015
-                INNER JOIN CSICP_NN016 nn016
-                    ON nn015.TenantId = nn016.TenantId
-                    AND nn015.Nn015CrcpId = nn016.Nn016CrcpId
-                WHERE nn015.TenantId = {tenant} AND nn015.Nn015CrcpId = {NN015_id}";
+                    NN015_TOTAL_DESCONTOS = nn015.NN015_TOTAL_DESCONTOS + nn016.NN016_VALOR_DESCONTO,
+                    NN015_TOTAL_TITULO = nn015.NN015_TOTAL_TITULO + nn016.NN016_VLRABERTOTITULOS,
+                    NN015_TOTAL_JUROS = nn015.NN015_TOTAL_JUROS + nn016.NN016_VALOR_JUROS,
+                    NN015_TOTAL_MULTA = nn015.NN015_TOTAL_MULTA + nn016.NN016_VALOR_MULTA,
+                    NN015_TOTAL_TAXA = nn015.NN015_TOTAL_TAXA + nn016.NN016_VALOR_TAXA,
+                    NN015_TOTAL_PAGO = nn015.NN015_TOTAL_PAGO + nn016.NN016_VALOR_PAGO,
+                    NN015_TOTALJUROS_CALC = nn015.NN015_TOTALJUROS_CALC + nn016.NN016_VALOR_JUROS_CALC,
+                    NN015_TOTALMULTA_CALC = nn015.NN015_TOTALMULTA_CALC + nn016.NN016_VALOR_MULTA_CALC,
+                    NN015_HISTORICO = {historicoTeste},
+                    NN015_TOTALTAXA_CALC = nn015.NN015_TOTALTAXA_CALC + nn016.NN016_VALOR_TAXA_CALC
+                FROM OSUSR_E9A_CSICP_NN015 nn015
+                INNER JOIN OSUSR_E9A_CSICP_NN016 nn016
+                    ON nn015.NN015_CRCP_ID = nn016.NN016_CRCP_ID
+                WHERE nn015.TENANT_ID = {tenant} AND nn015.NN015_CRCP_ID = {NN015_id}";
 
             //ja executa
             await this._appDbContext.Database.ExecuteSqlInterpolatedAsync(sql);
