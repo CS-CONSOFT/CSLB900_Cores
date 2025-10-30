@@ -23,12 +23,6 @@ public partial class CSICP_FF012
 
     public string? Ff012Grupopaiid { get; set; }
 
-    public virtual CSICP_FF012? Ff012Grupopai { get; set; }
-
-    public virtual CSICP_FF014? Ff014Comissaocobrador { get; set; }
-
-    public virtual CSICP_FF014? Ff014Comissaosuper { get; set; }
-
     // Navegações movidas do RepoDtoCSICP_FF012
     public CSICP_BB001? NavBB001 { get; set; }
     public Csicp_Sy001? NavSY001 { get; set; }

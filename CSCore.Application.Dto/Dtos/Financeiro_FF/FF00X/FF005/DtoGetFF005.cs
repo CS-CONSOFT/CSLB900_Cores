@@ -36,8 +36,6 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF005
 
         public int? Ff005ImpostoId { get; set; }
 
-        public virtual CSICP_FF003? Ff003Especie { get; set; }
-
         public Dto_GetBB001_Exibicao? NavBB001Filial { get; set; }
 
         public Dto_GetBB012_ExibSimples? NavBB012ContaFornecedor { get; set; }
