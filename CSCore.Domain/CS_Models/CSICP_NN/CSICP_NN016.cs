@@ -5,9 +5,7 @@ namespace CSCore.Domain.CS_Models.CSICP_NN;
 
 public partial class CSICP_NN016
 {
-    private CSICP_NN016()
-    {
-    }
+
 
     public int TenantId { get; set; }
 
