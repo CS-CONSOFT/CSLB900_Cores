@@ -12,7 +12,9 @@ public partial class CSICP_NN015
 
     public string Nn015CrcpId { get; set; } = null!;
 
+    [ForeignKey("NavNN015Filial")]
     public string? Nn015FilialId { get; set; }
+    public CSICP_BB001? NavNN015Filial { get; set; }
 
     public int? Nn015Filial { get; set; }
     [ForeignKey("NavNN015Rp")]

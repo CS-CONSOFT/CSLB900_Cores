@@ -1,4 +1,5 @@
-﻿using CSCore.Application.Dto.Mapper.NN._015;
+﻿using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Mapper.NN._015;
 using CSCore.Domain.CS_Models.CSICP_NN;
 
 namespace CSCore.Application.Dto.Mapper.NN
@@ -55,8 +56,9 @@ namespace CSCore.Application.Dto.Mapper.NN
                 Nn015Tcorrmonetaria = entity.Nn015Tcorrmonetaria,
                 Nn015Thonorarios = entity.Nn015Thonorarios,
                 NavNN001 = entity.NavNN001,
-                NavNN015Status= entity.NavNN015Status,
-                NavNN015Rp= entity.NavNN015Rp
+                NavNN015Status = entity.NavNN015Status,
+                NavNN015Rp = entity.NavNN015Rp,
+                NavNN015Filial = entity.NavNN015Filial?.ToDtoGetSimples()
 
             };
         }

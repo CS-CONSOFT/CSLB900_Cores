@@ -1,4 +1,5 @@
-﻿using CSCore.Domain.CS_Models.CSICP_NN;
+﻿using CSBS101.C82Application.Dto.BB00X.BB00X.BB001;
+using CSCore.Domain.CS_Models.CSICP_NN;
 using CSCore.Domain.CS_Models.Staticas.NN;
 using System;
 using System.Collections.Generic;
@@ -104,7 +105,7 @@ namespace CSCore.Application.Dto.Mapper.NN._015
         public CSICP_NN001? NavNN001 { get; set; }
         public OsusrE9aCsicpNn015Rp? NavNN015Rp { get; set; }
         public OsusrE9aCsicpNn015Stum? NavNN015Status { get; set; }
-
+        public Dto_GetBB001Simples? NavNN015Filial { get; set; }
 
     }
 }

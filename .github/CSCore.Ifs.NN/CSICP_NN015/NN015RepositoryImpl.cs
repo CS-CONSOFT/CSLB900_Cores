@@ -80,6 +80,7 @@ namespace CSCore.Ifs.NN.CSICP_NN015
                      .Include(e => e.NavNN015Rp)
                      .Include(e => e.NavNN015Status)
                      .Include(e => e.NavNN001)
+                     .Include(e => e.NavNN015Filial)
                    .AsNoTracking();
 
             if(TipoRegistro != null)
