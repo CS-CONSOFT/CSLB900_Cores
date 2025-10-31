@@ -44,9 +44,10 @@ public partial class CSICP_CG000
 
     public int? Cg000Ultcodgredz { get; set; }
 
+    [ForeignKey("NavStatica_CG000")]
     public int? Cg000Usacalendario { get; set; }
 
     public CSICP_BB001? NavBB001_CG000 { get; set; }
 
-    public CSICP_Statica? NavCGStatica_CG000 { get; set; }
+    public CSICP_Statica? NavStatica_CG000 { get; set; }
 }

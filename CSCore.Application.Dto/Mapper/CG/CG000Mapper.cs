@@ -1,4 +1,5 @@
-﻿using CSCore.Application.Dto.Dtos.CG.CG000;
+﻿using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Dtos.CG.CG000;
 using CSCore.Application.Dto.Mapper.NN._015;
 using CSCore.Domain.CS_Models.CSICP_CG;
 using CSCore.Domain.CS_Models.CSICP_NN;
@@ -34,7 +35,9 @@ namespace CSCore.Application.Dto.Mapper.CG
                 Cg000Dgrau5Ctager = entity.Cg000Dgrau5Ctager,
                 Cg000Mascaractager = entity.Cg000Mascaractager,
                 Cg000Ultcodgredz = entity.Cg000Ultcodgredz,
-                Cg000Usacalendario = entity.Cg000Usacalendario
+                Cg000Usacalendario = entity.Cg000Usacalendario,
+                NavBB001_CG000 = entity.NavBB001_CG000?.ToDtoGetSimples(), 
+                NavStatica_CG000 =  entity.NavStatica_CG000
             };
 
         }

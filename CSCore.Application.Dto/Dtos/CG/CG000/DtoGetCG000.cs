@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CSBS101.C82Application.Dto.BB00X.BB00X.BB001;
+using CSCore.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,5 +47,9 @@ namespace CSCore.Application.Dto.Dtos.CG.CG000
         public int? Cg000Ultcodgredz { get; set; }
 
         public int? Cg000Usacalendario { get; set; }
+
+        public Dto_GetBB001Simples? NavBB001_CG000 { get; set; }
+
+        public CSICP_Statica? NavStatica_CG000 { get; set; }
     }
 }
