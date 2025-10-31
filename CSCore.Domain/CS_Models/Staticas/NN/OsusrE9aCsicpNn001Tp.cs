@@ -14,5 +14,5 @@ public partial class OsusrE9aCsicpNn001Tp
 
     public bool? IsActive { get; set; }
 
-    public virtual ICollection<CSICP_NN001> OsusrE9aCsicpNn001s { get; set; } = new List<CSICP_NN001>();
+    
 }
