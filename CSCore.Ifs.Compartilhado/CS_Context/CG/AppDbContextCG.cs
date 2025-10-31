@@ -6,7 +6,7 @@ namespace CSCore.Ifs.CS_Context
 {
     public partial class AppDbContext
     {
-        public virtual DbSet<Osusr8dwCsicpCg000> Osusr8dwCsicpCg000s { get; set; }
+        public virtual DbSet<CSICP_CG000> Osusr8dwCsicpCg000s { get; set; }
 
         public virtual DbSet<Osusr8dwCsicpCg001> Osusr8dwCsicpCg001s { get; set; }
 
@@ -136,7 +136,7 @@ namespace CSCore.Ifs.CS_Context
         {
             modelBuilder.UseCollation("Latin1_General_CI_AI");
 
-            modelBuilder.Entity<Osusr8dwCsicpCg000>(entity =>
+            modelBuilder.Entity<CSICP_CG000>(entity =>
             {
                 entity.HasKey(e => e.Cg000Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG000");
 
