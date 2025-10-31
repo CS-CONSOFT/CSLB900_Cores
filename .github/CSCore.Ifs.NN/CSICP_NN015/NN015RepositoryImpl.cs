@@ -65,7 +65,15 @@ namespace CSCore.Ifs.NN.CSICP_NN015
 
         }
 
-        public async Task<(IEnumerable<Domain.CS_Models.CSICP_NN.CSICP_NN015>, int)> GetListAsync(int tenant, int page, int pageSize, int? TipoRegistro)
+        public async Task<(IEnumerable<Domain.CS_Models.CSICP_NN.CSICP_NN015>, int)> GetListAsync(
+            int tenant,
+            int page, 
+            int pageSize,
+            int? TipoRegistro,
+            int? statusNN015,
+            DateTime? InDataInit,
+            DateTime? InDataFim,
+            string? estabelecimento)
         {
             var query = _appDbContext.OsusrE9aCsicpNn015s
                      .Where(e => e.TenantId == tenant)
@@ -75,9 +83,17 @@ namespace CSCore.Ifs.NN.CSICP_NN015
                    .AsNoTracking();
 
             if(TipoRegistro != null)
-            {
                 query = query.Where(e => e.Nn015TipoMovtoid == TipoRegistro);
-            }
+            if (statusNN015 != null)
+                query = query.Where(e => e.Nn015Status == statusNN015);
+            if (InDataInit != null)
+                query = query.Where(e => e.Nn015DataMovimento >= InDataInit);
+            if (InDataFim != null)
+                query = query.Where(e => e.Nn015DataMovimento <= InDataFim);
+            if (estabelecimento != null)
+                query = query.Where(e => e.Nn015FilialId == estabelecimento);
+
+
 
             var queryCount = query;
             var count = queryCount.Count();
