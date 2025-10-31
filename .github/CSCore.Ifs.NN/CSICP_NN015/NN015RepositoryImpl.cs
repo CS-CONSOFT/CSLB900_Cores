@@ -62,10 +62,15 @@ namespace CSCore.Ifs.NN.CSICP_NN015
 
         }
 
-        public async Task<(IEnumerable<Domain.CS_Models.CSICP_NN.CSICP_NN015>, int)> GetListAsync(int tenant, int page, int pageSize)
+        public async Task<(IEnumerable<Domain.CS_Models.CSICP_NN.CSICP_NN015>, int)> GetListAsync(int tenant, int page, int pageSize, int? TipoRegistro)
         {
             var query = _appDbContext.OsusrE9aCsicpNn015s.Where(e => e.TenantId == tenant)
                    .AsNoTracking();
+
+            if(TipoRegistro != null)
+            {
+                query = query.Where(e => e.Nn015TipoMovtoid == TipoRegistro);
+            }
 
             var queryCount = query;
             var count = queryCount.Count();
