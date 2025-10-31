@@ -1,4 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_NN;
+using CSCore.Domain.CS_Models.Staticas.NN;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,6 +101,10 @@ namespace CSCore.Application.Dto.Mapper.NN._015
 
         public decimal? Nn015Thonorarios { get; set; }
 
-     
+        public CSICP_NN001? NavNN001 { get; set; }
+        public OsusrE9aCsicpNn015Rp? NavNN015Rp { get; set; }
+        public OsusrE9aCsicpNn015Stum? NavNN015Status { get; set; }
+
+
     }
 }

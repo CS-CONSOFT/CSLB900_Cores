@@ -11,7 +11,7 @@ namespace CSCore.Ifs.CS_Context
 {
     public partial class AppDbContext
     {
-        public virtual DbSet<OsusrE9aCsicpNn001> OsusrE9aCsicpNn001s { get; set; }
+        public virtual DbSet<CSICP_NN001> OsusrE9aCsicpNn001s { get; set; }
 
         public virtual DbSet<OsusrE9aCsicpNn001Tp> OsusrE9aCsicpNn001Tps { get; set; }
 
@@ -59,7 +59,7 @@ namespace CSCore.Ifs.CS_Context
 
         partial void OnModelCreating_CSICP_NN(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<OsusrE9aCsicpNn001>(entity =>
+            modelBuilder.Entity<CSICP_NN001>(entity =>
             {
                 entity.HasKey(e => e.Nn001CtacorrenteId).HasName("OSPRK_OSUSR_E9A_CSICP_NN001");
 

@@ -56,6 +56,9 @@ namespace CSCore.Ifs.NN.CSICP_NN015
         public Task<Domain.CS_Models.CSICP_NN.CSICP_NN015?> GetByIdAsync(int tenant, string id)
         {
             var query = _appDbContext.OsusrE9aCsicpNn015s
+                 .Include(e => e.NavNN015Rp)
+                     .Include(e => e.NavNN015Status)
+                     .Include(e => e.NavNN001)
                 .AsNoTracking();
             query = query.Where(e => e.TenantId == tenant && e.Nn015CrcpId == id);
             return query.FirstOrDefaultAsync();
@@ -64,7 +67,11 @@ namespace CSCore.Ifs.NN.CSICP_NN015
 
         public async Task<(IEnumerable<Domain.CS_Models.CSICP_NN.CSICP_NN015>, int)> GetListAsync(int tenant, int page, int pageSize, int? TipoRegistro)
         {
-            var query = _appDbContext.OsusrE9aCsicpNn015s.Where(e => e.TenantId == tenant)
+            var query = _appDbContext.OsusrE9aCsicpNn015s
+                     .Where(e => e.TenantId == tenant)
+                     .Include(e => e.NavNN015Rp)
+                     .Include(e => e.NavNN015Status)
+                     .Include(e => e.NavNN001)
                    .AsNoTracking();
 
             if(TipoRegistro != null)

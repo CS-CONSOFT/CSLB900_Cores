@@ -2,6 +2,7 @@
 using CSCore.Domain.CS_Models.Staticas.NN;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_NN;
 
@@ -14,14 +15,19 @@ public partial class CSICP_NN015
     public string? Nn015FilialId { get; set; }
 
     public int? Nn015Filial { get; set; }
+    [ForeignKey("NavNN015Rp")]
 
     public int? Nn015TipoMovtoid { get; set; }
+    public OsusrE9aCsicpNn015Rp? NavNN015Rp { get; set; }
 
     public decimal? Nn015Ciorigemestorno { get; set; }
 
     public DateTime? Nn015DataMovimento { get; set; }
 
+    [ForeignKey("NavNN001")]
+
     public string? Nn015CtacorrenteId { get; set; }
+    public CSICP_NN001? NavNN001 { get; set; }
 
     public int? Nn015CodgCcorrente { get; set; }
 
@@ -61,7 +67,11 @@ public partial class CSICP_NN015
 
     public string? Nn015Favorecido { get; set; }
 
+
+    [ForeignKey("NavNN015Status")]
     public int? Nn015Status { get; set; }
+
+    public OsusrE9aCsicpNn015Stum? NavNN015Status { get; set; }
 
     public string? Nn015GrupoId { get; set; }
 
@@ -96,4 +106,6 @@ public partial class CSICP_NN015
     public decimal? Nn015Tcorrmonetaria { get; set; }
 
     public decimal? Nn015Thonorarios { get; set; }
-}
+
+
+    }

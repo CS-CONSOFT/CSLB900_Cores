@@ -54,6 +54,9 @@ namespace CSCore.Application.Dto.Mapper.NN
                 Nn015ValorTxAntcartao = entity.Nn015ValorTxAntcartao,
                 Nn015Tcorrmonetaria = entity.Nn015Tcorrmonetaria,
                 Nn015Thonorarios = entity.Nn015Thonorarios,
+                NavNN001 = entity.NavNN001,
+                NavNN015Status= entity.NavNN015Status,
+                NavNN015Rp= entity.NavNN015Rp
 
             };
         }
