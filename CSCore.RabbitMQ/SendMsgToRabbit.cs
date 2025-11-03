@@ -18,10 +18,27 @@ namespace CSCore.RabbitMQ
             if (string.IsNullOrEmpty(routingKey)) throw new ArgumentException("Routing key cannot be null or empty.", nameof(routingKey));
             if (string.IsNullOrEmpty(exchangeName)) throw new ArgumentException("Exchange name cannot be null or empty.", nameof(exchangeName));
 
-           
 
-
-            Log.Information("RabbitMQ - Enviando movimento entrada saída para Routing Key: " + routingKey);
+            Log.Information(
+    "\n====================[RabbitMQ - Envio de Mensagem]====================\n" +
+    "RoutingKey   : {RoutingKey}\n" +
+    "ExchangeName : {ExchangeName}\n" +
+    "TipoMensagem : {MessageType}\n" +
+    "Conteudo     : {@Message}\n" +
+    "Timestamp    : {Timestamp}\n" +
+    "Ambiente     : {Environment}\n" +
+    "Host         : {Host}\n" +
+    "Usuario      : {User}\n" +
+    "======================================================================",
+    routingKey,
+    exchangeName,
+    message?.GetType().FullName,
+    message,
+    DateTime.UtcNow,
+    Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+    Environment.MachineName,
+    Environment.UserName
+);
 
             var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri($"exchange:{exchangeName}?type=direct"));
             await endpoint.Send(message, ctx =>
@@ -40,7 +57,26 @@ namespace CSCore.RabbitMQ
             (string routingKey, string _) = RoutingKeys.GetRoutingKeyComDominio(currentURL, action);
 
 
-            Log.Information("RabbitMQ - Enviando movimento entrada saída para Routing Key: " + routingKey);
+            Log.Information(
+    "\n====================[RabbitMQ - Envio de Mensagem]====================\n" +
+    "RoutingKey   : {RoutingKey}\n" +
+    "ExchangeName : {ExchangeName}\n" +
+    "TipoMensagem : {MessageType}\n" +
+    "Conteudo     : {@Message}\n" +
+    "Timestamp    : {Timestamp}\n" +
+    "Ambiente     : {Environment}\n" +
+    "Host         : {Host}\n" +
+    "Usuario      : {User}\n" +
+    "======================================================================",
+    routingKey,
+    exchangeName,
+    message?.GetType().FullName,
+    message,
+    DateTime.UtcNow,
+    Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+    Environment.MachineName,
+    Environment.UserName
+);
 
             var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri($"exchange:{exchangeName}?type=direct"));
             await endpoint.Send(message, ctx =>

@@ -114,6 +114,11 @@ namespace CSCore.RabbitMQ
         public static string FilaPR34_GerarContasAPagar => "Queue_PR34_GerarContasAPagar";
         public static string ExchangePR34_GerarContasAPagar => "Exchange_PR34_GerarContasAPagar";
         public static string ActionPR34_GerarContasAPagar => "Action_PR34_GerarContasAPagar";
+
+        //PR119_Atualiza Saldo Mensal Contábil
+        public static string FilaPR119_AtualizaSaldoMensalContabil => "Queue_PR119_AtualizaSaldoMensalContabil";
+        public static string ExchangePR119_AtualizaSaldoMensalContabil => "Exchange_PR119_AtualizaSaldoMensalContabil";
+        public static string ActionPR119_AtualizaSaldoMensalContabil => "Action_PR119_AtualizaSaldoMensalContabil";
     }
 }
 
