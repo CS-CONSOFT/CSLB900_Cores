@@ -9,8 +9,6 @@ namespace CSCore.Ifs.NN.NN016.Dto
     public class DtoCreateUpdateNN016 : IConverteParaEntidade<CSICP_NN016>
     {
         public string Nn016CrcpId { get; set; }
-        public string? Nn016Historico { get; set; }
-        public string? Nn016Mensagem { get; set; }
 
         public List<string> ListaTitulosID { get; set; } = [];
 
@@ -21,8 +19,8 @@ namespace CSCore.Ifs.NN.NN016.Dto
                 //Nn016Id = id!,
                 TenantId = tenant,
                 Nn016CrcpId = this.Nn016CrcpId,
-                Nn016Historico = this.Nn016Historico,
-                Nn016Mensagem  = this.Nn016Mensagem
+                Nn016Historico = string.Empty,
+                Nn016Mensagem  = string.Empty
             };
         }
     }

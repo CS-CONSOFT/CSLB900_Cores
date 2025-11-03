@@ -72,9 +72,9 @@ namespace CSCore.Ifs.NN.NN016
 
         }
 
-        public async Task<(IEnumerable<DtoGetNN016>, int)> GetListAsync(int tenant, int page, int pageSize)
+        public async Task<(IEnumerable<DtoGetNN016>, int)> GetListAsync(int tenant,string NN015_ID, int page, int pageSize)
         {
-            var query = _appDbContext.OsusrE9aCsicpNn016s.Where(e => e.TenantId == tenant)
+            var query = _appDbContext.OsusrE9aCsicpNn016s.Where(e => e.TenantId == tenant).Where(e => e.Nn016CrcpId == NN015_ID)
                  .Include(e => e.NavFF102Sit)
                 .Include(e => e.NavFF102Titulo)
                 .ThenInclude(e => e.NavBB001)

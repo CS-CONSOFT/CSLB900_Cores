@@ -6,7 +6,7 @@ namespace CSCore.Ifs.NN.NN016
 {
     public interface INN016Repository : IRepositorioBase<CSICP_NN016>
     {
-        Task<(IEnumerable<DtoGetNN016>, int)> GetListAsync(int tenant, int page, int pageSize);
+        Task<(IEnumerable<DtoGetNN016>, int)> GetListAsync(int tenant,string NN015_ID, int page, int pageSize);
         Task<IEnumerable<DtoGetNN016>> GetListAsyncPorNN015ParaBaixaContasaReceberPagar(int tenant, string InNN015);
 
         Task<DtoGetNN016?> GetByIdAsync(int tenant, string id);
