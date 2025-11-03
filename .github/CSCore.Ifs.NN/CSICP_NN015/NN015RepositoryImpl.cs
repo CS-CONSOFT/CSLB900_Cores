@@ -11,7 +11,7 @@ namespace CSCore.Ifs.NN.CSICP_NN015
         private readonly AppDbContext _appDbContext;
 
         public NN015RepositoryImpl(AppDbContext appDbContext)
-            : base(appDbContext)
+            : base(appDbContext, "Nn015CrcpId")
         {
             _appDbContext = appDbContext;
         }
@@ -59,6 +59,8 @@ namespace CSCore.Ifs.NN.CSICP_NN015
                  .Include(e => e.NavNN015Rp)
                      .Include(e => e.NavNN015Status)
                      .Include(e => e.NavNN001)
+                        .Include(e => e.NavNN015Filial)
+                        .Include(e => e.NavNn015Usuarioprop)
                 .AsNoTracking();
             query = query.Where(e => e.TenantId == tenant && e.Nn015CrcpId == id);
             return query.FirstOrDefaultAsync();
@@ -80,6 +82,7 @@ namespace CSCore.Ifs.NN.CSICP_NN015
                      .Include(e => e.NavNN015Rp)
                      .Include(e => e.NavNN015Status)
                      .Include(e => e.NavNN001)
+                     .Include(e => e.NavNn015Usuarioprop)
                      .Include(e => e.NavNN015Filial)
                    .AsNoTracking();
 

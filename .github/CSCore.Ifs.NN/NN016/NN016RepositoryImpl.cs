@@ -1,4 +1,6 @@
-﻿using CSCore.Domain.CS_Models.CSICP_NN;
+﻿using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Mapper.FF.FF1XX;
+using CSCore.Domain.CS_Models.CSICP_NN;
 using CSCore.Domain.EstaticasLabel.GG;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.NN.NN016.Dto;
@@ -21,6 +23,9 @@ namespace CSCore.Ifs.NN.NN016
         public async Task<DtoGetNN016?> GetByIdAsync(int tenant, string id)
         {
             var query = _appDbContext.OsusrE9aCsicpNn016s
+                .Include(e => e.NavFF102Sit)
+                .Include(e => e.NavFF102Titulo)
+                .ThenInclude(e => e.NavBB001)
                 .AsNoTracking();
             query = query.Where(e => e.TenantId == tenant && e.Nn016Id == id);
             return await query.Select(e => new DtoGetNN016
@@ -59,6 +64,10 @@ namespace CSCore.Ifs.NN.NN016
                 Nn016ValorTxAntcartao = e.Nn016ValorTxAntcartao,
                 Nn016Vcorrmonetaria = e.Nn016Vcorrmonetaria,
                 Nn016Vhonorarios = e.Nn016Vhonorarios,
+                Nav_FF102Sit = e.NavFF102Sit,
+                Nav_GetBB001Simples = e.NavFF102Titulo == null ? null : e.NavFF102Titulo!.NavBB001 == null ? null : e.NavFF102Titulo.NavBB001.ToDtoGetSimples(),
+                Nav_GetFF102Simples = e.NavFF102Titulo == null ? null : e.NavFF102Titulo.ToDtoGet_Exibicao(),
+
             }).FirstOrDefaultAsync();
 
         }
@@ -66,6 +75,9 @@ namespace CSCore.Ifs.NN.NN016
         public async Task<(IEnumerable<DtoGetNN016>, int)> GetListAsync(int tenant, int page, int pageSize)
         {
             var query = _appDbContext.OsusrE9aCsicpNn016s.Where(e => e.TenantId == tenant)
+                 .Include(e => e.NavFF102Sit)
+                .Include(e => e.NavFF102Titulo)
+                .ThenInclude(e => e.NavBB001)
                    .AsNoTracking();
 
             var queryCount = query;
@@ -109,6 +121,10 @@ namespace CSCore.Ifs.NN.NN016
                 Nn016ValorTxAntcartao = e.Nn016ValorTxAntcartao,
                 Nn016Vcorrmonetaria = e.Nn016Vcorrmonetaria,
                 Nn016Vhonorarios = e.Nn016Vhonorarios,
+                Nav_FF102Sit = e.NavFF102Sit,
+                Nav_GetBB001Simples = e.NavFF102Titulo == null ? null : e.NavFF102Titulo!.NavBB001 == null ? null : e.NavFF102Titulo.NavBB001.ToDtoGetSimples(),
+                Nav_GetFF102Simples = e.NavFF102Titulo == null ? null : e.NavFF102Titulo.ToDtoGet_Exibicao(),
+
             }).ToListAsync();
 
 

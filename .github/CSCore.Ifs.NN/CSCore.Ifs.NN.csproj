@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\CSCompartilhado.Exception\CSCore.Ex.csproj" />
+    <ProjectReference Include="..\..\CSCore.Application.Dto\CSCore.Application.Dto.csproj" />
     <ProjectReference Include="..\..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />
     <ProjectReference Include="..\..\CSCore.Ifs.LB900\CSCore.Ifs.LB900.csproj" />
   </ItemGroup>

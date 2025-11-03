@@ -12,8 +12,8 @@ public partial class CSICP_NN015
 
     public string Nn015CrcpId { get; set; } = null!;
 
-    [ForeignKey("NavNN015Filial")]
-    public string? Nn015FilialId { get; set; }
+
+    [ForeignKey("NavNN015Filial")]  public string? Nn015FilialId { get; set; }
     public CSICP_BB001? NavNN015Filial { get; set; }
 
     public int? Nn015Filial { get; set; }
@@ -87,7 +87,9 @@ public partial class CSICP_NN015
 
     public bool? Nn015Isestorno { get; set; }
 
+    [ForeignKey("NavNn015Usuarioprop")]
     public string? Nn015UsuariopropId { get; set; }
+    public Csicp_Sy001? NavNn015Usuarioprop { get; set; }
 
     public decimal? Nn015TotaljurosCalc { get; set; }
 

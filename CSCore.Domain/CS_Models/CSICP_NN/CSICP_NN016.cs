@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CSCore.Domain.CS_Models.CSICP_FF;
+using CSCore.Domain.CS_Models.Staticas.FF;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_NN;
 
@@ -19,7 +22,10 @@ public partial class CSICP_NN016
 
     public int? Nn016FilialBaixa { get; set; }
 
+    [ForeignKey("NavFF102Titulo")]
     public string? Nn016TituloId { get; set; }
+
+    public CSICP_FF102? NavFF102Titulo { get; set; }
 
     public string? Nn016Prefixo { get; set; }
 
@@ -45,7 +51,9 @@ public partial class CSICP_NN016
 
     public decimal? Nn016ValorPago { get; set; }
 
+    [ForeignKey("NavFF102Sit")]
     public int? Nn016SituacaotitId { get; set; }
+    public CSICP_FF102Sit? NavFF102Sit { get; set; }
 
     public bool? Nn016BaixarSn { get; set; }
 
@@ -74,6 +82,8 @@ public partial class CSICP_NN016
     public decimal? Nn016Vcorrmonetaria { get; set; }
 
     public decimal? Nn016Vhonorarios { get; set; }
+
+
 
     public CSICP_NN016 CreateInstance(int TenantId,
 string Nn016Id,
