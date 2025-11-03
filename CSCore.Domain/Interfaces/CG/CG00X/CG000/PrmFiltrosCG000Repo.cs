@@ -9,7 +9,7 @@ namespace CSCore.Domain.Interfaces.CG.CG00X.CG000
 {
     public class PrmFiltrosCG000Repo : ParametrosBaseFiltro
     {
-        public string? FilialID { get; set; }
+        public string? EstabID { get; set; }
 
     }
 }

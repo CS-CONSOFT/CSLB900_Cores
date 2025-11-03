@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSCore.Application.Dto.Mapper.CG
+namespace CSCore.Application.Dto.Mapper.CG.CG00X
 {
     public static class CG000Mapper
     {
