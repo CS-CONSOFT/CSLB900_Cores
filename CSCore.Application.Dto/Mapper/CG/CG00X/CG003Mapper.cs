@@ -22,7 +22,22 @@ namespace CSCore.Application.Dto.Mapper.CG.CG00X
                 Cg003Descricao = entity.Cg003Descricao,
                 Cg003Natureza = entity.Cg003Natureza,
                 Cg003Isactive = entity.Cg003Isactive,
-                NavBB001_CG003 = entity.NavBB001_CG003?.ToDtoGetExibicao()
+                NavBB001Estab_CG003 = entity.NavBB001Estab_CG003?.ToDtoGetExibicao(),
+                NavCG999Natureza_CG003 = entity.NavCG999Natureza_CG003
+            };
+        }
+
+        public static DtoGetCG003Padrao ToDtoGetPadrao(this CSICP_CG003 entity)
+        {
+            return new DtoGetCG003Padrao
+            {
+                TenantId = entity.TenantId,
+                Cg003Id = entity.Cg003Id,
+                Cg003FilialId = entity.Cg003FilialId,
+                Cg003Codigo = entity.Cg003Codigo,
+                Cg003Descricao = entity.Cg003Descricao,
+                Cg003Natureza = entity.Cg003Natureza,
+                Cg003Isactive = entity.Cg003Isactive
             };
         }
     }

@@ -6,6 +6,5 @@ namespace CSCore.Domain.Interfaces.CG.CG00X.CG005
     public class PrmFiltrosCG005Repo : ParametrosBaseFiltro
     {
         public string? EstabID { get; set; }
-        public string? Historico { get; set; }
     }
 }

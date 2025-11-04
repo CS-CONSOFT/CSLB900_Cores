@@ -17,7 +17,21 @@ namespace CSCore.Application.Dto.Mapper.CG.CG00X
                 Cg005Historico = entity.Cg005Historico,
                 Cg005Historicoresumido = entity.Cg005Historicoresumido,
                 Cg005Isactive = entity.Cg005Isactive,
-                NavBB001_CG005 = entity.NavBB001_CG005?.ToDtoGetExibicao()
+                NavBB001Estab_CG005 = entity.NavBB001Estab_CG005?.ToDtoGetExibicao()
+            };
+        }
+
+        public static DtoGetCG005Padrao ToDtoGetPadrao(this CSICP_CG005 entity)
+        {
+            return new DtoGetCG005Padrao
+            {
+                TenantId = entity.TenantId,
+                Cg005Id = entity.Cg005Id,
+                Cg005FilialId = entity.Cg005FilialId,
+                Cg005Codigo = entity.Cg005Codigo,
+                Cg005Historico = entity.Cg005Historico,
+                Cg005Historicoresumido = entity.Cg005Historicoresumido,
+                Cg005Isactive = entity.Cg005Isactive
             };
         }
     }

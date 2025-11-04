@@ -10,7 +10,7 @@ public partial class CSICP_CG005
 
     public string Cg005Id { get; set; } = null!;
 
-    [ForeignKey("NavBB001_CG005")]
+    [ForeignKey("NavBB001Estab_CG005")]
     public string? Cg005FilialId { get; set; }
 
     public int? Cg005Codigo { get; set; }
@@ -21,5 +21,5 @@ public partial class CSICP_CG005
 
     public bool? Cg005Isactive { get; set; }
 
-    public CSICP_BB001? NavBB001_CG005 { get; set; }
+    public CSICP_BB001? NavBB001Estab_CG005 { get; set; }
 }

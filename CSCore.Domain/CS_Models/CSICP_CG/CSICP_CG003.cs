@@ -10,16 +10,18 @@ public partial class CSICP_CG003
 
     public string Cg003Id { get; set; } = null!;
 
-    [ForeignKey("NavBB001_CG003")]
+    [ForeignKey("NavBB001Estab_CG003")]
     public string? Cg003FilialId { get; set; }
 
     public int? Cg003Codigo { get; set; }
 
     public string? Cg003Descricao { get; set; }
 
+    [ForeignKey("NavCG999Natureza_CG003")]
     public int? Cg003Natureza { get; set; }
 
     public bool? Cg003Isactive { get; set; }
 
-    public CSICP_BB001? NavBB001_CG003 { get; set; }
+    public CSICP_BB001? NavBB001Estab_CG003 { get; set; }
+    public Osusr8dwCsicpCg999? NavCG999Natureza_CG003 { get; set; }
 }
