@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_CG;
 
-public partial class Osusr8dwCsicpCg009
+public partial class CSICP_CG009
 {
     public int TenantId { get; set; }
 
     public string Cg009Id { get; set; } = null!;
 
+    [ForeignKey("NavBB001Estab_CG009")]
     public string? Cg009FilialId { get; set; }
 
+    [ForeignKey("NavCG008TipoSaldo_CG009")]
     public string? Cg009TipoSaldoId { get; set; }
 
+    [ForeignKey("NavCG006Conta_CG009")]
     public string? Cg009ContaId { get; set; }
 
     public int? Cg009Ano { get; set; }
@@ -26,12 +30,12 @@ public partial class Osusr8dwCsicpCg009
     public decimal? Cg009Saldo { get; set; }
 
 
-    private Osusr8dwCsicpCg009() { }
+    private CSICP_CG009() { }
 
-    public static Osusr8dwCsicpCg009 CreateInstance(
+    public static CSICP_CG009 CreateInstance(
         int tenant,string cg009Id, string? cg009FilialId, string? cg009TipoSaldoId, string? cg009ContaId, int cg009Ano, int cg009Mes, decimal? cg009Totaldebito, decimal? cg009Totalcredito, decimal? cg009Saldo)
     {
-        return new Osusr8dwCsicpCg009
+        return new CSICP_CG009
         {
             TenantId = tenant,
             Cg009Id = cg009Id,
@@ -46,10 +50,10 @@ public partial class Osusr8dwCsicpCg009
         };
     }
 
-    public static Osusr8dwCsicpCg009 CreateInstance(
+    public static CSICP_CG009 CreateInstance(
         int tenant, string cg009Id, string? cg009FilialId, string? cg009TipoSaldoId, string? cg009ContaId, int cg009Ano, int cg009Mes)
     {
-        return new Osusr8dwCsicpCg009
+        return new CSICP_CG009
         {
             TenantId = tenant,
             Cg009Id = cg009Id,
@@ -63,11 +67,16 @@ public partial class Osusr8dwCsicpCg009
 
 
 
-    public static Osusr8dwCsicpCg009 FakeGet()
+    public static CSICP_CG009 FakeGet()
     {
-        return new Osusr8dwCsicpCg009
+        return new CSICP_CG009
         {
             
         };
     }
 }
+    public CSICP_BB001? NavBB001Estab_CG009 { get; set; }
+    public CSICP_CG006? NavCG006Conta_CG009 { get; set; }
+    public Osusr8dwCsicpCg008? NavCG008TipoSaldo_CG009 { get; set; }
+
+    }

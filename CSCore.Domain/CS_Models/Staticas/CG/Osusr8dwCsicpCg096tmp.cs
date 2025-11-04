@@ -78,7 +78,7 @@ public partial class Osusr8dwCsicpCg096tmp
 
     public decimal? Saldoperiodo { get; set; }
 
-    //public virtual Osusr8dwCsicpCg006? Cg006Conta { get; set; }
+    //public virtual CSICP_CG006? Cg006Conta { get; set; }
 
     //public virtual Osusr8dwCsicpCg081? Cg091Relregistro { get; set; }
 

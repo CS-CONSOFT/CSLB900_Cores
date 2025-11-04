@@ -14,13 +14,13 @@ namespace CSCore.Ifs.CS_Context
 
         public virtual DbSet<Osusr8dwCsicpCg002Stat> Osusr8dwCsicpCg002Stats { get; set; }
 
-        public virtual DbSet<Osusr8dwCsicpCg003> Osusr8dwCsicpCg003s { get; set; }
+        public virtual DbSet<CSICP_CG003> Osusr8dwCsicpCg003s { get; set; }
 
         public virtual DbSet<Osusr8dwCsicpCg004> Osusr8dwCsicpCg004s { get; set; }
 
-        public virtual DbSet<Osusr8dwCsicpCg005> Osusr8dwCsicpCg005s { get; set; }
+        public virtual DbSet<CSICP_CG005> Osusr8dwCsicpCg005s { get; set; }
 
-        public virtual DbSet<Osusr8dwCsicpCg006> Osusr8dwCsicpCg006s { get; set; }
+        public virtual DbSet<CSICP_CG006> Osusr8dwCsicpCg006s { get; set; }
 
         public virtual DbSet<Osusr8dwCsicpCg007> Osusr8dwCsicpCg007s { get; set; }
 
@@ -28,7 +28,7 @@ namespace CSCore.Ifs.CS_Context
 
         public virtual DbSet<Osusr8dwCsicpCg008> Osusr8dwCsicpCg008s { get; set; }
 
-        public virtual DbSet<Osusr8dwCsicpCg009> Osusr8dwCsicpCg009s { get; set; }
+        public virtual DbSet<CSICP_CG009> Osusr8dwCsicpCg009s { get; set; }
 
         public virtual DbSet<Osusr8dwCsicpCg010> Osusr8dwCsicpCg010s { get; set; }
 
@@ -249,7 +249,7 @@ namespace CSCore.Ifs.CS_Context
                     entity.Property(e => e.Order).HasColumnName("ORDER");
                 });
 
-                modelBuilder.Entity<Osusr8dwCsicpCg003>(entity =>
+                modelBuilder.Entity<CSICP_CG003>(entity =>
                 {
                     entity.HasKey(e => e.Cg003Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG003");
 
@@ -304,7 +304,7 @@ namespace CSCore.Ifs.CS_Context
 
                     });
 
-                    modelBuilder.Entity<Osusr8dwCsicpCg005>(entity =>
+                    modelBuilder.Entity<CSICP_CG005>(entity =>
                     {
                     entity.HasKey(e => e.Cg005Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG005");
 
@@ -331,7 +331,7 @@ namespace CSCore.Ifs.CS_Context
                     entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
                     });
 
-                    modelBuilder.Entity<Osusr8dwCsicpCg006>(entity =>
+                    modelBuilder.Entity<CSICP_CG006>(entity =>
                     {
                     entity.HasKey(e => e.Cg006Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG006");
 
@@ -492,7 +492,7 @@ namespace CSCore.Ifs.CS_Context
                     entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
                 });
 
-                    modelBuilder.Entity<Osusr8dwCsicpCg009>(entity =>
+                    modelBuilder.Entity<CSICP_CG009>(entity =>
                 {
                     entity.HasKey(e => e.Cg009Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG009");
 

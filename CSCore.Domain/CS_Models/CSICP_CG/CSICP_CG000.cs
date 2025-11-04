@@ -11,7 +11,7 @@ public partial class CSICP_CG000
 
     public string Cg000Id { get; set; } = null!;
 
-    [ForeignKey("NavBB001_CG000")]
+    [ForeignKey("NavBB001Estab_CG000")]
     public string? Cg000Filialid { get; set; }
 
     public int? Cg000Graus { get; set; }
@@ -47,7 +47,7 @@ public partial class CSICP_CG000
     [ForeignKey("NavStatica_CG000")]
     public int? Cg000Usacalendario { get; set; }
 
-    public CSICP_BB001? NavBB001_CG000 { get; set; }
+    public CSICP_BB001? NavBB001Estab_CG000 { get; set; }
 
     public CSICP_Statica? NavStatica_CG000 { get; set; }
 }
