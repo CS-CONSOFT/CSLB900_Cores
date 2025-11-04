@@ -9,14 +9,14 @@ namespace CSCore.RabbitMQ.PublishObjetos.Financeiro.CG
 {
     public class Rbt_CS_PR119_AtualizaSaldoMensalContabil
     {
-        public string InIdCG006ContaSuperior { get; private set; } = "";
-        public string InTipoSaldoID { get; private set; } = "";
-        public int InAno { get; private set; }
-        public int InMes { get; private set; }
-        public decimal InValorLancamento { get; private set; }
-        public int Tenant { get; private set; }
-        public string UsuarioID { get; private set; } = "";
-        public int InStID_CG993_DebitoCredito { get; private set; }
+        public string InIdCG006ContaSuperior { get; set; } = "";
+        public string InTipoSaldoID { get; set; } = "";
+        public int InAno { get; set; }
+        public int InMes { get; set; }
+        public decimal InValorLancamento { get; set; }
+        public int Tenant { get; set; }
+        public string UsuarioID { get; set; } = "";
+        public int InStID_CG993_DebitoCredito { get; set; }
 
         public void Popular(int tenantId, int InStID_CG993_DebitoCredito,string InIdCG006ContaSuperior, string InTipoSaldoID, int InAno, int InMes, decimal ValorLancament, string UsuarioID)
         {

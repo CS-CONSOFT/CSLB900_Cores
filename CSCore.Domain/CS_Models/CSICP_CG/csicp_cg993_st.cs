@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_CG;
 
-public partial class Osusr8dwCsicpCg993
+public partial class csicp_cg993_st
 {
     public int Id { get; set; }
 

@@ -33,6 +33,16 @@ namespace CSCore.Ifs.NN.NN016
             return await query.FirstOrDefaultAsync();
         }
 
+        public async Task<CSICP_NN016?> GetByIdSimplesAsync(int tenant, string id)
+        {
+            var query = _appDbContext.OsusrE9aCsicpNn016s
+                .Where(e => e.TenantId == tenant && e.Nn016Id == id);
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+
+
         public async Task<(IEnumerable<CSICP_NN016>, int)> GetListAsync(int tenant,string NN015_ID, int page, int pageSize)
         {
             var query = _appDbContext.OsusrE9aCsicpNn016s.Where(e => e.TenantId == tenant).Where(e => e.Nn016CrcpId == NN015_ID)

@@ -9,5 +9,6 @@ namespace CSCore.Ifs.NN.NN016
         Task<IEnumerable<CSICP_NN016>> GetListAsyncPorNN015ParaBaixaContasaReceberPagar(int tenant, string InNN015);
 
         Task<CSICP_NN016?> GetByIdAsync(int tenant, string id);
+        Task<CSICP_NN016?> GetByIdSimplesAsync(int tenant, string id);
     }
 }
