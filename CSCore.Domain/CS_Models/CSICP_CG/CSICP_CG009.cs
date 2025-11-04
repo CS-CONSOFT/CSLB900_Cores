@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_CG;
 
-public partial class CSICP_CG009
+
+public partial class CSICP_CG009 
 {
     public int TenantId { get; set; }
 
@@ -30,10 +31,10 @@ public partial class CSICP_CG009
     public decimal? Cg009Saldo { get; set; }
 
 
-    private CSICP_CG009() { }
+    public CSICP_CG009() { }
     
     public static CSICP_CG009 CreateInstance(
-        int tenant,string cg009Id, string? cg009FilialId, string? cg009TipoSaldoId, string? cg009ContaId, int cg009Ano, int cg009Mes, decimal? cg009Totaldebito, decimal? cg009Totalcredito, decimal? cg009Saldo)
+        int tenant,string cg009Id, string? cg009FilialId, string? cg009TipoSaldoId, string? cg009ContaId, int cg009Ano, int? cg009Mes, decimal? cg009Totaldebito, decimal? cg009Totalcredito, decimal? cg009Saldo)
     {
         return new CSICP_CG009
         {
@@ -51,7 +52,7 @@ public partial class CSICP_CG009
     }
 
     public static CSICP_CG009 CreateInstance(
-        int tenant, string cg009Id, string? cg009FilialId, string? cg009TipoSaldoId, string? cg009ContaId, int cg009Ano, int cg009Mes)
+        int tenant, string cg009Id, string? cg009FilialId, string? cg009TipoSaldoId, string? cg009ContaId, int cg009Ano, int? cg009Mes)
     {
         return new CSICP_CG009
         {
@@ -67,13 +68,6 @@ public partial class CSICP_CG009
 
 
 
-    public static CSICP_CG009 FakeGet()
-    {
-        return new CSICP_CG009
-        {
-            
-        };
-    }
 
     public CSICP_BB001? NavBB001Estab_CG009 { get; set; }
     public CSICP_CG006? NavCG006Conta_CG009 { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_CG;
 
-public partial class Osusr8dwCsicpCg010
+public partial class CSICP_CG010 
 {
     public int TenantId { get; set; }
 
@@ -24,4 +24,20 @@ public partial class Osusr8dwCsicpCg010
     public decimal? Cg010Totalcredito { get; set; }
 
     public decimal? Cg010Saldo { get; set; }
+
+    public static CSICP_CG010 CreateInstance(
+    int tenant, string id, string? Cg010FilialId, string? Cg010TipoSaldoId, string? Cg010ContaId, int Cg010Ano, DateTime? Dia)
+    {
+        return new CSICP_CG010
+        {
+            TenantId = tenant,
+            Cg010Id = id,
+            Cg010FilialId = Cg010FilialId,
+            Cg010TipoSaldoId = Cg010TipoSaldoId,
+            Cg010ContaId = Cg010ContaId,
+            Cg010Ano = Cg010Ano,
+            Cg010Dia = Dia
+        };
+    }
+
 }

@@ -30,7 +30,7 @@ namespace CSCore.Ifs.CS_Context
 
         public virtual DbSet<CSICP_CG009> Osusr8dwCsicpCg009s { get; set; }
 
-        public virtual DbSet<Osusr8dwCsicpCg010> Osusr8dwCsicpCg010s { get; set; }
+        public virtual DbSet<CSICP_CG010> Osusr8dwCsicpCg010s { get; set; }
 
         public virtual DbSet<Osusr8dwCsicpCg011> Osusr8dwCsicpCg011s { get; set; }
 
@@ -532,7 +532,7 @@ namespace CSCore.Ifs.CS_Context
                     entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
                 });
 
-                    modelBuilder.Entity<Osusr8dwCsicpCg010>(entity =>
+                    modelBuilder.Entity<CSICP_CG010>(entity =>
                 {
                     entity.HasKey(e => e.Cg010Id)
                         .HasName("OSPRK_OSUSR_8DW_CSICP_CG010")

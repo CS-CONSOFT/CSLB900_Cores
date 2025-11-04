@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_CG;
 
-public partial class CSICP_CG006
+public partial class CSICP_CG006 
 {
     public int TenantId { get; set; }
 
