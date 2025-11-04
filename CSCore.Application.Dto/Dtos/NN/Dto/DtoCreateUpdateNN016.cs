@@ -12,11 +12,11 @@ namespace CSCore.Ifs.NN.NN016.Dto
 
         public List<string> ListaTitulosID { get; set; } = [];
 
-        public CSICP_NN016 ToEntity(int tenant, string? _)
+        public CSICP_NN016 ToEntity(int tenant, string? id)
         {
             return new CSICP_NN016
             {
-                //Nn016Id = id!,
+                Nn016Id = id!,
                 TenantId = tenant,
                 Nn016CrcpId = this.Nn016CrcpId,
                 Nn016Historico = string.Empty,

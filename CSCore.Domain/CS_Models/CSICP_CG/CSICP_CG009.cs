@@ -74,7 +74,7 @@ public partial class CSICP_CG009
             
         };
     }
-}
+
     public CSICP_BB001? NavBB001Estab_CG009 { get; set; }
     public CSICP_CG006? NavCG006Conta_CG009 { get; set; }
     public Osusr8dwCsicpCg008? NavCG008TipoSaldo_CG009 { get; set; }

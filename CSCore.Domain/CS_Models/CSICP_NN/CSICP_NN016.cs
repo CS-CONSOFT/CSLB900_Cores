@@ -162,6 +162,12 @@ decimal? Nn016Vhonorarios
     }
 
 
-
+    public static CSICP_NN016 CreateInstance(List<string> ids)
+    {
+        return new CSICP_NN016
+        {
+            Nn016Id = ids.ToString() ?? string.Empty,
+        };
+    }
 
 }

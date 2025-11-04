@@ -1,5 +1,4 @@
-﻿using CSCore.Application.Dto.Dtos.NN.Dto;
-using CSCore.Domain.CS_Models.CSICP_NN;
+﻿using CSCore.Domain.CS_Models.CSICP_NN;
 using CSCore.Domain.Interfaces.V2;
 
 namespace CSCore.Ifs.NN.NN016
