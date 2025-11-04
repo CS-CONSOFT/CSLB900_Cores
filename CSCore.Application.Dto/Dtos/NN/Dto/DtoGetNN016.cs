@@ -1,4 +1,5 @@
 ﻿using CSBS101.C82Application.Dto.BB00X.BB00X.BB001;
+using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get;
 using CSCore.Application.Dto.Dtos.Financeiro_FF.FF1XX.FF102;
 using CSCore.Domain.CS_Models.CSICP_NN;
 using CSCore.Domain.CS_Models.Staticas.FF;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSCore.Ifs.NN.NN016.Dto
+namespace CSCore.Application.Dto.Dtos.NN.Dto
 {
     public class DtoGetNN016
     {
@@ -80,7 +81,7 @@ namespace CSCore.Ifs.NN.NN016.Dto
         public decimal? Nn016Vhonorarios { get; set; }
 
         public Dto_GetBB001Simples? Nav_GetBB001Simples { get; set; }
-        public DtoGetFF102_Exibicao? Nav_GetFF102Simples { get; set; }
+        public Dto_GetBB012_ExibSimples? Nav_GetBB012Simples { get; set; }
         public CSICP_FF102Sit? Nav_FF102Sit { get; set; }
 
         public CSICP_NN016 ToEntity()
@@ -124,5 +125,7 @@ namespace CSCore.Ifs.NN.NN016.Dto
 
             };
         }
+
+      
     }
 }

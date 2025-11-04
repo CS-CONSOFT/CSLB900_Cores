@@ -1,7 +1,10 @@
 ﻿using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSBS101._82Application.Mapper.BB00X.BB012;
+using CSCore.Application.Dto.Dtos.NN.Dto;
 using CSCore.Application.Dto.Mapper.NN._015;
 using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_NN;
+using System.Runtime.CompilerServices;
 
 namespace CSCore.Application.Dto.Mapper.NN
 {
@@ -61,7 +64,53 @@ namespace CSCore.Application.Dto.Mapper.NN
                 NavNN015Rp = entity.NavNN015Rp,
                 NavNN015Filial = entity.NavNN015Filial?.ToDtoGetSimples(),
                 NavSY001Usuario = entity.NavNn015Usuarioprop?.ToDtoGetSimples()
-                
+
+            };
+        }
+
+        public static DtoGetNN016 ToDtoGet(this CSICP_NN016 entity)
+        {
+            return new DtoGetNN016
+            {
+                TenantId = entity.TenantId,
+                Nn016Id = entity.Nn016Id,
+                Nn016CrcpId = entity.Nn016CrcpId,
+                Nn016Filial = entity.Nn016Filial,
+                Nn016TipoMovimento = entity.Nn016TipoMovimento,
+                Nn016FilialBaixa = entity.Nn016FilialBaixa,
+                Nn016TituloId = entity.Nn016TituloId,
+               
+                Nn016Prefixo = entity.Nn016Prefixo,
+                Nn016Titulo = entity.Nn016Titulo,
+                Nn016Sfx = entity.Nn016Sfx,
+                Nn016SequenciaBaixa = entity.Nn016SequenciaBaixa,
+                Nn016DataVencimento = entity.Nn016DataVencimento,
+                Nn016Diasatraso = entity.Nn016Diasatraso,
+                Nn016Vlrabertotitulos = entity.Nn016Vlrabertotitulos,
+                Nn016ValorJuros = entity.Nn016ValorJuros,
+                Nn016ValorDesconto = entity.Nn016ValorDesconto,
+                Nn016ValorMulta = entity.Nn016ValorMulta,
+                Nn016ValorTaxa = entity.Nn016ValorTaxa,
+                Nn016ValorPago = entity.Nn016ValorPago,
+                Nn016SituacaotitId = entity.Nn016SituacaotitId,
+            
+                Nn016BaixarSn = entity.Nn016BaixarSn,
+                Nn016CliFor = entity.Nn016CliFor,
+                Nn016Historico = entity.Nn016Historico,
+                Nn016Mensagem = entity.Nn016Mensagem,
+                Nn016ValorJurosCalc = entity.Nn016ValorJurosCalc,
+                Nn016ValorMultaCalc = entity.Nn016ValorMultaCalc,
+                Nn016ValorTaxaCalc = entity.Nn016ValorTaxaCalc,
+                Nn016TotalApagar = entity.Nn016TotalApagar,
+                Nn016Protocolnumber = entity.Nn016Protocolnumber,
+                Nn016IdEstorno = entity.Nn016IdEstorno,
+                Nn016TaxaAntecipacao = entity.Nn016TaxaAntecipacao,
+                Nn016ValorTxAntcartao = entity.Nn016ValorTxAntcartao,
+                Nn016Vcorrmonetaria = entity.Nn016Vcorrmonetaria,
+                Nn016Vhonorarios = entity.Nn016Vhonorarios,
+                Nav_FF102Sit = entity.NavFF102Sit,
+                Nav_GetBB001Simples = entity.NavFF102Titulo?.NavBB001?.ToDtoGetSimples(),
+                Nav_GetBB012Simples = entity.NavFF102Titulo?.NavBB012?.ToDtoGetExibSimples()
             };
         }
     }
