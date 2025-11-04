@@ -1,18 +1,13 @@
 ﻿using CSCore.Application.Dto.Dtos.CG.CG008;
 using CSCore.Domain.CS_Models.CSICP_CG;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSCore.Application.Dto.Mapper.CG.CG00X
 {
     public static class CG008Mapper
     {
-        public static DtoGetCG008Padrao ToDtoGetPadrao(this Osusr8dwCsicpCg008 entity)
+        public static DtoGetCG008 ToDtoGet(this CSICP_CG008 entity)
         {
-            return new DtoGetCG008Padrao
+            return new DtoGetCG008
             {
                 TenantId = entity.TenantId,
                 Cg008Id = entity.Cg008Id,

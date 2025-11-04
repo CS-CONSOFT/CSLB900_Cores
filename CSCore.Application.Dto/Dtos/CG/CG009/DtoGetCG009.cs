@@ -30,6 +30,6 @@ namespace CSCore.Application.Dto.Dtos.CG.CG009
 
         public Dto_GetBB001_Exibicao? NavBB001Estab_CG009 { get; set; }
         public DtoGetCG006Padrao? NavCG006Conta_CG009 { get; set; }
-        public DtoGetCG008Padrao? NavCG008TipoSaldo_CG009 { get; set; }
+        public DtoGetCG008? NavCG008TipoSaldo_CG009 { get; set; }
     }
 }

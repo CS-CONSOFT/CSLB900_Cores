@@ -22,7 +22,7 @@ namespace CSCore.Application.Dto.Mapper.CG.CG00X
                 Cg009Saldo = entity.Cg009Saldo,
                 NavBB001Estab_CG009 = entity.NavBB001Estab_CG009?.ToDtoGetExibicao(),
                 NavCG006Conta_CG009 = entity.NavCG006Conta_CG009?.ToDtoGetPadrao(),
-                NavCG008TipoSaldo_CG009 = entity.NavCG008TipoSaldo_CG009?.ToDtoGetPadrao()
+                NavCG008TipoSaldo_CG009 = entity.NavCG008TipoSaldo_CG009?.ToDtoGet()
             };
         }
 

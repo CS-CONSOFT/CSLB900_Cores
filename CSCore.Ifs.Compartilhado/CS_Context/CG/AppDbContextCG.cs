@@ -26,7 +26,7 @@ namespace CSCore.Ifs.CS_Context
 
         public virtual DbSet<Osusr8dwCsicpCg007Stat> Osusr8dwCsicpCg007Stats { get; set; }
 
-        public virtual DbSet<Osusr8dwCsicpCg008> Osusr8dwCsicpCg008s { get; set; }
+        public virtual DbSet<CSICP_CG008> Osusr8dwCsicpCg008s { get; set; }
 
         public virtual DbSet<CSICP_CG009> Osusr8dwCsicpCg009s { get; set; }
 
@@ -470,7 +470,7 @@ namespace CSCore.Ifs.CS_Context
                     entity.Property(e => e.Order).HasColumnName("ORDER");
                 });
 
-                    modelBuilder.Entity<Osusr8dwCsicpCg008>(entity =>
+                    modelBuilder.Entity<CSICP_CG008>(entity =>
                 {
                     entity.HasKey(e => e.Cg008Id).HasName("OSPRK_OSUSR_8DW_CSICP_CG008");
 
