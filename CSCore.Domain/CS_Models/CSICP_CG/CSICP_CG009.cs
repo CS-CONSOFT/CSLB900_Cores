@@ -31,7 +31,7 @@ public partial class CSICP_CG009
 
 
     private CSICP_CG009() { }
-
+    
     public static CSICP_CG009 CreateInstance(
         int tenant,string cg009Id, string? cg009FilialId, string? cg009TipoSaldoId, string? cg009ContaId, int cg009Ano, int cg009Mes, decimal? cg009Totaldebito, decimal? cg009Totalcredito, decimal? cg009Saldo)
     {
