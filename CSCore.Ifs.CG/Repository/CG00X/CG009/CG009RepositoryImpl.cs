@@ -28,7 +28,7 @@ namespace CSCore.Ifs.CG.Repository.CG00X.CG009
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<CSICP_CG009?> GetByIdComFiltrosAsync(int InTenantID, string InCG006_ID, int Ano, int Mes, string TipoSaldo)
+        public async Task<CSICP_CG009?> GetByIdComFiltrosAsync(int InTenantID, string InCG006_ID, int Ano, int? Mes, string TipoSaldo)
         {
             var query = _appDbContext.Osusr8dwCsicpCg009s
                .Where(e => e.Cg009ContaId == InCG006_ID && e.TenantId == InTenantID && e.Cg009Ano == Ano && e.Cg009Mes == Mes && e.Cg009TipoSaldoId == TipoSaldo);
