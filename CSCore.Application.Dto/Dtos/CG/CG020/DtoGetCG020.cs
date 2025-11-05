@@ -30,6 +30,6 @@ namespace CSCore.Application.Dto.Dtos.CG.CG020
 
         public DtoGetCG008? NavCG008TpSaldo_CG020 { get; set; }
 
-        public Osusr8dwCsicpCg992? NavCG992_CG020 { get; set; }
+        public Osusr8dwCsicpCg992? NavCG992Situacao_CG020 { get; set; }
     }
 }

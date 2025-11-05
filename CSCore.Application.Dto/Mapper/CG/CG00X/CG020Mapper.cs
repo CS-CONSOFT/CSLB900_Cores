@@ -31,7 +31,7 @@ namespace CSCore.Application.Dto.Mapper.CG.CG00X
                 NavBB001Estab_CG020 = entity.NavBB001Estab_CG020?.ToDtoGetExibicao(),
                 NavBB001ConsoEstab_CG020 = entity.NavBB001ConsoEstab_CG020?.ToDtoGetExibicao(),
                 NavCG008TpSaldo_CG020 = entity.NavCG008TpSaldo_CG020?.ToDtoGet(),
-                NavCG992_CG020 = entity.NavCG992_CG020
+                NavCG992Situacao_CG020 = entity.NavCG992Situacao_CG020
             };
         }
     }

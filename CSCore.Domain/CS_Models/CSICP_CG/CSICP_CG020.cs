@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_CG;
 
@@ -9,6 +10,7 @@ public partial class CSICP_CG020
 
     public string Cg020Id { get; set; } = null!;
 
+    [ForeignKey("NavBB001Estab_CG020")]
     public string? Cg020FilialId { get; set; }
 
     public int? Cg020Ano { get; set; }
@@ -33,10 +35,13 @@ public partial class CSICP_CG020
 
     public decimal? Cg020Gtdebcre { get; set; }
 
+    [ForeignKey("NavCG008TpSaldo_CG020")]
     public string? Cg020TiposaldoId { get; set; }
 
+    [ForeignKey("NavCG992Situacao_CG020")]
     public int? Cg020SituacaoloteId { get; set; }
 
+    [ForeignKey("NavBB001ConsoEstab_CG020")]
     public string? Cg020ConsolidadoFilialId { get; set; }
 
     public int? Cg020UltSeq { get; set; }
@@ -47,5 +52,5 @@ public partial class CSICP_CG020
 
     public CSICP_CG008? NavCG008TpSaldo_CG020 { get; set; }
 
-    public Osusr8dwCsicpCg992? NavCG992_CG020 { get; set; }
+    public Osusr8dwCsicpCg992? NavCG992Situacao_CG020 { get; set; }
 }

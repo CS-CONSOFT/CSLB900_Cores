@@ -1,12 +1,8 @@
 using CSCore.Domain.CS_Models.CSICP_CG;
-using CSCore.Domain.Interfaces.CG.CG00X.CG009;
 using CSCore.Domain.Interfaces.CG.CG00X.CG020;
 using CSCore.Domain.Interfaces.V2;
-using CSCore.Ifs.CG.Repository.CG00X.CG009.Filtros;
 using CSCore.Ifs.CG.Repository.CG00X.CG020.Filtros;
-using CSCore.Ifs.Compartilhado;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.FF.Repository.FF04X.FF040;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
