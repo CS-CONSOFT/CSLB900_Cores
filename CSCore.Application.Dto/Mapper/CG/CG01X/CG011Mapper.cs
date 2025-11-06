@@ -1,7 +1,7 @@
 using CSCore.Application.Dto.Dtos.CG.CG011;
 using CSCore.Domain.CS_Models.CSICP_CG;
 
-namespace CSCore.Application.Dto.Mapper.CG.CG00X
+namespace CSCore.Application.Dto.Mapper.CG.CG01X
 {
     public static class CG011Mapper
     {

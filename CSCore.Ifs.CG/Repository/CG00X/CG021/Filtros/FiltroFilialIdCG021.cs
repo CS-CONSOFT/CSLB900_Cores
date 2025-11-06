@@ -7,9 +7,9 @@ namespace CSCore.Ifs.CG.Repository.CG00X.CG021.Filtros
 {
     public class FiltroFilialIdCG021 : ICSFilter<Osusr8dwCsicpCg021>
     {
-        private readonly string _filialId;
+        private readonly string? _filialId;
 
-        public FiltroFilialIdCG021(string filialId)
+        public FiltroFilialIdCG021(string? filialId)
         {
             _filialId = filialId;
         }

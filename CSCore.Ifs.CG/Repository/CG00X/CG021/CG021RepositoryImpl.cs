@@ -55,7 +55,7 @@ namespace CSCore.Ifs.CG.Repository.CG00X.CG021
             [
                 new FiltroLoteIdCG021(filtros.LoteId),
                 new FiltroFilialIdCG021(filtros.FilialId),
-                //new FiltroDataCG021(filtros.DataInicio, filtros.DataFinal),
+                new FiltroDataCG021(filtros.DataInicio, filtros.DataFinal),
             ];
         }
     }

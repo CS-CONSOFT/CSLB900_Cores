@@ -66,7 +66,6 @@ public partial class Osusr8dwCsicpCg021
     [ForeignKey("NavCG007Projeto_CG021")]
     public string? Cg021ProjetoId { get; set; }
 
-    [ForeignKey("NavNN010_CG021")]
     public string? Nn010Id { get; set; }
 
     [ForeignKey("NavNN015_CG021")]
@@ -89,7 +88,6 @@ public partial class Osusr8dwCsicpCg021
     public Osusr8dwCsicpCg011? NavCG013ContaGerencialN4_CG021 { get; set; }
     public CSICP_CG020? NavCG020Lote_CG021 { get; set; }
     public Osusr8dwCsicpCg070? NavCG070Protocolo_CG021 { get; set; }
-    public OsusrE9aCsicpNn010? NavNN010_CG021 { get; set; }
     public CSICP_NN015? NavNN015_CG021 { get; set; }
     public CSICP_Statica? NavStaticConsolidar_CG021 { get; set; }
 

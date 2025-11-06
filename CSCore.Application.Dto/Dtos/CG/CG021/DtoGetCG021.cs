@@ -5,6 +5,7 @@ using CSCore.Application.Dto.Dtos.CG.CG007;
 using CSCore.Application.Dto.Dtos.CG.CG008;
 using CSCore.Application.Dto.Dtos.CG.CG011;
 using CSCore.Application.Dto.Dtos.CG.CG020;
+using CSCore.Application.Dto.Dtos.CG.CG070;
 using CSCore.Application.Dto.Dtos.NN._015;
 using CSCore.Application.Dto.Mapper.NN._015;
 using CSCore.Domain;
@@ -75,14 +76,13 @@ namespace CSCore.Application.Dto.Dtos.CG.CG021
         public DtoGetCG005Padrao? NavCG005Hist_CG021 { get; set; }
         public DtoGetCG006Padrao? NavCG006ContaContabil_CG021 { get; set; }
         public DtoGetCG007? NavCG007Projeto_CG021 { get; set; }
-        public DtoGetCG008Padrao? NavCG008TpSaldo_CG021 { get; set; }
+        public DtoGetCG008? NavCG008TpSaldo_CG021 { get; set; }
         public csicp_cg993_st? NavCG993DebCre_CG021 { get; set; }
         public DtoGetCG011? NavCG011ContaGerencialN2_CG021 { get; set; }
         public DtoGetCG011? NavCG012ContaGerencialN3_CG021 { get; set; }
         public DtoGetCG011? NavCG013ContaGerencialN4_CG021 { get; set; }
-        public DtoGetCG020? NavCG020Lote_CG021 { get; set; }
-        public Osusr8dwCsicpCg070? NavCG070Protocolo_CG021 { get; set; }
-        public OsusrE9aCsicpNn010? NavNN010_CG021 { get; set; }
+        public DtoGetCG020Padrao? NavCG020Lote_CG021 { get; set; }
+        public DtoGetCG070? NavCG070Protocolo_CG021 { get; set; }
         public DtoGetNN015Padrao? NavNN015_CG021 { get; set; }
         public CSICP_Statica? NavStaticConsolidar_CG021 { get; set; }
     }

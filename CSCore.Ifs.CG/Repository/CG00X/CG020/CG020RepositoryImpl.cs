@@ -55,7 +55,7 @@ namespace CSCore.Ifs.CG.Repository.CG00X.CG020
             return
             [
                 new FiltroFilialIdCG020(filtros.FilialId),
-                new FiltroLoteCG020(filtros.Lote),
+                //new FiltroLoteCG020(filtros.Lote),
                 new FiltroAnoCG020(filtros.Ano),
                 new FiltroMesCG020(filtros.Mes)
             ];

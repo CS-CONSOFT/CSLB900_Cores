@@ -7,6 +7,6 @@ namespace CSCore.Domain.Interfaces.CG.CG00X.CG020
         public string? FilialId { get; set; }
         public int? Ano { get; set; }
         public int? Mes { get; set; }
-        public int? Lote { get; set; }
+        //public int? Lote { get; set; }
     }
 }

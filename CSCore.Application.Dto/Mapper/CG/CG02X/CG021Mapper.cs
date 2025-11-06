@@ -1,8 +1,12 @@
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.CG.CG021;
+using CSCore.Application.Dto.Mapper.CG.CG00X;
+using CSCore.Application.Dto.Mapper.CG.CG01X;
+using CSCore.Application.Dto.Mapper.CG.CG02X;
+using CSCore.Application.Dto.Mapper.NN;
 using CSCore.Domain.CS_Models.CSICP_CG;
 
-namespace CSCore.Application.Dto.Mapper.CG.CG00X
+namespace CSCore.Application.Dto.Mapper.CG.CG02X
 {
     public static class CG021Mapper
     {
@@ -42,16 +46,15 @@ namespace CSCore.Application.Dto.Mapper.CG.CG00X
                 NavCG005Hist_CG021 = entity.NavCG005Hist_CG021?.ToDtoGetPadrao(),
                 NavCG006ContaContabil_CG021 = entity.NavCG006ContaContabil_CG021?.ToDtoGetPadrao(),
                 NavCG007Projeto_CG021 = entity.NavCG007Projeto_CG021?.ToDtoGet(),
-               // NavCG008TpSaldo_CG021 = entity.NavCG008TpSaldo_CG021?.ToDtoGetPadrao(),
+                NavCG008TpSaldo_CG021 = entity.NavCG008TpSaldo_CG021?.ToDtoGet(),
                 NavCG993DebCre_CG021 = entity.NavCG993DebCre_CG021,
                 NavCG011ContaGerencialN2_CG021 = entity.NavCG011ContaGerencialN2_CG021?.ToDtoGet(),
                 NavCG012ContaGerencialN3_CG021 = entity.NavCG012ContaGerencialN3_CG021?.ToDtoGet(),
                 NavCG013ContaGerencialN4_CG021 = entity.NavCG013ContaGerencialN4_CG021?.ToDtoGet(),
-               // NavCG020Lote_CG021 = entity.NavCG020Lote_CG021?.ToDtoGetPadrao(),
-               // NavCG070Protocolo_CG021 = entity.NavCG070Protocolo_CG021?.ToDtoGet(),
-                //NavNN010_CG021 = entity.NavNN010_CG021?.ToDtoGet(),
-               // NavNN015_CG021 = entity.NavNN015_CG021?.ToDtoGetExibicao(),
-                //NavStaticConsolidar_CG021 
+                NavCG020Lote_CG021 = entity.NavCG020Lote_CG021?.ToDtoGetPadrao(),
+                NavCG070Protocolo_CG021 = entity.NavCG070Protocolo_CG021?.ToDtoGet(),
+                NavNN015_CG021 = entity.NavNN015_CG021?.ToDtoGetNN015Padrao(),
+                NavStaticConsolidar_CG021 = entity.NavStaticConsolidar_CG021
             };
         }
     }
