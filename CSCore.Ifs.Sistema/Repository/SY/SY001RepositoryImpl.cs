@@ -40,7 +40,7 @@ namespace CSCore.Ifs.Repository.SY
         public async Task AtualizaSenhasDesseTenant(int tenant)
         {
             var listaSenhasTexto = await this._appDbContext.OsusrE9aCsicpSy001Bios
-                .Where(e => e.TenantId == tenant && e.UsuarioId == "zz20230000000000000606262" && e.Isactive == true)
+                .Where(e => e.TenantId == tenant && e.Isactive == true)
                 .ToListAsync();
 
             var listaUsuarios  = await this._appDbContext.OsusrE9aCsicpSy001s
