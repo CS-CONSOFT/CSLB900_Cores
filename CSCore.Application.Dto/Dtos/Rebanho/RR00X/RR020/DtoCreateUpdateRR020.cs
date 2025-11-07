@@ -17,6 +17,8 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR020
 
         public long? Rr020Regalimentarid { get; set; }
 
+        public bool? Rr020IsActive { get; set; }
+
         public OsusrTo3CsicpRr020 ToEntity(int tenant, string? id)
         {
             return new OsusrTo3CsicpRr020
@@ -27,7 +29,8 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR020
                 Rr020Descricao = Rr020Descricao,
                 Rr020Dtinicio = Rr020Dtinicio,
                 Rr020Dtfinal = Rr020Dtfinal,
-                Rr020Regalimentarid = Rr020Regalimentarid
+                Rr020Regalimentarid = Rr020Regalimentarid,
+                Rr020IsActive = Rr020IsActive
             };
         }
     }

@@ -15,5 +15,8 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR020
         public DateTime? Rr020Dtfinal { get; set; }
 
         public long? Rr020Regalimentarid { get; set; }
+
+        public bool? Rr020IsActive { get; set; }
+
     }
 }

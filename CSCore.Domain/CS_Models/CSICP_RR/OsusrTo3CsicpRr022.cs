@@ -36,6 +36,8 @@ public partial class OsusrTo3CsicpRr022
 
     public string? Rr022Usuarioid { get; set; }
 
+    public bool? Rr022IsProcessado { get; set; }
+
     public OsusrTo3CsicpRr001? NavRR001Animal_RR022 { get; set; }
 
     public OsusrTo3CsicpRr021? NavRR021LoteXAnimal_RR022 { get; set; }

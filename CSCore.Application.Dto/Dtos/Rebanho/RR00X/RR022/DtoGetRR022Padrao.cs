@@ -29,5 +29,8 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
         public DateTime? Rr022Dthrregistro { get; set; }
 
         public string? Rr022Usuarioid { get; set; }
+
+        public bool? Rr022IsProcessado { get; set; }
+
     }
 }

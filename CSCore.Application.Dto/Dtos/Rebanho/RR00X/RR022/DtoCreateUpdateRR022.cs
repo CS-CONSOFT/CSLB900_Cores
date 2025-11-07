@@ -30,6 +30,8 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
         public DateTime? Rr022Dthrregistro { get; set; }*/
         [JsonIgnore]
         public string? Rr022Usuarioid { get; set; }
+        public bool? Rr022IsProcessado { get; set; }
+
 
         public OsusrTo3CsicpRr022 ToEntity(int tenant, string? id)
         {
@@ -41,6 +43,7 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
                 Rr022Animalid = Rr022Animalid,
                 Rr022Peso = Rr022Peso,
                 Rr022Usuarioid = Rr022Usuarioid,
+                Rr022IsProcessado = Rr022IsProcessado,
                 /*
                 Rr022Dtpeso = Rr022Dtpeso,
                 Rr022Idadediasatual = Rr022Idadediasatual,

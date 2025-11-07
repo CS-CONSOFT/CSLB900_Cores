@@ -17,6 +17,7 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR020
                 Rr020Dtinicio = entity.Rr020Dtinicio,
                 Rr020Dtfinal = entity.Rr020Dtfinal,
                 Rr020Regalimentarid = entity.Rr020Regalimentarid,
+                Rr020IsActive = entity.Rr020IsActive,
 
                 // Navegação
                 NavRR008RegAlimentar = entity.NavRR008RegAlimentar_RR020?.ToDtoGetRR008()
@@ -33,7 +34,8 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR020
                 Rr020Descricao = entity.Rr020Descricao,
                 Rr020Dtinicio = entity.Rr020Dtinicio,
                 Rr020Dtfinal = entity.Rr020Dtfinal,
-                Rr020Regalimentarid = entity.Rr020Regalimentarid
+                Rr020Regalimentarid = entity.Rr020Regalimentarid,
+                Rr020IsActive = entity.Rr020IsActive
             };
         }
     }

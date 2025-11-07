@@ -119,6 +119,11 @@ namespace CSCore.RabbitMQ
         public static string FilaPR119_AtualizaSaldoMensalContabil => "Queue_PR119_AtualizaSaldoMensalContabil";
         public static string ExchangePR119_AtualizaSaldoMensalContabil => "Exchange_PR119_AtualizaSaldoMensalContabil";
         public static string ActionPR119_AtualizaSaldoMensalContabil => "Action_PR119_AtualizaSaldoMensalContabil";
+
+        //PROCESSAR LOTE E ATUALIZA PESO REBANHO
+        public static string FilaProcessaLoteEAtualizaPesoRebanho => "Queue_ProcessaLoteEAtualizaPesoRebanho";
+        public static string ExchangeProcessaLoteEAtualizaPesoRebanho => "Exchange_ProcessaLoteEAtualizaPesoRebanho";
+        public static string ActionProcessaLoteAtualizaPeso => "Action_ProcessaLoteEAtualizaPesoRebanho";
     }
 }
 
