@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.Interfaces.Dashboard;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
 
 namespace CSCore.Domain.CS_Models.CSICP_FF;
 
@@ -893,6 +894,60 @@ public partial class CSICP_FF102
             
             // Todas as outras propriedades permanecem nulas ou com valor padrão
         };
+    }
+
+    public bool SituacaoDoTituloIs(int InSitId)
+    {
+        return this.Ff102Situacaoid == InSitId;
+    }
+
+    public bool SituacaoDoTituloIsNot(int InSitId)
+    {
+        return this.Ff102Situacaoid != InSitId;
+    }
+
+    public bool CampoConfirmadoIdTemValor()
+    {
+        return this.Ff102cpConfirmadoId != null;
+    }
+
+    public bool CampoConfirmadoEhNulo()
+    {
+        return this.Ff102cpConfirmadoId == null;
+    }
+
+    public bool CampoConfirmadoIs(int InStId)
+    {
+        return this.Ff102cpConfirmadoId == InStId;
+    }
+    public bool CampoConfirmadoIsNot(int InStId)
+    {
+        return this.Ff102cpConfirmadoId != InStId;
+    }
+
+    public void AtualizarCampoConfirmadoId(int InStId)
+    {
+        this.Ff102cpConfirmadoId = InStId;
+    }
+
+    public bool CampoPagtoAutorizadoIdTemValor()
+    {
+        return this.Ff102cpPagtoautorizadoId != null;
+    }
+
+    public bool CampoPagtoAutorizadoIdIsNot(int InStID)
+    {
+        return this.Ff102cpPagtoautorizadoId != InStID;
+    }
+
+    public bool CampoPagtoAutorizadoIdIs(int InStID)
+    {
+        return this.Ff102cpPagtoautorizadoId == InStID;
+    }
+
+    public void AtualizarPagtoAutorizadoId(int InStId)
+    {
+        this.Ff102cpPagtoautorizadoId = InStId;
     }
 
 }
