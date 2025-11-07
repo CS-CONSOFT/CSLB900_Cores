@@ -31,6 +31,7 @@ namespace CSCore.Ifs.CS_Context
 
         public DbSet<Csicp_Sy009> OsusrE9aCsicpSy009s { get; set; }
 
+
         //public DbSet<Csicp_Sy010> OsusrE9aCsicpSy010s { get; set; }
 
         //public DbSet<Csicp_Sy011> OsusrE9aCsicpSy011s { get; set; }
