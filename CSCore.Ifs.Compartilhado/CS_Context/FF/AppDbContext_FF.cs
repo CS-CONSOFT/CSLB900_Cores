@@ -650,7 +650,7 @@ namespace CSCore.Ifs.CS_Context
                 entity.HasOne(e => e.NavSY001).WithMany().HasForeignKey(e => e.Ff012Usuariosuperid);
                 entity.HasOne(e => e.NavFF014ComissaoSuper).WithMany().HasForeignKey(e => e.Ff014Comissaosuperid);
                 entity.HasOne(e => e.NavFF014ComissaoCobrador).WithMany().HasForeignKey(e => e.Ff014Comissaocobradorid);
-                entity.HasOne(e => e.NavFF012GrupoPai).WithMany().HasForeignKey(e => e.Ff012Grupopaiid);
+                entity.HasOne(e => e.NavFF012GrupoPai).WithMany().HasForeignKey(e => e.Id);
 
             });
 
