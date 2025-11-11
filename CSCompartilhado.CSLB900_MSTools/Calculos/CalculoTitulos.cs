@@ -107,7 +107,7 @@
             if (Percentual == 0) return (0, DiasAtraso);
 
             decimal valorJuros;
-            if (ValorMultaOuJuros != null || ValorMultaOuJuros != 0)
+            if (ValorMultaOuJuros != null && ValorMultaOuJuros != 0)
                 valorJuros = ValorMultaOuJuros ?? 0;
             else 
                 valorJuros = ((ValorTitulo * (decimal)Percentual!) / 100);
