@@ -1,5 +1,6 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
 using CSLB900.MSTools.InterfaceBase;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF005
 {
@@ -17,6 +18,7 @@ namespace CSCore.Application.Dto.Dtos.Financeiro_FF.FF00X.FF005
 
         public int? Ff005Diavencimento { get; set; }
 
+        [MaxLength(3, ErrorMessage = "O prefixo deve ter no máximo 3 caracteres")]
         public string? Ff005Pfx { get; set; }
 
         public int? Ff005ImpostoId { get; set; }
