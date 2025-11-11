@@ -230,6 +230,12 @@
             Csicp_RR001_Sexo
         }
 
+        public enum StaticTypeNN
+        {
+            Csicp_NN015_Sta,
+            Csicp_NN015_Rp,
+        }
+
     }
 
     public class ComboTypes

@@ -247,7 +247,7 @@ namespace CSCore.Ifs.Repository.Combo
                 StaticTypeFF.Csicp_Ff112G025s => _appDbContext.OsusrE9aCsicpFf112G025s.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, Id = c.Id }),
                 StaticTypeFF.Csicp_Ff112G028s => _appDbContext.OsusrE9aCsicpFf112G028s.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, Id = c.Id }),
                 StaticTypeFF.Csicp_Ff112OrgNegs => _appDbContext.OsusrE9aCsicpFf112OrgNegs.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, Id = c.Id }),
-                StaticTypeFF.Csicp_Ff112Regs => _appDbContext.OsusrE9aCsicpFf112Regs.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, Id = c.Id }),                
+                StaticTypeFF.Csicp_Ff112Regs => _appDbContext.OsusrE9aCsicpFf112Regs.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, Id = c.Id }),
                 StaticTypeFF.Csicp_Ff112apiBaixas => _appDbContext.OsusrE9aCsicpFf112apiBaixas.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, Id = c.Id }),
                 StaticTypeFF.Csicp_Ff112apiLiquidacaos => _appDbContext.OsusrE9aCsicpFf112apiLiquidacaos.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, Id = c.Id }),
                 StaticTypeFF.Csicp_Ff112apiOcorrencia => _appDbContext.OsusrE9aCsicpFf112apiOcorrencia.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, Id = c.Id }),
@@ -297,8 +297,22 @@ namespace CSCore.Ifs.Repository.Combo
             };
             return await query.ToListAsync();
         }
-    }
 
+        // ComboNN
+        public async Task<IReadOnlyCollection<object>> GetComboStaticasByTypeNN(StaticTypeNN staticTypeNN)
+        {
+            IQueryable<object> query = staticTypeNN switch
+            {
+                StaticTypeNN.Csicp_NN015_Sta => _appDbContext.OsusrE9aCsicpNn015Sta
+                .AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, Id = c.Id }),
+                StaticTypeNN.Csicp_NN015_Rp => _appDbContext.OsusrE9aCsicpNn015Rps
+                .AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, Id = c.Id }),
+                _ => throw new ArgumentOutOfRangeException(nameof(staticTypeNN), "Tipo estático inválido")
+            };
+            return await query.ToListAsync();
+        }
+
+    }
 }
 
 
