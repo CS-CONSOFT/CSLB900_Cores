@@ -233,6 +233,18 @@ namespace CSCore.Ifs.Repository.Statica
             return await query.Cast<object>().ToListAsync();
         }
 
-        
+        public async Task<IReadOnlyCollection<object>> GetStaticasByTypeNN(StaticTypeNN staticTypeNN)
+        {
+            IQueryable query = staticTypeNN switch
+            {
+                StaticTypeNN.Csicp_NN015_Sta => _appDbContext.OsusrE9aCsicpNn015Sta.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeNN.Csicp_NN015_Rp => _appDbContext.OsusrE9aCsicpNn015Rps.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+
+                _ => throw new ArgumentOutOfRangeException(nameof(staticTypeNN), "Tipo estático inválido")
+            };
+            return await query.Cast<object>().ToListAsync();
+        }
+
+
     }
 }
