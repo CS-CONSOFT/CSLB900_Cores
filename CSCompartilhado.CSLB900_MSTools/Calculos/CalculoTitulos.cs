@@ -9,16 +9,17 @@
             decimal ValorTitulo,
             decimal? PercentualJuros,
             int? DiasLiberacao,
+            decimal? ValorMultaOuJuros,
             // InFinacEspJuros: Se for true, não calcula juros, apenas retorna 0
             bool InFinacEspJuros)
         {
             if(InFinacEspJuros == true) return (0, 0);
 
-
             return CalcularTituloPercentual(
                 DataVencimento,
                 ValorTitulo,
                 PercentualJuros,
+                ValorMultaOuJuros,
                 DiasLiberacao,
                 (valor, dias) => valor * dias);
         }
@@ -28,6 +29,7 @@
             DateTime DataVencimento,
             decimal ValorTitulo,
             decimal? PercentualMulta,
+            decimal? ValorMultaOuJuros,
             int? DiasLiberacao,
             // InFinacEspMulta: Se for true, não calcula multa, apenas retorna 0
             bool InFinacEspMulta)
@@ -37,6 +39,7 @@
                 (DataVencimento,
                 ValorTitulo,
                 PercentualMulta,
+                ValorMultaOuJuros,
                 DiasLiberacao, 
                 (valor, _) => valor);
         }
@@ -51,6 +54,7 @@
                 DataVencimento,
                 ValorTitulo,
                 PercentualHonorarios,
+                ValorMultaOuJuros: 0,
                 DiasLiberacao,
                 (valor, _) => valor);
         }
@@ -64,20 +68,24 @@
             return CalcularTituloPercentual(
                 DataVencimento,
                 ValorTitulo,
-                PercentualCorrMonetaria, 
+                PercentualCorrMonetaria,
+                ValorMultaOuJuros: 0,
                 DiasLiberacao,
                 (valor, _) => valor);
         }
 
+
+        /*KERNEL*/
         private static (decimal, int) CalcularTituloPercentual(
          DateTime DataVencimento,
          decimal ValorTitulo,
          decimal? Percentual,
+         decimal? ValorMultaOuJuros,
          int? DiasLiberacao,
          Func<decimal, int, decimal> calculo)
         {
             (decimal valorBase, int diasAtraso) = RealizaCalculoPercentual(
-                DataVencimento, ValorTitulo, Percentual, DiasLiberacao);
+                DataVencimento, ValorTitulo, Percentual, ValorMultaOuJuros, DiasLiberacao);
 
             decimal valorFinal = calculo(valorBase, diasAtraso);
 
@@ -85,10 +93,12 @@
         }
 
 
+        /*KERNEL*/
         private static (decimal, int) RealizaCalculoPercentual
             (DateTime DataVencimento,
             decimal ValorTitulo,
             decimal? Percentual,
+            decimal? ValorMultaOuJuros,
             int? DiasLiberacao)
         {
             if (Percentual is null) return (0,0);
@@ -96,7 +106,11 @@
             if (DiasAtraso < 0) return (0, DiasAtraso);
             if (Percentual == 0) return (0, DiasAtraso);
 
-            decimal valorJuros = ((ValorTitulo * (decimal)Percentual!) / 100);
+            decimal valorJuros;
+            if (ValorMultaOuJuros != null || ValorMultaOuJuros != 0)
+                valorJuros = ValorMultaOuJuros ?? 0;
+            else 
+                valorJuros = ((ValorTitulo * (decimal)Percentual!) / 100);
 
             return (valorJuros, DiasAtraso);
         }

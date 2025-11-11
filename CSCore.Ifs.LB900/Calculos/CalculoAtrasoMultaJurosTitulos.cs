@@ -52,12 +52,14 @@ namespace CSCore.Ifs.LB900.Calculos
                 parametrosCalculoLocal.ValorTitulo,
                 parametrosCalculoLocal.PercentualJuros,
                 parametrosCalculoLocal.DiasLiberacao,
+                parametrosCalculoLocal.ValorJurosDias,
                 parametrosCalculoLocal.FinacEspJurosMulta);
 
             var (valorMulta, diasAtrasoMulta) = CalculoTitulos.CalcularMulta(
                 parametrosCalculoLocal.DataVencimento,
                 parametrosCalculoLocal.ValorTitulo,
                 parametrosCalculoLocal.PercentualMulta,
+                parametrosCalculoLocal.ValorMulta,
                 parametrosCalculoLocal.DiasLiberacao,
                 parametrosCalculoLocal.FinacEspJurosMulta);
 
@@ -111,7 +113,10 @@ namespace CSCore.Ifs.LB900.Calculos
                         ? parametrosTitulo?.Ff000Diascarjuros ?? 0
                         : entradaCalculo.InDiasLiberacao,
 
-                    FinacEspJurosMulta = entradaCalculo.InFinacEspJurosMulta
+                    FinacEspJurosMulta = entradaCalculo.InFinacEspJurosMulta,
+
+                    ValorJurosDias = entradaCalculo.InValorJurosDia,
+                    ValorMulta = entradaCalculo.InValorMulta
                 };
             }
 
@@ -170,6 +175,8 @@ namespace CSCore.Ifs.LB900.Calculos
             public DateTime DataVencimento { get; set; }
             public decimal ValorTitulo { get; set; }
             public decimal? PercentualJuros { get; set; }
+            public decimal? ValorJurosDias { get; set; }
+            public decimal? ValorMulta { get; set; }
             public decimal? PercentualMulta { get; set; }
             public decimal? PercentualHonorarios { get; set; }
             public decimal? PercentualCorrecaoMonetaria { get; set; }

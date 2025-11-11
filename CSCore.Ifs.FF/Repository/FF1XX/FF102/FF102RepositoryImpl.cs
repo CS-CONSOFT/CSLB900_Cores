@@ -5,16 +5,19 @@ using CSCore.Domain.Interfaces.Calculos.CalculoAtrasoMultaJurosTitulos;
 using CSCore.Domain.Interfaces.Calculos.CalculoAtrasoMultaJurosTitulos.Parametros;
 using CSCore.Domain.Interfaces.FF._1XX;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.FF.Repository.Processos.CS_Atualiza_Cobrador_Todos;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
-using MathNet.Numerics.Providers.LinearAlgebra;
 using Microsoft.EntityFrameworkCore;
 using static CSCore.Domain.ComboTypes;
 
 
 namespace CSCore.Ifs.FF.Repository.FF1XX.FF102
 {
+    public enum TIPO_REGISTRO
+    {
+        CONTAS_A_PAGAR = 3,
+        CONTAS_A_RECEBER = 1
+    }
     public partial class FF102RepositoryImpl(AppDbContext appDbContext, ICalculoAtrasoMultaJurosTitulos calculoAtrasoMultaJurosTitulos)
         : RepositorioBaseImpl<CSICP_FF102>(appDbContext, "Id"), IFF102Repository
     {
@@ -24,14 +27,15 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102
         {
             IQueryable<CSICP_FF102> query = GetQueryBase(in_tenant);
             //1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar
-            if (in_tipoRegistro != null)
+            if (in_tipoRegistro != null || in_tipoRegistro == 0)
             {
                 query = query.Where(e => e.Ff102Tiporegistro == in_tipoRegistro);
             }
 
-            CSICP_FF102? retFF102 = await query.FirstOrDefaultAsync(e => e.Id == in_ff102Id);
+            query = query.Where(e => e.Id == in_ff102Id);
+            CSICP_FF102? retFF102 = await query.FirstOrDefaultAsync();
 
-            await CalcularValoresAtrasoReceberAsync(retFF102);
+            await CalcularValoresAtrasoReceberAsync(retFF102, in_tipoRegistro);
 
             return retFF102;
         }
@@ -40,20 +44,22 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102
         {
             IQueryable<CSICP_FF102> query = this._appDbContext.OsusrE9aCsicpFf102s.AsNoTracking().Where(e => e.TenantId == in_tenant && e.Id == in_ff102Id);
             //1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar
-            if (in_tipoRegistro != null)
+            if (in_tipoRegistro != null || in_tipoRegistro == 0)
             {
                 query = query.Where(e => e.Ff102Tiporegistro == in_tipoRegistro);
             }
 
             CSICP_FF102? retFF102 = await query.FirstOrDefaultAsync();
 
-            await CalcularValoresAtrasoReceberAsync(retFF102);
+            await CalcularValoresAtrasoReceberAsync(retFF102, in_tipoRegistro);
 
             return retFF102;
         }
 
 
-        public async Task<(List<CSICP_FF102>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize, string? in_estabelecimentoId, int? in_tipoRegistro, string? in_prefixo, decimal? in_titulo, string? in_sufixo, string? in_nomeConta, int? in_situacaoId, int? in_codigoConta, int? in_TpCobranca, decimal? in_NoTitulonoBanco, string? in_serie, decimal? in_numeroNotaf, string? in_AgCobrador, string? in_centroCusto, DateTime? in_dataInicio, DateTime? in_dataFinal, QualDataFiltro? in_tipoDataFiltro)
+        public async Task<(List<CSICP_FF102>, int)> GetListAsync(int in_tenant, int in_pageNumber, int in_pageSize, string? in_estabelecimentoId, int? in_tipoRegistro, string? in_prefixo,
+            decimal? in_titulo, string? in_sufixo, string? in_nomeConta, int? in_situacaoId, int? in_codigoConta, int? in_TpCobranca, decimal? in_NoTitulonoBanco, string? in_serie, decimal? in_numeroNotaf,
+            string? in_AgCobrador, string? in_centroCusto, DateTime? in_dataInicio, DateTime? in_dataFinal, QualDataFiltro? in_tipoDataFiltro)
         {
             IQueryable<CSICP_FF102> query = GetQueryBase(in_tenant);
             query = FiltraQuandoExisteFiltro(in_estabelecimentoId, query,
@@ -81,14 +87,14 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102
             List<CSICP_FF102> CSICP_FF102List = await query.ToListAsync();
             foreach (var current in CSICP_FF102List)
             {
-                await CalcularValoresAtrasoReceberAsync(current);
+                await CalcularValoresAtrasoReceberAsync(current, in_tipoRegistro);
             }
 
             return (CSICP_FF102List, count);
         }
 
 
-        private async Task CalcularValoresAtrasoReceberAsync(CSICP_FF102? retFF102)
+        private async Task CalcularValoresAtrasoReceberAsync(CSICP_FF102? retFF102, int? tpRegistro)
         {
             if (retFF102 is null) return;
             PrmEntradaContasAReceber prmEntradaContasAReceber = new PrmEntradaContasAReceber
@@ -103,16 +109,24 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102
                 InPercentualHonorarios = retFF102.Ff102PercHonorarios,
                 InEstabID = retFF102.Ff102Filialid ?? "",
                 InFinacEspJurosMulta = retFF102.NavBB01201Jur?.Codgcs == 1,
+                InValorMulta = retFF102.Ff102cpValorMulta,
+                InValorJurosDia = retFF102.Ff102cpValorJurosDia,
             };
-            PrmRetornoCalculo prmRetornoCalculo
-                = await _calculoAtrasoMultaJurosTitulos.CalcularContasAReceber(prmEntradaContasAReceber);
+
+            PrmRetornoCalculo prmRetornoCalculo;
+            if (tpRegistro == (int)TIPO_REGISTRO.CONTAS_A_PAGAR) 
+                prmRetornoCalculo = _calculoAtrasoMultaJurosTitulos.CalcularContasAPagar(prmEntradaContasAReceber);
+            else
+                prmRetornoCalculo = await _calculoAtrasoMultaJurosTitulos.CalcularContasAReceber(prmEntradaContasAReceber);
+
+
 
             retFF102.CSValorJuros = prmRetornoCalculo.OutValorJuros;
             retFF102.CSValorMulta = prmRetornoCalculo.OutValorMulta;
             retFF102.CSValorCorrecaoMonetaria = prmRetornoCalculo.OutValorCorrecaoMonetaria;
             retFF102.CSValorHonorarios = prmRetornoCalculo.OutValorHonorario;
             retFF102.CSDiasAtraso = prmRetornoCalculo.OutDiasAtrasoJuros;
-            retFF102.CSDiasAtraso = prmRetornoCalculo.OutDiasAtrasoJuros;
+
 
             retFF102.CSPercentualCorrecaoMonetariaConfig = prmRetornoCalculo.OutPercentualCorrecaoMonetariaConfig;
             retFF102.CSPercentualHonorarioConfig = prmRetornoCalculo.OutPercentualHonorarioConfig;
@@ -1058,7 +1072,8 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102
          Se houver necessidade futura, deve-se criar uma rotina específica para cada caso.
          Valter - 13/09/2025
          */
-        public async Task<(List<CSICP_FF102>, int)> GetListTitulosEmCobrancaAsync(PrmGetListTitulosEmCobrancaRepo InPrm)
+        public async Task<(List<CSICP_FF102>, int)> GetListTitulosEmCobrancaAsync(
+            PrmGetListTitulosEmCobrancaRepo InPrm)
         {
             var WorkGet_Config_Cobranca = await _appDbContext.OsusrE9aCsicpFf011s
             .OrderBy(e => e.Ff011DiasAtrasosDe)
@@ -1094,7 +1109,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF102
                 query = query.PaginacaoNoBanco(InPrm.PageNumber, InPrm.PageSize);
                 foreach (var current in CSICP_FF102List)
                 {
-                    await CalcularValoresAtrasoReceberAsync(current);
+                    await CalcularValoresAtrasoReceberAsync(current, tpRegistro: null);
                 }
             }
             
