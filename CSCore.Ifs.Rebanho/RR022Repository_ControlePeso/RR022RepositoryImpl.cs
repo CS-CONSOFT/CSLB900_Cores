@@ -13,7 +13,7 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
     {
         private readonly AppDbContext _appDbContext;
 
-        public RR022RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
+        public RR022RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Id")
         {
             _appDbContext = appDbContext;
         }

@@ -13,7 +13,7 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
     {
         private readonly AppDbContext _appDbContext;
         
-        public RR031RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
+        public RR031RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Id")
         {
             _appDbContext = appDbContext;
         }
