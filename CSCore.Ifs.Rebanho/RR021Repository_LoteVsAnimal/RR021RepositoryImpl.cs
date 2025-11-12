@@ -18,13 +18,14 @@ namespace CSCore.Ifs.Rebanho.RR021Repository_LoteVsAnimal
             _appDbContext = appDbContext;
         }
 
-        public async Task<(List<OsusrTo3CsicpRr021>, int)> GetListRR021LoteIdAsync(int In_TenantID, string In_LoteRR020ID, PrmFiltrosRR021 prm)
+        public async Task<(List<OsusrTo3CsicpRr021>, int)> GetListRR021LoteIdAsync(int In_TenantID, PrmFiltrosRR021 prm)
         {
             IQueryable<OsusrTo3CsicpRr021> query = _appDbContext.OsusrTo3CsicpRr021s
                 .AsNoTracking()
                 .AsSplitQuery()
-                .Where(e => e.TenantId == In_TenantID && e.Rr021Loteid == In_LoteRR020ID)
-                .Include(e => e.NavRR001Animal_RR021);
+                .Where(e => e.TenantId == In_TenantID && e.Rr021Loteid == prm.In_LoteId)
+                .Include(e => e.NavRR001Animal_RR021)
+                .Include(e => e.NavRR020RegLote_RR021);
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));
@@ -46,6 +47,7 @@ namespace CSCore.Ifs.Rebanho.RR021Repository_LoteVsAnimal
 
             return [
                 new FiltroAnimalIdRR021(filtros.In_AnimalId),
+                new FiltroLoteIdRR021(filtros.In_LoteId),
                 new FiltroDtRegistroRR021(filtros.In_DtRegistroInicio, filtros.In_DtRegistroFim)
             ];
         }

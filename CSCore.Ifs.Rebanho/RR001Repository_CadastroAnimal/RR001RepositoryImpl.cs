@@ -89,5 +89,38 @@ namespace CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal
                 new FiltroDataNascimentoRR001(filtros.In_DataNascimento),
             ];
         }
+
+        public async Task<(List<OsusrTo3CsicpRr001>, int)> GetListAnimaisSemLoteAsync(int In_TenantID, int pageNumber, int pageSize)
+        {
+            IQueryable<OsusrTo3CsicpRr001> query = _appDbContext.OsusrTo3CsicpRr001s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.TenantId == In_TenantID)
+                .Include(e => e.NavRR001Pai)
+                .Include(e => e.NavRR001Mae)
+                .Include(e => e.NavRR002Fazenda_RR001)
+                .Include(e => e.NavRR003CadastroCat_RR001)
+                .Include(e => e.NavRR004Raca_RR001)
+                .Include(e => e.NavRR005Situacao_RR001)
+                .Include(e => e.NavRR006Ocorrencia_RR001)
+                .Include(e => e.NavRR007Proprietario_RR001)
+                .Include(e => e.NavRR001Ativo_RR001)
+                .Include(e => e.NavRR001Categoria_RR001)
+                .Include(e => e.NavRR001Sexo_RR001)
+                .Include(e => e.NavSy001_RR001)
+                .Where(e => !_appDbContext.OsusrTo3CsicpRr021s
+                    .Where(rr021 => rr021.Rr021Animalid == e.Id &&
+                                    rr021.NavRR020RegLote_RR021 != null &&
+                                    rr021.NavRR020RegLote_RR021.Rr020IsActive == true)
+                    .Any());
+
+            var queryCount = query;
+            var count = await queryCount.CountAsync();
+
+            query = query.PaginacaoNoBanco(pageNumber, pageSize);
+            var listItems = await query.ToListAsync();
+
+            return (listItems, count);
+        }
     }
 }
