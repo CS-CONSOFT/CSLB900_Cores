@@ -20,7 +20,7 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR021
 
                 // Navegações
                 NavRR001Animal = entity.NavRR001Animal_RR021?.ToDtoGetRR001(),
-                //NavRR020RegLote = entity.NavRR020RegLote_RR021?.ToDtoGetRR020Padrao()
+                NavRR020RegLote = entity.NavRR020RegLote_RR021?.ToDtoGetRR020Padrao()
             };
         }
 

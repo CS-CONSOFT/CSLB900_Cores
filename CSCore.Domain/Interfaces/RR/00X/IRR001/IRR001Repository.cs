@@ -7,5 +7,6 @@ namespace CSCore.Domain.Interfaces.RR._00X
     {
         Task<OsusrTo3CsicpRr001?> GetByIdAsync(int In_TenantID, string In_IDRR001);
         Task<(List<OsusrTo3CsicpRr001>, int)> GetListAsync(int In_TenantID, PrmFiltrosRR001 prm);
+        Task<(List<OsusrTo3CsicpRr001>, int)> GetListAnimaisSemLoteAsync(int In_TenantID, int pageNumber, int pageSize);
     }
 }
