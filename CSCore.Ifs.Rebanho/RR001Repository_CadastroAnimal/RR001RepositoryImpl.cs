@@ -12,7 +12,7 @@ namespace CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal
     public class RR001RepositoryImpl : RepositorioBaseImplV2<OsusrTo3CsicpRr001>, IRR001Repository
     {
         private readonly AppDbContext _appDbContext;
-        public RR001RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
+        public RR001RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Id")
         {
             _appDbContext = appDbContext;
         }
@@ -109,7 +109,8 @@ namespace CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal
                 .Include(e => e.NavRR001Sexo_RR001)
                 .Include(e => e.NavSy001_RR001)
                 .Where(e => !_appDbContext.OsusrTo3CsicpRr021s
-                    .Where(rr021 => rr021.Rr021Animalid == e.Id &&
+                    .Where(rr021 => rr021.TenantId == In_TenantID &&
+                                    rr021.Rr021Animalid == e.Id &&
                                     rr021.NavRR020RegLote_RR021 != null &&
                                     rr021.NavRR020RegLote_RR021.Rr020IsActive == true)
                     .Any());

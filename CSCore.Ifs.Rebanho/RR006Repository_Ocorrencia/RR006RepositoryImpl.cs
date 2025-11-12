@@ -13,7 +13,7 @@ namespace CSCore.Ifs.Rebanho.RR006Repository_Ocorrencia
     {
         private readonly AppDbContext _appDbContext;
 
-        public RR006RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
+        public RR006RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Id")
         {
             _appDbContext = appDbContext;
         }

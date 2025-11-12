@@ -13,7 +13,7 @@ namespace CSCore.Ifs.Rebanho.RR035Repository_CadastroSemen
     {
         private readonly AppDbContext _appDbContext;
         
-        public RR035RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
+        public RR035RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Id")
         {
             _appDbContext = appDbContext;
         }

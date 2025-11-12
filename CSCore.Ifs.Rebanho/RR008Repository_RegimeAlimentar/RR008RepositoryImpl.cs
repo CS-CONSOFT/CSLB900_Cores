@@ -13,7 +13,7 @@ namespace CSCore.Ifs.Rebanho.RR008Repository_RegimeAlimentar
     {
         private readonly AppDbContext _appDbContext;
 
-        public RR008RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
+        public RR008RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Id")
         {
             _appDbContext = appDbContext;
         }

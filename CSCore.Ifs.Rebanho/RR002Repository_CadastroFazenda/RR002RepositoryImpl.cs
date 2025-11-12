@@ -13,7 +13,7 @@ namespace CSCore.Ifs.Rebanho.RR002Repository_CadastroFazenda
     {
         private readonly AppDbContext _appDbContext;
 
-        public RR002RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
+        public RR002RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Id")
         {
             _appDbContext = appDbContext;
         }
