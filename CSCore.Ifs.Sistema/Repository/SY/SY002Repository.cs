@@ -15,6 +15,8 @@ namespace CSCore.Ifs.Repository.SY
 
         public async Task<Csicp_Sy002> CreateAsync(Csicp_Sy002 entity)
         {
+            var idStat = await this._appDbContext.OsusrE9aCsicpSy807Cssps.Where(e => e.Label == "SOPHIA ERP").Select(e => e.Id).FirstOrDefaultAsync();
+            entity.sy002_erpid = idStat;
             _appDbContext.Add(entity);
             await _appDbContext.SaveChangesAsync();
             return entity;
@@ -66,6 +68,8 @@ namespace CSCore.Ifs.Repository.SY
 
         public async Task<Csicp_Sy002> UpdateAsync(Csicp_Sy002 entity)
         {
+            var idStat = await this._appDbContext.OsusrE9aCsicpSy807Cssps.Where(e => e.Label == "SOPHIA ERP").Select(e => e.Id).FirstOrDefaultAsync();
+            entity.sy002_erpid = idStat;
             _appDbContext.Update(entity);
             await _appDbContext.SaveChangesAsync();
             return entity;
