@@ -32,12 +32,12 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             return CSICP_RR022;
         }
 
-        public async Task<(List<OsusrTo3CsicpRr022>, int)> GetListRR022ByRR021IdAsync(int In_TenantID, string In_RR021ID, PrmFiltrosRR022 prm)
+        public async Task<(List<OsusrTo3CsicpRr022>, int)> GetListPesoAnimalRR022Async(int In_TenantID, PrmFiltrosRR022 prm)
         {
             IQueryable<OsusrTo3CsicpRr022> query = _appDbContext.OsusrTo3CsicpRr022s
                 .AsNoTracking()
                 .AsSplitQuery()
-                .Where(e => e.Rr022Loteid == In_RR021ID)
+                .Where(e => e.Rr022Loteid == prm.In_LoteId)
                 .Include(e => e.NavRR001Animal_RR022)
                 .Include(e => e.NavRR021LoteXAnimal_RR022);
 
@@ -60,10 +60,11 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
                 throw new ArgumentNullException(nameof(Filtros), "Parâmetros de filtro inválidos.");
 
             return [
-                new FiltroAnimalIdRR022(filtros.In_AnimalId),
-                new FiltroPesoRR022(filtros.In_PesoMinimo, filtros.In_PesoMaximo)
-
+                new FiltroLoteIdRR022(filtros.In_LoteId),
+                new FiltroDataPesoRR022(filtros.In_DataPeso),
             ];
         }
+
+        
     }
 }
