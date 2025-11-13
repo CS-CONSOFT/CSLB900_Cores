@@ -22,12 +22,14 @@ namespace CSCore.Ifs.Repository.SY
 
         public async Task<Csicp_Sy002> GetByIdAsync(string id, int tenant)
         {
-            return await GetEntityById(id, tenant);
+            var idStat = await this._appDbContext.OsusrE9aCsicpSy807Cssps.Where(e => e.Label == "SOPHIA ERP").Select(e => e.Id).FirstOrDefaultAsync();
+            return await GetEntityById(id, idStat,tenant);
         }
 
         public async Task<IEnumerable<Csicp_Sy002>> GetListAsync(int tenant, string? search)
         {
-            IQueryable<Csicp_Sy002> q1 = CreateBaseQuery(tenant).AsQueryable();
+            var idStat = await this._appDbContext.OsusrE9aCsicpSy807Cssps.Where(e => e.Label == "SOPHIA ERP").Select(e => e.Id).FirstOrDefaultAsync();
+            IQueryable<Csicp_Sy002> q1 = CreateBaseQuery(tenant, idStat).AsQueryable();
 
             q1 = FiltraQuandoExisteFiltros(search, q1);
             return await q1.ToListAsync();
@@ -82,18 +84,19 @@ namespace CSCore.Ifs.Repository.SY
         }
 
 
-        private IQueryable<Csicp_Sy002> CreateBaseQuery(int tenant)
+        private IQueryable<Csicp_Sy002> CreateBaseQuery(int tenant, int idStat)
         {
             return _appDbContext.OsusrE9aCsicpSy002s
                 .AsNoTracking()
                 .Where(e => e.TenantId == tenant)
+                .Where(e => e.sy002_erpid == idStat)
                 .OrderBy(e => e.Sy002Grupo);
         }
 
-        private async Task<Csicp_Sy002?> GetEntityById(string id, int tenant)
+        private async Task<Csicp_Sy002?> GetEntityById(string id,int idStat, int tenant)
         {
-            return await CreateBaseQuery(tenant)
-                .FirstOrDefaultAsync(e => e.Id == id);
+            return await CreateBaseQuery(tenant, idStat)
+                .FirstOrDefaultAsync(e => e.Id == id && e.sy002_erpid == idStat);
         }
 
         public async Task<IEnumerable<Csicp_Sy003Regra>> GetListSY003Async(string? search)
