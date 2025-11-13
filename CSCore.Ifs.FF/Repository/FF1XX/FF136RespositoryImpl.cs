@@ -23,8 +23,11 @@ namespace CSCore.Ifs.FF.Repository.FF1XX
         public async Task<(List<CSICP_FF136>, int)> GetListBaixaCartaDeDebito(int tenant, string InFF135_ID, int page, int pageSize)
         {
             var query = this.AppDbContext.OsusrE9aCsicpFf136s
+                .Include(e => e.NavFf102)      
+                .Include(e => e.NavFf136Usuarioprop)      
                .Where(e => e.TenantId == tenant)
-               .Where(e => e.Ff136Cdebitoid == InFF135_ID);
+               .Where(e => e.Ff136Cdebitoid == InFF135_ID)
+               .AsSplitQuery();
 
             var queryCount = query;
             var count = queryCount.Count();
