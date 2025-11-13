@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
@@ -21,6 +22,7 @@ namespace CSCore.Ifs.LB900
         private readonly Timer _timer;
         private readonly Process _process;
         private readonly ILogger<MetricsService> _logger;
+        private readonly IConfiguration _configuration;
 
         // Variáveis de estado para o cálculo da CPU
         private TimeSpan _lastCpuTime;
@@ -32,28 +34,101 @@ namespace CSCore.Ifs.LB900
         // Em muitos ambientes Linux/Docker, TotalProcessorTime pode não ser preciso, mas é a melhor heurística simples.
         private static bool IsRunningOnUnix => Environment.OSVersion.Platform == PlatformID.Unix;
 
-        public MetricsService(ILogger<MetricsService> logger)
+        public MetricsService(ILogger<MetricsService> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
 
             try
             {
                 // 1. Definição e Criação do Caminho
-                string baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+                // Prioridade: variável de ambiente > configuração > padrão
+                string baseDir = _configuration["MetricsService:LogPath"]
+                    ?? Environment.GetEnvironmentVariable("METRICS_LOG_PATH")
+                    ?? "/app/metrics";
+
+                // Se não for caminho absoluto, usar o diretório base da aplicação
+                if (!Path.IsPathRooted(baseDir))
+                {
+                    baseDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, baseDir);
+                }
+
                 _logPath = Path.Combine(baseDir, "metrics_log.csv");
 
+                _logger.LogInformation("=== INICIALIZAÇÃO DO METRICSSERVICE ===");
+                _logger.LogInformation("Sistema Operacional: {OS}", Environment.OSVersion);
+                _logger.LogInformation("Plataforma: {Platform}", IsRunningOnUnix ? "Unix/Linux" : "Windows");
+                _logger.LogInformation("Diretório Base da Aplicação: {BaseDirectory}", AppDomain.CurrentDomain.BaseDirectory);
+                _logger.LogInformation("Diretório de trabalho atual: {WorkingDirectory}", Directory.GetCurrentDirectory());
+                _logger.LogInformation("Diretório de Logs (configurado): {LogDirectory}", baseDir);
+                _logger.LogInformation("Caminho completo do arquivo: {LogPath}", _logPath);
+
+                // Verificar se o diretório existe ou pode ser criado
+                _logger.LogInformation("Verificando existência do diretório: {BaseDirectory}", baseDir);
+                bool dirExistsBefore = Directory.Exists(baseDir);
+                _logger.LogInformation("Diretório existe antes da criação: {DirExists}", dirExistsBefore);
+
+                // Tentar criar o diretório
                 _logger.LogInformation("Tentando criar diretório: {BaseDirectory}", baseDir);
                 Directory.CreateDirectory(baseDir);
+
+                // Verificar se foi criado com sucesso
+                bool dirExistsAfter = Directory.Exists(baseDir);
+                _logger.LogInformation("Diretório existe após criação: {DirExists}", dirExistsAfter);
+
+                if (!dirExistsAfter)
+                {
+                    throw new DirectoryNotFoundException($"Não foi possível criar ou acessar o diretório: {baseDir}");
+                }
+
+                // Testar permissões de escrita
+                try
+                {
+                    var testFile = Path.Combine(baseDir, $".test_write_{Guid.NewGuid()}.tmp");
+                    _logger.LogInformation("Testando permissão de escrita no diretório: {TestFile}", testFile);
+                    File.WriteAllText(testFile, "test");
+                    File.Delete(testFile);
+                    _logger.LogInformation("Teste de permissão de escrita: SUCESSO");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Teste de permissão de escrita FALHOU no diretório: {BaseDirectory}", baseDir);
+                    throw new UnauthorizedAccessException($"Sem permissão de escrita no diretório: {baseDir}", ex);
+                }
 
                 // 2. Criação do Arquivo de Log
                 if (!File.Exists(_logPath))
                 {
-                    _logger.LogInformation("Criando arquivo de log: {LogPath}", _logPath);
-                    File.WriteAllText(_logPath, "Timestamp,GC(MB),WorkingSet(MB),Private(MB),CPU%,Threads\n");
+                    _logger.LogInformation("Arquivo de log não existe. Criando: {LogPath}", _logPath);
+
+                    try
+                    {
+                        File.WriteAllText(_logPath, "Timestamp,GC(MB),WorkingSet(MB),Private(MB),CPU%,Threads\n");
+                        _logger.LogInformation("Arquivo criado com sucesso");
+
+                        // Verificar se foi criado
+                        if (File.Exists(_logPath))
+                        {
+                            var fileInfo = new FileInfo(_logPath);
+                            _logger.LogInformation("Arquivo verificado - Tamanho: {FileSize} bytes, Criado em: {CreationTime}",
+                                fileInfo.Length, fileInfo.CreationTime);
+                        }
+                        else
+                        {
+                            throw new IOException($"Arquivo não foi encontrado após criação: {_logPath}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "ERRO ao criar arquivo de log: {LogPath}", _logPath);
+                        throw;
+                    }
                 }
                 else
                 {
-                    _logger.LogInformation("Arquivo de log já existe: {LogPath}", _logPath);
+                    var fileInfo = new FileInfo(_logPath);
+                    _logger.LogInformation("Arquivo de log já existe: {LogPath} - Tamanho: {FileSize} bytes, Última modificação: {LastWrite}",
+                        _logPath, fileInfo.Length, fileInfo.LastWriteTime);
                 }
 
                 // 3. Inicialização do Processo e Métricas
@@ -65,26 +140,24 @@ namespace CSCore.Ifs.LB900
                 _lastCheck = DateTime.UtcNow;
 
                 // 4. Configuração do Timer
-                // Usamos a flag ExecutionContext.SuppressFlow() para evitar vazamento de contexto
-                // ao agendar o timer em uma task que não depende do contexto de execução.
                 ExecutionContext.SuppressFlow();
                 _timer = new Timer(async _ => await LogMetricsAsync(), null, Timeout.Infinite, Timeout.Infinite);
                 ExecutionContext.RestoreFlow();
 
                 _logger.LogInformation("MetricsService inicializado com sucesso. CPU Cores: {CpuCores}", _cpuCores);
+                _logger.LogInformation("=== FIM DA INICIALIZAÇÃO ===");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao inicializar MetricsService");
+                _logger.LogError(ex, "Erro crítico ao inicializar MetricsService");
                 throw;
             }
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            // O timer inicia a partir de agora e repete a cada LoggingIntervalSeconds
             _timer.Change(TimeSpan.Zero, TimeSpan.FromSeconds(LoggingIntervalSeconds));
-            _logger.LogInformation("Monitoramento iniciado. Intervalo: {IntervalSeconds}s", LoggingIntervalSeconds);
+            _logger.LogInformation("Monitoramento de métricas INICIADO. Intervalo: {IntervalSeconds}s", LoggingIntervalSeconds);
             return Task.CompletedTask;
         }
 
@@ -93,8 +166,6 @@ namespace CSCore.Ifs.LB900
         /// </summary>
         private async Task LogMetricsAsync()
         {
-            // Implementação de "mutex" simples para prevenir execuções concorrentes do timer,
-            // embora o Timer não deva disparar novamente antes do intervalo, é uma segurança extra.
             if (Interlocked.CompareExchange(ref _lastRefreshTimestamp, 1, 0) != 0)
             {
                 _logger.LogWarning("Tentativa de execução concorrente ignorada");
@@ -123,10 +194,6 @@ namespace CSCore.Ifs.LB900
 
                 if (elapsedMs > 0)
                 {
-                    // A fórmula padrão calcula a porcentagem de uso do processador total
-                    // (tempo gasto pelo processo / tempo total decorrido)
-                    // Multiplicamos por _cpuCores para normalizar a porcentagem em relação
-                    // ao número de núcleos disponíveis. Isso é crucial em ambientes Linux/Docker.
                     cpuPercent = (cpuMs / elapsedMs) * 100.0;
                 }
 
@@ -137,18 +204,32 @@ namespace CSCore.Ifs.LB900
                 // 4. Geração e Gravação da Linha
                 string line = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss},{gcMemMB:F2},{workingMB:F2},{privateMB:F2},{cpuPercent:F2},{threads}";
 
+                // Verificar se o arquivo ainda existe antes de escrever
+                if (!File.Exists(_logPath))
+                {
+                    _logger.LogWarning("Arquivo de log não existe mais. Recriando: {LogPath}", _logPath);
+                    await Task.Run(() => File.WriteAllText(_logPath, "Timestamp,GC(MB),WorkingSet(MB),Private(MB),CPU%,Threads\n"));
+                }
+
                 // Usar Task.Run com FileStream/StreamWriter garante que a operação de IO não bloqueie o thread do Timer.
                 await Task.Run(() =>
                 {
-                    // Usar FileShare.ReadWrite para permitir que o arquivo seja lido por outras ferramentas enquanto gravamos.
-                    using (var stream = new FileStream(_logPath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
-                    using (var writer = new StreamWriter(stream))
+                    try
                     {
-                        writer.WriteLine(line);
+                        using (var stream = new FileStream(_logPath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
+                        using (var writer = new StreamWriter(stream))
+                        {
+                            writer.WriteLine(line);
+                        }
+                    }
+                    catch (Exception writeEx)
+                    {
+                        _logger.LogError(writeEx, "Erro ao escrever no arquivo: {LogPath}", _logPath);
+                        throw;
                     }
                 });
 
-                // 5. Log de Console (Opcional, a cada 30s)
+                // 5. Log estruturado das métricas
                 _logger.LogInformation("Métricas coletadas - CPU: {CpuPercent:F2}%, RAM: {WorkingMemoryMB:F2}MB, Threads: {ThreadCount}",
                     cpuPercent, workingMB, threads);
             }
@@ -156,40 +237,36 @@ namespace CSCore.Ifs.LB900
             {
                 _logger.LogError(ex, "Erro ao gravar métricas");
 
-                // Tenta gravar a linha de erro (sem precisar do bloco try-catch aninhado)
+                // Tenta gravar a linha de erro
                 try
                 {
-                    string errorLine = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss},ERRO,-,-,-,-,-,{ex.Message.Replace(",", ";")}";
+                    string errorLine = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss},ERRO,-,-,-,-,{ex.Message.Replace(",", ";")}";
                     await Task.Run(() => File.AppendAllText(_logPath, errorLine + "\n"));
                 }
-                catch
+                catch (Exception innerEx)
                 {
-                    // Ignorar se não conseguir gravar o erro
+                    _logger.LogError(innerEx, "Não foi possível gravar linha de erro no arquivo");
                 }
             }
             finally
             {
-                // Libera o "mutex"
                 Interlocked.Exchange(ref _lastRefreshTimestamp, 0);
             }
         }
 
         public void Dispose()
         {
-            // Garante que o timer pare antes de ser descartado
             _timer?.Change(Timeout.Infinite, Timeout.Infinite);
             _timer?.Dispose();
 
-            // Não é necessário descartar o processo, pois GetCurrentProcess() retorna uma referência.
-
-            _logger.LogInformation("Encerrando serviço de métricas");
+            _logger.LogInformation("Serviço de métricas encerrado");
             GC.SuppressFinalize(this);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Recebido sinal para encerrar serviço de métricas");
-            Dispose(); // Chama o método Dispose que para o Timer
+            Dispose();
             return Task.CompletedTask;
         }
     }
