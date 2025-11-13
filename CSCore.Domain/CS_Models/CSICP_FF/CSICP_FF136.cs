@@ -19,6 +19,8 @@ public partial class CSICP_FF136
 
     [ForeignKey("NavFf136Usuarioprop")]
     public string? Ff136UsuariopropId { get; set; }
+
+    [JsonIgnore]
     public Csicp_Sy001? NavFf136Usuarioprop { get; set; }
 
     public DateTime? Ff136DataMovto { get; set; }
