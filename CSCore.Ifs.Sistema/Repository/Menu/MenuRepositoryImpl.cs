@@ -61,13 +61,19 @@ namespace CSCore.Ifs.Repository.Menu
 
 
 
-        public async Task<List<CsicpSy902Menu>> GetMenuList()
+        public async Task<List<CsicpSy902Menu>> GetMenuList(string ProdutoLabel)
         {
-            // 1️⃣ Busca apenas menus ativos - query leve
-            var menusAtivos = await _appDbContext.OsusrI4yCsicpSy902Menus
-                .AsNoTracking()
-                .Where(e => e.Isactive == true && e.Menutipo == 0)
-                .ToListAsync();
+           var menusAtivos = await _appDbContext.OsusrI4yCsicpSy902Menus
+               .AsNoTracking()
+               .Where(e => e.Isactive == true && e.Menutipo == 0 && e.Label == ProdutoLabel.ToString())
+               .ToListAsync();
+
+            //var menusAtivos = await (from sy906 in _appDbContext.CSICP_SY906_SPACE.AsNoTracking()
+            //                   join sy902 in _appDbContext.OsusrI4yCsicpSy902Menus.AsNoTracking()
+            //                   on sy906.ID equals sy902.IdSy802.ToString()
+            //                   where sy906.IS_ACTIVE == true && sy902.Isactive == true && sy902.Menutipo == 0 && sy906.LABEL == ProdutoLabel
+            //                   orderby sy906.ORDER
+            //                   select sy902).ToListAsync();
 
             if (menusAtivos.Count == 0)
                 return [];

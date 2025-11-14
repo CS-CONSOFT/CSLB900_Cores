@@ -117,8 +117,8 @@ namespace CSSY103.C82Application.Mapper
             return new DtoSY903_V2
             {
                 title = entity.Label ?? "",
-                icon = "",
-                to = "#",
+                icon = entity.DescricaoSpanish,
+                to = entity.Url,
                 children = entity.ListaSubMenuProgramas.Select(e => e.ToDto_v2()).ToList()
             };
         }
@@ -127,11 +127,9 @@ namespace CSSY103.C82Application.Mapper
         {
             return new DtoSY903_V2
             {
-                
                 title = entity.Label ?? "",
-                icon = "",
-                to = entity.Url,
-               
+                icon = entity.DescricaoSpanish,
+                to = entity.Url,  
                 children = listaProgramas.Select(e => e.ToDto_v2()).ToList()
             };
         }
