@@ -37,7 +37,6 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             IQueryable<OsusrTo3CsicpRr022> query = _appDbContext.OsusrTo3CsicpRr022s
                 .AsNoTracking()
                 .AsSplitQuery()
-                .Where(e => e.Rr022Loteid == prm.In_LoteId)
                 .Include(e => e.NavRR001Animal_RR022)
                 .Include(e => e.NavRR021LoteXAnimal_RR022);
 
@@ -62,9 +61,29 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             return [
                 new FiltroLoteIdRR022(filtros.In_LoteId),
                 new FiltroDataPesoRR022(filtros.In_DataPeso),
+                new FiltroUsuarioIdRR022(filtros.In_UsuarioId),
+
             ];
         }
 
-        
+        public async Task<List<DtoGetCountPesoAnimalRR022>> GetListCountPesoAnimalAsync(int In_TenantID, string In_UsuarioId, string In_LoteId)
+        {
+            var result = await _appDbContext.OsusrTo3CsicpRr022s
+                .AsNoTracking()
+                .Where(e => e.TenantId == In_TenantID
+                    && e.Rr022Usuarioid == In_UsuarioId
+                    && e.Rr022Loteid == In_LoteId)
+                .GroupBy(e => new { e.Rr022Dtpeso, e.Rr022Loteid })
+                .Select(g => new DtoGetCountPesoAnimalRR022
+                {
+                    Data = g.Key.Rr022Dtpeso,
+                    Lote = g.Key.Rr022Loteid,
+                    QtdReg = g.Count()
+                })
+                .OrderBy(x => x.Data)
+                .ToListAsync();
+
+            return result;
+        }
     }
 }
