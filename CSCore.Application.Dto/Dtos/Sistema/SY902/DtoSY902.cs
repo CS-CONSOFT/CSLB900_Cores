@@ -22,4 +22,10 @@ namespace CSSY103.C82Application.Dto.SY902
 
         public List<DtoSY903> NavListSY903_SMenu { get; set; } = [];
     }
+
+    public class DtoSY902_V2
+    {
+        public string title { get; set; } = null!;
+        public List<DtoSY903_V2> NavListSY903_SMenu { get; set; } = [];
+    }
 }
