@@ -12,7 +12,7 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso.Filtros
             _usuarioId = usuarioId;
         }
 
-        public IQueryable<OsusrTo3CsicpRr022> Aplicar(IQueryable<OsusrTo3CsicpRr022> query)
+        public IQueryable<OsusrTo3CsicpRr022> Apply(IQueryable<OsusrTo3CsicpRr022> query)
         {
             if (!string.IsNullOrWhiteSpace(_usuarioId))
             {
