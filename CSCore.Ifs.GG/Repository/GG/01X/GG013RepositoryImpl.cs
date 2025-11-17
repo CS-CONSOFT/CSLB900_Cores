@@ -2,6 +2,7 @@
 using CSCore.Domain.Interfaces.GG._01X;
 using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.Extensao;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.Repository.GG._01X
@@ -49,5 +50,17 @@ namespace CSCore.Ifs.Repository.GG._01X
             return query;
         }
 
+        public async Task<IEnumerable<CSICP_GG013>> GetListAsync(int tenant, string Produto_ID, string? search)
+        {
+            IQueryable<CSICP_GG013> query = _appDbContext.OsusrE9aCsicpGg013s
+                 .Where(e => e.TenantId == tenant)
+                 .Where(e => e.Id == Produto_ID)
+                 .AsNoTracking()
+                 .AsQueryable();
+
+            query = FiltraQuandoExisteFiltros(search, query);
+
+            return await query.ToListAsync();
+        }
     }
 }
