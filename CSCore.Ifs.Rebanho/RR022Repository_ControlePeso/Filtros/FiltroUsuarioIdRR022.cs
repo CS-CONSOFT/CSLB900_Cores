@@ -3,20 +3,20 @@ using CSCore.Domain.Interfaces.V2;
 
 namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso.Filtros
 {
-    internal class FiltroAnimalIdRR022 : ICSFilter<OsusrTo3CsicpRr022>
+    public class FiltroUsuarioIdRR022 : ICSFilter<OsusrTo3CsicpRr022>
     {
-        private readonly string? _animalId;
+        private readonly string? _usuarioId;
 
-        public FiltroAnimalIdRR022(string? animalId)
+        public FiltroUsuarioIdRR022(string? usuarioId)
         {
-            _animalId = animalId;
+            _usuarioId = usuarioId;
         }
 
         public IQueryable<OsusrTo3CsicpRr022> Apply(IQueryable<OsusrTo3CsicpRr022> query)
         {
-            if (!string.IsNullOrEmpty(_animalId))
+            if (!string.IsNullOrWhiteSpace(_usuarioId))
             {
-                query = query.Where(e => e.Rr022Animalid == _animalId);
+                query = query.Where(e => e.Rr022Usuarioid == _usuarioId);
             }
             return query;
         }
