@@ -28,4 +28,16 @@ namespace CSSY103.C82Application.Dto.SY903
         public List<DtoSY904> NavListSY904Programa { get; set; } = [];
 
     }
+
+    public class DtoSY903_V2
+    {
+        public string title { get; set; } = string.Empty;
+
+        public string? icon { get; set; } = string.Empty;
+
+        public string? to { get; set; } = "#";
+
+        public List<DtoSY904_V2> children { get; set; } = [];
+
+    }
 }
