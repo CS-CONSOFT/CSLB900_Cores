@@ -176,8 +176,10 @@ namespace CSCore.Ifs.Repository.Combo
 
             IQueryable<CSICP_GG001> query = _appDbContext.CSICP_GG001s
                 .Include(e => e.BB001FilialNav)
-                .Where(c => c.TenantId == tenant)
-                .Where(c => c.Gg001Filialid == estabelecimentoId);
+                .Where(c => c.TenantId == tenant);
+
+            if (estabelecimentoId != null && estabelecimentoId != string.Empty)
+                query = query.Where(c => c.Gg001Filialid == estabelecimentoId);
 
             if (ignoraVirtual.HasValue && ignoraVirtual.Value)
                 query = query.Where(c => c.Gg001Tipoalmoxarifado != gg001TAlmoxVirtual);
