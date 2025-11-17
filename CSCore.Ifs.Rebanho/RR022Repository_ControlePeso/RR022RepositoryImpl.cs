@@ -86,6 +86,16 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             return result;
         }
 
-        
+        public async Task<bool> ExisteRegistroPesoAsync(int In_TenantID, string In_LoteId, string In_AnimalId, DateTime In_DataPeso)
+        {
+            return await _appDbContext.OsusrTo3CsicpRr022s
+                .AsNoTracking()
+                .AnyAsync(e =>
+                    e.TenantId == In_TenantID &&
+                    e.Rr022Loteid == In_LoteId &&
+                    e.Rr022Animalid == In_AnimalId &&
+                    e.Rr022Dtpeso.HasValue &&
+                    e.Rr022Dtpeso.Value.Date == In_DataPeso.Date);
+        }
     }
 }
