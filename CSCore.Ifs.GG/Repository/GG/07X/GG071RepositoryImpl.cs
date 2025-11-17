@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CSCore.Ifs.Repository.GG._07X
 {
     public class GG071RepositoryImpl(AppDbContext appDbContext, IComparaSaldo comparaSaldo, IGerarTree gerarTree) :
-        RepositorioBaseImpl<CSICP_GG071>(appDbContext), IGG071Repository
+        RepositorioBaseImpl<CSICP_GG071>(appDbContext, "Gg071Id"), IGG071Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;
         private readonly IComparaSaldo _comparaSaldo = comparaSaldo;

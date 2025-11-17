@@ -13,14 +13,17 @@ namespace CSCore.Ifs.Rebanho.RR008Repository_RegimeAlimentar
     {
         private readonly AppDbContext _appDbContext;
 
-        public RR008RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
+        public RR008RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Id")
         {
             _appDbContext = appDbContext;
         }
 
         public async Task<OsusrTo3CsicpRr008?> GetByIdAsync(int In_TenantID, long In_IDRR008)
         {
-            IQueryable<OsusrTo3CsicpRr008> query = GetQueryBase(In_TenantID);
+            IQueryable<OsusrTo3CsicpRr008> query = _appDbContext.OsusrTo3CsicpRr008s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.TenantId == In_TenantID);
 
             OsusrTo3CsicpRr008? CSICP_RR008 = await query
                 .FirstOrDefaultAsync(e => e.Id == In_IDRR008);
@@ -29,7 +32,9 @@ namespace CSCore.Ifs.Rebanho.RR008Repository_RegimeAlimentar
 
         public async Task<(List<OsusrTo3CsicpRr008>, int)> GetListAsync(int In_TenantID, PrmFiltrosRR008 prm)
         {
-            IQueryable<OsusrTo3CsicpRr008> query = GetQueryBase(In_TenantID);
+            IQueryable<OsusrTo3CsicpRr008> query = _appDbContext.OsusrTo3CsicpRr008s
+                .AsNoTracking()
+                .AsSplitQuery();
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));
@@ -41,14 +46,6 @@ namespace CSCore.Ifs.Rebanho.RR008Repository_RegimeAlimentar
             var listItems = await query.ToListAsync();
 
             return (listItems, count);
-        }
-
-        private IQueryable<OsusrTo3CsicpRr008> GetQueryBase(int In_TenantID)
-        {
-            return _appDbContext.OsusrTo3CsicpRr008s
-                .AsNoTracking()
-                .AsSplitQuery()
-                .Where(e => e.TenantId == In_TenantID);
         }
 
         protected override ICSFilter<OsusrTo3CsicpRr008>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)

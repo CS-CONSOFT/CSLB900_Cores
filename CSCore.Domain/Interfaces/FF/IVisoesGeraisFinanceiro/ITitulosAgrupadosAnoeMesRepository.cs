@@ -1,8 +1,10 @@
+using CSLB900.MSTools.CS_QueryFilters;
+
 namespace CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro
 {
         public interface ITitulosAgrupadosAnoeMesRepository
         {
-            Task<List<DtoTitulosAgrupadosAnoMes>> GetTitulosAgrupadosAnoMesAsync(DtoTitulosAgrupadosAnoMesRequest request);
+        Task<(List<DtoTitulosAgrupadosAnoMes>, int)> GetTitulosAgrupadosAnoMesAsync(DtoTitulosAgrupadosAnoMesRequest request);
         }
         public class DtoTitulosAgrupadosAnoMes
         {
@@ -26,7 +28,7 @@ namespace CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro
             public decimal ValorTotal { get; set; }
         }
 
-        public class DtoTitulosAgrupadosAnoMesRequest
+        public class DtoTitulosAgrupadosAnoMesRequest : ParametrosBaseFiltroSemExcederOMaxPageSize
         {
             public int TenantId { get; set; }
             public DateTime? DataVencimentoInicio { get; set; }

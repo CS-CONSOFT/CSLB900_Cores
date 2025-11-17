@@ -21,6 +21,7 @@ namespace CSCore.Ifs.CS_Context
 
         public DbSet<Csicp_Sy004Rest> OsusrE9aCsicpSy004Rests { get; set; }
 
+        public DbSet<CSICP_SY906_SPACE> CSICP_SY906_SPACE { get; set; }
         public DbSet<Csicp_Sy005> OsusrE9aCsicpSy005s { get; set; }
 
         public DbSet<Csicp_Sy006> OsusrE9aCsicpSy006s { get; set; }
@@ -30,6 +31,7 @@ namespace CSCore.Ifs.CS_Context
         public DbSet<Csicp_Sy008> OsusrE9aCsicpSy008s { get; set; }
 
         public DbSet<Csicp_Sy009> OsusrE9aCsicpSy009s { get; set; }
+
 
         //public DbSet<Csicp_Sy010> OsusrE9aCsicpSy010s { get; set; }
 

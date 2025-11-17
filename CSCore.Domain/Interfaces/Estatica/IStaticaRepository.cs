@@ -9,8 +9,9 @@ namespace CSCore.Domain.Interfaces.Estatica
         Task<IReadOnlyCollection<object>> GetStaticasByTypeBB(StaticTypeBB staticTypeBB);
         Task<IReadOnlyCollection<object>> GetStaticasByTypeClient(StaticTypeClient staticTypeClient);
         Task<IReadOnlyCollection<object>> GetStaticasByTypeFF(StaticTypeFF staticTypeFF);
-
         Task<IReadOnlyCollection<object>> GetStaticasByTypeGG(StaticTypeGG staticTypeGG);
+        Task<IReadOnlyCollection<object>> GetStaticasByTypeNN(StaticTypeNN staticTypeNN);
+        Task<IReadOnlyCollection<object>> GetStaticasByTypeRR(StaticTypeRR staticTypeRR);
         Task<IReadOnlyCollection<object>> GetStaticasByTypeSped(StaticSpedType staticSpedType);
         Task<IReadOnlyCollection<object>> GetStaticasByTypeSys(StaticTypeSys staticTypeSys);
         Task<IReadOnlyCollection<CSICP_Email>> GetStaticaEmail();

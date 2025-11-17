@@ -10,6 +10,7 @@
         DateOnly Prm_1o_Vencto
         );
 
+    public record MemoriaCalculoController();
     public record Rec_Memoria(int Parcela, DateOnly Data_Vencto, decimal Valor_Parcela, int Nro_Parcelas);
 
     public static class MemoriaCalculoGenerator
@@ -63,7 +64,7 @@
 
             for (int i = 1; i <= numeroParcelas; i++)
             {
-                var parcelasRestantes = entrada != 0 ? numeroParcelas - 1 : numeroParcelas;
+                var parcelasRestantes = entrada != 0 && numeroParcelas > 1? numeroParcelas - 1 : numeroParcelas;
                 var valorParcela = Decimal.Round(V_ValorFinanciado / parcelasRestantes ?? 0, 2);
 
                 if (V_Nro_Parcela_Atual == 1)

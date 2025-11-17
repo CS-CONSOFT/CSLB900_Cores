@@ -13,14 +13,17 @@ namespace CSCore.Ifs.Rebanho.RR030Repository_ControleGestacao
     {
         private readonly AppDbContext _appDbContext;
         
-        public RR030RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
+        public RR030RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Id")
         {
             _appDbContext = appDbContext;
         }
 
         public async Task<OsusrTo3CsicpRr030?> GetByIdAsync(int In_TenantID, string In_IDRR030)
         {
-            IQueryable<OsusrTo3CsicpRr030> query = GetQueryBase(In_TenantID);
+            IQueryable<OsusrTo3CsicpRr030> query = _appDbContext.OsusrTo3CsicpRr030s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.TenantId == In_TenantID);
 
             OsusrTo3CsicpRr030? CSICP_RR030 = await query
                 .FirstOrDefaultAsync(e => e.Id == In_IDRR030);
@@ -29,7 +32,9 @@ namespace CSCore.Ifs.Rebanho.RR030Repository_ControleGestacao
 
         public async Task<(List<OsusrTo3CsicpRr030>, int)> GetListAsync(int In_TenantID, PrmFiltrosRR030 prm)
         {
-            IQueryable<OsusrTo3CsicpRr030> query = GetQueryBase(In_TenantID);
+            IQueryable<OsusrTo3CsicpRr030> query = _appDbContext.OsusrTo3CsicpRr030s
+                .AsNoTracking()
+                .AsSplitQuery();
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));
@@ -41,14 +46,6 @@ namespace CSCore.Ifs.Rebanho.RR030Repository_ControleGestacao
             var listItems = await query.ToListAsync();
 
             return (listItems, count);
-        }
-
-        private IQueryable<OsusrTo3CsicpRr030> GetQueryBase(int In_TenantID)
-        {
-            return _appDbContext.OsusrTo3CsicpRr030s
-                .AsNoTracking()
-                .AsSplitQuery()
-                .Where(e => e.TenantId == In_TenantID);
         }
 
         protected override ICSFilter<OsusrTo3CsicpRr030>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)

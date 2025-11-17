@@ -6,6 +6,7 @@ namespace CSCore.RabbitMQ
     public interface ISendMsgToRabbit
     {
         Task SendMessage<T>(T message, string routingKey, string exchangeName);
+        Task SendMessageV2<T>(T message, string exchangeName, string action);
     }
     public class SendMsgToRabbit(ISendEndpointProvider sendEndpointProvider) : ISendMsgToRabbit
     {
@@ -17,7 +18,65 @@ namespace CSCore.RabbitMQ
             if (string.IsNullOrEmpty(routingKey)) throw new ArgumentException("Routing key cannot be null or empty.", nameof(routingKey));
             if (string.IsNullOrEmpty(exchangeName)) throw new ArgumentException("Exchange name cannot be null or empty.", nameof(exchangeName));
 
-            Log.Debug("RabbitMQ - Enviando movimento entrada saída para Routing Key: " + routingKey);
+
+            Log.Information(
+                    "\n====================[RabbitMQ - Envio de Mensagem]====================\n" +
+                    "RoutingKey   : {RoutingKey}\n" +
+                    "ExchangeName : {ExchangeName}\n" +
+                    "TipoMensagem : {MessageType}\n" +
+                    "Conteudo     : {@Message}\n" +
+                    "Timestamp    : {Timestamp}\n" +
+                    "Ambiente     : {Environment}\n" +
+                    "Host         : {Host}\n" +
+                    "Usuario      : {User}\n" +
+                    "======================================================================",
+                    routingKey,
+                    exchangeName,
+                    message?.GetType().FullName,
+                    message,
+                    DateTime.UtcNow,
+                    Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+                    Environment.MachineName,
+                    Environment.UserName
+                );
+
+            var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri($"exchange:{exchangeName}?type=direct"));
+            await endpoint.Send(message, ctx =>
+            {
+                ctx.SetRoutingKey(routingKey);
+            });
+        }
+
+        public async Task SendMessageV2<T>(T message, string exchangeName, string action)
+        {
+            if (message == null) throw new ArgumentNullException(nameof(message));
+          
+            if (string.IsNullOrEmpty(exchangeName)) throw new ArgumentException("Exchange name cannot be null or empty.", nameof(exchangeName));
+
+            string? currentURL = Environment.GetEnvironmentVariable("API_URL") ?? "http://localhost:9607";
+            (string routingKey, string _) = RoutingKeys.GetRoutingKeyComDominio(currentURL, action);
+
+
+            Log.Information(
+                    "\n====================[RabbitMQ - Envio de Mensagem]====================\n" +
+                    "RoutingKey   : {RoutingKey}\n" +
+                    "ExchangeName : {ExchangeName}\n" +
+                    "TipoMensagem : {MessageType}\n" +
+                    "Conteudo     : {@Message}\n" +
+                    "Timestamp    : {Timestamp}\n" +
+                    "Ambiente     : {Environment}\n" +
+                    "Host         : {Host}\n" +
+                    "Usuario      : {User}\n" +
+                    "======================================================================",
+                    routingKey,
+                    exchangeName,
+                    message?.GetType().FullName,
+                    message,
+                    DateTime.UtcNow,
+                    Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
+                    Environment.MachineName,
+                    Environment.UserName
+                );
 
             var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri($"exchange:{exchangeName}?type=direct"));
             await endpoint.Send(message, ctx =>

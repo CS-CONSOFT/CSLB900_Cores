@@ -33,18 +33,19 @@ namespace CSSY103.C82Application.Mapper
             };
         }
 
-        public static DtoSY902 ToDtoSemListSubMenu(this CsicpSy902Menu entity)
+        public static DtoSY902_V2 ToDto_v2(this CsicpSy902Menu entity)
         {
-            return new DtoSY902
+            return new DtoSY902_V2
             {
-                Id = entity.Id,
-                IdSy802 = entity.IdSy802,
-                Label = entity.Label,
-                Menu = entity.Menu,
-                Descricao = entity.Descricao,
-                Url = entity.Url,
-                Ordem = entity.Ordem,
-                Isactive = entity.Isactive
+                NavListSY903_SMenu = entity.ListaSubmenus.Select(e => e.ToDto_v2()).ToList()
+            };
+        }
+
+        public static DtoSY902_V2 ToDtoSemListSubMenu(this CsicpSy902Menu entity)
+        {
+            return new DtoSY902_V2
+            {
+               
             };
         }
 
@@ -84,6 +85,14 @@ namespace CSSY103.C82Application.Mapper
             } : new DtoSY902();
         }
 
+        public static DtoSY902_V2 ToGetDtoByUsuario_v2(this Csicp_Sy005 entity)
+        {
+            return entity.Sy014GrupoMenu != null && entity.Sy014GrupoMenu.CsicpSy902Menu != null ? new DtoSY902_V2
+            {
+                NavListSY903_SMenu = entity.Sy014GrupoMenu.CsicpSy902Menu.ListaSubmenus.Select(e => e.ToDto_v2()).ToList()
+            } : new DtoSY902_V2();
+        }
+
         public static DtoSY903 ToDto(this CsicpSy903Smenu entity)
         {
             return new DtoSY903
@@ -102,6 +111,29 @@ namespace CSSY103.C82Application.Mapper
                 NavListSY904Programa = entity.ListaSubMenuProgramas.Select(e => e.ToDto()).ToList()
             };
         }
+
+        public static DtoSY903_V2 ToDto_v2(this CsicpSy903Smenu entity)
+        {
+            return new DtoSY903_V2
+            {
+                title = entity.Label ?? "",
+                icon = entity.DescricaoSpanish,
+                to = entity.Url,
+                children = entity.ListaSubMenuProgramas.Select(e => e.ToDto_v2()).ToList()
+            };
+        }
+
+        public static DtoSY903_V2 ToDto_v2(this CsicpSy903Smenu entity, List<CsicpSy904Prg> listaProgramas)
+        {
+            return new DtoSY903_V2
+            {
+                title = entity.Label ?? "",
+                icon = entity.DescricaoSpanish,
+                to = entity.Url,  
+                children = listaProgramas.Select(e => e.ToDto_v2()).ToList()
+            };
+        }
+
 
         public static DtoSY903 ToDto(this CsicpSy903Smenu entity, List<CsicpSy904Prg> listaProgramas)
         {
@@ -155,6 +187,16 @@ namespace CSSY103.C82Application.Mapper
             };
         }
 
+        public static DtoSY904_V2 ToDto_v2(this CsicpSy905Smprg entity)
+        {
+            return new DtoSY904_V2
+            {
+                title = entity.NavPrograma?.Label,
+                icon = "",
+                to = entity.NavPrograma?.Url,
+            };
+        }
+
 
         public static DtoSY904 ToDto(this CsicpSy904Prg entity)
         {
@@ -168,6 +210,17 @@ namespace CSSY103.C82Application.Mapper
                 Url = entity.Url,
                 Descricao = entity.Descricao,
                 IsActive = entity.IsActive,
+
+            };
+        }
+
+        public static DtoSY904_V2 ToDto_v2(this CsicpSy904Prg entity)
+        {
+            return new DtoSY904_V2
+            {
+                title = entity.Label,
+                icon = "",
+                to = entity.Url,
 
             };
         }

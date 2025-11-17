@@ -73,17 +73,6 @@ public partial class OsusrTo3CsicpRr001
     [ForeignKey("NavRR007Proprietario_RR001")]
     public long? Rr001Proprietarioid { get; set; }
 
-    //public virtual ICollection<OsusrTo3CsicpRr001> InverseRr001Mae { get; set; } = new List<OsusrTo3CsicpRr001>();
-
-    //public virtual ICollection<OsusrTo3CsicpRr001> InverseRr001Pai { get; set; } = new List<OsusrTo3CsicpRr001>();
-
-    //public virtual ICollection<OsusrTo3CsicpRr021> OsusrTo3CsicpRr021s { get; set; } = new List<OsusrTo3CsicpRr021>();
-
-    //public virtual ICollection<OsusrTo3CsicpRr022> OsusrTo3CsicpRr022s { get; set; } = new List<OsusrTo3CsicpRr022>();
-
-    //public virtual ICollection<OsusrTo3CsicpRr031> OsusrTo3CsicpRr031Rr031Animals { get; set; } = new List<OsusrTo3CsicpRr031>();
-
-    //public virtual ICollection<OsusrTo3CsicpRr031> OsusrTo3CsicpRr031Rr031Montaanimals { get; set; } = new List<OsusrTo3CsicpRr031>();
     public OsusrTo3CsicpRr001? NavRR001Pai { get; set; }
     public OsusrTo3CsicpRr001? NavRR001Mae { get; set; }
     public OsusrTo3CsicpRr002? NavRR002Fazenda_RR001 { get; set; }

@@ -67,7 +67,8 @@ namespace CSCore.Ifs.FF.Repository.FF01X
         }
 
 
-        private static PrmRetornoCalculo CalcularRetornoJurosMulta(CSICP_FF017 WorkFF017, ICalculoAtrasoMultaJurosTitulos ICalculoAtraso, CSICP_FF018 currentFF018)
+        private static PrmRetornoCalculo CalcularRetornoJurosMulta(CSICP_FF017 WorkFF017
+            , ICalculoAtrasoMultaJurosTitulos ICalculoAtraso, CSICP_FF018 currentFF018)
         {
             var WorkPrmCalculoJuros = PrmEntradaCalculo.CreateInstance(
                  inTenantID: WorkFF017.TenantId,
@@ -79,7 +80,9 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                  inPercentualJuros: WorkFF017.Ff017PercJuros,
                  inPercentualHonorarios: 0,
                  inEstabID: WorkFF017.Ff017Filialid ?? string.Empty,
-                 inFinacEspJurosMulta: false
+                 inFinacEspJurosMulta: false,
+                 inValorMulta: currentFF018.NavFF102?.Ff102cpValorMulta,
+                 inValorJurosDia: currentFF018.NavFF102?.Ff102cpValorJurosDia
              );
 
             var retornoCalculos = ICalculoAtraso.CalcularContasAPagar(WorkPrmCalculoJuros);

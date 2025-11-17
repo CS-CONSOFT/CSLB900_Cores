@@ -4,7 +4,7 @@ namespace CSCore.Domain.Interfaces.Menu
 {
     public interface IMenuRepository
     {
-        public Task<List<CsicpSy902Menu>> GetMenuList();
+        public Task<List<CsicpSy902Menu>> GetMenuList(string ProdutoLabel);
 
         public Task<List<Csicp_Sy005>> GetMenuListPorUsuario(string usuarioID);
 

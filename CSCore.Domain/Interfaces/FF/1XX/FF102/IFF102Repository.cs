@@ -39,8 +39,21 @@ namespace CSCore.Domain.Interfaces.FF._1XX
               */
         Task<(List<CSICP_FF102>, int)> GetListTitulosEmCobrancaAsync(PrmGetListTitulosEmCobrancaRepo prmGetListTitulosEmCobrancaRepo);
 
+        /// <summary>
+        ///name="in_tipoRegistro">1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar
+        /// </summary>
+        /// <param name="in_tenant"></param>
+        /// <param name="in_ff102Id"></param>
+        /// <param name="in_tipoRegistro">1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar</param>
         Task<CSICP_FF102?> GetByIdAsync(int in_tenant, string in_ff102Id, int? in_tipoRegistro);
 
+        /// <summary>
+        ///name="in_tipoRegistro">1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar
+        /// </summary>
+        /// <param name="in_tenant"></param>
+        /// <param name="in_ff102Id"></param>
+        /// <param name="in_tipoRegistro">1.Contas a Receber, 2.Cartao Credito, 3.Contas a Pagar</param>
+        Task<CSICP_FF102?> GetByIdAsyncSimples(int in_tenant, string in_ff102Id, int? in_tipoRegistro);
         Task AtualizaCobradorFF102(int InTenantID, string InTituloID,string InNovoCobradorSY001);
     }
 }

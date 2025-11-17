@@ -255,6 +255,12 @@ namespace CSCore.Domain.EstaticasLabel.GG
             public const string ECommerce = "E-Commerce";
         }
 
+        public static class CG_993
+        {
+            public const string Debito = "Debito";
+            public const string Credito = "Credito";
+        }
+
         public static class GG019_CgBar
         {
             public const string Sistema = "Sistema";

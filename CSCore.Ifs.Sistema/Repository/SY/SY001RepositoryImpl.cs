@@ -37,6 +37,29 @@ namespace CSCore.Ifs.Repository.SY
             return await q1.ToListAsync();
         }
 
+        public async Task AtualizaSenhasDesseTenant(int tenant)
+        {
+            var listaSenhasTexto = await this._appDbContext.OsusrE9aCsicpSy001Bios
+                .Where(e => e.TenantId == tenant && e.Isactive == true)
+                .ToListAsync();
+
+            var listaUsuarios  = await this._appDbContext.OsusrE9aCsicpSy001s
+                .Where(e => e.TenantId == tenant && listaSenhasTexto.Select(s => s.UsuarioId).Contains(e.Id))
+                .ToListAsync();
+
+            var listaJuntada = from usuario in listaUsuarios
+                               join senha in listaSenhasTexto
+                               on usuario.Id equals senha.UsuarioId
+                               select new {usuario.Id, senha.BiometriaTexto};
+
+
+            foreach (var current in listaJuntada)
+                listaUsuarios.First(e => e.Id == current.Id).Sy001Senhacs = SecureHashUtilitySimple.Hash(current.BiometriaTexto);
+
+            listaSenhasTexto.ForEach(e => e.Isactive = !e.Isactive);
+            await _appDbContext.SaveChangesAsync();
+        }
+
         public async Task<Csicp_Sy001> RemoveAsync(Csicp_Sy001 entity)
         {
             _appDbContext.Remove(entity);

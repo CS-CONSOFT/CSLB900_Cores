@@ -28,4 +28,23 @@
             return hashTextual;
         }
     }
+
+    public class DtoSY904_V2 : IEquatable<DtoSY904_V2>
+    {
+        public string? title { get; set; } = string.Empty;
+        public string? icon { get; set; } = string.Empty;
+        public string? to { get; set; } = string.Empty;
+
+        public bool Equals(DtoSY904_V2? other)
+        {
+            if (other is null) return false;
+            if (this == other) return false;
+            return this.title == other.title;
+        }
+        public override int GetHashCode()
+        {
+            int hashTextual = this.title == null ? 0 : this.title.GetHashCode();
+            return hashTextual;
+        }
+    }
 }

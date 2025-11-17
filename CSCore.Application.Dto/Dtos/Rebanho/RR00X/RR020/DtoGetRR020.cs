@@ -18,6 +18,9 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR020
 
         public long? Rr020Regalimentarid { get; set; }
 
+        public bool? Rr020IsActive { get; set; }
+
+
         // Navegação
         public DtoGetRR008? NavRR008RegAlimentar { get; set; }
     }

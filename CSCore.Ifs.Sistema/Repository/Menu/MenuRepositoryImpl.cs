@@ -61,21 +61,95 @@ namespace CSCore.Ifs.Repository.Menu
 
 
 
-        public async Task<List<CsicpSy902Menu>> GetMenuList()
+        public async Task<List<CsicpSy902Menu>> GetMenuList(string ProdutoLabel)
         {
-            List<CsicpSy902Menu> csicpSy902Menus = await _appDbContext.OsusrI4yCsicpSy902Menus
-                .AsSplitQuery()
-                .Where(e => e.Isactive == true && e.Menutipo == 0)
-                .Include(e => e.ListaSubmenus)
-                .ThenInclude(sm => sm.ListaSubMenuProgramas)
-                .ThenInclude(smp => smp.NavPrograma)
+           var menusAtivos = await _appDbContext.OsusrI4yCsicpSy902Menus
+               .AsNoTracking()
+               .Where(e => e.Isactive == true && e.Menutipo == 0 && e.Label == ProdutoLabel.ToString())
+               .ToListAsync();
+
+            //var menusAtivos = await (from sy906 in _appDbContext.CSICP_SY906_SPACE.AsNoTracking()
+            //                   join sy902 in _appDbContext.OsusrI4yCsicpSy902Menus.AsNoTracking()
+            //                   on sy906.ID equals sy902.IdSy802.ToString()
+            //                   where sy906.IS_ACTIVE == true && sy902.Isactive == true && sy902.Menutipo == 0 && sy906.LABEL == ProdutoLabel
+            //                   orderby sy906.ORDER
+            //                   select sy902).ToListAsync();
+
+            if (menusAtivos.Count == 0)
+                return [];
+
+            var menuIds = menusAtivos.Select(m => m.Id).ToList();
+
+            // 2️⃣ Busca submenus ativos em uma query separada
+            var submenusAtivos = await _appDbContext.OsusrI4yCsicpSy903Smenus
+                .AsNoTracking()
+                .Where(sm => menuIds.Contains(sm.Menu) && sm.Isactive == true)
                 .ToListAsync();
-            return csicpSy902Menus;
+
+            var submenuIds = submenusAtivos.Select(sm => sm.Id).ToList();
+
+            // 3️⃣ Busca relações submenu-programa em uma query
+            var submenuProgramasAtivos = await _appDbContext.OsusrI4yCsicpSy905Smprgs
+                .AsNoTracking()
+                .Where(smp => submenuIds.Contains(smp.Submenu) && smp.IsActive == true)
+                .ToListAsync();
+
+            var programaIds = submenuProgramasAtivos.Select(smp => smp.Programa).Distinct().ToList();
+
+            // 4️⃣ Busca programas em uma query separada
+            var programas = await _appDbContext.OsusrI4yCsicpSy904Prgs
+                .AsNoTracking()
+                .Where(p => programaIds.Contains(p.Id))
+                .ToDictionaryAsync(p => p.Id!);
+
+            // 5️⃣ Monta lookup de programas por submenu - O(1)
+            var programasPorSubmenu = submenuProgramasAtivos
+                .GroupBy(smp => smp.Submenu)
+                .ToDictionary(
+                    g => g.Key!,
+                    g => g.Select(smp => new CsicpSy905Smprg
+                    {
+                        Id = smp.Id,
+                        Submenu = smp.Submenu,
+                        Programa = smp.Programa,
+                        IsActive = smp.IsActive,
+                        Ordem = smp.Ordem,
+                        NavPrograma = programas.TryGetValue(smp.Programa!, out var prog) ? prog : null!
+                    })
+                    .Where(smp => smp.NavPrograma != null)
+                    .ToList()
+                );
+
+            // 6️⃣ Monta lookup de submenus por menu - O(1)
+            var submenusPorMenu = submenusAtivos
+                .GroupBy(sm => sm.Menu)
+                .ToDictionary(
+                    g => g.Key!,
+                    g => g.Select(sm =>
+                    {
+                        // Atribui programas ao submenu
+                        sm.ListaSubMenuProgramas = programasPorSubmenu.TryGetValue(sm.Id!, out var progs)
+                            ? progs
+                            : [];
+                        return sm;
+                    })
+                    .ToList()
+                );
+
+            // 7️⃣ Atribui submenus aos menus - SEM loops aninhados
+            foreach (var menu in menusAtivos)
+            {
+                menu.ListaSubmenus = submenusPorMenu.TryGetValue(menu.Id!, out var submenus)
+                    ? submenus
+                    : [];
+            }
+
+            return menusAtivos;
         }
 
         public async Task<List<Csicp_Sy014>> GetSY014List(string grupoID)
         {
-            List<Csicp_Sy014> listaSY014ComMenu = await _appDbContext.OsusrE9aCsicpSy014s
+            List<Csicp_Sy014> listaSY014ComMenu = await _appDbContext.OsusrE9aCsicpSy014s.AsNoTracking()
                  .Where(e => e.Sy014Grupoid == grupoID)
                  .Include(e => e.CsicpSy902Menu)
                  .OrderBy(e => e.CsicpSy902Menu.Label)
@@ -86,7 +160,7 @@ namespace CSCore.Ifs.Repository.Menu
 
         public async Task<Csicp_Sy014?> GetSY014PorId(string grupoID, string menuID)
         {
-            Csicp_Sy014? SY014 = await _appDbContext.OsusrE9aCsicpSy014s
+            Csicp_Sy014? SY014 = await _appDbContext.OsusrE9aCsicpSy014s.AsNoTracking()
                  .Where(e => e.Sy014Grupoid == grupoID)
                  .Where(e => e.Sy902MenuId == menuID)
                  .Include(e => e.CsicpSy902Menu)
@@ -98,7 +172,7 @@ namespace CSCore.Ifs.Repository.Menu
         public async Task<List<Csicp_Sy015>> GetSY015List(string grupoID, string SY014GrupoMenuId)
         {
             List<Csicp_Sy015> listaSY015ComSubMenu = [];
-            listaSY015ComSubMenu = await _appDbContext.OsusrE9aCsicpSy015s
+            listaSY015ComSubMenu = await _appDbContext.OsusrE9aCsicpSy015s.AsNoTracking()
                     .Include(e => e.NavSY903SubMenu)
                     .Where(e => e.NavSY903SubMenu.Isactive == true)
                     .Where(e => e.NavSY903SubMenu.Menu == SY014GrupoMenuId)
@@ -110,12 +184,12 @@ namespace CSCore.Ifs.Repository.Menu
         public async Task<List<Csicp_Sy009>> GetSY009List(string grupoID, string SY015GrupoSubMenuID)
         {
             List<Csicp_Sy009> listaSY009ComPrograma = [];
-            listaSY009ComPrograma = await (from sy009 in _appDbContext.OsusrE9aCsicpSy009s
+            listaSY009ComPrograma = await (from sy009 in _appDbContext.OsusrE9aCsicpSy009s.AsNoTracking()
 
-                                           join sy904PRG in _appDbContext.OsusrI4yCsicpSy904Prgs
+                                           join sy904PRG in _appDbContext.OsusrI4yCsicpSy904Prgs.AsNoTracking()
                                            on sy009.Sy904ProgramaId equals sy904PRG.Id
 
-                                           join sy905SMPrg in _appDbContext.OsusrI4yCsicpSy905Smprgs
+                                           join sy905SMPrg in _appDbContext.OsusrI4yCsicpSy905Smprgs.AsNoTracking()
                                            on sy904PRG.Id equals sy905SMPrg.Programa
 
                                            where sy009.Sy009Grupoid == grupoID
@@ -159,18 +233,94 @@ namespace CSCore.Ifs.Repository.Menu
 
         public async Task<List<Csicp_Sy005>> GetMenuListPorUsuario(string usuarioID)
         {
-            List<Csicp_Sy005> csicp_Sy005s = await _appDbContext.OsusrE9aCsicpSy005s
-                .Where(e => e.Sy005Userid == usuarioID)
-                .Include(e => e.Sy014GrupoMenu)
-                    .ThenInclude(e => e.CsicpSy902Menu)
-                     .ThenInclude(e => e.ListaSubmenus)
-                        .ThenInclude(e => e.ListaSubMenuProgramas)
-                            .ThenInclude(e => e.NavPrograma)
+            // 1️⃣ Query única com todas as relações necessárias - SEM múltiplas queries
+            var sy005Data = await (
+                from sy005 in _appDbContext.OsusrE9aCsicpSy005s.AsNoTracking().AsNoTracking()
+                where sy005.Sy005Userid == usuarioID
 
+                join sy014 in _appDbContext.OsusrE9aCsicpSy014s.AsNoTracking().AsNoTracking()
+                    on sy005.Sy005Grupoid equals sy014.Sy014Grupoid
+
+                join sy902 in _appDbContext.OsusrI4yCsicpSy902Menus.AsNoTracking().AsNoTracking()
+                    on sy014.Sy902MenuId equals sy902.Id
+                where sy902.Isactive == true
+
+                select new { sy005, sy014, sy902, sy005.Sy005Grupoid })
                 .ToListAsync();
-            return csicp_Sy005s;
-        }
 
+            if (sy005Data.Count == 0)
+                return [];
+
+            // 2️⃣ Extrai IDs para busca em batch
+            var menuIds = sy005Data.Select(x => x.sy902.Id).Distinct().ToList();
+            var grupoIds = sy005Data.Select(x => x.Sy005Grupoid).Distinct().ToList();
+
+            // 3️⃣ Busca TODOS os submenus e programas em UMA ÚNICA query com split
+            var submenusCompletos = await _appDbContext.OsusrI4yCsicpSy903Smenus.AsNoTracking()
+                .AsNoTracking()
+                .Where(sm => menuIds.Contains(sm.Menu) && sm.Isactive == true)
+                .Select(sm => new
+                {
+                    Submenu = sm,
+                    Programas = sm.ListaSubMenuProgramas
+                        .Where(smp => smp.IsActive == true)
+                        .Select(smp => smp.NavPrograma)
+                        .ToList()
+                })
+                .AsSplitQuery()
+                .ToListAsync();
+
+            // 4️⃣ Cria lookup O(1) de submenus por menuId
+            var submenusPorMenuId = submenusCompletos
+                .GroupBy(x => x.Submenu.Menu)
+                .ToDictionary(
+                    g => g.Key!,
+                    g => g.Select(x =>
+                    {
+                        x.Submenu.ListaSubMenuProgramas = x.Programas
+                            .Select(p => new CsicpSy905Smprg
+                            {
+                                NavPrograma = p,
+                                IsActive = true
+                            })
+                            .ToList();
+                        return x.Submenu;
+                    }).ToList()
+                );
+
+            // 5️⃣ Cria lookup O(1) de sy014 por sy005.Id
+            var sy014PorSy005Id = sy005Data
+                .GroupBy(x => x.sy005.Id)
+                .ToDictionary(g => g.Key!, g => g.First());
+
+            // 6️⃣ Monta estrutura final usando LINQ - ZERO loops aninhados
+            var resultado = sy005Data
+                .GroupBy(x => x.sy005.Id)
+                .Select(g =>
+                {
+                    var sy005 = g.First().sy005;
+                    var item = sy014PorSy005Id[sy005.Id!];
+
+                    // Atribui sy014
+                    sy005.Sy014GrupoMenu = item.sy014;
+                    sy005.Sy014GrupoMenu.CsicpSy902Menu = item.sy902;
+
+                    // Atribui submenus do lookup O(1)
+                    if (submenusPorMenuId.TryGetValue(item.sy902.Id!, out var submenus))
+                    {
+                        sy005.Sy014GrupoMenu.CsicpSy902Menu.ListaSubmenus = submenus;
+                    }
+                    else
+                    {
+                        sy005.Sy014GrupoMenu.CsicpSy902Menu.ListaSubmenus = [];
+                    }
+
+                    return sy005;
+                })
+                .ToList();
+
+            return resultado;
+        }
 
 
 

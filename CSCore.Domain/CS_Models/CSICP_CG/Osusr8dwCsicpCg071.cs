@@ -1,0 +1,38 @@
+﻿using CSCore.Domain.CS_Models.Staticas.CG;
+using System;
+using System.Collections.Generic;
+
+namespace CSCore.Domain.CS_Models.CSICP_CG;
+
+public partial class Osusr8dwCsicpCg071
+{
+    public int TenantId { get; set; }
+
+    public long Cg071Id { get; set; }
+
+    public string? Cg071Estabdebid { get; set; }
+
+    public string? Cg071Estabcredid { get; set; }
+
+    public long? Cg071Conteventoid { get; set; }
+
+    public string? Cg071Idlancamento { get; set; }
+
+    public DateTime? Cg071Dtcontabil { get; set; }
+
+    public string? Cg071Txdocumento { get; set; }
+
+    public string? Cg071Txcomplemento { get; set; }
+
+    public string? Cg071Idorigem { get; set; }
+
+    public string? Cg071Infrausuarioid { get; set; }
+
+    public int? Cg071Continstatusinterid { get; set; }
+
+    public long? Cg071Protocolocontabilizaca { get; set; }
+
+    public int? Cg071Version { get; set; }
+
+    public long? Cg071Protocoloprovisaoid { get; set; }
+}

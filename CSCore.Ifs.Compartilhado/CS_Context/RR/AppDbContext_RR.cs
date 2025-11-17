@@ -358,6 +358,8 @@ namespace CSCore.Ifs.CS_Context
                     .HasMaxLength(20)
                     .HasColumnName("RR020_IDENTIFICADOR");
                 entity.Property(e => e.Rr020Regalimentarid).HasColumnName("RR020_REGALIMENTARID");
+                entity.Property(e => e.Rr020IsActive).HasColumnName("rr020_IsActive");
+
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
                 //entity.HasOne(d => d.Rr020Regalimentar).WithMany(p => p.OsusrTo3CsicpRr020s)
@@ -446,6 +448,7 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Rr022Usuarioid)
                     .HasMaxLength(36)
                     .HasColumnName("RR022_USUARIOID");
+                entity.Property(e => e.Rr022IsProcessado).HasColumnName("rr022_IsProcessado");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
          

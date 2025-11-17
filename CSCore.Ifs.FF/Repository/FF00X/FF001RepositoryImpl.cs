@@ -25,10 +25,11 @@ namespace CSCore.Ifs.FF.Repository.FF00X
         }
 
         public async Task<(IEnumerable<CSICP_FF001>, int)> GetListAsync(int tenant, int page, int pageSize,
-            string? descFeriado, string? nomeDoDia, string? razaoSocial, string? prmEmpresaId)
+            string? descFeriado, string? nomeDoDia, string? prmEmpresaId)
         {
             IQueryable<CSICP_FF001> query = GetQueryBase(tenant);
-            query = FiltraQuandoExisteFiltro(descFeriado, nomeDoDia, razaoSocial, prmEmpresaId, query);
+            query = FiltraQuandoExisteFiltro(descFeriado, nomeDoDia, prmEmpresaId, query);
+            query = query.OrderByDescending(e => e.Ff001Data);
 
             var queryCount = query;
             var count = queryCount.Count();
@@ -37,15 +38,13 @@ namespace CSCore.Ifs.FF.Repository.FF00X
             return (await query.ToListAsync(), count);
         }
 
-        private static IQueryable<CSICP_FF001> FiltraQuandoExisteFiltro(string? descFeriado, string? nomeDoDia, string? razaoSocial, 
+        private static IQueryable<CSICP_FF001> FiltraQuandoExisteFiltro(string? descFeriado, string? nomeDoDia, 
             string? prmEmpresaId, IQueryable<CSICP_FF001> query)
         {
             if (descFeriado != null)
-                query = query.Where(e => e.Ff001Descferiado!.Equals(descFeriado));
+                query = query.Where(e => e.Ff001Descferiado!.Contains(descFeriado));
             if (nomeDoDia != null)
-                query = query.Where(e => e.Ff001NomeDoDia!.Equals(nomeDoDia));
-            if (razaoSocial != null)
-                query = query.Where(e => e.NavBB001 != null && e.NavBB001.Bb001Razaosocial!.Equals(razaoSocial));
+                query = query.Where(e => e.Ff001NomeDoDia!.Contains(nomeDoDia));
             if (prmEmpresaId != null)
                 query = query.Where(e => e.Ff001Filialid!.Equals(prmEmpresaId));
             return query;

@@ -1,8 +1,10 @@
 ﻿using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_Models.Staticas;
+using CSCore.Domain.Interfaces.BB;
 using CSCore.Domain.Interfaces.Combo;
 using CSCore.Ifs.CS_Context;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static CSCore.Domain.ComboTypes;
 
@@ -60,6 +62,34 @@ namespace CSCore.Ifs.Repository.Combo
                         };
 
             return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<object>> GetCommonListForComboBB026(int tenant, TIPO_ESPECIE ESPECIE)
+        {
+            var query = _appDbContext.OsusrE9aCsicpBb026s
+                .Where(c => c.TenantId == tenant);
+            long idCorrent = 0;
+            if (ESPECIE == TIPO_ESPECIE.AReceber)
+            {
+                idCorrent = _appDbContext.OsusrE9aCsicpFf003Tpesps.Where(e => e.Label == "A Receber").Select(e => e.Id).FirstOrDefault();
+
+            }
+            else
+            {
+                idCorrent = _appDbContext.OsusrE9aCsicpFf003Tpesps.Where(e => e.Label == "A Pagar").Select(e => e.Id).FirstOrDefault();
+
+            }
+            query = query.Where(e => e.Bb026Tipoespecie == idCorrent);
+            return await query.Select(e => new {Id = e.Id, Title = e.Bb026Formapagamento }).ToListAsync();
+        }
+
+        public async Task<IEnumerable<object>> GetCommonListForComboBB008(int tenant, string FormaPagamentoID)
+        {
+            var query = _appDbContext.OsusrE9aCsicpBb017s
+                .Where(e => e.TenantId == tenant && e.Bb017Fpagtoid == FormaPagamentoID)
+                .Include(e => e.NavBb008Condicao);
+            
+            return await query.Select(e => new { Id = e.Bb017Condicaoid, Title = e.NavBb008Condicao!.Bb008CondicaoPagto }).ToListAsync();
         }
 
         public async Task<IEnumerable<object>> GetCommonListForComboFF(int tenant, ComboTypeFF comboType)
@@ -163,6 +193,50 @@ namespace CSCore.Ifs.Repository.Combo
                         c.Id
                     });
             return await novaQuery.ToListAsync();
+        }
+
+        public async Task<IEnumerable<object>> GetCommonListForComboRR(int tenant, ComboTypeRR comboType)
+        {
+            IQueryable<object> query = comboType switch
+            {
+                ComboTypeRR.Csicp_RR002 => _appDbContext.OsusrTo3CsicpRr002s
+                .Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Rr002Nomefazenda)
+                .Select(c => new { Title = c.Rr002Nomefazenda ?? "---", c.Id }),
+
+                ComboTypeRR.Csicp_RR003 => _appDbContext.OsusrTo3CsicpRr003s
+                .Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Rr003Descricao)
+                .Select(c => new { Title = c.Rr003Descricao ?? "---", c.Id }),
+
+                ComboTypeRR.Csicp_RR004 => _appDbContext.OsusrTo3CsicpRr004s
+                .Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Rr004Raca)
+                .Select(c => new { Title = c.Rr004Raca, c.Id }),
+
+                ComboTypeRR.Csicp_RR005 => _appDbContext.OsusrTo3CsicpRr005s
+                .Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Rr005Situacao)
+                .Select(c => new { Title = c.Rr005Situacao, c.Id }),
+
+                ComboTypeRR.Csicp_RR006 => _appDbContext.OsusrTo3CsicpRr006s
+                .Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Rr006Ocorrencia)
+                .Select(c => new { Title = c.Rr006Ocorrencia, c.Id }),
+
+                ComboTypeRR.Csicp_RR007 => _appDbContext.OsusrTo3CsicpRr007s
+                .Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Rr007Proprietario)
+                .Select(c => new { Title = c.Rr007Proprietario, c.Id }),
+
+                ComboTypeRR.Csicp_RR008 => _appDbContext.OsusrTo3CsicpRr008s
+                .Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Rr008Regalimentar)
+                .Select(c => new { Title = c.Rr008Regalimentar, c.Id }),
+
+                _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
+            };
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<object>> GetCommonListForComboBB(int tenant, ComboTypeBB ComboTypeBB)
