@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSLB900.MSTools.GenerateId;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,7 +19,7 @@ public partial class CSICP_CG009
     public string? Cg009TipoSaldoId { get; set; }
 
     [ForeignKey("NavCG006Conta_CG009")]
-    public string? Cg009ContaId { get; set; }
+    public string Cg009ContaId { get; set; } = string.Empty;
 
     public int? Cg009Ano { get; set; }
 
@@ -48,6 +49,30 @@ public partial class CSICP_CG009
             Cg009Totaldebito = cg009Totaldebito,
             Cg009Totalcredito = cg009Totalcredito,
             Cg009Saldo = cg009Saldo,
+        };
+    }
+
+
+    public static CSICP_CG009 CreateInstanceComValoresDebitoCreditoESaldoZerados(
+    int tenant, ICS_GenerateId ICS_GenerateId, 
+    string? cg009FilialId, 
+    string? cg009TipoSaldoId, 
+    string? cg009ContaId, 
+    int cg009Ano, 
+    int? cg009Mes)
+    {
+        return new CSICP_CG009
+        {
+            TenantId = tenant,
+            Cg009Id = ICS_GenerateId.GenerateUuId(),
+            Cg009FilialId = cg009FilialId,
+            Cg009TipoSaldoId = cg009TipoSaldoId,
+            Cg009ContaId = cg009ContaId,
+            Cg009Ano = cg009Ano,
+            Cg009Mes = cg009Mes,
+            Cg009Totaldebito = 0,
+            Cg009Totalcredito = 0,
+            Cg009Saldo = 0,
         };
     }
 
