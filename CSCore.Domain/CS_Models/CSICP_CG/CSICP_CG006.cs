@@ -1,7 +1,4 @@
-﻿using CSCore.Domain.CS_Models.Staticas.CG;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_CG;
 
@@ -81,5 +78,10 @@ public partial class CSICP_CG006
     public CSICP_Statica? NavStatica_CG006_LancNivel3 { get; set; }
     public CSICP_Statica? NavStatica_CG006_LancNivel4 { get; set; }
     public CSICP_Statica? NavStatica_CG006_ConsolidaLanc { get; set; }
+
+    public static CSICP_CG006 Empty() => new()
+    {
+        Cg006Id = string.Empty
+    };
 
 }
