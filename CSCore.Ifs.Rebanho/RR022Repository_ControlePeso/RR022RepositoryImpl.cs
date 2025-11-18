@@ -65,12 +65,11 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             ];
         }
 
-        public async Task<List<DtoGetCountPesoAnimalRR022>> GetListCountPesoAnimalAsync(int In_TenantID, string In_UsuarioId, string In_LoteId)
+        public async Task<List<DtoGetCountPesoAnimalRR022>> GetListCountPesoAnimalAsync(int In_TenantID, string In_LoteId)
         {
             var result = await _appDbContext.OsusrTo3CsicpRr022s
                 .AsNoTracking()
                 .Where(e => e.TenantId == In_TenantID
-                    && e.Rr022Usuarioid == In_UsuarioId
                     && e.Rr022Loteid == In_LoteId)
                 .GroupBy(e => new { e.Rr022Dtpeso, e.Rr022Loteid })
                 .Select(g => new DtoGetCountPesoAnimalRR022
