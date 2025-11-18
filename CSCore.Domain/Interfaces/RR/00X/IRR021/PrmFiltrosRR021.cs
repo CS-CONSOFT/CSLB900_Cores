@@ -8,10 +8,6 @@ namespace CSCore.Domain.Interfaces.RR._00X.IRR021
         public string? In_AnimalId { get; set; }
         public DateTime? In_DtRegistroInicio { get; set; }
         public DateTime? In_DtRegistroFim { get; set; }
-
-        public int In_TenantId { get; set; }
         public string? In_LoteId { get; set; }
-        public DateTime? InDataPeso { get; set; }
-        public string In_UsuarioId { get; set; } = null!;
     }
 }

@@ -7,6 +7,5 @@ namespace CSCore.Domain.Interfaces.RR._00X.IRR022
     {
         public string? In_LoteId { get; set; }
         public DateTime? In_DataPeso { get; set; }
-        public string? In_UsuarioId { get; set; }
     }
 }
