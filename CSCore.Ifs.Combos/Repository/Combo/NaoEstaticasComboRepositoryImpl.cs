@@ -176,8 +176,10 @@ namespace CSCore.Ifs.Repository.Combo
 
             IQueryable<CSICP_GG001> query = _appDbContext.CSICP_GG001s
                 .Include(e => e.BB001FilialNav)
-                .Where(c => c.TenantId == tenant)
-                .Where(c => c.Gg001Filialid == estabelecimentoId);
+                .Where(c => c.TenantId == tenant);
+
+            if (estabelecimentoId != null && estabelecimentoId != string.Empty)
+                query = query.Where(c => c.Gg001Filialid == estabelecimentoId);
 
             if (ignoraVirtual.HasValue && ignoraVirtual.Value)
                 query = query.Where(c => c.Gg001Tipoalmoxarifado != gg001TAlmoxVirtual);
@@ -202,7 +204,7 @@ namespace CSCore.Ifs.Repository.Combo
                 ComboTypeRR.Csicp_RR002 => _appDbContext.OsusrTo3CsicpRr002s
                 .Where(c => c.TenantId == tenant)
                 .OrderBy(c => c.Rr002Nomefazenda)
-                .Select(c => new { Title = c.Rr002Nomefazenda ?? "---", c.Id }),
+                .Select(c => new { Title = c.Rr002Nomefazenda, c.Id }),
 
                 ComboTypeRR.Csicp_RR003 => _appDbContext.OsusrTo3CsicpRr003s
                 .Where(c => c.TenantId == tenant)
@@ -233,6 +235,11 @@ namespace CSCore.Ifs.Repository.Combo
                 .Where(c => c.TenantId == tenant)
                 .OrderBy(c => c.Rr008Regalimentar)
                 .Select(c => new { Title = c.Rr008Regalimentar, c.Id }),
+
+                ComboTypeRR.Csicp_RR020 => _appDbContext.OsusrTo3CsicpRr020s
+                .Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Rr020Descricao)
+                .Select(c => new { Title = c.Rr020Descricao ?? "---", c.Id }),
 
                 _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
             };
