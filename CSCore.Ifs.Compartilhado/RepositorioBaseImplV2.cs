@@ -29,6 +29,13 @@ namespace CSCore.Ifs.Repository
             return addedEntity;
         }
 
+        public virtual int CreateRange(List<TEntity> entity)
+        {
+            ArgumentNullException.ThrowIfNull(entity);
+            _appDbContext.Set<TEntity>().AddRange(entity);
+            return entity.Count;
+        }
+
 
         public virtual async Task<int> BulkCreateAsync(List<TEntity> entities)
         {

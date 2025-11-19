@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.Repository
 {
+    [Obsolete("Use a implementação genérica RepositorioBaseImpl<TEntity, TKey> em vez desta.")]
     /// <summary>
     /// Lembre-se de checar se os campos Id e Tenant seguem o padrão de nome "Id" e "TenantId". Caso não, precisa ser passado o nome de referência
     /// através do construtor. Ex: Se o tenant estiver escrito como Tenant_ID na classe, está fora do padrão, então a classe base repository deve saber qual

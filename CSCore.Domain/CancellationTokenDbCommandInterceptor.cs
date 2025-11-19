@@ -32,6 +32,7 @@ namespace FF105Financeiro.C82Application.Interceptors
             // ⚡ Verifica cancelamento ANTES de criar linked token (economia de alocação)
             if (httpToken.IsCancellationRequested)
             {
+
                 throw new OperationCanceledException(httpToken);
             }
 
