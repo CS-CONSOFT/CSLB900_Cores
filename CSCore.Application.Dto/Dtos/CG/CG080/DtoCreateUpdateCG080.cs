@@ -1,9 +1,10 @@
 using CSCore.Domain.CS_Models.CSICP_CG;
+using CSLB900.MSTools.InterfaceBase;
 using System.ComponentModel.DataAnnotations;
 
 namespace CSCore.Application.Dto.Dtos.CG.CG080
 {
-    public class DtoCreateUpdateCG080
+    public class DtoCreateUpdateCG080 : IConverteParaEntidade<Osusr8dwCsicpCg080>
     {
         public string? Cg080Nome { get; set; }
 

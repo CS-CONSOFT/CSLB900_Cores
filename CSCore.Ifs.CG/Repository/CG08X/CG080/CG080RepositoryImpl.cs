@@ -16,7 +16,7 @@ namespace CSCore.Ifs.CG.Repository.CG08X.CG080
             _appDbContext = appDbContext;
         }
 
-        public async Task<Osusr8dwCsicpCg080?> GetByIdAsync(int InTenantID, int InCG080ID)
+        public async Task<Osusr8dwCsicpCg080?> GetByIdAsync(int InTenantID, long InCG080ID)
         {
             return await _appDbContext.Osusr8dwCsicpCg080s
                 .AsNoTracking()
