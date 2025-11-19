@@ -277,14 +277,12 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
             var mesFinal = prm.GetMesFinal();
             var mesInicial = mesesParaCalculo.Min();
 
-            const int BATCH_SIZE = 10;
+            const int BATCH_SIZE = 1000;
             var resultadoFinal = new List<SaldoContaResultV2>();
             
             for (int i = 0; i < WorkListaContasID.Count; i += BATCH_SIZE)
             {
                 var batch = WorkListaContasID.Skip(i).Take(BATCH_SIZE).ToList();
-
-
                 var dadosFiltrados = await this.appDbContext.Osusr8dwCsicpCg009s
                     .AsNoTracking()
                     .Where(e => e.TenantId == Tenant)
