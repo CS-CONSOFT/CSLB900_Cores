@@ -14,6 +14,7 @@ public interface ISY001Repository : IBaseCrud<Csicp_Sy001>
     Task<List<Csicp_Sy021>> GetChavesAcessoUsuarioList(string id, int tenant);
     Task<List<Csicp_Sy013>> GetEstabsUsuarioList(string id, int tenant);
     Task<Csicp_Sy001> AlterarSenha(Csicp_Sy001 csicp_Sy001);
+    Task AtualizaSenhasDesseTenant(int tenant);
 
 }
 

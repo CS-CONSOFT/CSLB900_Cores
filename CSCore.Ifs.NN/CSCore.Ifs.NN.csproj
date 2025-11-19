@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CSCompartilhado.CSLB900_MSTools\CSLB900.MSTools.csproj" />
+    <ProjectReference Include="..\CSCore.Application.Dto\CSCore.Application.Dto.csproj" />
+    <ProjectReference Include="..\CSCore.Domain\CSCore.Domain.csproj" />
+    <ProjectReference Include="..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />
+    <ProjectReference Include="..\CSCore.Ifs.LB900\CSCore.Ifs.LB900.csproj" />
+  </ItemGroup>
+
+</Project>

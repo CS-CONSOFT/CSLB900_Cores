@@ -18,5 +18,4 @@ public partial class Csicp_Sy001Bio
 
     public string? BiometriaTexto { get; set; }
 
-    public Csicp_Sy001? Usuario { get; set; }
 }

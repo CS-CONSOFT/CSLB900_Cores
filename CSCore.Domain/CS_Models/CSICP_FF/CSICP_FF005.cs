@@ -26,8 +26,6 @@ public partial class CSICP_FF005
 
     public int? Ff005ImpostoId { get; set; }
 
-    public virtual CSICP_FF003? Ff003Especie { get; set; }
-
     public CSICP_BB001? NavBB001Filial { get; set; }
     public CSICP_BB012? NavBB012ContaFornecedor { get; set; }
 

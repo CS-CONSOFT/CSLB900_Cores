@@ -1,3 +1,6 @@
+using CSBS101._82Application.Mapper.AA00X.AA025;
+using CSBS101._82Application.Mapper.AA00X.AA027;
+using CSBS101._82Application.Mapper.AA00X.AA028;
 using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR002;
 using CSCore.Domain.CS_Models.CSICP_RR;
 
@@ -20,7 +23,10 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR002
                 Rr002Cep = entity.Rr002Cep,
                 Rr002Paisid = entity.Rr002Paisid,
                 Rr002Cidadeid = entity.Rr002Cidadeid,
-                Rr002Ufid = entity.Rr002Ufid
+                Rr002Ufid = entity.Rr002Ufid,
+                NavAA025Pais = entity.NavAA025Pais?.ToDtoGet(),
+                NavAA027UF = entity.NavAA027UF?.ToDtoGetAA027SASimples(),
+                NavAA028Cidade = entity.NavAA028Cidade?.ToDtoGet_Simples()
             };
         }
 

@@ -41,7 +41,16 @@ namespace CSCore.Ifs.FF.Repository.FF01X
 
         private IQueryable<CSICP_FF012> GetQueryBase(int in_tenant)
         {
-            return from ff012 in _appDbContext.OsusrE9aCsicpFf012s
+            return _appDbContext.OsusrE9aCsicpFf012s
+                   .AsNoTracking()
+                   .Where(e => e.TenantId == in_tenant)
+                   .Include(e => e.NavBB001)
+                   .Include(e => e.NavSY001)
+                   .Include(e => e.NavFF014ComissaoSuper)
+                   .Include(e => e.NavFF014ComissaoCobrador)
+                   .Include(e => e.NavFF012GrupoPai);
+
+            /*return from ff012 in _appDbContext.OsusrE9aCsicpFf012s
 
                    // Join com csicp_bb001 (Estabelecimento)
                    join bb001 in _appDbContext.E9ACSICP_BB001s
@@ -137,7 +146,7 @@ namespace CSCore.Ifs.FF.Repository.FF01X
                            Ff014Comissaocobradorid = ff012Pai.Ff014Comissaocobradorid,
                            Ff012Grupopaiid = ff012Pai.Ff012Grupopaiid,
                        } : null
-                   };
+                   };*/
         }
     }
 }

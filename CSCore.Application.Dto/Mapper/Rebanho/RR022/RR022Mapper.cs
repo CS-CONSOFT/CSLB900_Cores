@@ -25,6 +25,7 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR022
                 Rr022Gpd = entity.Rr022Gpd,
                 Rr022Dthrregistro = entity.Rr022Dthrregistro,
                 Rr022Usuarioid = entity.Rr022Usuarioid,
+                Rr022IsProcessado = entity.Rr022IsProcessado,
 
                 // Navegações
                 NavRR001Animal = entity.NavRR001Animal_RR022?.ToDtoGetRR001Padrao(),
@@ -49,7 +50,8 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR022
                 Rr022Gmd = entity.Rr022Gmd,
                 Rr022Gpd = entity.Rr022Gpd,
                 Rr022Dthrregistro = entity.Rr022Dthrregistro,
-                Rr022Usuarioid = entity.Rr022Usuarioid
+                Rr022Usuarioid = entity.Rr022Usuarioid,
+                Rr022IsProcessado = entity.Rr022IsProcessado
             };
         }
     }

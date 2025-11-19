@@ -9,14 +9,16 @@ namespace CSCore.Domain.Interfaces.FF.IVisoesGeraisFinanceiro
 {
     public interface ITitulosAbertoPorFaixaDiasRepository
     {
-        Task<List<DtoAnaliseIdadeContasReceber>> GetAnaliseIdadeContasReceberAsync(
-            int in_tenant,
-            bool in_agruparPorEstabelecimento = false,
-            List<string>? in_filtroEstabelecimentos = null);
+        Task<(List<DtoAnaliseIdadeContasReceber>, int)> GetAnaliseIdadeContasReceberAsync(
+             int in_tenant,
+                         int PageNumber, int PageSize,
+             bool in_agruparPorEstabelecimento = false,
+             List<string>? in_filtroEstabelecimentos = null);
 
-        Task<List<DtoTotalizadorEstabelecimento>> GetTotalizadorPorEstabelecimentoAsync(
-            int in_tenant,
-            List<string>? in_filtroEstabelecimentos = null);
+        Task<(List<DtoTotalizadorEstabelecimento>, int)> GetTotalizadorPorEstabelecimentoAsync(
+           int in_tenant,
+                   int PageNumber, int PageSize,
+           List<string>? in_filtroEstabelecimentos = null);
     }
 
     public class DtoAnaliseIdadeContasReceber

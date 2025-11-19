@@ -13,15 +13,16 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
            int in_tenant,
            DateTime? in_dataVencimentoInicio = null,
            DateTime? in_dataVencimentoFim = null,
-           decimal in_saldoAnterior = 0)
+           decimal in_saldoAnterior = 0,
+           List<string>? in_estabIDs = null)
         {
             var query = from ff102 in _appDbContext.OsusrE9aCsicpFf102s
                         .AsNoTracking()
 
-                        join conta in _appDbContext.OsusrE9aCsicpBb012s
+                        join bb012conta in _appDbContext.OsusrE9aCsicpBb012s
                         .AsNoTracking()
-                        on ff102.Ff102Contaid equals conta.Id into joinConta
-                        from conta in joinConta.DefaultIfEmpty()
+                        on ff102.Ff102Contaid equals bb012conta.Id into joinbb012Conta
+                        from bb012conta in joinbb012Conta.DefaultIfEmpty()
 
                         join ff102sit in _appDbContext.OsusrE9aCsicpFf102Sits
                         .AsNoTracking()
@@ -33,56 +34,37 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                               || ff102sit.Label == Csicp_ff102_Situacao.Provisao)
                         select new
                         {
-                            Data = ff102.Ff102DataVencimento,
-                            DataEmissao = ff102.Ff102DataEmissao,
-                            Prefixo = ff102.Ff102Pfx,
-                            Titulo = ff102.Ff102NoTitulo,
-                            Sufixo = ff102.Ff102Sfx,
-                            NomeConta = conta.Bb012NomeCliente,
+                            DataVenc = ff102.Ff102DataVencimento,
                             ValorLiq = ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo * -1 : ff102.Ff102VlLiqTitulo,
-                            IdentificadorTitulo = ff102.Ff102Tiporegistro == 1 
-                                               || ff102.Ff102Tiporegistro == 2 ? "A receber" :
-                                                  ff102.Ff102Tiporegistro == 3 ? "A pagar" : string.Empty,
-                            TipoReg = ff102.Ff102Tiporegistro,
-                            ff102sit.Label
+                            AReceber = ff102.Ff102Tiporegistro == 1 || ff102.Ff102Tiporegistro == 2 ? ff102.Ff102VlLiqTitulo : 0,
+                            APagar = ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo : 0,
+                            ReceitaProvisao = ff102sit.Label == Csicp_ff102_Situacao.Provisao && (ff102.Ff102Tiporegistro == 1
+                                || ff102.Ff102Tiporegistro == 2) ? ff102.Ff102VlLiqTitulo : 0,
+                            DespesaProvisao = ff102sit.Label == Csicp_ff102_Situacao.Provisao && ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo : 0,
+                            in_estabIDs = ff102.Ff102Filialid,
                         };
 
+            if (in_estabIDs is not null && in_estabIDs.Count != 0)
+                query = query.Where(x => in_estabIDs.Contains(x.in_estabIDs ?? string.Empty));
+
             if (in_dataVencimentoInicio.HasValue)
-                query = query.Where(x => x.Data >= in_dataVencimentoInicio.Value);
+                query = query.Where(x => x.DataVenc >= in_dataVencimentoInicio.Value);
 
             if (in_dataVencimentoFim.HasValue)
-                query = query.Where(x => x.Data <= in_dataVencimentoFim.Value);
+                query = query.Where(x => x.DataVenc <= in_dataVencimentoFim.Value);
 
             var agrupado = query
-                .GroupBy(x => new
-                {
-                    x.Data.Date,
-                    x.DataEmissao,
-                    x.Prefixo,
-                    x.Titulo,
-                    x.Sufixo,
-                    x.NomeConta,
-                    x.ValorLiq,
-                    x.TipoReg,
-                    x.IdentificadorTitulo,
-                    x.Label
-                })
+                .GroupBy(g => new { g.DataVenc })
                 .Select(g => new
                 {
-                    Data = g.Key.Date,
-                    g.Key.DataEmissao,
-                    g.Key.Prefixo,
-                    g.Key.Titulo,
-                    g.Key.Sufixo,
-                    g.Key.NomeConta,
-                    ValorTitulo = g.Key.ValorLiq,
-                    g.Key.TipoReg,
-                    g.Key.IdentificadorTitulo,
-                    g.Key.Label,
-                    TotalDia = g.Sum(x => x.ValorLiq)
+                    g.Key.DataVenc,
+                    TotalDia = g.Sum(x => x.ValorLiq),
+                    AReceber = g.Sum(x => x.AReceber),
+                    APagar = g.Sum(x => x.APagar),
+                    ReceitaProvisao = g.Sum(x => x.ReceitaProvisao),
+                    DespesaProvisao = g.Sum(x => x.DespesaProvisao)
                 })
-                .OrderBy(x => x.Data)
-                .ThenBy(x => x.TipoReg);
+                .OrderBy(x => x.DataVenc);
 
             var totais = await agrupado.ToListAsync();
 
@@ -94,18 +76,15 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                 saldoAcumulado = saldoAnteriorLinha + item.TotalDia;
                 resultado.Add(new FluxoDeCaixaDiarioDto
                 {
-                    Data = item.Data,
-                    DataEmissao = item.DataEmissao,
-                    Prefixo = item.Prefixo,
-                    Titulo = item.Titulo,
-                    Sufixo = item.Sufixo,
-                    NomeConta = item.NomeConta,
-                    IdentificadorTitulo = item.IdentificadorTitulo,
-                    Label = item.Label,
-                    ValorTitulo = item.ValorTitulo,
-                    TotalDia = item.TotalDia,
+                    DataVenc = item.DataVenc,
                     SaldoAnterior = saldoAnteriorLinha,
-                    SaldoAcumulado = saldoAcumulado
+                    TotalDia = item.TotalDia,
+                    AReceber = item.AReceber,
+                    APagar = item.APagar,
+                    ReceitaProvisao = item.ReceitaProvisao,
+                    DespesaProvisao = item.DespesaProvisao,
+                    SaldoAcumulado = saldoAcumulado,
+                    EstabIDs = in_estabIDs ?? new List<string>(),
                 });
                 saldoAnteriorLinha = saldoAcumulado;
             }
@@ -116,14 +95,15 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
             int in_tenant,
             DateTime? in_dataVencimentoInicio = null,
             DateTime? in_dataVencimentoFim = null,
-            decimal in_saldoAnterior = 0)
+            decimal in_saldoAnterior = 0, 
+            List<string>? in_estabIDs = null)
         {
             var query = from ff102 in _appDbContext.OsusrE9aCsicpFf102s
-                        
-                        join conta in _appDbContext.OsusrE9aCsicpBb012s
-                        on ff102.Ff102Contaid equals conta.Id into joinConta
-                        from conta in joinConta.DefaultIfEmpty()
-                        
+
+                        join bb012conta in _appDbContext.OsusrE9aCsicpBb012s
+                        on ff102.Ff102Contaid equals bb012conta.Id into joinbb012Conta
+                        from bb012conta in joinbb012Conta.DefaultIfEmpty()
+
                         join ff102sit in _appDbContext.OsusrE9aCsicpFf102Sits
                         on ff102.Ff102Situacaoid equals ff102sit.Id
 
@@ -140,8 +120,12 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                             APagar = ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo : 0,
                             ReceitaProvisao = ff102sit.Label == Csicp_ff102_Situacao.Provisao && (ff102.Ff102Tiporegistro == 1 
                                 || ff102.Ff102Tiporegistro == 2) ? ff102.Ff102VlLiqTitulo : 0,
-                            ProvisaoAPagar = ff102sit.Label == Csicp_ff102_Situacao.Provisao && ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo : 0
+                            DespesaProvisao = ff102sit.Label == Csicp_ff102_Situacao.Provisao && ff102.Ff102Tiporegistro == 3 ? ff102.Ff102VlLiqTitulo : 0,
+                            in_estabIDs = ff102.Ff102Filialid,
                         };
+
+            if (in_estabIDs is not null && in_estabIDs.Count != 0)
+                query = query.Where(x => in_estabIDs.Contains(x.in_estabIDs ?? string.Empty));
 
             if (in_dataVencimentoInicio.HasValue)
                 query = query.Where(x => x.Ano > in_dataVencimentoInicio.Value.Year
@@ -161,7 +145,7 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                     AReceber = g.Sum(x => x.AReceber),
                     APagar = g.Sum(x => x.APagar),
                     ReceitaProvisao = g.Sum(x => x.ReceitaProvisao),
-                    ProvisaoAPagar = g.Sum(x => x.ProvisaoAPagar)
+                    DespesaProvisao = g.Sum(x => x.DespesaProvisao)
                 })
                 .OrderBy(x => x.Ano)
                 .ThenBy(x => x.Mes);
@@ -184,7 +168,8 @@ namespace CSCore.Ifs.FF.Repository.VisoesGeraisFinanceiro
                     AReceber = item.AReceber,
                     APagar = item.APagar,
                     ReceitaProvisao = item.ReceitaProvisao,
-                    ProvisaoAPagar = item.ProvisaoAPagar
+                    DespesaProvisao = item.DespesaProvisao,
+                    EstabIDs = in_estabIDs ?? new List<string>(),
                 });
                 saldoAnteriorLinha = saldoAcumulado;
             }

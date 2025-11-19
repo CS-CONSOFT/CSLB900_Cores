@@ -52,12 +52,14 @@ namespace CSCore.Ifs.LB900.Calculos
                 parametrosCalculoLocal.ValorTitulo,
                 parametrosCalculoLocal.PercentualJuros,
                 parametrosCalculoLocal.DiasLiberacao,
+                parametrosCalculoLocal.ValorJurosDias,
                 parametrosCalculoLocal.FinacEspJurosMulta);
 
             var (valorMulta, diasAtrasoMulta) = CalculoTitulos.CalcularMulta(
                 parametrosCalculoLocal.DataVencimento,
                 parametrosCalculoLocal.ValorTitulo,
                 parametrosCalculoLocal.PercentualMulta,
+                parametrosCalculoLocal.ValorMulta,
                 parametrosCalculoLocal.DiasLiberacao,
                 parametrosCalculoLocal.FinacEspJurosMulta);
 
@@ -91,27 +93,30 @@ namespace CSCore.Ifs.LB900.Calculos
                     DataVencimento = entradaCalculo.InDataVencimento,
                     ValorTitulo = entradaCalculo.InValorTitulo,
 
-                    PercentualJuros = entradaCalculo.InPercentualJuros == 0
+                    PercentualJuros = (entradaCalculo.InPercentualJuros == 0 || entradaCalculo.InPercentualJuros == null)
                         ? parametrosTitulo?.Ff000PercJuros ?? 0
                         : entradaCalculo.InPercentualJuros,
 
-                    PercentualMulta = entradaCalculo.InPercentualMulta == 0
+                    PercentualMulta = (entradaCalculo.InPercentualMulta == 0 || entradaCalculo.InPercentualMulta == null)
                         ? parametrosTitulo?.Ff000PercMulta ?? 0
                         : entradaCalculo.InPercentualMulta,
 
-                    PercentualHonorarios = entradaCalculo.InPercentualHonorarios == 0
+                    PercentualHonorarios = (entradaCalculo.InPercentualHonorarios == 0 || entradaCalculo.InPercentualHonorarios == null)
                         ? parametrosTitulo?.Ff000PercHonorarios ?? 0
                         : entradaCalculo.InPercentualHonorarios,
 
-                    PercentualCorrecaoMonetaria = entradaCalculo.InPercentualCorrecaoMonetaria == 0
+                    PercentualCorrecaoMonetaria = (entradaCalculo.InPercentualCorrecaoMonetaria == 0 || entradaCalculo.InPercentualCorrecaoMonetaria == null)
                         ? parametrosTitulo?.Ff000PercCorrmonetaria ?? 0
                         : entradaCalculo.InPercentualCorrecaoMonetaria,
 
-                    DiasLiberacao = entradaCalculo.InDiasLiberacao == 0
+                    DiasLiberacao = (entradaCalculo.InDiasLiberacao == 0 || entradaCalculo.InDiasLiberacao == null)
                         ? parametrosTitulo?.Ff000Diascarjuros ?? 0
                         : entradaCalculo.InDiasLiberacao,
 
-                    FinacEspJurosMulta = entradaCalculo.InFinacEspJurosMulta
+                    FinacEspJurosMulta = entradaCalculo.InFinacEspJurosMulta,
+
+                    ValorJurosDias = entradaCalculo.InValorJurosDia,
+                    ValorMulta = entradaCalculo.InValorMulta
                 };
             }
 
@@ -170,6 +175,8 @@ namespace CSCore.Ifs.LB900.Calculos
             public DateTime DataVencimento { get; set; }
             public decimal ValorTitulo { get; set; }
             public decimal? PercentualJuros { get; set; }
+            public decimal? ValorJurosDias { get; set; }
+            public decimal? ValorMulta { get; set; }
             public decimal? PercentualMulta { get; set; }
             public decimal? PercentualHonorarios { get; set; }
             public decimal? PercentualCorrecaoMonetaria { get; set; }

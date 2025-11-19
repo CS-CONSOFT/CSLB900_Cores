@@ -13,14 +13,21 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
     {
         private readonly AppDbContext _appDbContext;
         
-        public RR031RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
+        public RR031RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Id")
         {
             _appDbContext = appDbContext;
         }
 
         public async Task<OsusrTo3CsicpRr031?> GetByIdAsync(int In_TenantID, string In_IDRR031)
         {
-            IQueryable<OsusrTo3CsicpRr031> query = GetQueryBase(In_TenantID);
+            IQueryable<OsusrTo3CsicpRr031> query = _appDbContext.OsusrTo3CsicpRr031s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.TenantId == In_TenantID)
+                .Include(e => e.NavRR001Animal_RR031)
+                .Include(e => e.NavRR030Iatf_RR031)
+                .Include(e => e.NavRR001MontaAnimal_RR031)
+                .Include(e => e.NavRR035Semen_RR031);
 
             OsusrTo3CsicpRr031? CSICP_RR031 = await query
                 .FirstOrDefaultAsync(e => e.Id == In_IDRR031);
@@ -29,7 +36,14 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
 
         public async Task<(List<OsusrTo3CsicpRr031>, int)> GetListAsync(int In_TenantID, PrmFiltrosRR031 prm)
         {
-            IQueryable<OsusrTo3CsicpRr031> query = GetQueryBase(In_TenantID);
+            IQueryable<OsusrTo3CsicpRr031> query = _appDbContext.OsusrTo3CsicpRr031s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.Rr031IatfId == prm.In_IATFRR030ID)
+                .Include(e => e.NavRR001Animal_RR031)
+                .Include(e => e.NavRR030Iatf_RR031)
+                .Include(e => e.NavRR001MontaAnimal_RR031)
+                .Include(e => e.NavRR035Semen_RR031);
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));
@@ -41,18 +55,6 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
             var listItems = await query.ToListAsync();
 
             return (listItems, count);
-        }
-
-        private IQueryable<OsusrTo3CsicpRr031> GetQueryBase(int In_TenantID)
-        {
-            return _appDbContext.OsusrTo3CsicpRr031s
-                .AsNoTracking()
-                .AsSplitQuery()
-                .Where(e => e.TenantId == In_TenantID)
-                .Include(e => e.NavRR001Animal_RR031)
-                .Include(e => e.NavRR030Iatf_RR031)
-                .Include(e => e.NavRR001MontaAnimal_RR031)
-                .Include(e => e.NavRR035Semen_RR031);
         }
 
         protected override ICSFilter<OsusrTo3CsicpRr031>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)
