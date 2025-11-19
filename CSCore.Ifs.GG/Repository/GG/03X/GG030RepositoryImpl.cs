@@ -113,6 +113,8 @@ namespace CSCore.Ifs.Repository.GG._03X
                                                     Bb001Nomefantasia = CSICP_BB001.Bb001Nomefantasia,
                                                     Bb001Codigoempresa = CSICP_BB001.Bb001Codigoempresa,
                                                     Bb001Isactive = CSICP_BB001.Bb001Isactive,
+                                                    BB001_IsRegimeRegular = CSICP_BB001.BB001_IsRegimeRegular,
+                                                    Bb001Razaosocial = CSICP_BB001.Bb001Razaosocial
                                                 } : null,
                                                 NavGG023Val = gg023Val != null ? gg023Val : null,
                                                 NavGG030Sta = gg030Sta != null ? gg030Sta : null,
@@ -248,6 +250,9 @@ namespace CSCore.Ifs.Repository.GG._03X
                                 Bb001Nomefantasia = bb001.Bb001Nomefantasia,
                                 Bb001Codigoempresa = bb001.Bb001Codigoempresa,
                                 Bb001Isactive = bb001.Bb001Isactive,
+                                BB001_IsRegimeRegular = bb001.BB001_IsRegimeRegular,
+                                Bb001Razaosocial = bb001.Bb001Razaosocial
+
                             } : null
                         };
             if(gg030_id is not null)
