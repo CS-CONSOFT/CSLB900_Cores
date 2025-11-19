@@ -32,12 +32,11 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             return CSICP_RR022;
         }
 
-        public async Task<(List<OsusrTo3CsicpRr022>, int)> GetListPesoAnimalRR022Async(int In_TenantID, string In_UsuarioId, PrmFiltrosRR022 prm)
+        public async Task<(List<OsusrTo3CsicpRr022>, int)> GetListPesoAnimalRR022Async(int In_TenantID, PrmFiltrosRR022 prm)
         {
             IQueryable<OsusrTo3CsicpRr022> query = _appDbContext.OsusrTo3CsicpRr022s
                 .AsNoTracking()
                 .AsSplitQuery()
-                .Where(e => e.Rr022Usuarioid == In_UsuarioId)
                 .Include(e => e.NavRR001Animal_RR022)
                 .Include(e => e.NavRR021LoteXAnimal_RR022);
 
