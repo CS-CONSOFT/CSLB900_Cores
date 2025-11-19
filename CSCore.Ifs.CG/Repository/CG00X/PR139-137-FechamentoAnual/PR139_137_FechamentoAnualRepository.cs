@@ -1,4 +1,5 @@
-﻿using CSCore.Domain.CS_Models.CSICP_CG;
+﻿using Azure.Messaging;
+using CSCore.Domain.CS_Models.CSICP_CG;
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.GenerateId;
@@ -11,105 +12,31 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
 {
-    public record SaldoContaResult(
-    string ContaId,
-    decimal Saldo
-        );
-
-    public record SaldoContaResultV2(
-     string ContaId,
-     string ContaCodigo,
-     string ContaNome,
-     decimal Saldo,
-     decimal SaldoAnterior,
-     decimal TotalCredito,
-     decimal TotalDebito,
-     int Mes
- );
-
-    public record SaldoMesAtual_Conta(string ContaId, decimal TotalCredito, decimal TotalDebito)
-    {
-
-    }
-    public record PR139137_PrmCS_GetListaContasInput(
-        int InAnoFechamento,
-        int InMesFechamento,
-        string InTipoSaldoID,
-        string InFilialID)
-    {
-    };
-
-    public record PR139137_PrmCS_GeraSaldoConta(
-        int InAnoFechamento,
-        int InMesFechamento,
-        string InTipoSaldoID,
-        string InFilialID,
-        ICS_GenerateId CS_GenerateId
-    ) : PR139137_PrmCS_GetListaContasInput(InAnoFechamento, InMesFechamento, InTipoSaldoID, InFilialID);
-
-    public record PR139137_PrmCS_TransSaldoCnt(
-        string InFilialID,
-        int InAnoAtual,
-        int InAnoNovo,
-        int InMes,
-        string InCG008_ID_TipoSaldo, ICS_GenerateId CS_GenerateId)
-    {
-        /// <summary>
-        /// Lista de meses para cálculo. Se null, usa apenas InMes.
-        /// Exemplos: [1,2,3] para 1º trimestre, [1,2,3,4,5,6] para 1º semestre
-        /// </summary>
-        public List<int>? InMeses { get; init; }
-
-        /// <summary>
-        /// Retorna a lista de meses a serem considerados no cálculo
-        /// </summary>
-        public List<int> GetMesesParaCalculo() => InMeses ?? new List<int> { InMes };
-
-        /// <summary>
-        /// Retorna o maior mês do período
-        /// </summary>
-        public int GetMesFinal() => InMeses?.Max() ?? InMes;
-
-
-    };
-
-    public interface IPR139_137_FechamentoAnualRepository
-    {
-        Task CS_GeraSaldoConta(int Tenant, PR139137_PrmCS_GeraSaldoConta PrmInput, List<string> WorkListaContasID);
-        Task<List<CSICP_CG009>> GetSaldoContaCG009AnoNovoMes0(
-            int Tenant,
-            List<string> WorkListaContasID,
-            int InAnoNovo,
-            int InMes,
-            string TipoSaldo,
-            string Filial);
-
-        Task<List<string>> GetPlanoContas(int InTenant, string InFilial);
-
-        Task CS_TransSaldoCnt(
-            int Tenant,
-            PR139137_PrmCS_TransSaldoCnt prm,
-            List<string> WorkListaContasID);
-
-        Task<List<SaldoContaResult>> CS_SaldoAtual_Conta(
-            int Tenant,
-            PR139137_PrmCS_TransSaldoCnt prm,
-            List<string> WorkListaContasID);
-
-        Task<List<SaldoContaResultV2>> CS_SaldoAtual_Conta_Otimizado(
-            int Tenant,
-            PR139137_PrmCS_TransSaldoCnt prm,
-            List<string> WorkListaContasID);
-
-        Task<List<SaldoContaResult>> CS_SaldoAnt_Conta(
-            int Tenant,
-            PR139137_PrmCS_TransSaldoCnt prm,
-            List<string> WorkListaContasID);
-    }
-
-    public class PR139_137_FechamentoAnualRepository : IPR139_137_FechamentoAnualRepository
+    public sealed class PR139_137_FechamentoAnualRepository : IPR139_137_FechamentoAnualRepository
     {
         private readonly AppDbContext appDbContext;
+
+        private record DadosCG009(
+                string Cg009ContaId,
+                int? Cg009Mes,
+                decimal? Cg009Saldo,
+                decimal? Cg009Totaldebito,
+                decimal? Cg009Totalcredito,
+                string? CodigoConta,
+                string? NomeConta
+            );
+
+        private record SaldoContaAgrupado(
+            string ContaId,
+            decimal? SaldoInicial,
+            decimal? SaldoAnteriorPeriodo,
+            IEnumerable<SaldoContaResultListMesValores> MesValores,
+            string? CodigoConta,
+            string? NomeConta
+        )
+        {
+            public decimal? SaldoAtual = SaldoAnteriorPeriodo + MesValores.Select(e => e.TotalDebito - e.TotalCredito).Sum();
+        };
 
         public PR139_137_FechamentoAnualRepository(AppDbContext appDbContext)
         {
@@ -199,7 +126,7 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
                 var contaAnoNovoMesZero = ListaContasAnoNovoMesZero.FirstOrDefault(c => c.Cg009ContaId == saldoAtualConta.ContaId);
                 if (CS_ContaAnoNovoMesZeroExiste(contaAnoNovoMesZero))
                 {
-                    contaAnoNovoMesZero!.Cg009Saldo = saldoAtualConta.Saldo;
+                    contaAnoNovoMesZero!.Cg009Saldo = saldoAtualConta.SaldoAtual;
                     ListaCG009Update.Add(contaAnoNovoMesZero!);
                 }
 
@@ -213,7 +140,7 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
                            cg009TipoSaldoId: prm.InCG008_ID_TipoSaldo,
                            cg009ContaId: saldoAtualConta.ContaId,
                            cg009Ano: prm.InAnoNovo,
-                           Saldo: saldoAtualConta.Saldo);
+                           Saldo: saldoAtualConta.SaldoAtual);
                     ListaCG009Create.Add(WorkGG009ToCreate);
                 }
             });
@@ -267,97 +194,25 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
             PR139137_PrmCS_TransSaldoCnt prm,
             List<string> WorkListaContasID)
         {
-            if (WorkListaContasID == null || !WorkListaContasID.Any())
-            {
-                return new List<SaldoContaResultV2>();
-            }
-
-            // Obtém a lista de meses para cálculo
-            var mesesParaCalculo = prm.GetMesesParaCalculo();
-            var mesFinal = prm.GetMesFinal();
-            var mesInicial = mesesParaCalculo.Min();
+            if (WorkListaContasID == null || !WorkListaContasID.Any()) return new List<SaldoContaResultV2>();
 
             const int BATCH_SIZE = 1000;
             var resultadoFinal = new List<SaldoContaResultV2>();
-            
+
             for (int i = 0; i < WorkListaContasID.Count; i += BATCH_SIZE)
             {
                 var batch = WorkListaContasID.Skip(i).Take(BATCH_SIZE).ToList();
-                var dadosFiltrados = await this.appDbContext.Osusr8dwCsicpCg009s
-                    .AsNoTracking()
-                    .Where(e => e.TenantId == Tenant)
-                    .Where(e => e.Cg009FilialId == prm.InFilialID)
-                    .Where(e => e.Cg009TipoSaldoId == prm.InCG008_ID_TipoSaldo)
-                    .Where(e => e.Cg009Ano == prm.InAnoAtual)
-                    .Where(e => e.Cg009Mes <= mesFinal)
-                    .Where(e => batch.Contains(e.Cg009ContaId))
-                    .Select(e => new
-                    {
-                        e.Cg009ContaId,
-                        e.Cg009Mes,
-                        e.Cg009Saldo,
-                        e.Cg009Totaldebito,
-                        e.Cg009Totalcredito,
-                        CodigoConta = e.NavCG006Conta_CG009.Cg006Codigoplano,
-                        NomeConta = e.NavCG006Conta_CG009.Cg006Descricao
-                    })
-                    .ToListAsync();
-
-
-
-                var resultadoBatch = dadosFiltrados
-                    .GroupBy(e => e.Cg009ContaId)
-                    .Select(grupo => new
-                    {
-                        ContaId = grupo.Key,
-                        // Saldo inicial (mês 0)
-                        SaldoInicial = grupo.Where(x => x.Cg009Mes == 0).Sum(x => x.Cg009Saldo),
-
-                        // Saldo anterior ao período (meses < mesInicial)
-                        SaldoAnteriorPeriodo = grupo
-                            .Where(x => x.Cg009Mes > 0 && x.Cg009Mes < mesInicial)
-                            .Sum(x => x.Cg009Totaldebito - x.Cg009Totalcredito),
-
-                        // Total crédito do período especificado
-                        TotalCredito = grupo
-                            .Where(x => mesesParaCalculo.Contains(x.Cg009Mes ?? 0))
-                            .Sum(x => x.Cg009Totalcredito),
-
-                        // Total débito do período especificado
-                        TotalDebito = grupo
-                            .Where(x => mesesParaCalculo.Contains(x.Cg009Mes ?? 0))
-                            .Sum(x => x.Cg009Totaldebito),
-
-                        CodigoConta = grupo.FirstOrDefault().CodigoConta,
-                        NomeConta = grupo.FirstOrDefault().NomeConta,
-                        Mes = grupo.Where(e => e.Cg009Mes == prm.InMeses[0]).First().Cg009Mes
-                    })
-                    .ToList();
-
-                // Calcula os saldos finais
-                var saldosCalculados = resultadoBatch.Select(item =>
-                {
-                    var saldoAnterior = item.SaldoInicial + item.SaldoAnteriorPeriodo;
-                    var movimentacao = item.TotalDebito - item.TotalCredito;
-                    var saldoAtual = saldoAnterior + movimentacao;
-
-                    return new SaldoContaResultV2(
-                        ContaId: item.ContaId,
-                        ContaCodigo: item.CodigoConta.ToString() ?? string.Empty,
-                        ContaNome: item.NomeConta ?? string.Empty,
-                        Saldo: saldoAtual ?? -1,
-                        SaldoAnterior: saldoAnterior ?? -1,
-                        TotalCredito: item.TotalCredito ?? -1,
-                        TotalDebito: item.TotalDebito ?? -1,
-                        Mes: item.Mes ?? -1
-                
-                    );
-                }).ToList();
-
-                resultadoFinal.AddRange(saldosCalculados);
+                List<DadosCG009> dadosFiltrados = await CS_FiltraDadosCG009(Tenant, prm, batch);
+                List<SaldoContaResultV2> resultadoBatch = CS_CalculaSaldoContaAgrupado(prm, dadosFiltrados);
+                resultadoFinal.AddRange(resultadoBatch);
             }
+            CS_AdicionaContasSemMovimentacao(WorkListaContasID, resultadoFinal);
+            return resultadoFinal.OrderBy(e => e.ContaCodigo).ToList();
+        }
 
-            // ✅ Adicionar contas que não têm movimentação (saldo zerado)
+        private static void CS_AdicionaContasSemMovimentacao(List<string> WorkListaContasID, List<SaldoContaResultV2> resultadoFinal)
+        {
+            // Adicionar contas que não têm movimentação (saldo zerado)
             if (resultadoFinal.Count < WorkListaContasID.Count)
             {
                 var contasEncontradas = resultadoFinal.Select(r => r.ContaId).ToHashSet();
@@ -367,18 +222,73 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
                 {
                     resultadoFinal.Add(new SaldoContaResultV2(
                         ContaId: contaId,
-                        Saldo: 0,
+                        SaldoAtual: 0,
                         ContaNome: string.Empty,
                         ContaCodigo: string.Empty,
                         SaldoAnterior: 0,
-                        TotalCredito: 0,
-                        TotalDebito: 0,
-                        Mes: 0
+                        MesValores: []
                     ));
                 }
             }
+        }
 
-            return resultadoFinal.OrderBy(e => e.ContaCodigo).ToList();
+
+
+        private static List<SaldoContaResultV2> CS_CalculaSaldoContaAgrupado(PR139137_PrmCS_TransSaldoCnt prm, List<DadosCG009> dadosFiltrados)
+        {
+            var mesValores = new List<SaldoContaResultListMesValores>();
+            var dados = dadosFiltrados
+                .GroupBy(e => e.Cg009ContaId)
+                .Select(grupo =>
+                {
+                    var mesValores = grupo
+                        .Where(x => x.Cg009Mes != null)
+                        .OrderBy(x => x.Cg009Mes)
+                        .Select(x => new SaldoContaResultListMesValores(
+                            TotalCredito: x.Cg009Totalcredito ?? 0,
+                            TotalDebito: x.Cg009Totaldebito ?? 0,
+                            Mes: x.Cg009Mes ?? -1
+                        )).ToList();
+
+                    var saldoInicial = grupo.Where(x => x.Cg009Mes == 0).Sum(x => x.Cg009Saldo ?? 0);
+                    var saldoAnteriorPeriodo = grupo
+                        .Where(x => x.Cg009Mes > 0 && x.Cg009Mes < prm.GetMesInicial())
+                        .Sum(x => (x.Cg009Totaldebito ?? 0) - (x.Cg009Totalcredito ?? 0));
+
+
+                    return new SaldoContaResultV2(
+                         ContaId: grupo.Key,
+                         SaldoAtual: (grupo.Where(x => x.Cg009Mes == 0).Sum(x => x.Cg009Saldo) ?? -1),
+                         SaldoAnterior: saldoAnteriorPeriodo,
+                         MesValores: mesValores,
+                         ContaCodigo: grupo.FirstOrDefault()?.CodigoConta ?? string.Empty,
+                         ContaNome: grupo.FirstOrDefault()?.NomeConta ?? string.Empty
+                     );
+                })
+                .ToList();
+            return dados;
+        }
+
+        private async Task<List<DadosCG009>> CS_FiltraDadosCG009(int Tenant, PR139137_PrmCS_TransSaldoCnt prm, List<string> batch)
+        {
+            return await this.appDbContext.Osusr8dwCsicpCg009s
+                .AsNoTracking()
+                .Where(e => e.TenantId == Tenant)
+                .Where(e => e.Cg009FilialId == prm.InFilialID)
+                .Where(e => e.Cg009TipoSaldoId == prm.InCG008_ID_TipoSaldo)
+                .Where(e => e.Cg009Ano == prm.InAnoAtual)
+                .Where(e => e.Cg009Mes <= prm.GetMesFinal())
+                .Where(e => batch.Contains(e.Cg009ContaId))
+                .Select(e => new DadosCG009(
+                    e.Cg009ContaId,
+                    e.Cg009Mes,
+                    e.Cg009Saldo,
+                    e.Cg009Totaldebito,
+                    e.Cg009Totalcredito,
+                    e.NavCG006Conta_CG009.Cg006Codigoplano,
+                    e.NavCG006Conta_CG009.Cg006Descricao
+                ))
+                .ToListAsync();
         }
 
         private async Task<List<SaldoMesAtual_Conta>> CS_SaldoMesAtual_Conta(
