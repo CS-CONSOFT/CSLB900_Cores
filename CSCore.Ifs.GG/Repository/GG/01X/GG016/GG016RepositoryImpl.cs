@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CSCore.Ifs.Repository.GG._01X
 {
     public class GG016RepositoryImpl(AppDbContext appDbContext) :
-        RepositorioBaseComMudaAtivoImpl<CSICP_GG016>(appDbContext, "Gg016fId"),
+        RepositorioBaseComMudaAtivoImpl<CSICP_GG016>(appDbContext, "Id", "TenantId"),
         IGG016Repository
     {
         private readonly AppDbContext _appDbContext = appDbContext;

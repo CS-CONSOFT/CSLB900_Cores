@@ -1,4 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.GG;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSCore.Domain.CS_Models.CSICP_GG;
 
@@ -114,6 +115,7 @@ public partial class CSICP_GG520
 
     public bool? Gg520Isactive { get; set; }
 
+    [ForeignKey("Gg520Codbarras")]
     public string? Gg520CodbarrasId { get; set; }
 
     public DateTime? Gg520Timestamp { get; set; }

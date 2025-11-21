@@ -19,8 +19,8 @@ namespace CSCore.Domain.Interfaces.GG.Saldo
             int tenant, string almoxID, string? in_almoxIDSaida, string estabID, int codBarra, bool PermiteSaldoZerado = false);
 
 
-        Task<CSICP_GG520?> GetByIdAsync
-            (string gg520_saldoID, int tenant);
+        Task<CSICP_GG520?> GetByIdAsync(string gg520_saldoID, int tenant);
+        Task<CSICP_GG520?> GetByIdAsyncSimplesParaAtualizar(string gg520_saldoID, int tenant);
         Task<string> GeraSaldo(GG520GeraSaldoParametros gG520GeraSaldoParametros);
         Task<CSICP_GG520> GeraSaldoSemCommit(GG520GeraSaldoParametros gG520GeraSaldoParametros);
         Task<IEnumerable<CSICP_GG520>> GetListSaldosCandidatos(int tenant, string? kardexId, string? almoxId, string? gg520Id_master);

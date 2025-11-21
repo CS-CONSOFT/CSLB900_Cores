@@ -582,8 +582,11 @@ namespace CSCore.Ifs.GG.Repository.GG.Saldo
             return await query.ToListAsync();
         }
 
-
-
+        public async Task<CSICP_GG520?> GetByIdAsyncSimplesParaAtualizar(string gg520_saldoID, int tenant)
+        {
+            return await _appDbContext.OsusrE9aCsicpGg520s
+                .FirstOrDefaultAsync(e => e.Id == gg520_saldoID && e.TenantId == tenant);
+        }
     }
 }
 

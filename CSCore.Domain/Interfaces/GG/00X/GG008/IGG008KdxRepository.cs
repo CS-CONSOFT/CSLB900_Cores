@@ -11,6 +11,7 @@ namespace CSCore.Domain.Interfaces.GG._00X
         Task<CSICP_GG008Kdx> UpdateMoedaAsync(string kdxID, int tenant, string? Gg008Moedaid, decimal? valorMoeda, string produtoID);
         Task UpdateTodasMoedaAsync(int tenant, string? Gg008Moedaid, decimal? valorMoeda, string produtoID);
         Task<CSICP_GG008Kdx?> GetByIdAsync(string gg008KdxID, string produtoGG008_ID, int tenant);
+        Task<CSICP_GG008Kdx?> GetByIdSimplesParaAtualizarAsync(string gg008KdxID, int tenant);
         Task<CSICP_GG008Kdx?> GetByIdPorEmpresaParaExibicaoAsync(string? BB001_filialID, string produtoGG008_ID, int tenant);
         Task<(IEnumerable<CSICP_GG008Kdx>, int)> GetListAsync(int tenant, string produtoGG008_ID, int pageSize, int page);
         Task<List<CSICP_GG008Kdx>> GetListAsyncParaPesquisaParaProdutoS(
