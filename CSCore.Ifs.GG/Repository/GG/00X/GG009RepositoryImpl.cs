@@ -13,13 +13,13 @@ namespace CSCore.Ifs.Repository.GG._00X
         private readonly AppDbContext _appDbContext = appDbContext;
         public async Task<CSICP_GG009> CreateAsync(CSICP_GG009 CSICP_GG009)
         {
-            string codigoAtual = string.IsNullOrWhiteSpace(CSICP_GG009.Gg009Codigopadrao) ? "0" : CSICP_GG009.Gg009Codigopadrao;
+            //string codigoAtual = string.IsNullOrWhiteSpace(CSICP_GG009.Gg009Codigopadrao) ? "0" : CSICP_GG009.Gg009Codigopadrao;
 
-            string novoCodigo = IncrementarCodigo
-            .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_GG009>
-            (_appDbContext, codigoAtual, null, "Gg009Codigopadrao", "Id");
+            //string novoCodigo = IncrementarCodigo
+            //.IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_GG009>
+            //(_appDbContext, codigoAtual, null, "Gg009Codigopadrao", "Id");
 
-            CSICP_GG009.Gg009Codigopadrao = novoCodigo.ToString();
+            //CSICP_GG009.Gg009Codigopadrao = novoCodigo.ToString();
             _appDbContext.Add(CSICP_GG009);
             await _appDbContext.SaveChangesAsync();
             return CSICP_GG009;
