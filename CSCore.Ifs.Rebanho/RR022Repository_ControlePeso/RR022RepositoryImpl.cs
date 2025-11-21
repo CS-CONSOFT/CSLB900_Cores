@@ -94,5 +94,16 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
                     e.Rr022Dtpeso.HasValue &&
                     e.Rr022Dtpeso.Value.Date == In_DataPeso.Date);
         }
+
+        public async Task<OsusrTo3CsicpRr022> GetByIdRR022SimplesAsync(int In_TenantID, string In_IDRR022)
+        {
+            IQueryable<OsusrTo3CsicpRr022> query = _appDbContext.OsusrTo3CsicpRr022s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.TenantId == In_TenantID);
+
+            OsusrTo3CsicpRr022? CSICP_RR022 = await query.FirstOrDefaultAsync(e => e.Id == In_IDRR022);
+            return CSICP_RR022;
+        }
     }
 }
