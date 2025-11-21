@@ -10,7 +10,7 @@ namespace CSCore.Domain.Interfaces.RR._00X.IRR022
         Task<(List<OsusrTo3CsicpRr022>, int)> GetListPesoAnimalRR022Async(int In_TenantID, PrmFiltrosRR022 prm);
         Task<List<DtoGetCountPesoAnimalRR022>> GetListCountPesoAnimalAsync(int In_TenantID, string In_LoteId);
         Task<bool> ExisteRegistroPesoAsync(int In_TenantID, string In_LoteId, string In_AnimalId, DateTime In_DataPeso);
-
+        Task<OsusrTo3CsicpRr022> GetByIdRR022SimplesAsync(int In_TenantID, string In_IDRR022);
 
     }
 }

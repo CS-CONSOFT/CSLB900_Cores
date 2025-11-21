@@ -439,9 +439,11 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RR022_GPD");
                 entity.Property(e => e.Rr022Idadediasatual).HasColumnName("RR022_IDADEDIASATUAL");
                 entity.Property(e => e.Rr022Idadediasult).HasColumnName("RR022_IDADEDIASULT");
+
                 entity.Property(e => e.Rr022Loteid)
                     .HasMaxLength(36)
                     .HasColumnName("RR022_LOTEID");
+
                 entity.Property(e => e.Rr022Peso)
                     .HasColumnType("decimal(14, 4)")
                     .HasColumnName("RR022_PESO");
