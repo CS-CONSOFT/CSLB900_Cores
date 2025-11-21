@@ -39,5 +39,25 @@ namespace FF105Financeiro.C82Application.Dto.GG00X.GG008.GG008c
         public int? Gg008cCdnid { get; set; }
 
         public OsusrE9aCsicpGg008Cdn? Gg008cCdn { get; set; }
+
+        public static DtoGetGG008c Create(
+          int tenantId,
+          string id,
+          string gg008cFilialid,
+          string gg008cProdutoid,
+          string gg008cTiporegistro,
+          string gg008cTexto)
+        {
+            return new DtoGetGG008c
+            {
+                TenantId = tenantId,
+                Id = id,
+                Gg008cFilialid = gg008cFilialid,
+                Gg008cProdutoid = gg008cProdutoid,
+                Gg008cTiporegistro = gg008cTiporegistro,
+                Gg008cTexto = gg008cTexto
+            };
+        }
+
     }
 }

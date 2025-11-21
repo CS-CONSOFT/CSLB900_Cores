@@ -232,36 +232,36 @@ public partial class CSICP_GG008Kdx
 
     public int? Gg008TpcbarratribId { get; set; }
 
-    public CSICP_GG008p? NavGG008pOutrosPrecos { get; set; }
-    public CSICP_BB001? NavBB001Filial { get; set; }
-    public CSICP_GG008? NavGG008Produto { get; set; }
-    public CSICP_GG001? NavGG001AlmoxarifadoPadrao { get; set; }
-    public CSICP_GG001? NavGG001AlmoxarifadoTransferencia { get; set; }
-    public CSICP_GG007? NavGG007UNVendaVarejo { get; set; }
-    public CSICP_GG007? NavGG007UNCompraVarejo { get; set; }
-    public CSICP_GG007? NavGG007UNVendaAtacado { get; set; }
-    public CSICP_GG007? NavGG007UNTributavel { get; set; }
-    public CSICP_Bb005? NavBB005_CCusto { get; set; }
-    public CSICP_Bb003? NavBB003_Moeda { get; set; }
-    public CSICP_BB012? NavBB012_Conta { get; set; }
-    public CSICP_GG008Con? NavGG008_Tipo_Conversao { get; set; }
-    public CSICP_GG008Gar? NavGG008_TipoPrazo { get; set; }
-    public CSICP_GG019Cgbar? NavGG019_tpCBarraTrib { get; set; }
-    public OsusrE9aCsicpGg008Tpcon? NavGG008_Tp_Contribuicao { get; set; }
-    public CSICP_Statica? NavGG008_AuditaSN { get; set; }
-    public CSICP_Statica? NavGG008_Desconto_SUFRAMA { get; set; }
-    public CSICP_Statica? NavGG008_Calcula_IRRF { get; set; }
-    public CSICP_Statica? NavGG008_Calcula_INSS { get; set; }
-    public CSICP_Statica? NavGG008_AlteraPrcVenda { get; set; }
-    public CSICP_Statica? NavGG008_Fornecedor_Canal { get; set; }
-    public CSICP_Statica? NavGG008_Controla_Saldo { get; set; }
-    public CSICP_Statica? NavGG008_Controle_Lote { get; set; }
-    public CSICP_Statica? NavGG008_Controle_Grade { get; set; }
-    public CSICP_Statica? NavGG008_Anuente { get; set; }
-    public CSICP_Statica? NavGG008_Restricao { get; set; }
-    public CSICP_Statica? NavGG008_PermSldNegativo { get; set; }
-    public CSICP_Statica? NavGG008_MinutaAutomatica { get; set; }
-    public CSICP_Statica? NavGG008_RequisAutomatica { get; set; }
+    public CSICP_GG008p? NavGG008pOutrosPrecos { get; set; } = null;
+    public CSICP_BB001? NavBB001Filial { get; set; } = null;
+    public CSICP_GG008? NavGG008Produto { get; set; } = null;
+    public CSICP_GG001? NavGG001AlmoxarifadoPadrao { get; set; } = null;
+    public CSICP_GG001? NavGG001AlmoxarifadoTransferencia { get; set; } = null;
+    public CSICP_GG007? NavGG007UNVendaVarejo { get; set; } = null;
+    public CSICP_GG007? NavGG007UNCompraVarejo { get; set; } = null;
+    public CSICP_GG007? NavGG007UNVendaAtacado { get; set; } = null;
+    public CSICP_GG007? NavGG007UNTributavel { get; set; } = null;
+    public CSICP_Bb005? NavBB005_CCusto { get; set; } = null;
+    public CSICP_Bb003? NavBB003_Moeda { get; set; } = null;
+    public CSICP_BB012? NavBB012_Conta { get; set; } = null;
+    public CSICP_GG008Con? NavGG008_Tipo_Conversao { get; set; } = null;
+    public CSICP_GG008Gar? NavGG008_TipoPrazo { get; set; } = null;
+    public CSICP_GG019Cgbar? NavGG019_tpCBarraTrib { get; set; } = null;
+    public OsusrE9aCsicpGg008Tpcon? NavGG008_Tp_Contribuicao { get; set; } = null;
+    public CSICP_Statica? NavGG008_AuditaSN { get; set; } = null;
+    public CSICP_Statica? NavGG008_Desconto_SUFRAMA { get; set; } = null;
+    public CSICP_Statica? NavGG008_Calcula_IRRF { get; set; } = null;
+    public CSICP_Statica? NavGG008_Calcula_INSS { get; set; } = null;
+    public CSICP_Statica? NavGG008_AlteraPrcVenda { get; set; } = null;
+    public CSICP_Statica? NavGG008_Fornecedor_Canal { get; set; } = null;
+    public CSICP_Statica? NavGG008_Controla_Saldo { get; set; } = null;
+    public CSICP_Statica? NavGG008_Controle_Lote { get; set; } = null;
+    public CSICP_Statica? NavGG008_Controle_Grade { get; set; } = null;
+    public CSICP_Statica? NavGG008_Anuente { get; set; } = null;
+    public CSICP_Statica? NavGG008_Restricao { get; set; } = null;
+    public CSICP_Statica? NavGG008_PermSldNegativo { get; set; } = null;
+    public CSICP_Statica? NavGG008_MinutaAutomatica { get; set; } = null;
+    public CSICP_Statica? NavGG008_RequisAutomatica { get; set; } = null;
 
-    public IEnumerable<CSICP_GG520> CS_NavListaSaldos { get; set; } = [];
+    public IEnumerable<CSICP_GG520>? CS_NavListaSaldos { get; set; } = null;
 }

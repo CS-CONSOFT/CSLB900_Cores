@@ -261,7 +261,8 @@ namespace CSCore.Ifs.Repository.GG._07X
 
         private static IQueryable<CSICP_GG073> FiltrosNecessariosEntidade(IQueryable<CSICP_GG073> query,
             string? Protocolo, string? BB001_EstabID, DateTime DataInicial,
-            DateTime DataFinal, string? BB005_CentroCustoID, string? GG001_AlmoxID, int? GG073_StatusID, int? GG073_TMov_ID)
+            DateTime DataFinal, string? BB005_CentroCustoID,
+            string? GG001_AlmoxID, int? GG073_StatusID, int? GG073_TMov_ID)
         {
 
             query = query.Where(e => e.Gg073DataMovimento >= DataInicial && e.Gg073DataMovimento <= DataFinal);
@@ -271,6 +272,7 @@ namespace CSCore.Ifs.Repository.GG._07X
             if (GG001_AlmoxID is not null) query = query.Where(e => e.Gg073Almoxmovd != null && e.Gg073Almoxmovd.Equals(GG001_AlmoxID));
             if (GG073_StatusID is not null) query = query.Where(e => e.Gg073Statusid == GG073_StatusID);
             if (GG073_TMov_ID is not null) query = query.Where(e => e.Gg073Tmovid == GG073_TMov_ID);
+            if (Protocolo is not null) query = query.Where(e => e.Gg073Protocolonro == Protocolo);
 
             return query;
         }
