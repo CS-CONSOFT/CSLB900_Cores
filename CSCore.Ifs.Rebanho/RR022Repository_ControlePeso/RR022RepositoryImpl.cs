@@ -32,12 +32,11 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             return CSICP_RR022;
         }
 
-        public async Task<(List<OsusrTo3CsicpRr022>, int)> GetListRR022ByRR021IdAsync(int In_TenantID, string In_RR021ID, PrmFiltrosRR022 prm)
+        public async Task<(List<OsusrTo3CsicpRr022>, int)> GetListPesoAnimalRR022Async(int In_TenantID, PrmFiltrosRR022 prm)
         {
             IQueryable<OsusrTo3CsicpRr022> query = _appDbContext.OsusrTo3CsicpRr022s
                 .AsNoTracking()
                 .AsSplitQuery()
-                .Where(e => e.Rr022Loteid == In_RR021ID)
                 .Include(e => e.NavRR001Animal_RR022)
                 .Include(e => e.NavRR021LoteXAnimal_RR022);
 
@@ -60,10 +59,51 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
                 throw new ArgumentNullException(nameof(Filtros), "Parâmetros de filtro inválidos.");
 
             return [
-                new FiltroAnimalIdRR022(filtros.In_AnimalId),
-                new FiltroPesoRR022(filtros.In_PesoMinimo, filtros.In_PesoMaximo)
-
+                new FiltroLoteIdRR022(filtros.In_LoteId),
+                new FiltroDataPesoRR022(filtros.In_DataPeso),
             ];
+        }
+
+        public async Task<List<DtoGetCountPesoAnimalRR022>> GetListCountPesoAnimalAsync(int In_TenantID, string In_LoteId)
+        {
+            var result = await _appDbContext.OsusrTo3CsicpRr022s
+                .AsNoTracking()
+                .Where(e => e.TenantId == In_TenantID
+                    && e.Rr022Loteid == In_LoteId)
+                .GroupBy(e => new { e.Rr022Dtpeso, e.Rr022Loteid })
+                .Select(g => new DtoGetCountPesoAnimalRR022
+                {
+                    Data = g.Key.Rr022Dtpeso,
+                    Lote = g.Key.Rr022Loteid,
+                    QtdReg = g.Count()
+                })
+                .OrderBy(x => x.Data)
+                .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<bool> ExisteRegistroPesoAsync(int In_TenantID, string In_LoteId, string In_AnimalId, DateTime In_DataPeso)
+        {
+            return await _appDbContext.OsusrTo3CsicpRr022s
+                .AsNoTracking()
+                .AnyAsync(e =>
+                    e.TenantId == In_TenantID &&
+                    e.Rr022Loteid == In_LoteId &&
+                    e.Rr022Animalid == In_AnimalId &&
+                    e.Rr022Dtpeso.HasValue &&
+                    e.Rr022Dtpeso.Value.Date == In_DataPeso.Date);
+        }
+
+        public async Task<OsusrTo3CsicpRr022> GetByIdRR022SimplesAsync(int In_TenantID, string In_IDRR022)
+        {
+            IQueryable<OsusrTo3CsicpRr022> query = _appDbContext.OsusrTo3CsicpRr022s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.TenantId == In_TenantID);
+
+            OsusrTo3CsicpRr022? CSICP_RR022 = await query.FirstOrDefaultAsync(e => e.Id == In_IDRR022);
+            return CSICP_RR022;
         }
     }
 }

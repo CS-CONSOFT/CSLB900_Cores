@@ -146,6 +146,12 @@ namespace CSCore.Ifs.Repository.GG._00X
             await CommitToDatabase();
             _appDbContext.Add(entity_gg008p);
             await CommitToDatabase();
+            cSICP_GG520.TenantId = entity.TenantId;
+            cSICP_GG520.NavGG001Almox = null;
+            cSICP_GG520.Gg520Codbarras = null;
+            cSICP_GG520.NavGG016Gradecoluna = null;
+            cSICP_GG520.NavGG016Gradlinha = null;
+            cSICP_GG520.Nav_GG008Kardex = null;
             _appDbContext.Add(cSICP_GG520);
             await CommitToDatabase();
             return entity;
@@ -203,5 +209,12 @@ namespace CSCore.Ifs.Repository.GG._00X
                              .AsNoTracking();
         }
 
+        public async Task<CSICP_GG008Kdx?> GetByIdSimplesParaAtualizarAsync(string gg008KdxID, int tenant)
+        {
+            return await _appDbContext.OsusrE9aCsicpGg008Kdxes
+                .Where(e => e.TenantId == tenant)
+                .Where(e => e.Gg008Kardexid == gg008KdxID)
+                .FirstOrDefaultAsync();
+        }
     }
 }

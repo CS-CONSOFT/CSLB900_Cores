@@ -1,5 +1,6 @@
 ﻿namespace CSCore.Domain.Interfaces.V2
 {
+    [Obsolete("Use IRepositorioBaseV2 instead")]
     public interface IRepositorioBase<TEntity>
         where TEntity : class
     {
@@ -18,6 +19,7 @@
     where TEntity : class
     {
         TEntity Create(TEntity entity);
+        int CreateRange(List<TEntity> entity);
         Task<int> BulkCreateAsync(List<TEntity> entities);
         Task<int> BulkCreateAsync(IEnumerable<TEntity> entities);
         Task<TEntity?> UpdateAsync(string id, int tenant, TEntity entity);

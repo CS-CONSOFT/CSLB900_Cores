@@ -1,4 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
+using CSLB900.MSTools.Extensao;
 using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520
@@ -79,7 +80,7 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520
 
         public string? Gg520Serie { get; set; }
 
-        public DateTime? Gg520Compraentrada { get; set; }
+        public string? Gg520Compraentrada { get; set; }
 
         public string? Gg520Gradelinhaid { get; set; }
 
@@ -164,7 +165,7 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520
                 Gg520DiasValidade = this.Gg520DiasValidade,
                 Gg520Docto = this.Gg520Docto,
                 Gg520Serie = this.Gg520Serie,
-                Gg520Compraentrada = this.Gg520Compraentrada,
+                Gg520Compraentrada = this.Gg520Compraentrada.ConverteStringVaziaParaDataNula(),
                 Gg520Gradelinhaid = this.Gg520Gradelinhaid,
                 Gg520Gradecolunaid = this.Gg520Gradecolunaid,
                 Gg520Codggradelinha = this.Gg520Codggradelinha,

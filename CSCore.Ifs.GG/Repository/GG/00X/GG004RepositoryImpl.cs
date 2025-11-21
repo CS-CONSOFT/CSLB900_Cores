@@ -16,6 +16,7 @@ namespace CSCore.Ifs.Repository.GG._00X
             int novoCodigo = IncrementarCodigo
             .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_GG004>
             (_appDbContext, gg004.Gg004Codigoclasse, null, "Gg004Codigoclasse", "Id");
+
             gg004.Gg004Codigoclasse = novoCodigo;
             _appDbContext.Add(gg004);
             await _appDbContext.SaveChangesAsync();

@@ -15,8 +15,7 @@ namespace CSCore.Ifs.Repository.GG
         private readonly AppDbContext _appDbContext = appDbContext;
         public async Task<CSICP_GG003> CreateAsync(CSICP_GG003 gg003)
         {
-            int novoCodigo = IncrementarCodigo
-            .IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_GG003>
+            int novoCodigo = IncrementarCodigo.IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<CSICP_GG003>
             (_appDbContext, gg003.Gg003Codigogrupo, null, "Gg003Codigogrupo", "Id");
             gg003.Gg003Codigogrupo = novoCodigo;
             _appDbContext.Add(gg003);

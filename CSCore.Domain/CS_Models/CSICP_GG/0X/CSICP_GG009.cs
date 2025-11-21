@@ -1,4 +1,6 @@
-﻿namespace CSCore.Domain.CS_Models.CSICP_GG;
+﻿using CSLB900.MSTools.GenerateId;
+
+namespace CSCore.Domain.CS_Models.CSICP_GG;
 
 public partial class CSICP_GG009
 {
@@ -17,4 +19,6 @@ public partial class CSICP_GG009
     public bool? Gg009IsActive { get; set; }
 
     public CSICP_GG001? NavFilialBB001 { get; set; }
+
+
 }

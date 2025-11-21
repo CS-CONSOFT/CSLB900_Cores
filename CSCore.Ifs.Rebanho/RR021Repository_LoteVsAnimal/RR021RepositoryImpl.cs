@@ -6,6 +6,7 @@ using CSCore.Ifs.Rebanho.RR021Repository_LoteVsAnimal.Filtros;
 using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace CSCore.Ifs.Rebanho.RR021Repository_LoteVsAnimal
 {
@@ -51,5 +52,19 @@ namespace CSCore.Ifs.Rebanho.RR021Repository_LoteVsAnimal
                 new FiltroDtRegistroRR021(filtros.In_DtRegistroInicio, filtros.In_DtRegistroFim)
             ];
         }
+
+        public async Task<List<OsusrTo3CsicpRr021>> GetListRR021ParaPopular(int In_TenantID, string In_LoteID)
+        {
+            var query = from rr021 in _appDbContext.OsusrTo3CsicpRr021s
+                        .AsNoTracking()
+
+                        where rr021.TenantId == In_TenantID
+                            && rr021.Rr021Loteid == In_LoteID
+                        select rr021; 
+
+            var listRR021Items = await query.ToListAsync();
+            return listRR021Items;
+        }
+
     }
 }
