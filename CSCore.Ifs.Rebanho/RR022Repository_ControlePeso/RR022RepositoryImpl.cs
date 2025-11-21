@@ -105,5 +105,42 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             OsusrTo3CsicpRr022? CSICP_RR022 = await query.FirstOrDefaultAsync(e => e.Id == In_IDRR022);
             return CSICP_RR022;
         }
+
+        public async Task GetExecutaProcessoLote(int InTenantID, PrmFiltrosRR022 prm)
+        {
+            // Busca RR022 com RR001 e RR021
+            prm.DeveExcederOMaxPageSize = true;
+            prm.PageSize = 999;
+
+            var listRR022 = await GetListPesoAnimalRR022Async(InTenantID, prm);
+
+            foreach (var rr022 in listRR022.Item1)
+            {
+                if (rr022 == null)
+                    continue;
+
+                rr022.CalcularIdadeDiasAtual();
+                rr022.CalcularIdadeDiasUlt();
+                rr022.CalcularGmd();
+                rr022.CalcularGpd();
+
+                _appDbContext.Update(rr022);
+            }
+        }
+
+        /*public async Task GetExecutaProcessoLote(int InTenantID, PrmFiltrosRR022 prm)
+        {
+            await _appDbContext.OsusrTo3CsicpRr022s
+                .Where(rr022 => rr022.TenantId == InTenantID
+                && rr022.Rr022Loteid == prm.In_LoteId
+                && rr022.Rr022Dtpeso == prm.In_DataPeso
+                && _appDbContext.OsusrTo3CsicpRr001s
+                .Any(rr001 => rr001.TenantId == InTenantID
+                && rr001.Id == rr022.Rr022Animalid
+                ))
+                .ExecuteUpdateAsync(e =>
+                    e.SetProperty(rr022 => rr022.Rr022Dtpeso, rr022.)
+                );
+        }*/
     }
 }
