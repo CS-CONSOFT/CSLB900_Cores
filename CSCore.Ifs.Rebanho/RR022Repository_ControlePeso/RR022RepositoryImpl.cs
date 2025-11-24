@@ -119,6 +119,9 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
                 if (rr022 == null)
                     continue;
 
+                rr022.Rr001Dtultpeso = rr022.NavRR001Animal_RR022.Rr001Dtultpeso;
+                rr022.Rr001Ultpeso = rr022.NavRR001Animal_RR022.Rr001Ultpeso;
+
                 rr022.CalcularIdadeDiasAtual();
                 rr022.CalcularIdadeDiasUlt();
                 rr022.CalcularGmd();
