@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.RabbitMQ.PublishObjetos.Rebanho
 {
-    internal class Rbt_CS_ProcessaRegistroPesoAnimal : IConsumerUsuarioId
+    public class Rbt_CS_ProcessaRegistroPesoAnimal : IConsumerUsuarioId
     {
         /// <summary>
         /// ID do Tenant
