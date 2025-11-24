@@ -8,5 +8,6 @@ namespace CSCore.Domain.Interfaces.GG._00X
     {
         Task<(IEnumerable<CSICP_GG011>, int)> GetListAsync(int tenant,int pageSize, int page, string? search, string? codigo, bool isActive = true);
         Task<CSICP_GG011?> GetByIdAsync(string id, int tenant);
+        Task<CSICP_GG011> CreateAsync(CSICP_GG011 gg011);
     }
 }

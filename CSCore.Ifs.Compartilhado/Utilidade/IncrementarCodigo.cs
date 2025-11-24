@@ -44,7 +44,7 @@ namespace CSCore.Ifs.Compartilhado.Utilidade
 
             if (usarMaxCodigo)
             {
-                if (novoCodigo == null || novoCodigo == 0)
+                if (novoCodigo == null || novoCodigo <= 0)
                 {
                     var maxCodigo = context.Set<T>()
                                            .Where(e => EF.Property<int>(e, "TenantId") == tenantId)
@@ -65,5 +65,71 @@ namespace CSCore.Ifs.Compartilhado.Utilidade
             }
             return novoCodigo.Value;
         }
+
+        public static string IncrementaCodigoSeVazio_SeIgualAoExistente_OuRetornaOMesmo<T>(
+    AppDbContext context,
+    string? novoCodigo,
+    string? in_currentID,
+    string nomePropriedadeCodigo,
+    string nomePropriedadeId,
+    bool usarMaxCodigo = true
+) where T : class
+        {
+            // Recupera a entidade pelo ID atual
+            var entidadeAtual = context.Set<T>()
+                .FirstOrDefault(e => EF.Property<string>(e, nomePropriedadeId) == in_currentID);
+
+            int? tenantId = null;
+
+            if (entidadeAtual != null)
+            {
+                var tenantIdProp = entidadeAtual.GetType().GetProperty("TenantId");
+                if (tenantIdProp == null)
+                    throw new Exception("Propriedade TenantId não encontrada na entidade.");
+
+                tenantId = (int?)tenantIdProp.GetValue(entidadeAtual);
+                if (tenantId is null)
+                    throw new Exception("Propriedade TenantId não encontrada na entidade.");
+            }
+            else
+            {
+                tenantId = context.Set<T>()
+                    .Select(e => EF.Property<int>(e, "TenantId"))
+                    .FirstOrDefault();
+
+                if (tenantId == 0)
+                    throw new Exception("Não foi possível determinar o TenantId para nova entidade. Informe um TenantId válido.");
+            }
+
+            if (usarMaxCodigo)
+            {
+                if (novoCodigo == null || novoCodigo.Equals("0") || int.Parse(novoCodigo) < 0)
+                {
+                    var maxCodigo = context.Set<T>()
+                                           .Where(e => EF.Property<int>(e, "TenantId") == tenantId)
+                                           .Select(e => EF.Property<string>(e, nomePropriedadeCodigo))
+                                           .AsEnumerable()
+                                           .Where(c => !string.IsNullOrWhiteSpace(c) && int.TryParse(c, out _))
+                                           .Select(c => int.Parse(c))
+                                           .DefaultIfEmpty(0)
+                                           .Max();
+
+                    return (maxCodigo + 1).ToString();
+                }
+            }
+
+            bool codeExists = context.Set<T>().Any(e =>
+                EF.Property<string>(e, nomePropriedadeCodigo) == novoCodigo &&
+                EF.Property<string>(e, nomePropriedadeId) != in_currentID &&
+                EF.Property<int>(e, "TenantId") == tenantId);
+
+            if (codeExists)
+            {
+                throw new Exception($"O código {novoCodigo} já existe. Por favor, forneça um código diferente.");
+            }
+            return novoCodigo;
+        }
     }
+
+
 }

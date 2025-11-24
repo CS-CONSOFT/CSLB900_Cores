@@ -2587,8 +2587,7 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
 
-                entity.HasOne(d => d.Nav_GG008Kardex)
-                .WithMany(e => e.CS_NavListaSaldos).HasForeignKey(d => d.Gg520KardexId);
+                entity.HasOne(d => d.Nav_GG008Kardex).WithMany(e => e.CS_NavListaSaldos).HasForeignKey(d => d.Gg520KardexId);
                 entity.HasOne(d => d.NavGG001Almox).WithOne().HasForeignKey<CSICP_GG520>(d => d.Gg520Almoxid);
                 entity.HasOne(d => d.NavGG016Gradecoluna).WithOne().HasForeignKey<CSICP_GG520>(d => d.Gg520Gradecolunaid);
                 entity.HasOne(d => d.NavGG016Gradlinha).WithOne().HasForeignKey<CSICP_GG520>(d => d.Gg520Gradelinhaid);

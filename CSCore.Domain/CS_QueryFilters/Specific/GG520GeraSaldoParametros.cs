@@ -15,17 +15,17 @@
         /// Número de série do produto. Se o produto não for controlado por número de série, o valor deve ser nulo ou zero.
         /// </summary>
         public string? prmDescricao { get; set; } = default;
-        public string? lote { get; set; } = string.Empty;
-        public string? subLote { get; set; } = string.Empty;
-        public string? descricaoLote { get; set; } = string.Empty;
-        public string? gradeLinhaID { get; set; } = string.Empty;
-        public string? gradeColunaID { get; set; } = string.Empty;
+        public string? lote { get; set; } = null;
+        public string? subLote { get; set; } = null;
+        public string? descricaoLote { get; set; } = null;
+        public string? gradeLinhaID { get; set; } = null;
+        public string? gradeColunaID { get; set; } = null;
         public bool? prm_ExbirEmConsulta { get; set; } = true;
-        public string? prm_LocalizacaoWMS { get; set; } = string.Empty;
-        public string? contaID { get; set; } = string.Empty;
-        public string? usuarioID { get; set; } = string.Empty;
+        public string? prm_LocalizacaoWMS { get; set; } = null;
+        public string? contaID { get; set; } = null;
+        public string? usuarioID { get; set; } = null;
         public bool? isPDV { get; set; } = default;
-        public string? Prm_SaldoId_Origem_VendaFutura { get; set; } = string.Empty;
+        public string? Prm_SaldoId_Origem_VendaFutura { get; set; } = null;
 
     }
 }
