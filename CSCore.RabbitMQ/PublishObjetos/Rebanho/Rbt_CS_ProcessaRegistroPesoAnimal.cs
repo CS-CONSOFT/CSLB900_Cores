@@ -1,9 +1,14 @@
-using CSCore.RabbitMQ.Configuration;
+﻿using CSCore.RabbitMQ.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace CSCore.RabbitMQ.PublishObjetos.Rebanho
 {
-    public class Rbt_CS_ProcessaRegistroPesoAnimal : IConsumerUsuarioId
+    internal class Rbt_CS_ProcessaRegistroPesoAnimal : IConsumerUsuarioId
     {
         /// <summary>
         /// ID do Tenant
@@ -22,7 +27,7 @@ namespace CSCore.RabbitMQ.PublishObjetos.Rebanho
         public DateTime DataPeso { get; set; }
 
         /// <summary>
-        /// ID do usu�rio que iniciou o processamento
+        /// ID do usuário que iniciou o processamento
         /// </summary>
         public string UsuarioID { get; set; } = string.Empty;
     }

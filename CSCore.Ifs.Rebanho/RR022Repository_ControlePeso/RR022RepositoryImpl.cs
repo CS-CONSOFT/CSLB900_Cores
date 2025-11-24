@@ -106,7 +106,6 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             return CSICP_RR022;
         }
 
-        // Processa o lote e atualiza os pesos e datas dos animais
         public async Task GetExecutaProcessaPesoAnimalAsync(int InTenantID, PrmFiltrosRR022 prm)
         {
             // Busca RR022 com RR001 e RR021
@@ -130,6 +129,7 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
                 rr022.NavRR001Animal_RR022.Rr001Ultpeso = rr022.Rr022Peso;
                 rr022.NavRR001Animal_RR022.Rr001Ultidadediaspeso = rr022.Rr022Idadediasult;
             }
+
             await _appDbContext.SaveChangesAsync();
         }
 
@@ -138,8 +138,7 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             IQueryable<OsusrTo3CsicpRr022> query = _appDbContext.OsusrTo3CsicpRr022s
                 .AsSplitQuery()
                 .Where(e => e.Rr022IsProcessado == false)
-                .Include(e => e.NavRR001Animal_RR022)
-                .Include(e => e.NavRR021LoteXAnimal_RR022);
+                .Include(e => e.NavRR001Animal_RR022);
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));
@@ -152,7 +151,5 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
 
             return (listItems, count);
         }
-
-        // Fim do código adicionado para esse processo
     }
 }
