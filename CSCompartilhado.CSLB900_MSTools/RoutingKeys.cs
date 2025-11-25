@@ -124,6 +124,14 @@ namespace CSCore.RabbitMQ
         public static string FilaProcessaLoteEAtualizaPesoRebanho => "Queue_ProcessaLoteEAtualizaPesoRebanho";
         public static string ExchangeProcessaLoteEAtualizaPesoRebanho => "Exchange_ProcessaLoteEAtualizaPesoRebanho";
         public static string ActionProcessaLoteAtualizaPeso => "Action_ProcessaLoteEAtualizaPesoRebanho";
+
+        //PROCESSAR REGISTRO PESO ANIMAL REBANHO
+
+        public const string ExchangeProcessaRegistroPesoAnimalRebanho = "exchange_processa_registro_peso_animal_rebanho";
+
+        public const string FilaProcessaRegistroPesoAnimalRebanho = "fila_processa_registro_peso_animal_rebanho";
+
+        public const string ActionProcessaRegistroPesoAnimal = "action_processa_registro_peso_animal";
     }
 }
 
