@@ -107,20 +107,16 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             return CSICP_RR022;
         }
 
-        public async Task<CSResult<string>> GetExecutaProcessaPesoAnimalAsync(int InTenantID, PrmFiltrosRR022 prm)
+        public async Task<CSResult<string>> GetExecutaProcessaPesoAnimalAsync(int InTenantID, string? InLoteId, DateTime? InDataPeso)
         {
-            // Busca RR022 com RR001 e RR021
-            prm.DeveExcederOMaxPageSize = true;
-            prm.PageSize = 999;
-
-            var listRR022 = await GetListPesoAnimalRR022ParaProcessoAsync(InTenantID, prm);
-            if (listRR022.Item2 == 0)
+            var listRR022 = await GetListPesoAnimalRR022ParaProcessoAsync(InTenantID, InLoteId, InDataPeso);
+            if (listRR022.Count == 0)
                 return CSResult<string>.Failure("Nenhum registro encontrado para processar");
 
             var erros = new List<string>();
             int processados = 0;
 
-            foreach (var rr022 in listRR022.Item1)
+            foreach (var rr022 in listRR022)
             {
                 if (rr022 == null)
                     continue;
@@ -176,23 +172,31 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             return CSResult<string>.Success($"{processados} registros processados com sucesso.");
         }
 
-        public async Task<(List<OsusrTo3CsicpRr022>, int)> GetListPesoAnimalRR022ParaProcessoAsync(int In_TenantID, PrmFiltrosRR022 prm)
+        public async Task<List<OsusrTo3CsicpRr022>> GetListPesoAnimalRR022ParaProcessoAsync(int InTenantID, string? InLoteId, DateTime? InDataPeso)
         {
             IQueryable<OsusrTo3CsicpRr022> query = _appDbContext.OsusrTo3CsicpRr022s
                 .AsSplitQuery()
-                .Where(e => e.Rr022IsProcessado == false)
+                .Where(e => e.TenantId == InTenantID && e.Rr022IsProcessado == false)
                 .Include(e => e.NavRR001Animal_RR022);
 
-            // Aplica filtros
-            query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));
+            // Filtro de lote
+            if (!string.IsNullOrWhiteSpace(InLoteId))
+                query = query.Where(e => e.Rr022Loteid == InLoteId);
 
-            var queryCount = query;
-            var count = await queryCount.CountAsync();
+            // Filtro de data
+            if (InDataPeso.HasValue)
+            {
+                var dataInicio = InDataPeso.Value.Date;
+                var dataFim = dataInicio.AddDays(1);
+                query = query.Where(e => e.Rr022Dtpeso.HasValue &&
+                                        e.Rr022Dtpeso.Value >= dataInicio &&
+                                        e.Rr022Dtpeso.Value < dataFim);
+            }
 
-            query = query.PaginacaoNoBanco(prm.PageNumber, prm.PageSize);
-            var listItems = await query.ToListAsync();
+            // Retorna até 999 registros por vez (ajuste conforme necessário)
+            var listItems = await query.Take(999).ToListAsync();
 
-            return (listItems, count);
+            return listItems;
         }
     }
 }
