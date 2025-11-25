@@ -13,7 +13,6 @@ namespace CSCore.RabbitMQ.PublishObjetos.Rebanho
         /// <summary>
         /// ID do Tenant
         /// </summary>
-        [JsonIgnore]
         public int TenantID { get; set; }
 
         /// <summary>
