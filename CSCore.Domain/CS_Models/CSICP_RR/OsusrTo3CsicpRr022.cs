@@ -42,84 +42,103 @@ public partial class OsusrTo3CsicpRr022
 
     public OsusrTo3CsicpRr021? NavRR021LoteXAnimal_RR022 { get; set; } = null;
 
-    public void CalcularIdadeDiasAtual()
+    public CSResult<string> CalcularIdadeDiasAtual()
     {
+
         if (this.NavRR001Animal_RR022 == null)
-        {
-            throw new InvalidOperationException("A navegação NavRR001Animal_RR022 não está carregada.");
-        }
+            return CSResult<string>.Failure("Os dados do animal não estão disponíveis.");
+
+
         if (this.NavRR001Animal_RR022.Rr001Dtnascimento == null)
-        {
-            throw new InvalidOperationException("A data de nascimento do animal não está definida.");
-        }
+            return CSResult<string>.Failure("A data de nascimento do animal não está definida.");
 
         // Idade em dias atual = data atual - data nascimento
-        this.Rr022Idadediasatual = (int)(DateTime.UtcNow.ToLocalTime() - this.NavRR001Animal_RR022.Rr001Dtnascimento.Value)
-            .TotalDays;
+        var idadeDiasAtualSub = (this.Rr022Dtpeso - this.NavRR001Animal_RR022.Rr001Dtnascimento.Value);
+        this.Rr022Idadediasatual = (int?)idadeDiasAtualSub?.TotalDays;
+
+        return CSResult<string>.Success("Idade em dias atual calculada com sucesso.");
     }
 
-    public void CalcularIdadeDiasUlt()
+    public CSResult<string> CalcularIdadeDiasUlt()
     {
         if (this.NavRR001Animal_RR022 == null)
-            throw new InvalidOperationException("A navegação NavRR001Animal_RR022 não está carregada.");
+            return CSResult<string>.Failure("Os dados do animal não estão disponíveis.");
 
         if (this.NavRR001Animal_RR022.Rr001Dtnascimento == null)
-            throw new InvalidOperationException("A data de nascimento do animal não está definida.");
-
-        if (this.NavRR001Animal_RR022.Rr001Dtultpeso == null)
-            throw new InvalidOperationException("A data do último peso do animal não está definida.");
+            return CSResult<string>.Failure("A data de nascimento do animal não está definida.");
 
         // Idade em dias do ultimo peso = data ultimo peso - data nascimento
         this.Rr022Idadediasult = (int?)(NavRR001Animal_RR022.Rr001Dtultpeso.Value - NavRR001Animal_RR022.Rr001Dtnascimento.Value).TotalDays;
+        
+        return CSResult<string>.Success("Idade em dias do último peso calculada com sucesso.");
     }
 
-    public void CalcularGmd()
+    /// <summary>
+    /// Calcular GMD (Ganho Médio Diário)
+    /// Métrica GMD (Ganho Médio Diário)
+    /// GMD = (peso atual – último peso) / (data peso atual – última data peso)
+    /// Se não houver último peso, considera peso de nascimento.
+    /// Se não houver valor de nascimento, considera zero.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+
+    public CSResult<string> CalcularGmd()
     {
         if (this.NavRR001Animal_RR022 == null)
-            throw new InvalidOperationException("A navegação NavRR001Animal_RR022 não está carregada.");
+            return CSResult<string>.Failure("Os dados do animal não estão disponíveis.");
 
         if (!this.Rr022Peso.HasValue)
-            throw new InvalidOperationException("O peso atual do animal não está definido.");
+            return CSResult<string>.Failure("O peso atual do animal não está definido.");
 
         if (!this.Rr022Dtpeso.HasValue)
-            throw new InvalidOperationException("A data do peso atual não está definida.");
+            return CSResult<string>.Failure("A data do peso atual não está definida.");
 
-        decimal pesoAnterior = this.Rr001Ultpeso
+        // Validar último peso
+        decimal ultimoPeso = this.Rr001Ultpeso
                               ?? this.NavRR001Animal_RR022.Rr001Pesonasc
-                              ?? throw new InvalidOperationException("Não há peso anterior disponível (último peso ou peso de nascimento).");
+                              ?? 0m;
 
-        DateTime dataAnterior = this.Rr001Dtultpeso
-                               ?? this.NavRR001Animal_RR022.Rr001Dtnascimento
-                               ?? throw new InvalidOperationException("Não há data anterior disponível (data do último peso ou data de nascimento).");
+        if (ultimoPeso == 0m)
+            return CSResult<string>.Failure("Não há último peso disponível (último peso ou peso de nascimento).");
 
-        int diasDecorridos = (int)(this.Rr022Dtpeso.Value - dataAnterior).TotalDays;
+        // Validar última data de peso
+        DateTime? ultimaDataPeso = this.Rr001Dtultpeso
+                                   ?? this.NavRR001Animal_RR022.Rr001Dtnascimento;
+
+        if (ultimaDataPeso == null)
+            return CSResult<string>.Failure("Não há última data disponível (data do último peso ou data de nascimento).");
+
+        int diasDecorridos = (int)(this.Rr022Dtpeso.Value - ultimaDataPeso.Value).TotalDays;
 
         if (diasDecorridos <= 0)
-            throw new InvalidOperationException("A diferença entre as datas deve ser maior que zero.");
+            return CSResult<string>.Failure("A diferença entre as datas deve ser maior que zero.");
 
-        this.Rr022Gmd = (this.Rr022Peso.Value - pesoAnterior) / diasDecorridos;
+        this.Rr022Gmd = (this.Rr022Peso.Value - ultimoPeso) / diasDecorridos;
+        return CSResult<string>.Success("GMD calculado com sucesso.");
     }
 
-    public void CalcularGpd()
+    /// <summary>
+    /// Métrica GPD
+    /// GPD = (peso atual – peso nascimento, caso não exista é 30 para macho ou 28 para fêmea) / (data peso atual – última data pesagem)
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
+    public CSResult<string> CalcularGpd()
     {
         // Validações da navegação
         if (this.NavRR001Animal_RR022 == null)
-            throw new InvalidOperationException("A navegação NavRR001Animal_RR022 não está carregada.");
+            return CSResult<string>.Failure("A navegação NavRR001Animal_RR022 não está carregada.");
 
         // Validação do peso atual
         if (!this.Rr022Peso.HasValue)
-            throw new InvalidOperationException("O peso atual do animal não está definido.");
+            return CSResult<string>.Failure("O peso atual do animal não está definido.");
 
         // Validação da data atual do peso
         if (!this.Rr022Dtpeso.HasValue)
-            throw new InvalidOperationException("A data do peso atual não está definida.");
-
-        // Validação da data da última pesagem
-        if (!this.Rr001Dtultpeso.HasValue)
-            throw new InvalidOperationException("A data da última pesagem não está definida.");
+            return CSResult<string>.Failure("A data do peso atual não está definida.");
 
         // Obter peso de nascimento ou usar peso padrão baseado no sexo
         // Sexo: 1 = Macho (30 kg), 2 = Fêmea (28 kg)
+        #warning @colocar essa regra de peso nascimento lá na classe DEFINIR PADRÕES feito pelo Valter
         decimal pesoNascimento;
         if (this.NavRR001Animal_RR022.Rr001Pesonasc.HasValue)
         {
@@ -129,7 +148,7 @@ public partial class OsusrTo3CsicpRr022
         {
             // Se não houver peso de nascimento, usar peso padrão baseado no sexo
             if (!this.NavRR001Animal_RR022.Rr001Sexoid.HasValue)
-                throw new InvalidOperationException("O sexo do animal não está definido para calcular o peso padrão de nascimento.");
+                return CSResult<string>.Failure("O sexo do animal não está definido para calcular o peso padrão de nascimento.");
 
             pesoNascimento = this.NavRR001Animal_RR022.Rr001Sexoid.Value == 1 ? 30m : 28m;
         }
@@ -139,9 +158,11 @@ public partial class OsusrTo3CsicpRr022
 
         // Validar que há dias decorridos para evitar divisão por zero
         if (diasDecorridos <= 0)
-            throw new InvalidOperationException("A diferença entre as datas deve ser maior que zero.");
+            return CSResult<string>.Failure("A diferença entre as datas deve ser maior que zero.");
 
         // Calcular GPD: (Peso Atual - Peso Nascimento) / Dias Decorridos
         this.Rr022Gpd = (this.Rr022Peso.Value - pesoNascimento) / diasDecorridos;
+        
+        return CSResult<string>.Success("GPD calculado com sucesso.");
     }
 }
