@@ -120,7 +120,7 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             {
                 if (rr022 == null)
                     continue;
-
+                //Faço uma validação para esse NAVAnimal?
                 rr022.NavRR001Animal_RR022.DefinirUltimoPesoQuandoOPesoENull(
                     rr022.NavRR001Animal_RR022.Rr001Dtnascimento, rr022.NavRR001Animal_RR022.Rr001Pesonasc);
                 
@@ -194,7 +194,7 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             }
 
             // Retorna até 999 registros por vez (ajuste conforme necessário)
-            var listItems = await query.Take(999).ToListAsync();
+            var listItems = await query.Take(999).ToListAsync(); //verificar essa quantidade de registros (Aumenta ou diminui?)
 
             return listItems;
         }
