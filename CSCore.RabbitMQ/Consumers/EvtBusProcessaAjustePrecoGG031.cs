@@ -68,7 +68,7 @@ namespace CSCore.RabbitMQ.Bus
                     tenantId: context.Message.tenantId,
                     nomeUsuario: context.Message.usuarioID,
                     severidade: "0",
-                    mensagem: "Falha ao realizar ajuste de preço: " + HandlerExceptionMessage.CreateExceptionMessage(ex),,
+                    mensagem: "Falha ao realizar ajuste de preço: " + HandlerExceptionMessage.CreateExceptionMessage(ex),
                     jsonBody: JsonSerializer.Serialize(context.Message));
 
                 await _hubContext.Clients.Group("ajuste-de-preco-gg031-" + context.Message.usuarioID)

@@ -97,6 +97,7 @@ namespace CSCore.Ifs.Repository.GG
             var q1 = _appDbContext.OsusrE9aCsicpGg003s
                     .Where(e => e.TenantId == tenant).AsNoTracking()
                     .Where(e => e.Gg003Isactive == isActive)
+                    .OrderBy(e => e.Gg003Descgrupo)
                     .AsQueryable();
 
             q1 = FiltraQuandoExisteFiltros(search, q1, isActive);
