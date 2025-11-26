@@ -93,9 +93,9 @@ namespace CSCore.Ifs.Repository.GG._00X
 
             return lista;
         }
-        public async Task<(IEnumerable<CSICP_GG008Kdx>, int)> GetListAsync(int tenant, string produtoGG008_ID, int pageSize, int page)
+        public async Task<(IEnumerable<CSICP_GG008Kdx>, int)> GetListAsync(int tenant, string produtoGG008_ID,bool? isActive, int pageSize, int page)
         {
-            IQueryable<CSICP_GG008Kdx> query = PreparaQueryBaseGG008Kdx(tenant, produtoGG008_ID);
+            IQueryable<CSICP_GG008Kdx> query = PreparaQueryBaseGG008Kdx(tenant, produtoGG008_ID, isActive);
             query = query
             .Include(e => e.NavGG008pOutrosPrecos)
             .Include(e => e.NavBB001Filial)
@@ -164,7 +164,7 @@ namespace CSCore.Ifs.Repository.GG._00X
 
         public async Task UpdateTodasMoedaAsync(int tenant, string? Gg008Moedaid, decimal? valorMoeda, string produtoID)
         {
-            IQueryable<CSICP_GG008Kdx> query = PreparaQueryBaseGG008Kdx(tenant, produtoID);
+            IQueryable<CSICP_GG008Kdx> query = PreparaQueryBaseGG008Kdx(tenant, produtoID, isActive: null);
             List<CSICP_GG008Kdx> listaKDX = await query.ToListAsync();
             listaKDX.ForEach(async curr => await AtualizaKardexApenasMoeda(curr.Gg008Kardexid, tenant, Gg008Moedaid, valorMoeda, produtoID));
         }
@@ -201,12 +201,14 @@ namespace CSCore.Ifs.Repository.GG._00X
             return csicp_gg008kdx;
         }
 
-        private IQueryable<CSICP_GG008Kdx> PreparaQueryBaseGG008Kdx(int tenant, string produtoGG008_ID)
+        private IQueryable<CSICP_GG008Kdx> PreparaQueryBaseGG008Kdx(int tenant, string produtoGG008_ID, bool? isActive)
         {
-            return _appDbContext.OsusrE9aCsicpGg008Kdxes
+            var query = _appDbContext.OsusrE9aCsicpGg008Kdxes
                              .Where(e => e.TenantId == tenant)
                              .Where(e => e.Gg008Produtoid == produtoGG008_ID)
                              .AsNoTracking();
+            if(isActive != null) query = query.Where(e => e.Gg008IsActive== isActive);
+            return query;
         }
 
         public async Task<CSICP_GG008Kdx?> GetByIdSimplesParaAtualizarAsync(string gg008KdxID, int tenant)
