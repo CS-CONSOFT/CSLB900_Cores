@@ -13,6 +13,16 @@
         Task<TEntity?> RemoveAsync(long id, int tenant);
         object GetEntityId(TEntity entity);
         Task CommitToDatabase();
+
+        Task SalvarLogAsync(
+    int tenantId,
+    string nomeUsuario,
+    string severidade,
+    string mensagem,
+    string? jsonHeader = null,
+    string? jsonQuery = null,
+    string? jsonBody = null,
+    bool isExibiu = false);
     }
 
     public interface IRepositorioBaseV2<TEntity>
@@ -27,5 +37,15 @@
         Task<TEntity?> RemoveAsync(string id, int tenant);
         Task<TEntity?> RemoveAsync(long id, int tenant);
         object GetEntityId(TEntity entity);
+
+        Task SalvarLogAsync(
+    int tenantId,
+    string nomeUsuario,
+    string severidade,
+    string mensagem,
+    string? jsonHeader = null,
+    string? jsonQuery = null,
+    string? jsonBody = null,
+    bool isExibiu = false);
     }
 }
