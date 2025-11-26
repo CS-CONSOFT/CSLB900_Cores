@@ -152,7 +152,6 @@ public partial class OsusrTo3CsicpRr022
 
             pesoNascimento = this.NavRR001Animal_RR022.Rr001Sexoid.Value == 1 ? 30m : 28m;
         }
-
         // Calcular diferença de dias
         int diasDecorridos = (int)(this.Rr022Dtpeso.Value - this.Rr001Dtultpeso.Value).TotalDays;
 
