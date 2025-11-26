@@ -25,11 +25,12 @@ namespace CSCore.Ifs.CG.Repository.CG08X.CG081
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<(List<Osusr8dwCsicpCg081>, int)> GetListAsync(int InTenantID, long InCG081ID, string InUsuarioID, int InPageNumber, int InPageSize)
+        public async Task<(List<Osusr8dwCsicpCg081>, int)> GetListAsync(int InTenantID, long InCG080ID, string InUsuarioID, int InPageNumber, int InPageSize)
         {
             IQueryable<Osusr8dwCsicpCg081> query = _appDbContext.Osusr8dwCsicpCg081s
                 .AsNoTracking()
-                .Where(e => e.TenantId == InTenantID && e.Cg081Id == InCG081ID); //Verificar esse id e usuario se estão corretos
+                .Where(e => e.TenantId == InTenantID 
+                    && e.Cg081Contrelconfid == InCG080ID);
 
             var queryCount = query;
             var count = await queryCount.CountAsync();

@@ -7,8 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Processos\ProcessaLote\**" />
+    <EmbeddedResource Remove="Processos\ProcessaLote\**" />
+    <None Remove="Processos\ProcessaLote\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CSCore.Application.Dto\CSCore.Application.Dto.csproj" />
     <ProjectReference Include="..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Processos\" />
   </ItemGroup>
 
 </Project>

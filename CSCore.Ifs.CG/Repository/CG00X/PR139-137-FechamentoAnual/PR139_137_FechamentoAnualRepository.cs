@@ -105,30 +105,30 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
         /// <returns></returns>
         public async Task CS_GeraSaldoConta(int Tenant, PR139137_PrmCS_GeraSaldoConta PrmInput, List<string> WorkListaContasID)
         {
-            var MesAux = PrmInput.InMesFechamento;
             var WorkListaGG009ToCreate = new List<CSICP_CG009>();
+            
             foreach (var current in WorkListaContasID)
             {
                 if (current == null)
-                {
-                    MesAux += 1;
                     continue;
+
+                for (int mes = 1; mes <= 12; mes++)
+                {
+                    //no mes 0 pega o saldo anterior da conta
+                    //juntar a transferencia aqui com as validações
+                    var WorkGG009ToCreate
+                        = CSICP_CG009.CreateInstanceComValoresDebitoCreditoESaldoZerados(
+                            tenant: Tenant,
+                            ICS_GenerateId: PrmInput.CS_GenerateId,
+                            cg009FilialId: PrmInput.InFilialID,
+                            cg009TipoSaldoId: PrmInput.InTipoSaldoID,
+                            cg009ContaId: current,
+                            cg009Ano: PrmInput.InAnoFechamento + 1,
+                            cg009Mes: mes);
+
+                    WorkGG009ToCreate.NavCG006Conta_CG009 = null;
+                    WorkListaGG009ToCreate.Add(WorkGG009ToCreate);
                 }
-
-                if (MesAux > 12) break;
-
-                var WorkGG009ToCreate
-                    = CSICP_CG009.CreateInstanceComValoresDebitoCreditoESaldoZerados(
-                        tenant: Tenant,
-                        ICS_GenerateId: PrmInput.CS_GenerateId,
-                        cg009FilialId: PrmInput.InFilialID,
-                        cg009TipoSaldoId: PrmInput.InTipoSaldoID,
-                        cg009ContaId: current,
-                        cg009Ano: PrmInput.InAnoFechamento,
-                        cg009Mes: MesAux);
-
-                WorkListaGG009ToCreate.Add(WorkGG009ToCreate);
-                MesAux += 1;
             }
             this.appDbContext.Osusr8dwCsicpCg009s.AddRange(WorkListaGG009ToCreate);
         }
@@ -142,18 +142,22 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
             PR139137_PrmCS_TransSaldoCnt prm,
             List<string> WorkListaContasID)
         {
-            var CS_SaldoAtual_Conta = this.CS_SaldoAtual_Conta_Otimizado(Tenant, prm, WorkListaContasID);
-            var ListaContasAnoNovoMesZero = GetSaldoContaCG009AnoNovoMes0(Tenant, WorkListaContasID, prm.InAnoNovo, prm.InMes, prm.InCG008_ID_TipoSaldo, prm.InFilialID);
-
-            await Task.WhenAll(CS_SaldoAtual_Conta, ListaContasAnoNovoMesZero);
+            var CS_SaldoAtual_Conta = await this.CS_SaldoAtual_Conta_Otimizado(Tenant, prm, WorkListaContasID);
+            var ListaContasAnoNovoMesZero = await GetSaldoContaCG009AnoNovoMes0(Tenant, WorkListaContasID, prm.InAnoNovo, prm.InMes, prm.InCG008_ID_TipoSaldo, prm.InFilialID);
 
             var ListaCG009Update = new List<CSICP_CG009>();
             var ListaCG009Create = new List<CSICP_CG009>();
 
-            for (int i = 0; i < CS_SaldoAtual_Conta.Result.Count; i++)
+            for (int i = 0; i < CS_SaldoAtual_Conta.Count; i++)
             {
-                var saldoAtualConta = CS_SaldoAtual_Conta.Result[i];
-                var contaAnoNovoMesZero = ListaContasAnoNovoMesZero.Result.FirstOrDefault(c => c.Cg009ContaId == saldoAtualConta.ContaId);
+                var saldoAtualConta = CS_SaldoAtual_Conta[i];
+                var contaAnoNovoMesZero = ListaContasAnoNovoMesZero.FirstOrDefault(c => c.Cg009ContaId == saldoAtualConta.ContaId);
+                if (contaAnoNovoMesZero == null) continue;
+
+                contaAnoNovoMesZero.NavCG006Conta_CG009 = null;
+                contaAnoNovoMesZero.NavBB001Estab_CG009 = null;
+                contaAnoNovoMesZero.NavCG008TipoSaldo_CG009 = null;
+
 
                 if (CS_ContaAnoNovoMesZeroExiste(contaAnoNovoMesZero))
                     CS_AtualizaSaldoContaExistente(ListaCG009Update, saldoAtualConta, contaAnoNovoMesZero);
@@ -216,12 +220,20 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
                    cg009ContaId: saldoAtualConta.ContaId,
                    cg009Ano: prm.InAnoNovo,
                    Saldo: saldoAtualConta.SaldoAtual);
+            WorkGG009ToCreate.NavCG006Conta_CG009 = null;
+            WorkGG009ToCreate.NavBB001Estab_CG009 = null;
+            WorkGG009ToCreate.NavCG008TipoSaldo_CG009 = null;
+
             ListaCG009Create.Add(WorkGG009ToCreate);
         }
 
         private static void CS_AtualizaSaldoContaExistente(List<CSICP_CG009> ListaCG009Update, SaldoContaResultV2 saldoAtualConta, CSICP_CG009? contaAnoNovoMesZero)
         {
             contaAnoNovoMesZero!.Cg009Saldo = saldoAtualConta.SaldoAtual;
+            contaAnoNovoMesZero.NavCG006Conta_CG009 = null;
+            contaAnoNovoMesZero.NavBB001Estab_CG009 = null;
+            contaAnoNovoMesZero.NavCG008TipoSaldo_CG009 = null;
+            
             ListaCG009Update.Add(contaAnoNovoMesZero!);
         }
 
@@ -313,7 +325,7 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
                 .Where(e => e.Cg009TipoSaldoId == prm.InCG008_ID_TipoSaldo)
                 .Where(e => e.Cg009Ano == prm.InAnoAtual)
                 .Where(e => e.Cg009Mes <= prm.GetMesFinal() && e.Cg009Mes >= 0)
-                .Where(e => e.NavCG006Conta_CG009.Cg006Descricao == "CAIXA DA MATRIZ")
+                //.Where(e => e.NavCG006Conta_CG009.Cg006Descricao == "CAIXA DA MATRIZ")
                 .Where(e => batch.Contains(e.Cg009ContaId))
                 .Select(e => new DadosCG009(
                     e.Cg009ContaId,
