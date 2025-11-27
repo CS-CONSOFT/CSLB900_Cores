@@ -10,21 +10,21 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
 {
     public interface IPR139_137_FechamentoAnualRepository
     {
-        Task CS_GeraSaldoConta(int Tenant, PR139137_PrmCS_GeraSaldoConta PrmInput, List<string> WorkListaContasID);
-        Task<List<CSICP_CG009>> GetSaldoContaCG009AnoNovoMes0(
+        Task CS_GeraSaldoContaComTransferenciaDeSALDO(int Tenant, PR139137_PrmCS_TransSaldoCnt prm, PR139137_PrmCS_GeraSaldoConta PrmInput, List<string> WorkListaContasID);
+        Task<IEnumerable<CSICP_CG009>> GetSaldoContaCG009AnoNovoMes0(
             int Tenant,
-            List<string> WorkListaContasID,
+            IEnumerable<string> ContasID,
             int InAnoNovo,
             int InMes,
             string TipoSaldo,
-            string Filial);
+            string Filial
+            );
 
         Task<List<string>> GetPlanoContas(int InTenant, string InFilial);
 
-        Task CS_TransSaldoCnt(
-            int Tenant,
-            PR139137_PrmCS_TransSaldoCnt prm,
-            List<string> WorkListaContasID);
+        Task CS_TransSaldoCnt(int Tenant,
+             PR139137_PrmCS_TransSaldoCnt prm,
+             List<SaldoContaResultV2> CS_SaldoAtual_Conta);
 
         Task<List<SaldoContaResult>> CS_SaldoAtual_Conta(
             int Tenant,

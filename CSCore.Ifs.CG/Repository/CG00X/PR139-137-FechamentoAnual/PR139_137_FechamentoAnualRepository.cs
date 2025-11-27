@@ -3,7 +3,9 @@ using CSCore.Domain.CS_Models.CSICP_CG;
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.GenerateId;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,9 +45,9 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
             this.appDbContext = appDbContext;
         }
 
-        public async Task<List<CSICP_CG009>> GetSaldoContaCG009AnoNovoMes0(
+        public async Task<IEnumerable<CSICP_CG009>> GetSaldoContaCG009AnoNovoMes0(
             int Tenant,
-            List<string> WorkListaContasID,
+            IEnumerable<string> ContasID,
             int InAnoNovo,
             int InMes,
             string TipoSaldo,
@@ -58,7 +60,7 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
                 .Where(e => e.Cg009TipoSaldoId == TipoSaldo)
                 .Where(e => e.Cg009Ano == InAnoNovo)
                 .Where(e => e.Cg009Mes == InMes)
-                .Where(e => WorkListaContasID.Contains(e.Cg009ContaId))
+                .Where(e => ContasID.Contains(e.Cg009ContaId))
                 .ToListAsync();
             return WorkListaCG009;
         }
@@ -103,34 +105,100 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
         /// <param name="Tenant"></param>
         /// <param name="InPrmGeraSaldoProx"></param>
         /// <returns></returns>
-        public async Task CS_GeraSaldoConta(int Tenant, PR139137_PrmCS_GeraSaldoConta PrmInput, List<string> WorkListaContasID)
+        public async Task CS_GeraSaldoContaComTransferenciaDeSALDO(int Tenant, PR139137_PrmCS_TransSaldoCnt prm, PR139137_PrmCS_GeraSaldoConta PrmInput, List<string> WorkListaContasID)
         {
             var WorkListaGG009ToCreate = new List<CSICP_CG009>();
-            
-            foreach (var current in WorkListaContasID)
+            var CS_SaldoAtual_Conta = await this.CS_SaldoAtual_Conta_Otimizado(Tenant, prm, WorkListaContasID);
+            await CS_TransSaldoCnt(Tenant, prm, CS_SaldoAtual_Conta);
+            CS_ProcessaCriacaoSaldoConta(Tenant, prm, PrmInput, WorkListaGG009ToCreate, CS_SaldoAtual_Conta);
+            // 4. OTIMIZAÇÃO CRÍTICA: Bulk Insert de todas as novas entidades criadas
+            if (WorkListaGG009ToCreate.Any())
             {
-                if (current == null)
-                    continue;
+                // Obtém o objeto DbTransaction ativo da transação do Unit of Work.
+                var transaction = this.appDbContext.Database.CurrentTransaction?.GetDbTransaction();
 
-                for (int mes = 1; mes <= 12; mes++)
+                // Verifica se a transação está ativa (deve estar, pois o UoW a iniciou)
+                if (transaction != null)
                 {
-                    //no mes 0 pega o saldo anterior da conta
-                    //juntar a transferencia aqui com as validações
-                    var WorkGG009ToCreate
-                        = CSICP_CG009.CreateInstanceComValoresDebitoCreditoESaldoZerados(
-                            tenant: Tenant,
-                            ICS_GenerateId: PrmInput.CS_GenerateId,
-                            cg009FilialId: PrmInput.InFilialID,
-                            cg009TipoSaldoId: PrmInput.InTipoSaldoID,
-                            cg009ContaId: current,
-                            cg009Ano: PrmInput.InAnoFechamento + 1,
-                            cg009Mes: mes);
-
-                    WorkGG009ToCreate.NavCG006Conta_CG009 = null;
-                    WorkListaGG009ToCreate.Add(WorkGG009ToCreate);
+                    // O Bulk Insert usa a transação existente, garantindo atomicidade.
+                    // O COMMIT SÓ OCORRE NO CommitTransactionalAsync() DO UOW.
+                    await this.appDbContext.BulkInsertAsync(WorkListaGG009ToCreate, operation =>
+                    {
+                        operation.BatchSize = 10000;
+                        operation.SqlBulkCopyOptions = (int)SqlBulkCopyOptions.Default;
+                    });
+                }
+                else
+                {
+                    throw new InvalidOperationException("Não foi possível obter a transação ativa do DbContext para a operação Bulk Insert.");
                 }
             }
-            this.appDbContext.Osusr8dwCsicpCg009s.AddRange(WorkListaGG009ToCreate);
+        }
+
+        private void CS_ProcessaCriacaoSaldoConta(int Tenant, PR139137_PrmCS_TransSaldoCnt prm, PR139137_PrmCS_GeraSaldoConta PrmInput, List<CSICP_CG009> WorkListaGG009ToCreate, List<SaldoContaResultV2> CS_SaldoAtual_Conta)
+        {
+            // NOVO: Lista para acumular os saldos do Mês Zero
+            var WorkListaMesZero = new List<CSICP_CG009>();
+
+            foreach (var current in CS_SaldoAtual_Conta)
+            {
+                if (current == null) continue;
+
+                for (int mes = 0; mes <= 12; mes++)
+                {
+                    if (mes == 0)
+                    {
+                        CSICP_CG009 cSICP_CG009 = CS_CriaSaldoContaMesZero(Tenant, prm, PrmInput, current);
+
+                        // CORREÇÃO: Adiciona à lista local, não ao DbContext
+                        WorkListaMesZero.Add(cSICP_CG009);
+                        continue;
+                    }
+
+                    // Cria os meses 1 a 12 e adiciona a WorkListaGG009ToCreate
+                    CS_CriaSaldoContaMes(Tenant, PrmInput, WorkListaGG009ToCreate, current, mes);
+                }
+            }
+
+            // Concatena todas as entidades (Mês 0 e Meses 1-12)
+            WorkListaGG009ToCreate.AddRange(WorkListaMesZero);
+
+            // Adiciona todas as entidades de uma só vez ao contexto
+            //this.appDbContext.Osusr8dwCsicpCg009s.AddRange(WorkListaGG009ToCreate);
+        }
+
+        private static void CS_CriaSaldoContaMes(int Tenant, PR139137_PrmCS_GeraSaldoConta PrmInput, List<CSICP_CG009> WorkListaGG009ToCreate, SaldoContaResultV2 current, int mes)
+        {
+            var WorkGG009ToCreate = CSICP_CG009.CreateInstanceComValoresDebitoCreditoESaldoZerados(
+                    tenant: Tenant,
+                    ICS_GenerateId: PrmInput.CS_GenerateId,
+                    cg009FilialId: PrmInput.InFilialID,
+                    cg009TipoSaldoId: PrmInput.InTipoSaldoID,
+                    cg009ContaId: current.ContaId,
+                    cg009Ano: PrmInput.InAnoFechamento + 1,
+                    cg009Mes: mes);
+
+            WorkGG009ToCreate.NavCG006Conta_CG009 = null;
+            WorkGG009ToCreate.NavBB001Estab_CG009 = null;
+            WorkGG009ToCreate.NavCG008TipoSaldo_CG009 = null;
+            WorkListaGG009ToCreate.Add(WorkGG009ToCreate);
+        }
+
+        private static CSICP_CG009 CS_CriaSaldoContaMesZero(int Tenant, PR139137_PrmCS_TransSaldoCnt prm, PR139137_PrmCS_GeraSaldoConta PrmInput, SaldoContaResultV2 current)
+        {
+            var WorkGG009ToCreate_MesZero
+               = CSICP_CG009.CreateInstanceComValoresDebitoCreditoMesDoze(
+                   tenant: Tenant,
+                   ICS_GenerateId: PrmInput.CS_GenerateId,
+                   cg009FilialId: PrmInput.InFilialID,
+                   cg009TipoSaldoId: PrmInput.InTipoSaldoID,
+                   cg009ContaId: current.ContaId,
+                   cg009Ano: prm.InAnoAtual,
+                   Saldo: current.SaldoAnterior);
+            WorkGG009ToCreate_MesZero.NavCG006Conta_CG009 = null;
+            WorkGG009ToCreate_MesZero.NavBB001Estab_CG009= null;
+            WorkGG009ToCreate_MesZero.NavCG008TipoSaldo_CG009= null;
+            return WorkGG009ToCreate_MesZero;
         }
 
 
@@ -138,36 +206,47 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
         /// Transfere saldo para o proximo período no mês '0'
         /// </summary>
         /// <returns></returns>
-        public async Task CS_TransSaldoCnt(int Tenant,
-            PR139137_PrmCS_TransSaldoCnt prm,
-            List<string> WorkListaContasID)
+        public async Task CS_TransSaldoCnt(int Tenant, PR139137_PrmCS_TransSaldoCnt prm, List<SaldoContaResultV2> CS_SaldoAtual_Conta)
         {
-            var CS_SaldoAtual_Conta = await this.CS_SaldoAtual_Conta_Otimizado(Tenant, prm, WorkListaContasID);
-            var ListaContasAnoNovoMesZero = await GetSaldoContaCG009AnoNovoMes0(Tenant, WorkListaContasID, prm.InAnoNovo, prm.InMes, prm.InCG008_ID_TipoSaldo, prm.InFilialID);
+            // Lista para acumular todas as novas entidades a serem adicionadas
+            var contasParaAdicionar = new List<CSICP_CG009>();
 
-            var ListaCG009Update = new List<CSICP_CG009>();
-            var ListaCG009Create = new List<CSICP_CG009>();
+            // Otimização: Converta a lista de contas em um Dictionary para buscas O(1)
+            var saldoAtualDict = CS_SaldoAtual_Conta.ToDictionary(e => e.ContaId, e => e);
 
-            for (int i = 0; i < CS_SaldoAtual_Conta.Count; i++)
+            // 1. Otimização na consulta inicial (se o GetSaldoConta já for otimizado)
+            IEnumerable<string> contasID = CS_SaldoAtual_Conta.Select(e => e.ContaId);
+            var ContaAnoNovoMesZeroList = await GetSaldoContaCG009AnoNovoMes0(Tenant, contasID, prm.InAnoNovo, prm.InMes, prm.InCG008_ID_TipoSaldo, prm.InFilialID);
+
+            foreach (var currentConta in ContaAnoNovoMesZeroList)
             {
-                var saldoAtualConta = CS_SaldoAtual_Conta[i];
-                var contaAnoNovoMesZero = ListaContasAnoNovoMesZero.FirstOrDefault(c => c.Cg009ContaId == saldoAtualConta.ContaId);
-                if (contaAnoNovoMesZero == null) continue;
+                // 2. Otimização de busca: Use o Dictionary (O(1)) em vez de FirstOrDefault (O(N))
+                if (!saldoAtualDict.TryGetValue(currentConta.Cg009ContaId, out var currentSaldoCOnta) || currentConta == null)
+                    continue;
 
-                contaAnoNovoMesZero.NavCG006Conta_CG009 = null;
-                contaAnoNovoMesZero.NavBB001Estab_CG009 = null;
-                contaAnoNovoMesZero.NavCG008TipoSaldo_CG009 = null;
+                // Limpeza de navegação (útil para evitar problemas de rastreamento)
+                currentConta.NavCG006Conta_CG009 = null;
+                currentConta.NavBB001Estab_CG009 = null;
+                currentConta.NavCG008TipoSaldo_CG009 = null;
 
-
-                if (CS_ContaAnoNovoMesZeroExiste(contaAnoNovoMesZero))
-                    CS_AtualizaSaldoContaExistente(ListaCG009Update, saldoAtualConta, contaAnoNovoMesZero);
-
-                if (CS_ContaAnoNovoMesZeroNaoExiste(contaAnoNovoMesZero))
-                    CS_CriaSaldoContaAnoNovoMesZero(Tenant, prm, ListaCG009Create, saldoAtualConta);
-
+                if (CS_ContaAnoNovoMesZeroExiste(currentConta))
+                {
+                    // O EF Core irá rastrear a alteração no 'currentConta' 
+                    CS_AtualizaSaldoContaExistente(currentSaldoCOnta, currentConta);
+                }
+                else if (CS_ContaAnoNovoMesZeroNaoExiste(currentConta))
+                {
+                    // Adiciona à lista local, não ao DbContext diretamente
+                    CSICP_CG009 csicpCg009ContaAnoNovoMesZero = CS_CriaSaldoContaAnoNovoMesZero(Tenant, prm, currentSaldoCOnta);
+                    contasParaAdicionar.Add(csicpCg009ContaAnoNovoMesZero);
+                }
             }
-            this.appDbContext.Osusr8dwCsicpCg009s.UpdateRange(ListaCG009Update);
-            this.appDbContext.Osusr8dwCsicpCg009s.AddRange(ListaCG009Update);
+
+            // 3. Operações de I/O em Batch: Uma única chamada AddRange e SaveChangesAsync
+            if (contasParaAdicionar.Any())
+            {
+                this.appDbContext.Osusr8dwCsicpCg009s.AddRange(contasParaAdicionar);
+            }
         }
 
 
@@ -209,7 +288,7 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
             return !CS_ContaAnoNovoMesZeroExiste(contaAnoNovoMesZero);
         }
 
-        private static void CS_CriaSaldoContaAnoNovoMesZero(int Tenant, PR139137_PrmCS_TransSaldoCnt prm, List<CSICP_CG009> ListaCG009Create, SaldoContaResultV2 saldoAtualConta)
+        private static CSICP_CG009 CS_CriaSaldoContaAnoNovoMesZero(int Tenant, PR139137_PrmCS_TransSaldoCnt prm, SaldoContaResultV2 saldoAtualConta)
         {
             var WorkGG009ToCreate
                = CSICP_CG009.CreateInstanceComValoresDebitoCreditoMesZerados(
@@ -224,17 +303,15 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
             WorkGG009ToCreate.NavBB001Estab_CG009 = null;
             WorkGG009ToCreate.NavCG008TipoSaldo_CG009 = null;
 
-            ListaCG009Create.Add(WorkGG009ToCreate);
+            return WorkGG009ToCreate;
         }
 
-        private static void CS_AtualizaSaldoContaExistente(List<CSICP_CG009> ListaCG009Update, SaldoContaResultV2 saldoAtualConta, CSICP_CG009? contaAnoNovoMesZero)
+        private static void CS_AtualizaSaldoContaExistente(SaldoContaResultV2 saldoAtualConta, CSICP_CG009? contaAnoNovoMesZero)
         {
             contaAnoNovoMesZero!.Cg009Saldo = saldoAtualConta.SaldoAtual;
             contaAnoNovoMesZero.NavCG006Conta_CG009 = null;
             contaAnoNovoMesZero.NavBB001Estab_CG009 = null;
             contaAnoNovoMesZero.NavCG008TipoSaldo_CG009 = null;
-            
-            ListaCG009Update.Add(contaAnoNovoMesZero!);
         }
 
         private static bool CS_ContaAnoNovoMesZeroExiste(CSICP_CG009? contaAnoNovoMesZero)
@@ -276,22 +353,23 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
                 .GroupBy(e => e.Cg009ContaId)
                 .Select(listaAgrupadaCG009PorConta =>
                 {
+                    var mesInicial = prm.GetMesFinal();
                     var saldoInicial 
                         = listaAgrupadaCG009PorConta
                         .Where(x => x.Cg009Mes == 0).Sum(x => x.Cg009Saldo ?? 0);
 
                     var totalDebitoAnt = listaAgrupadaCG009PorConta
-                        .Where(x => x.Cg009Mes > 0 && x.Cg009Mes <= prm.GetMesInicial() - 1)
+                        .Where(x => x.Cg009Mes > 0 && x.Cg009Mes <= mesInicial - 1)
                         .Sum(x => x.Cg009Totaldebito);
 
                     var totalCreditoAnt = listaAgrupadaCG009PorConta
-                       .Where(x => x.Cg009Mes > 0 && x.Cg009Mes <= prm.GetMesInicial() - 1)
+                       .Where(x => x.Cg009Mes > 0 && x.Cg009Mes <= mesInicial - 1)
                        .Sum(x => x.Cg009Totalcredito);
 
                     var saldoAnteriorAnt = (saldoInicial + (totalDebitoAnt - totalCreditoAnt) ?? 0);
 
                     var mesValores = listaAgrupadaCG009PorConta
-                       .Where(x => x.Cg009Mes != null && x.Cg009Mes >= prm.GetMesInicial())
+                       .Where(x => x.Cg009Mes != null && x.Cg009Mes >= mesInicial)
                        .OrderBy(x => x.Cg009Mes)
                        .Select(x => new SaldoContaResultListMesValores(
                            TotalCredito: x.Cg009Totalcredito ?? 0,
@@ -302,6 +380,7 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
                     var totalDebito = mesValores.Sum(e => e.TotalDebito);
                     var totalCredito = mesValores.Sum(e => e.TotalCredito);
                     var saldoAtual = (saldoAnteriorAnt + (totalDebito - totalCredito));
+
 
                     return new SaldoContaResultV2(
                          ContaId: listaAgrupadaCG009PorConta.Key,
@@ -325,7 +404,7 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
                 .Where(e => e.Cg009TipoSaldoId == prm.InCG008_ID_TipoSaldo)
                 .Where(e => e.Cg009Ano == prm.InAnoAtual)
                 .Where(e => e.Cg009Mes <= prm.GetMesFinal() && e.Cg009Mes >= 0)
-                //.Where(e => e.NavCG006Conta_CG009.Cg006Descricao == "CAIXA DA MATRIZ")
+                .Where(e => e.NavCG006Conta_CG009.Cg006Descricao == "CAIXA DA MATRIZ")
                 .Where(e => batch.Contains(e.Cg009ContaId))
                 .Select(e => new DadosCG009(
                     e.Cg009ContaId,
@@ -382,5 +461,7 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
                     )).ToListAsync();
             return saldosAnteriores;
         }
+
+ 
     }
 }
