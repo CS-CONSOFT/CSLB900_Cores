@@ -25,6 +25,17 @@ namespace CSCore.Ifs.Repository.GG._03X
             return csicpGg030Entity;
         }
 
+        public async Task<CSICP_GG030?> GetByIdParaUpdateAsync(string id, int tenant)
+        {
+            IQueryable<CSICP_GG030> query = this._appDbContext.OsusrE9aCsicpGg030s.Where(e =>e.TenantId == tenant && e.Id == id);
+
+
+            CSICP_GG030? csicpGg030Entity = await query.FirstOrDefaultAsync();
+            if (csicpGg030Entity is null) throw new KeyNotFoundException(HandlerReturnMessages.ENTITY_NOT_FOUND);
+
+            return csicpGg030Entity;
+        }
+
         public override async Task<CSICP_GG030?> UpdateAsync(string id, int tenant, CSICP_GG030 entity)
         {
             this._appDbContext.OsusrE9aCsicpGg030s.Update(entity);
