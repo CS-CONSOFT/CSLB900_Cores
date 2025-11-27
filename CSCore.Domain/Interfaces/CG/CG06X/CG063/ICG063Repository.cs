@@ -5,7 +5,7 @@ namespace CSCore.Domain.Interfaces.CG.CG06X.CG063
 {
     public interface ICG063Repository : IRepositorioBaseV2<Osusr8dwCsicpCg063>
     {
-        Task<(List<Osusr8dwCsicpCg063>, int)> GetListAsync(int InTenantID, long InCG062ID, int InPageNumber, int InPageSize);
+        Task<(List<Osusr8dwCsicpCg063>, int)> GetListAsync(int InTenantID, int InPageNumber, int InPageSize);
         Task<Osusr8dwCsicpCg063?> GetByIdAsync(int InTenantID, long InCG063ID);
     }
 }
