@@ -25,7 +25,12 @@ namespace CSCore.Ifs.Repository.GG._03X
             return csicpGg030Entity;
         }
 
-
+        public override async Task<CSICP_GG030?> UpdateAsync(string id, int tenant, CSICP_GG030 entity)
+        {
+            this._appDbContext.OsusrE9aCsicpGg030s.Update(entity);
+            await this._appDbContext.SaveChangesAsync();
+            return entity;
+        }
 
         public async Task<(IEnumerable<CSICP_GG030>, int)> GetListAsync
             (int tenant,
