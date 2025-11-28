@@ -52,6 +52,24 @@ public partial class CSICP_CG009
         };
     }
 
+    public static CSICP_CG009 CreateInstance(
+    int tenant, string cg009Id, string? cg009FilialId, string? cg009TipoSaldoId, string? cg009ContaId, int cg009Ano, int? cg009Mes)
+    {
+        return new CSICP_CG009
+        {
+            TenantId = tenant,
+            Cg009Id = cg009Id,
+            Cg009FilialId = cg009FilialId,
+            Cg009TipoSaldoId = cg009TipoSaldoId,
+            Cg009ContaId = cg009ContaId,
+            Cg009Ano = cg009Ano,
+            Cg009Mes = cg009Mes,
+            Cg009Totaldebito = 0,
+            Cg009Totalcredito = 0,
+            Cg009Saldo = 0,
+        };
+    }
+
 
     public static CSICP_CG009 CreateInstanceComValoresDebitoCreditoESaldoZerados(
     int tenant, ICS_GenerateId ICS_GenerateId, 
@@ -99,18 +117,26 @@ public partial class CSICP_CG009
                 };
             }
 
-    public static CSICP_CG009 CreateInstance(
-        int tenant, string cg009Id, string? cg009FilialId, string? cg009TipoSaldoId, string? cg009ContaId, int cg009Ano, int? cg009Mes)
+    public static CSICP_CG009 CreateInstanceComValoresDebitoCreditoMesZero(
+     int tenant, ICS_GenerateId ICS_GenerateId,
+     string? cg009FilialId,
+     string? cg009TipoSaldoId,
+     string? cg009ContaId,
+     int cg009Ano,
+     decimal? Saldo)
     {
         return new CSICP_CG009
         {
             TenantId = tenant,
-            Cg009Id = cg009Id,
+            Cg009Id = ICS_GenerateId.GenerateUuId(),
             Cg009FilialId = cg009FilialId,
             Cg009TipoSaldoId = cg009TipoSaldoId,
             Cg009ContaId = cg009ContaId,
             Cg009Ano = cg009Ano,
-            Cg009Mes = cg009Mes
+            Cg009Mes =0,
+            Cg009Totaldebito = 0,
+            Cg009Totalcredito = 0,
+            Cg009Saldo = Saldo,
         };
     }
 

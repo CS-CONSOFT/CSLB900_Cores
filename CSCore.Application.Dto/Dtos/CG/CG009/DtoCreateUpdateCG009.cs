@@ -19,7 +19,7 @@ namespace CSCore.Application.Dto.Dtos.CG.CG009
 
         public CSICP_CG009 ToEntity(int tenant, string? id)
         {
-            return CSICP_CG009.CreateInstance(tenant, id!, Cg009FilialId, Cg009TipoSaldoId , Cg009ContaId, Cg009Ano, Cg009Mes);
+            return CSICP_CG009.CreateInstance(tenant, id!, Cg009FilialId, Cg009TipoSaldoId , Cg009ContaId, Cg009Ano, Cg009Mes, 0,0,0);
         }
     }
 }
