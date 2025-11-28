@@ -5,6 +5,7 @@ using CSBS101.C82Application.Dto.BB00X.BB012.Get;
 using CSCore.Application.Dto.Dtos.Basico_AA.AA00X.AA028;
 using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB00X.BB001;
 using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB012.Get.BB012MDFe;
+using CSCore.Application.Dto.Dtos.DD;
 using CSCore.Application.Dto.Dtos.DD.DD041;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_DD;
@@ -441,7 +442,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD040
         public List<DtoGetDD045> NavListDD045 { get; set; } = new List<DtoGetDD045>();
         public List<DtoGetDD048> NavListDD048 { get; set; } = new List<DtoGetDD048>();
         public List<Dto_GetXmlFromBB001> NavListBB001AXML { get; set; } = new List<Dto_GetXmlFromBB001>();
-
+        public DD000BinarioDtoGet? NavDD000Config { get; set; }
     }
 }
 

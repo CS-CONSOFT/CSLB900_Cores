@@ -1,5 +1,5 @@
 ﻿using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
-using CSCore.Application.Dto.Dtos.CG.CG000;
+using CSCore.Application.Dto.Dtos.CG.CG00X.CG000;
 using CSCore.Application.Dto.Mapper.NN._015;
 using CSCore.Domain.CS_Models.CSICP_CG;
 using CSCore.Domain.CS_Models.CSICP_NN;

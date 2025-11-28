@@ -1,8 +1,8 @@
 using CSBS101._82Application.Dto.BB00X.BB001;
-using CSCore.Application.Dto.Dtos.CG.CG005;
-using CSCore.Application.Dto.Dtos.CG.CG006;
-using CSCore.Application.Dto.Dtos.CG.CG007;
-using CSCore.Application.Dto.Dtos.CG.CG008;
+using CSCore.Application.Dto.Dtos.CG.CG00X.CG005;
+using CSCore.Application.Dto.Dtos.CG.CG00X.CG006;
+using CSCore.Application.Dto.Dtos.CG.CG00X.CG007;
+using CSCore.Application.Dto.Dtos.CG.CG00X.CG008;
 using CSCore.Application.Dto.Dtos.CG.CG011;
 using CSCore.Application.Dto.Dtos.CG.CG020;
 using CSCore.Application.Dto.Dtos.CG.CG070;

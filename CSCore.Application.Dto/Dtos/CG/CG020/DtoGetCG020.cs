@@ -1,5 +1,5 @@
 using CSBS101._82Application.Dto.BB00X.BB001;
-using CSCore.Application.Dto.Dtos.CG.CG008;
+using CSCore.Application.Dto.Dtos.CG.CG00X.CG008;
 using CSCore.Domain.CS_Models.CSICP_CG;
 
 namespace CSCore.Application.Dto.Dtos.CG.CG020

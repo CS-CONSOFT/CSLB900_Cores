@@ -197,6 +197,37 @@ namespace CSCore.Ifs.Repository.Combo
             return await novaQuery.ToListAsync();
         }
 
+
+        public async Task<IEnumerable<object>> GG019(int tenant,
+       string InProdutoID_gg008,
+       string? InSaldoID)
+        {
+            var NSID = await _appDbContext.OsusrE9aCsicpGg019Cgbars
+                .Where(c => c.Label == "Nro. Saldo")
+                .Select(c => c.Id)
+                .FirstAsync();
+
+                var SistemaID = await _appDbContext.OsusrE9aCsicpGg019Cgbars
+                .Where(c => c.Label == "Sistema")
+                .Select(c => c.Id)
+                .FirstAsync();
+
+            IQueryable<CSICP_GG019> query = _appDbContext.OsusrE9aCsicpGg019s
+                .Where(c => c.TenantId == tenant && c.Gg019Produtoid == InProdutoID_gg008
+                && (c.Gg019KeysldId == null || c.Gg019KeysldId == InSaldoID
+                && ((c.Gg019TipocbarraId != NSID && c.Gg019TipocbarraId != SistemaID) || c.Gg019TipocbarraId == null)));
+
+
+            query = query.OrderBy(c => c.Gg019Codbarrasalfa);
+            IQueryable<object> novaQuery = query.Select(c =>
+                    new
+                    {
+                        Title = c.Gg019Codbarrasalfa,
+                        c.Id
+                    });
+            return await novaQuery.ToListAsync();
+        }
+
         public async Task<IEnumerable<object>> GetCommonListForComboRR(int tenant, ComboTypeRR comboType)
         {
             IQueryable<object> query = comboType switch

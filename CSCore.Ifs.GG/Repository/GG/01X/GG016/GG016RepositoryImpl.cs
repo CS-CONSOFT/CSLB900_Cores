@@ -19,11 +19,11 @@ namespace CSCore.Ifs.Repository.GG._01X
             return await query.FirstOrDefaultAsync();
         }
         public async Task<(IEnumerable<CSICP_GG016>, int)> GetListAsync(
-            int tenant, int? tipoGrade_LincolID,string? inGradeID, int pageSize, int page, string? search)
+            int tenant, int? tipoGrade_LincolID,string? inGradeDesc, int pageSize, int page, string? search)
         {
             IQueryable<CSICP_GG016> query = CriandoQueryDaGG016ComFiltroDeTenant(tenant);
 
-            query = FiltraQuandoExisteFiltros(search, tipoGrade_LincolID, inGradeID, query);
+            query = FiltraQuandoExisteFiltros(search, tipoGrade_LincolID, inGradeDesc, query);
 
             var queryCount = query;
             var count = queryCount.Count();
@@ -67,16 +67,16 @@ namespace CSCore.Ifs.Repository.GG._01X
         }
 
         private static IQueryable<CSICP_GG016> FiltraQuandoExisteFiltros
-            (string? search, int? tipoGrade_LincolID, string? inGradeID, IQueryable<CSICP_GG016> query)
+            (string? search, int? tipoGrade_LincolID, string? inGradeDesc, IQueryable<CSICP_GG016> query)
         {
             if (tipoGrade_LincolID != null) query = query.Where(e => e.NavCSICP_GG016b.Id == tipoGrade_LincolID);
             if (search != null)
             {
                 query = query.Where(entity => (entity.Gg016Descricao ?? "").Contains(search ?? ""));
             }
-            if (inGradeID != null)
+            if (inGradeDesc != null)
             {
-                query = query.Where(e => e.Gg016Grade == inGradeID);
+                query = query.Where(e => e.Gg016Grade == inGradeDesc);
             }
 
             return query;

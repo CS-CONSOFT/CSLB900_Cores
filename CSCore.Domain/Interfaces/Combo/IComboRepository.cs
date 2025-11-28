@@ -22,7 +22,9 @@ namespace CSCore.Domain.Interfaces.Combo
         Task<IEnumerable<object>> GetCommonListForComboBB008(int tenant, string FormaPagamentoID);
         Task<IEnumerable<object>> GetCommonListForComboBB026(int tenant, TIPO_ESPECIE ESPECIE);
 
-
+        Task<IEnumerable<object>> GG019(int tenant,
+       string InProdutoID_gg008,
+       string? InSaldoID);
         Task<IEnumerable<CSICP_Email>> GetComboStaticaEmail();
     }
 }
