@@ -1,11 +1,5 @@
-﻿using CSCore.Application.Dto.Dtos.CG.CG003;
-using CSCore.Application.Dto.Dtos.CG.CG00X.CG004;
+﻿using CSCore.Application.Dto.Dtos.CG.CG00X.CG004;
 using CSCore.Domain.CS_Models.CSICP_CG;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CSCore.Application.Dto.Mapper.CG.CG00X
 {
