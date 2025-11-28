@@ -1,9 +1,12 @@
 ﻿using Azure.Messaging;
+using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_CG;
 using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.GenerateId;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +28,17 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
                 string? CodigoConta,
                 string? NomeConta
             );
+
+        public record SaldoContaPorMesResult(
+        string ContaId,
+        int Mes,
+        decimal SaldoAnterior,
+        decimal TotalDebito,
+        decimal TotalCredito,
+        decimal SaldoAtual,
+        string? CodigoConta,
+        string? NomeConta
+    );
 
         private record SaldoContaAgrupado(
             string ContaId,
@@ -69,318 +83,233 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
                 .Where(e => e.Cg006FilialId == InFilial).Select(e => e.Cg006Id).ToListAsync();
         }
 
+
         /// <summary>
         /// Calcula saldo atual consolidando saldos anteriores e mês atual em uma única query.
         /// Suporta grupos de meses (trimestres, semestres, etc.)
         /// Retorna saldo anterior, saldo atual, total crédito e total débito
         /// VERSÃO CORRIGIDA - Busca dados primeiro e faz agregação em memória
         /// </summary>
-        public async Task<List<SaldoContaResultV2>> CS_SaldoAtual_Conta_Otimizado(
+        public async Task<List<SaldoContaPorMesResult>> CS_SaldoAtual_Conta_Otimizado(
             int Tenant,
             PR139137_PrmCS_TransSaldoCnt prm,
             List<string> WorkListaContasID)
         {
-            if (WorkListaContasID == null || !WorkListaContasID.Any()) return new List<SaldoContaResultV2>();
+            if (WorkListaContasID == null || !WorkListaContasID.Any()) return new List<SaldoContaPorMesResult>();
 
             const int BATCH_SIZE = 1000;
-            var resultadoFinal = new List<SaldoContaResultV2>();
+            var resultadoFinal = new List<SaldoContaPorMesResult>();
 
             for (int i = 0; i < WorkListaContasID.Count; i += BATCH_SIZE)
             {
                 var batch = WorkListaContasID.Skip(i).Take(BATCH_SIZE).ToList();
                 List<DadosCG009> dadosFiltrados = await CS_FiltraDadosCG009(Tenant, prm, batch);
-                List<SaldoContaResultV2> resultadoBatch = CS_CalculaSaldoContaAgrupado(prm, dadosFiltrados);
+                var resultadoBatch = CS_CalculaSaldosPorMes(prm, dadosFiltrados);
                 resultadoFinal.AddRange(resultadoBatch);
             }
-            CS_AdicionaContasSemMovimentacao(WorkListaContasID, resultadoFinal);
-            return resultadoFinal.OrderBy(e => e.ContaCodigo).ToList();
+            //CS_AdicionaContasSemMovimentacao(WorkListaContasID, resultadoFinal);
+            return resultadoFinal.OrderBy(e => e.CodigoConta).ToList();
         }
 
 
         /// <summary>
-        /// Gera saldo (cg009) zerados para os meses 1 ao 12 quando uma conta é criada.
+        /// Essa rotina tem como objetivo inicializar os registros de saldos do proximo ano contabil. 
+        /// Criando os registros dos meses 0 a 12, onde o registro do mes 0 tem o saldo como origem
+        /// o saldo anterior do mes 12 do ano anterior. e os meses de 1 a 12 sao sempre zerados.
         /// </summary>
-        /// <param name="Tenant"></param>
-        /// <param name="InPrmGeraSaldoProx"></param>
-        /// <returns></returns>
-        public async Task CS_GeraSaldoConta(int Tenant, PR139137_PrmCS_GeraSaldoConta PrmInput, List<string> WorkListaContasID)
-        {
-            var WorkListaGG009ToCreate = new List<CSICP_CG009>();
-            
-            foreach (var current in WorkListaContasID)
-            {
-                if (current == null)
-                    continue;
-
-                for (int mes = 1; mes <= 12; mes++)
-                {
-                    //no mes 0 pega o saldo anterior da conta
-                    //juntar a transferencia aqui com as validações
-                    var WorkGG009ToCreate
-                        = CSICP_CG009.CreateInstanceComValoresDebitoCreditoESaldoZerados(
-                            tenant: Tenant,
-                            ICS_GenerateId: PrmInput.CS_GenerateId,
-                            cg009FilialId: PrmInput.InFilialID,
-                            cg009TipoSaldoId: PrmInput.InTipoSaldoID,
-                            cg009ContaId: current,
-                            cg009Ano: PrmInput.InAnoFechamento + 1,
-                            cg009Mes: mes);
-
-                    WorkGG009ToCreate.NavCG006Conta_CG009 = null;
-                    WorkListaGG009ToCreate.Add(WorkGG009ToCreate);
-                }
-            }
-            this.appDbContext.Osusr8dwCsicpCg009s.AddRange(WorkListaGG009ToCreate);
-        }
-
-
-        /// <summary>
-        /// Transfere saldo para o proximo período no mês '0'
-        /// </summary>
-        /// <returns></returns>
-        public async Task CS_TransSaldoCnt(int Tenant,
-            PR139137_PrmCS_TransSaldoCnt prm,
-            List<string> WorkListaContasID)
-        {
-            var CS_SaldoAtual_Conta = await this.CS_SaldoAtual_Conta_Otimizado(Tenant, prm, WorkListaContasID);
-            var ListaContasAnoNovoMesZero = await GetSaldoContaCG009AnoNovoMes0(Tenant, WorkListaContasID, prm.InAnoNovo, prm.InMes, prm.InCG008_ID_TipoSaldo, prm.InFilialID);
-
-            var ListaCG009Update = new List<CSICP_CG009>();
-            var ListaCG009Create = new List<CSICP_CG009>();
-
-            for (int i = 0; i < CS_SaldoAtual_Conta.Count; i++)
-            {
-                var saldoAtualConta = CS_SaldoAtual_Conta[i];
-                var contaAnoNovoMesZero = ListaContasAnoNovoMesZero.FirstOrDefault(c => c.Cg009ContaId == saldoAtualConta.ContaId);
-                if (contaAnoNovoMesZero == null) continue;
-
-                contaAnoNovoMesZero.NavCG006Conta_CG009 = null;
-                contaAnoNovoMesZero.NavBB001Estab_CG009 = null;
-                contaAnoNovoMesZero.NavCG008TipoSaldo_CG009 = null;
-
-
-                if (CS_ContaAnoNovoMesZeroExiste(contaAnoNovoMesZero))
-                    CS_AtualizaSaldoContaExistente(ListaCG009Update, saldoAtualConta, contaAnoNovoMesZero);
-
-                if (CS_ContaAnoNovoMesZeroNaoExiste(contaAnoNovoMesZero))
-                    CS_CriaSaldoContaAnoNovoMesZero(Tenant, prm, ListaCG009Create, saldoAtualConta);
-
-            }
-            this.appDbContext.Osusr8dwCsicpCg009s.UpdateRange(ListaCG009Update);
-            this.appDbContext.Osusr8dwCsicpCg009s.AddRange(ListaCG009Update);
-        }
-
-
-        public async Task<List<SaldoContaResult>> CS_SaldoAtual_Conta(
+        /// <param name="WorkListaContas_CG006_ID">Lista de IDS dos planos da conta</param>
+        public async Task<CSResult<string>> CS_GeraSaldoContaComTransferenciaDeSaldo(
             int Tenant,
             PR139137_PrmCS_TransSaldoCnt prm,
-            List<string> WorkListaContasID)
+            PR139137_PrmCS_GeraSaldoConta PrmInput,
+            List<string> WorkListaContas_CG006_ID)
         {
-            prm = prm with { InMes = 12 };
-            // Busca saldos anteriores (mês < prm.InMes)
-            var saldosAnterioresTask = CS_SaldoAnt_Conta(Tenant, prm, WorkListaContasID);
-            var totaisMesAtualTask = CS_SaldoMesAtual_Conta(Tenant, prm, WorkListaContasID);
+            var WorkListaGG009ToCreate = new List<CSICP_CG009>();
+            prm.InMeses = [12];
+            var saldoAnteriorMes12AnoInicial = await CS_SaldoAtual_Conta_Otimizado(Tenant, prm, WorkListaContas_CG006_ID);
 
-            await Task.WhenAll(saldosAnterioresTask, totaisMesAtualTask);
-            var saldosAnteriores = saldosAnterioresTask.Result;
-            var totaisMesAtual = totaisMesAtualTask.Result;
+            var listaContasID_CG009 = await this.appDbContext.Osusr8dwCsicpCg009s
+                .Where(e => e.TenantId == Tenant && e.Cg009Ano == prm.InAnoNovo)
+                .Select(e => new { e.Cg009ContaId , e.Cg009Mes})
+                .ToListAsync();
 
-            // Combina saldo anterior com movimentação do mês atual
-            var resultado = totaisMesAtual.Select(mesAtual =>
-            {
-                var saldoAnt = saldosAnteriores.FirstOrDefault(s => s.ContaId == mesAtual.ContaId);
-                var saldoFinal = saldoAnt?.Saldo + (mesAtual.TotalDebito - mesAtual.TotalCredito);
-
-                return new SaldoContaResult(
-                    ContaId: mesAtual.ContaId,
-                    Saldo: saldoFinal ?? 0
+            var contasAnoMesSet = new HashSet<(string, int)>(
+                    listaContasID_CG009.Select(e => (e.Cg009ContaId, e.Cg009Mes))
                 );
-            }).ToList();
 
-            return resultado;
+            var saldoAnteriorPorConta = saldoAnteriorMes12AnoInicial
+                .Where(e => e.Mes == 12)
+                .ToDictionary(e => e.ContaId, e => e.SaldoAtual);
+
+
+            foreach (var contaId in WorkListaContas_CG006_ID)
+            {
+                for (int mes = 0; mes <= 12; mes++)
+                {
+                    if (contasAnoMesSet.Contains((contaId, mes))) continue;
+
+                    if (mes == 0)
+                    {
+                        saldoAnteriorPorConta.TryGetValue(contaId, out var saldoAtual);
+                        var cSICP_CG009 = CS_CriaSaldoContaMesZero(Tenant, prm.InAnoNovo, PrmInput, saldoAtual, contaId);
+                        WorkListaGG009ToCreate.Add(cSICP_CG009);
+                    }
+                    else
+                    {
+                        CS_CriaSaldoContaMes1Ao12(Tenant, PrmInput, WorkListaGG009ToCreate, contaId, mes);
+                    }
+                }
+            }
+
+
+            // OTIMIZAÇÃO CRÍTICA: Bulk Insert de todas as novas entidades criadas
+            if (WorkListaGG009ToCreate.Count > 0)
+            {
+                const int BULK_BATCH_SIZE = 10000;
+                const SqlBulkCopyOptions BULK_OPTIONS = SqlBulkCopyOptions.Default;
+
+                // Obtém a transação atual iniciada pelo Unit of Work
+                var dbTransaction = this.appDbContext.Database
+                    .CurrentTransaction?
+                    .GetDbTransaction();
+
+                if (dbTransaction == null)
+                    throw new InvalidOperationException(
+                        "Não foi possível obter a transação ativa do DbContext para a operação Bulk Insert."
+                    );
+
+                // Executa o Bulk Insert usando a transação existente
+                await this.appDbContext.BulkInsertAsync(
+                    WorkListaGG009ToCreate,
+                    operation =>
+                    {
+                        operation.BatchSize = BULK_BATCH_SIZE;
+                        operation.SqlBulkCopyOptions = (int)BULK_OPTIONS;
+                    }
+                );
+            }
+            return CSResult<string>.Success($"Saldos de contas gerados com sucesso para o ano {prm.InAnoNovo}.");
         }
 
-
-
-
-        /*PRIVADO*/
-        private static bool CS_ContaAnoNovoMesZeroNaoExiste(CSICP_CG009? contaAnoNovoMesZero)
+        private static void CS_CriaSaldoContaMes1Ao12(
+            int Tenant,
+            PR139137_PrmCS_GeraSaldoConta PrmInput,
+            List<CSICP_CG009> WorkListaGG009ToCreate,
+            string currentCondaID, int mes)
         {
-            return !CS_ContaAnoNovoMesZeroExiste(contaAnoNovoMesZero);
-        }
+            var WorkGG009ToCreate = CSICP_CG009.CreateInstanceComValoresDebitoCreditoESaldoZerados(
+                    tenant: Tenant,
+                    ICS_GenerateId: PrmInput.CS_GenerateId,
+                    cg009FilialId: PrmInput.InFilialID,
+                    cg009TipoSaldoId: PrmInput.InTipoSaldoID,
+                    cg009ContaId: currentCondaID,
+                    cg009Ano: PrmInput.InAnoFechamento + 1,
+                    cg009Mes: mes);
 
-        private static void CS_CriaSaldoContaAnoNovoMesZero(int Tenant, PR139137_PrmCS_TransSaldoCnt prm, List<CSICP_CG009> ListaCG009Create, SaldoContaResultV2 saldoAtualConta)
-        {
-            var WorkGG009ToCreate
-               = CSICP_CG009.CreateInstanceComValoresDebitoCreditoMesZerados(
-                   tenant: Tenant,
-                   ICS_GenerateId: prm.CS_GenerateId,
-                   cg009FilialId: prm.InFilialID,
-                   cg009TipoSaldoId: prm.InCG008_ID_TipoSaldo,
-                   cg009ContaId: saldoAtualConta.ContaId,
-                   cg009Ano: prm.InAnoNovo,
-                   Saldo: saldoAtualConta.SaldoAtual);
             WorkGG009ToCreate.NavCG006Conta_CG009 = null;
             WorkGG009ToCreate.NavBB001Estab_CG009 = null;
             WorkGG009ToCreate.NavCG008TipoSaldo_CG009 = null;
-
-            ListaCG009Create.Add(WorkGG009ToCreate);
+            WorkListaGG009ToCreate.Add(WorkGG009ToCreate);
         }
 
-        private static void CS_AtualizaSaldoContaExistente(List<CSICP_CG009> ListaCG009Update, SaldoContaResultV2 saldoAtualConta, CSICP_CG009? contaAnoNovoMesZero)
+        private static CSICP_CG009 CS_CriaSaldoContaMesZero(
+            int Tenant,
+            int AnoPosterior,
+            PR139137_PrmCS_GeraSaldoConta PrmInput,
+            decimal saldoAtualFinalDoAnoInicial,
+            string contaID)
         {
-            contaAnoNovoMesZero!.Cg009Saldo = saldoAtualConta.SaldoAtual;
-            contaAnoNovoMesZero.NavCG006Conta_CG009 = null;
-            contaAnoNovoMesZero.NavBB001Estab_CG009 = null;
-            contaAnoNovoMesZero.NavCG008TipoSaldo_CG009 = null;
-            
-            ListaCG009Update.Add(contaAnoNovoMesZero!);
+            var WorkGG009ToCreate_MesZero
+               = CSICP_CG009.CreateInstanceComValoresDebitoCreditoMesZero(
+                   tenant: Tenant,
+                   ICS_GenerateId: PrmInput.CS_GenerateId,
+                   cg009FilialId: PrmInput.InFilialID,
+                   cg009TipoSaldoId: PrmInput.InTipoSaldoID,
+                   cg009ContaId: contaID,
+                   cg009Ano: AnoPosterior,
+                   Saldo: saldoAtualFinalDoAnoInicial);
+            WorkGG009ToCreate_MesZero.NavCG006Conta_CG009 = null;
+            WorkGG009ToCreate_MesZero.NavBB001Estab_CG009 = null;
+            WorkGG009ToCreate_MesZero.NavCG008TipoSaldo_CG009 = null;
+            return WorkGG009ToCreate_MesZero;
         }
 
-        private static bool CS_ContaAnoNovoMesZeroExiste(CSICP_CG009? contaAnoNovoMesZero)
-        {
-            return contaAnoNovoMesZero != null;
-        }
 
-
-        private static void CS_AdicionaContasSemMovimentacao(List<string> WorkListaContasID, List<SaldoContaResultV2> resultadoFinal)
+        /*PRIVADO*/
+        private static List<SaldoContaPorMesResult> CS_CalculaSaldosPorMes(
+               PR139137_PrmCS_TransSaldoCnt prm,
+               List<DadosCG009> dadosPorConta)
         {
-            // Adicionar contas que não têm movimentação (saldo zerado)
-            if (resultadoFinal.Count < WorkListaContasID.Count)
+            var resultado = new List<SaldoContaPorMesResult>();
+            var saldoPorConta = new Dictionary<string, decimal>();
+
+            //int mesInicial = prm.GetMesInicial();
+            int mesFinal = prm.GetMesFinal();
+
+            var registrosOrdenados = dadosPorConta
+                .Where(e => e.Cg009Mes != null && e.Cg009Mes >= 0 && e.Cg009Mes <= mesFinal)
+                .OrderBy(e => e.Cg009ContaId)
+                .ThenBy(e => e.Cg009Mes ?? 0);
+
+            foreach (var registro in registrosOrdenados)
             {
-                var contasEncontradas = resultadoFinal.Select(r => r.ContaId).ToHashSet();
-                var contasFaltantes = WorkListaContasID.Where(id => !contasEncontradas.Contains(id));
+                var contaId = registro.Cg009ContaId;
+                int mes = registro.Cg009Mes ?? 0;
+                decimal totalDebito = registro.Cg009Totaldebito ?? 0;
+                decimal totalCredito = registro.Cg009Totalcredito ?? 0;
 
-                foreach (var contaId in contasFaltantes)
+
+                // Se for o primeiro registro da conta, saldo anterior é o saldo do mês 0
+                if (!saldoPorConta.ContainsKey(contaId))
                 {
-                    resultadoFinal.Add(new SaldoContaResultV2(
-                        ContaId: contaId,
-                        SaldoAtual: 0,
-                        ContaNome: string.Empty,
-                        ContaCodigo: string.Empty,
-                        SaldoAnterior: 0,
-                        MesValores: []
-                    ));
+                    var saldoContaMesInicial = dadosPorConta
+                        .FirstOrDefault(x => x.Cg009ContaId == contaId && x.Cg009Mes == 0)?.Cg009Saldo ?? 0;
+                    saldoPorConta[contaId] = saldoContaMesInicial;
                 }
+
+                decimal saldoAnterior = saldoPorConta[contaId];
+                decimal saldoAtual = saldoAnterior + (totalDebito - totalCredito);
+
+                resultado.Add(new SaldoContaPorMesResult(
+                    ContaId: contaId,
+                    Mes: mes,
+                    SaldoAnterior: saldoAnterior,
+                    TotalDebito: totalDebito,
+                    TotalCredito: totalCredito,
+                    SaldoAtual: saldoAtual,
+                    CodigoConta: registro.CodigoConta,
+                    NomeConta: registro.NomeConta
+                ));
+
+                saldoPorConta[contaId] = saldoAtual;
             }
-        }
-
-
-
-        private static List<SaldoContaResultV2> CS_CalculaSaldoContaAgrupado(
-            PR139137_PrmCS_TransSaldoCnt prm,
-            List<DadosCG009> dadosFiltrados)
-        {
-            var mesValores = new List<SaldoContaResultListMesValores>();
-            var dados = dadosFiltrados
-                .GroupBy(e => e.Cg009ContaId)
-                .Select(listaAgrupadaCG009PorConta =>
-                {
-                    var saldoInicial 
-                        = listaAgrupadaCG009PorConta
-                        .Where(x => x.Cg009Mes == 0).Sum(x => x.Cg009Saldo ?? 0);
-
-                    var totalDebitoAnt = listaAgrupadaCG009PorConta
-                        .Where(x => x.Cg009Mes > 0 && x.Cg009Mes <= prm.GetMesInicial() - 1)
-                        .Sum(x => x.Cg009Totaldebito);
-
-                    var totalCreditoAnt = listaAgrupadaCG009PorConta
-                       .Where(x => x.Cg009Mes > 0 && x.Cg009Mes <= prm.GetMesInicial() - 1)
-                       .Sum(x => x.Cg009Totalcredito);
-
-                    var saldoAnteriorAnt = (saldoInicial + (totalDebitoAnt - totalCreditoAnt) ?? 0);
-
-                    var mesValores = listaAgrupadaCG009PorConta
-                       .Where(x => x.Cg009Mes != null && x.Cg009Mes >= prm.GetMesInicial())
-                       .OrderBy(x => x.Cg009Mes)
-                       .Select(x => new SaldoContaResultListMesValores(
-                           TotalCredito: x.Cg009Totalcredito ?? 0,
-                           TotalDebito: x.Cg009Totaldebito ?? 0,
-                           Mes: x.Cg009Mes ?? -1
-                       )).ToList();
-
-                    var totalDebito = mesValores.Sum(e => e.TotalDebito);
-                    var totalCredito = mesValores.Sum(e => e.TotalCredito);
-                    var saldoAtual = (saldoAnteriorAnt + (totalDebito - totalCredito));
-
-                    return new SaldoContaResultV2(
-                         ContaId: listaAgrupadaCG009PorConta.Key,
-                         SaldoAtual: saldoAtual,
-                         SaldoAnterior: saldoAnteriorAnt,
-                         MesValores: mesValores,
-                         ContaCodigo: listaAgrupadaCG009PorConta.FirstOrDefault()?.CodigoConta ?? string.Empty,
-                         ContaNome: listaAgrupadaCG009PorConta.FirstOrDefault()?.NomeConta ?? string.Empty
-                     );
-                })
-                .ToList();
-            return dados;
+            return resultado;
         }
 
         private async Task<List<DadosCG009>> CS_FiltraDadosCG009(int Tenant, PR139137_PrmCS_TransSaldoCnt prm, List<string> batch)
         {
+  
             return await this.appDbContext.Osusr8dwCsicpCg009s
                 .AsNoTracking()
                 .Where(e => e.TenantId == Tenant)
                 .Where(e => e.Cg009FilialId == prm.InFilialID)
                 .Where(e => e.Cg009TipoSaldoId == prm.InCG008_ID_TipoSaldo)
                 .Where(e => e.Cg009Ano == prm.InAnoAtual)
-                .Where(e => e.Cg009Mes <= prm.GetMesFinal() && e.Cg009Mes >= 0)
-                //.Where(e => e.NavCG006Conta_CG009.Cg006Descricao == "CAIXA DA MATRIZ")
+                .Where(e => e.Cg009Mes >= 0 && e.Cg009Mes <= prm.GetMesFinal())
                 .Where(e => batch.Contains(e.Cg009ContaId))
                 .Select(e => new DadosCG009(
-                    e.Cg009ContaId,
-                    e.Cg009Mes,
-                    e.Cg009Saldo,
-                    e.Cg009Totaldebito,
-                    e.Cg009Totalcredito,
-                    e.NavCG006Conta_CG009.Cg006Codigoplano,
-                    e.NavCG006Conta_CG009.Cg006Descricao
-                ))
-                .ToListAsync();
-        }
-
-        private async Task<List<SaldoMesAtual_Conta>> CS_SaldoMesAtual_Conta(
-            int Tenant, PR139137_PrmCS_TransSaldoCnt prm, List<string> WorkListaContasID)
-        {
-
-            // Busca totais do mês atual
-            return await this.appDbContext.Osusr8dwCsicpCg009s
-                .AsNoTracking()
-                .Where(e => e.TenantId == Tenant)
-                .Where(e => e.Cg009FilialId == prm.InFilialID)
-                .Where(e => e.Cg009TipoSaldoId == prm.InCG008_ID_TipoSaldo)
-                .Where(e => e.Cg009Ano == prm.InAnoAtual)
-                .Where(e => e.Cg009Mes == prm.InMes)
-                .Where(e => WorkListaContasID.Contains(e.Cg009ContaId))
-                .GroupBy(e => e.Cg009ContaId)
-                .Select(g =>
-                new SaldoMesAtual_Conta(g.Key, g.Sum(x => x.Cg009Totalcredito ?? 0), g.Sum(x => x.Cg009Totaldebito ?? 0)))
+                e.Cg009ContaId,
+                e.Cg009Mes,
+                e.Cg009Saldo,
+                e.Cg009Totaldebito,
+                e.Cg009Totalcredito,
+                e.NavCG006Conta_CG009 != null ? e.NavCG006Conta_CG009.Cg006Codigoplano : string.Empty,
+                e.NavCG006Conta_CG009 != null ? e.NavCG006Conta_CG009.Cg006Descricao : string.Empty
+            ))
                 .ToListAsync();
         }
 
 
 
-        public async Task<List<SaldoContaResult>> CS_SaldoAnt_Conta(
-            int Tenant,
-            PR139137_PrmCS_TransSaldoCnt prm,
-            List<string> WorkListaContasID)
-        {
-            var saldosAnteriores = await this.appDbContext.Osusr8dwCsicpCg009s
-                 .AsNoTracking()
-                 .Where(e => e.TenantId == Tenant)
-                 .Where(e => e.Cg009FilialId == prm.InFilialID)
-                 .Where(e => e.Cg009TipoSaldoId == prm.InCG008_ID_TipoSaldo)
-                 .Where(e => e.Cg009Ano == prm.InAnoAtual)
-                 .Where(e => e.Cg009Mes < prm.InMes)
-                 .Where(e => WorkListaContasID.Contains(e.Cg009ContaId))
-                 .GroupBy(e => e.Cg009ContaId)
-                .Select(grupo => new SaldoContaResult(
-                        grupo.Key,
-                        grupo.Where(x => x.Cg009Mes == 0).Sum(x => x.Cg009Saldo ?? 0)
-                            + (grupo.Sum(x => x.Cg009Totaldebito ?? 0)
-                             - grupo.Sum(x => x.Cg009Totalcredito ?? 0))
-                    )).ToListAsync();
-            return saldosAnteriores;
-        }
     }
 }

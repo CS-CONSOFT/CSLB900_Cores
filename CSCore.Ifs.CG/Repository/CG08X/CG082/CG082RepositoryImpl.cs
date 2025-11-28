@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.CG.Repository.CG08X.CG082
 {
-    public class CG082RepositoryImpl : RepositorioBaseImpl<Osusr8dwCsicpCg082>, ICG082Repository
+    public class CG082RepositoryImpl : RepositorioBaseImplV2<Osusr8dwCsicpCg082>, ICG082Repository
     {
         private readonly AppDbContext _appDbContext;
 
@@ -23,6 +23,7 @@ namespace CSCore.Ifs.CG.Repository.CG08X.CG082
                 .AsNoTracking()
                 .Where(e => e.TenantId == InTenantID
                     && e.Cg082Contrelregid == InCG081ID);
+            //verificar se a propriedade Cg082Contrelregid é a correta
 
             var queryCount = query;
             var count = await queryCount.CountAsync();

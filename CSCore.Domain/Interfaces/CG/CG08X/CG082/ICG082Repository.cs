@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.Domain.Interfaces.CG.CG08X.CG082
 {
-    public interface ICG082Repository : IRepositorioBase<Osusr8dwCsicpCg082>
+    public interface ICG082Repository : IRepositorioBaseV2<Osusr8dwCsicpCg082>
     {
         Task<(List<Osusr8dwCsicpCg082>, int)> GetListAsync(int InTenantID, long InCG081ID, int InPageNumber, int InPageSize);
     }

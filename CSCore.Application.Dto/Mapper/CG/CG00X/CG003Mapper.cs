@@ -1,5 +1,5 @@
 ﻿using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
-using CSCore.Application.Dto.Dtos.CG.CG003;
+using CSCore.Application.Dto.Dtos.CG.CG00X.CG003;
 using CSCore.Domain.CS_Models.CSICP_CG;
 using System;
 using System.Collections.Generic;
