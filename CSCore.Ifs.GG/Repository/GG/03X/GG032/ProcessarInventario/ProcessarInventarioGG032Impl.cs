@@ -86,8 +86,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario
                 if (ProdutoNaoFoiAlterado(currProduto))
                     throw new Exception($"Algum produto não foi alterado, não é possível processar o inventário!");
 
-                CSICP_GG520? saldoEncontrado =
-                    await GetSaldoParaTrabalhoAsync(InPrmProcessaProdutosInventario.Tenant, currProduto.Gg033Saldoid ?? "", _appDbContext);
+                CSICP_GG520? saldoEncontrado = await GetSaldoParaTrabalhoAsync(InPrmProcessaProdutosInventario.Tenant, currProduto.Gg033Saldoid ?? "", _appDbContext);
 
                 if (saldoEncontrado is null) continue;
 
@@ -96,9 +95,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X.GG032.ProcessarInventario
                  ? currProduto.Gg033Qtdinventario - saldoEncontrado.Gg520Saldo
                  : saldoEncontrado.Gg520Saldo - currProduto.Gg033Qtdinventario;
 
-                currProduto.Gg033Entsai
-                    = QuantidadeInventarioEhMenorQueSaldo(currProduto, saldoEncontrado) ? "S" : "E";
-
+                currProduto.Gg033Entsai = QuantidadeInventarioEhMenorQueSaldo(currProduto, saldoEncontrado) ? "S" : "E";
 
                 currProduto.Gg033Datareferente = DateTime.Now.ToLocalTime();
 
