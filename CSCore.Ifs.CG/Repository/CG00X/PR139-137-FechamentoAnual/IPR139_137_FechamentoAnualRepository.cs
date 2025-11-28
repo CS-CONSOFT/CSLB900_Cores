@@ -1,4 +1,5 @@
-﻿using CSCore.Domain.CS_Models.CSICP_CG;
+﻿using CSCore.Domain;
+using CSCore.Domain.CS_Models.CSICP_CG;
 using CSLB900.MSTools.GenerateId;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,11 @@ namespace CSCore.Ifs.CG.Repository.CG00X.PR139_137_FechamentoAnual
 {
     public interface IPR139_137_FechamentoAnualRepository
     {
-        Task CS_GeraSaldoContaComTransferenciaDeSaldo(
-            int Tenant,
-            PR139137_PrmCS_TransSaldoCnt prm,
-            PR139137_PrmCS_GeraSaldoConta PrmInput,
-            List<string> WorkListaContas_CG006_ID);
+        Task<CSResult<string>> CS_GeraSaldoContaComTransferenciaDeSaldo(
+             int Tenant,
+             PR139137_PrmCS_TransSaldoCnt prm,
+             PR139137_PrmCS_GeraSaldoConta PrmInput,
+             List<string> WorkListaContas_CG006_ID);
         Task<List<CSICP_CG009>> GetSaldoContaCG009AnoNovoMes0(
               int Tenant,
               List<string> WorkListaContasID,

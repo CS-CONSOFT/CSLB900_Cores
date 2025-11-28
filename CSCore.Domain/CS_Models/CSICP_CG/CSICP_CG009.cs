@@ -23,7 +23,7 @@ public partial class CSICP_CG009
 
     public int? Cg009Ano { get; set; }
 
-    public int? Cg009Mes { get; set; }
+    public int Cg009Mes { get; set; }
 
     public decimal? Cg009Totaldebito { get; set; }
 
@@ -45,7 +45,7 @@ public partial class CSICP_CG009
             Cg009TipoSaldoId = cg009TipoSaldoId,
             Cg009ContaId = cg009ContaId,
             Cg009Ano = cg009Ano,
-            Cg009Mes = cg009Mes,
+            Cg009Mes = cg009Mes ?? -1,
             Cg009Totaldebito = cg009Totaldebito,
             Cg009Totalcredito = cg009Totalcredito,
             Cg009Saldo = cg009Saldo,
@@ -63,7 +63,7 @@ public partial class CSICP_CG009
             Cg009TipoSaldoId = cg009TipoSaldoId,
             Cg009ContaId = cg009ContaId,
             Cg009Ano = cg009Ano,
-            Cg009Mes = cg009Mes,
+            Cg009Mes = cg009Mes ?? -1,
             Cg009Totaldebito = 0,
             Cg009Totalcredito = 0,
             Cg009Saldo = 0,
@@ -87,7 +87,7 @@ public partial class CSICP_CG009
             Cg009TipoSaldoId = cg009TipoSaldoId,
             Cg009ContaId = cg009ContaId,
             Cg009Ano = cg009Ano,
-            Cg009Mes = cg009Mes,
+            Cg009Mes = cg009Mes ?? -1,
             Cg009Totaldebito = 0,
             Cg009Totalcredito = 0,
             Cg009Saldo = 0,
