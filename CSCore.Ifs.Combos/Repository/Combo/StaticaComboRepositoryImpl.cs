@@ -59,21 +59,55 @@ namespace CSCore.Ifs.Repository.Combo
         {
             IQueryable<object> query = comboType switch
             {
-                ComboTypeCGStaticas.csicp_cg996 => _appDbContext.Osusr8dwCsicpCg996s
-                .OrderBy(c => c.Label)
-                .Select(c => new { Title = c.Label ?? "---", c.Id }),
+                ComboTypeCGStaticas.Csicp_CG002_stat => _appDbContext.Osusr8dwCsicpCg002Stats
+                    .OrderBy(c => c.Label)
+                    .Select(c => new { Title = c.Label ?? "---", c.Id }),
 
+                ComboTypeCGStaticas.Csicp_CG007_stat => _appDbContext.Osusr8dwCsicpCg007Stats
+                    .OrderBy(c => c.Label)
+                    .Select(c => new { Title = c.Label ?? "---", c.Id }),
+
+                ComboTypeCGStaticas.Csicp_CG991 => _appDbContext.Osusr8dwCsicpCg991s
+                    .OrderBy(c => c.Label)
+                    .Select(c => new { Title = c.Label ?? "---", c.Id }),
+
+                ComboTypeCGStaticas.Csicp_CG992 => _appDbContext.Osusr8dwCsicpCg992s
+                    .OrderBy(c => c.Label)
+                    .Select(c => new { Title = c.Label ?? "---", c.Id }),
+
+                ComboTypeCGStaticas.Csicp_CG993 => _appDbContext.Osusr8dwCsicpCg993s
+                    .OrderBy(c => c.Label)
+                    .Select(c => new { Title = c.Label ?? "---", c.Id }),
+
+                ComboTypeCGStaticas.Csicp_CG994 => _appDbContext.Osusr8dwCsicpCg994s
+                    .OrderBy(c => c.Label)
+                    .Select(c => new { Title = c.Label ?? "---", c.Id }),
+
+                ComboTypeCGStaticas.Csicp_CG995 => _appDbContext.Osusr8dwCsicpCg995s
+                    .OrderBy(c => c.Label)
+                    .Select(c => new { Title = c.Label ?? "---", c.Id }),
+
+                ComboTypeCGStaticas.csicp_cg996 => _appDbContext.Osusr8dwCsicpCg996s
+                    .OrderBy(c => c.Label)
+                    .Select(c => new { Title = c.Label ?? "---", c.Id }),
+
+                ComboTypeCGStaticas.Csicp_CG997 => _appDbContext.Osusr8dwCsicpCg997s
+                    .OrderBy(c => c.Label)
+                    .Select(c => new { Title = c.Label ?? "---", c.Id }),
+
+                ComboTypeCGStaticas.Csicp_CG998 => _appDbContext.Osusr8dwCsicpCg998s
+                    .OrderBy(c => c.Label)
+                    .Select(c => new { Title = c.Label ?? "---", c.Id }),
 
                 ComboTypeCGStaticas.csicp_cg999 => _appDbContext.Osusr8dwCsicpCg999s
+                    .OrderBy(c => c.Label)
+                    .Select(c => new { Title = c.Label ?? "---", c.Id }),
 
-                 .OrderBy(c => c.Label)
-                 .Select(c => new { Title = c.Label ?? "---", c.Id }),
-
-           
-
+                ComboTypeCGStaticas.Csicp_CG070_sta => _appDbContext.Osusr8dwCsicpCg070Sta
+                    .OrderBy(c => c.Label)
+                    .Select(c => new { Title = c.Label ?? "---", c.Id }),
 
                 _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
-
             };
 
             return await query.ToListAsync();
