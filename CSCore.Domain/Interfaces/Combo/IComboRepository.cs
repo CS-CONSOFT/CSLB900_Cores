@@ -13,6 +13,7 @@ namespace CSCore.Domain.Interfaces.Combo
         Task<IEnumerable<object>> GetCommonListForComboAA(int tenant, ComboTypeAA comboType);
         Task<IEnumerable<object>> GetCommonListForComboFF(int tenant, ComboTypeFF comboType);
         Task<IEnumerable<object>> GetCommonListForComboGG(int tenant, ComboTypeGG comboType);
+        Task<IEnumerable<object>> GetCommonListForComboCG(int tenant, ComboTypeCG comboType);
         Task<IEnumerable<object>> GetCommonListForComboRR(int tenant, ComboTypeRR comboType);
         Task<IEnumerable<object>> GetCommonListForComboSYS(int tenant, ComboTypeSYS comboType);
         Task<IEnumerable<object>> GetCommonListForComboPais(int tenant);

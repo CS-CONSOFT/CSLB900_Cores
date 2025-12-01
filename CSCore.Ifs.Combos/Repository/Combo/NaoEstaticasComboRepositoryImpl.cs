@@ -272,17 +272,6 @@ namespace CSCore.Ifs.Repository.Combo
                 .OrderBy(c => c.Rr020Descricao)
                 .Select(c => new { Title = c.Rr020Descricao ?? "---", c.Id }),
 
-                ComboTypeRR.Csicp_RR030 => _appDbContext.OsusrTo3CsicpRr030s
-                .Where(c => c.TenantId == tenant)
-                .OrderBy(c => c.Rr030Descricao)
-                .Select(c => new { Title = c.Rr030Descricao ?? "---", c.Id }),
-
-                ComboTypeRR.Csicp_RR035 => _appDbContext.OsusrTo3CsicpRr035s
-                .Where(c => c.TenantId == tenant)
-                .OrderBy(c => c.Rr035Descricao)
-                .Select(c => new { Title = c.Rr035Descricao ?? "---", c.Id }),
-
-
                 _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
             };
             return await query.ToListAsync();
@@ -586,5 +575,27 @@ namespace CSCore.Ifs.Repository.Combo
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<object>> GetCommonListForComboCG(int tenant, ComboTypeCG comboType)
+        {
+            IQueryable<object> query = comboType switch
+            {
+                ComboTypeCG.csicp_cg003 => _appDbContext.Osusr8dwCsicpCg003s.Where(c => c.TenantId == tenant && c.Cg003Isactive == true)
+                .OrderBy(c => c.Cg003Descricao).Select(c => new { Title = c.Cg003Descricao ?? "---", c.Cg003Id }),
+                ComboTypeCG.csicp_cg005 => _appDbContext.Osusr8dwCsicpCg005s.Where(c => c.TenantId == tenant && c.Cg005Isactive == true)
+                .OrderBy(c => c.Cg005Historicoresumido).Select(c => new { Title = c.Cg005Historicoresumido ?? "---", c.Cg005Id }),
+                ComboTypeCG.csicp_cg004 => _appDbContext.Osusr8dwCsicpCg004s.Where(c => c.TenantId == tenant && c.Cg004Isactive == true)
+                .OrderBy(c => c.Cg004Descricao).Select(c => new { Title = c.Cg004Descricao ?? "---", c.Cg004Id }),
+            
+
+                _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
+            };
+
+            return await query.ToListAsync();
+        }
+
+
+      
+    }
     }
 }

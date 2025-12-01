@@ -295,6 +295,26 @@
 
         }
 
+
+        public enum ComboTypeCGStaticas
+        {
+            csicp_cg996,
+       
+            csicp_cg999,
+      
+
+        }
+
+        public enum ComboTypeCG
+        {
+           
+            csicp_cg003,
+            
+            csicp_cg005,
+            csicp_cg004
+
+        }
+
         public enum ComboTypeAA
         {
             Csicp_aa026,

@@ -54,6 +54,32 @@ namespace CSCore.Ifs.Repository.Combo
             return await query.ToListAsync();
         }
 
+
+        public async Task<IEnumerable<object>> GetCommonListForComboCG(int tenant, ComboTypeCGStaticas comboType)
+        {
+            IQueryable<object> query = comboType switch
+            {
+                ComboTypeCGStaticas.csicp_cg996 => _appDbContext.Osusr8dwCsicpCg996s
+                .OrderBy(c => c.Label)
+                .Select(c => new { Title = c.Label ?? "---", c.Id }),
+
+
+                ComboTypeCGStaticas.csicp_cg999 => _appDbContext.Osusr8dwCsicpCg999s
+
+                 .OrderBy(c => c.Label)
+                 .Select(c => new { Title = c.Label ?? "---", c.Id }),
+
+           
+
+
+                _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
+
+            };
+
+            return await query.ToListAsync();
+        }
+
+
         public async Task<IReadOnlyCollection<object>> GetComboStaticasByTypeGG(StaticaTypes.StaticTypeGG staticTypeGG)
         {
             IQueryable<object> query = staticTypeGG switch
