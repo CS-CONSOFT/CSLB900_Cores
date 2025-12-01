@@ -137,6 +137,28 @@ namespace CSCore.Ifs.Repository.Combo
             return await query.ToListAsync();
         }
 
+        public async Task<IReadOnlyCollection<object>> GetComboStaticasByTypeCG(StaticaTypes.StaticTypeCG staticTypeCG)
+        {
+            IQueryable<object> query = staticTypeCG switch
+            {
+                StaticTypeCG.Csicp_CG002_stat => _appDbContext.Osusr8dwCsicpCg002Stats.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
+                StaticTypeCG.Csicp_CG007_stat => _appDbContext.Osusr8dwCsicpCg007Stats.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
+                StaticTypeCG.Csicp_CG991 => _appDbContext.Osusr8dwCsicpCg991s.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
+                StaticTypeCG.Csicp_CG992 => _appDbContext.Osusr8dwCsicpCg992s.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
+                StaticTypeCG.Csicp_CG993 => _appDbContext.Osusr8dwCsicpCg993s.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
+                StaticTypeCG.Csicp_CG994 => _appDbContext.Osusr8dwCsicpCg994s.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
+                StaticTypeCG.Csicp_CG995 => _appDbContext.Osusr8dwCsicpCg995s.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
+                StaticTypeCG.Csicp_CG996 => _appDbContext.Osusr8dwCsicpCg996s.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
+                StaticTypeCG.Csicp_CG997 => _appDbContext.Osusr8dwCsicpCg997s.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
+                StaticTypeCG.Csicp_CG998 => _appDbContext.Osusr8dwCsicpCg998s.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
+                StaticTypeCG.Csicp_CG999 => _appDbContext.Osusr8dwCsicpCg999s.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
+                StaticTypeCG.Csicp_CG070_sta => _appDbContext.Osusr8dwCsicpCg070Sta.AsQueryable().Where(c => c.IsActive == true).OrderBy(c => c.Label).Select(c => new { Title = c.Label, c.Id }),
+
+                _ => throw new ArgumentOutOfRangeException(nameof(staticTypeCG), "Tipo estático inválido")
+            };
+            return await query.ToListAsync();
+        }
+
         public async Task<IReadOnlyCollection<object>> GetComboStaticasByTypeClient(StaticaTypes.StaticTypeClient staticTypeClient)
         {
             IQueryable<object> query = staticTypeClient switch

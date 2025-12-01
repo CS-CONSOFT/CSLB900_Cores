@@ -40,6 +40,22 @@
             CSICP_BB062_STA,
         }
 
+        public enum StaticTypeCG
+        {
+            Csicp_CG002_stat,
+            Csicp_CG007_stat,
+            Csicp_CG991,
+            Csicp_CG992,
+            Csicp_CG993,
+            Csicp_CG994,
+            Csicp_CG995,
+            Csicp_CG996,
+            Csicp_CG997,
+            Csicp_CG998,
+            Csicp_CG999,
+            Csicp_CG070_sta
+        }
+
         public enum StaticTypeFF
         {
             Csicp_Ff000Basecalcs,
