@@ -38,6 +38,7 @@ namespace CSCore.Application.Dto.Dtos.CG.CG06X.CG060
         public int? Cg060Idprevia { get; set; }
 
         public int? Cg060Qparprenchidos { get; set; }
+
         public DtoGetCG050? NavCG050Evento_CG060 { get; set; }
         public DtoGetCG050? NavCG050EventoTpDeb_CG060 { get; set; }
         public DtoGetCG050? NavCG050EventoTpCred_CG060 { get; set; }
