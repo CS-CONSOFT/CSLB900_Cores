@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CSCore.Domain;
+using CSCore.Domain.CS_Models.Staticas;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,5 +31,7 @@ namespace CSCore.Application.Dto.Dtos.CG.CG05X.CG050
         public bool? Cg050Flperexc { get; set; }
 
         public bool? Cg050Isactive { get; set; }
+        public SpedCsicpUnperiodo? NavUnPeriodo { get; set; }
+        public OsusrNnxCsicpModulo? NavModuloID { get; set; }
     }
 }

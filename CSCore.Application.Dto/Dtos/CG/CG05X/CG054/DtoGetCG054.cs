@@ -1,4 +1,6 @@
-﻿using CSCore.Domain.CS_Models.CSICP_CG;
+﻿using CSCore.Application.Dto.Dtos.CG.CG05X.CG050;
+using CSCore.Application.Dto.Dtos.CG.CG05X.CG055;
+using CSCore.Domain.CS_Models.CSICP_CG;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +18,8 @@ namespace CSCore.Application.Dto.Dtos.CG.CG05X.CG054
         public long? Cg054Eventotpid { get; set; }
 
         public long? Cg054Valortpid { get; set; }
+
+        public DtoGetCG050? NavCG050TipoEvento_CG054 { get; set; }
+        public DtoGetCG055? NavCG055ValorEvento_CG054 { get; set; }
     }
 }
