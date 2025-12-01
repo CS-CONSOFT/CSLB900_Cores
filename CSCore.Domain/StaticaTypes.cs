@@ -322,6 +322,9 @@
             Csicp_RR007,
             Csicp_RR008,
             Csicp_RR020,
+
+            Csicp_RR030,
+            Csicp_RR035,
         }
 
         public enum ComboTypeSYS
