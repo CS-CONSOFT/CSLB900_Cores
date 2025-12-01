@@ -581,11 +581,11 @@ namespace CSCore.Ifs.Repository.Combo
             IQueryable<object> query = comboType switch
             {
                 ComboTypeCG.csicp_cg003 => _appDbContext.Osusr8dwCsicpCg003s.Where(c => c.TenantId == tenant && c.Cg003Isactive == true)
-                .OrderBy(c => c.Cg003Descricao).Select(c => new { Title = c.Cg003Descricao ?? "---", c.Cg003Id }),
+                .OrderBy(c => c.Cg003Descricao).Select(c => new { Title = c.Cg003Descricao ?? "---", Id= c.Cg003Id }),
                 ComboTypeCG.csicp_cg005 => _appDbContext.Osusr8dwCsicpCg005s.Where(c => c.TenantId == tenant && c.Cg005Isactive == true)
-                .OrderBy(c => c.Cg005Historicoresumido).Select(c => new { Title = c.Cg005Historicoresumido ?? "---", c.Cg005Id }),
+                .OrderBy(c => c.Cg005Historicoresumido).Select(c => new { Title = c.Cg005Historicoresumido ?? "---", Id = c.Cg005Id }),
                 ComboTypeCG.csicp_cg004 => _appDbContext.Osusr8dwCsicpCg004s.Where(c => c.TenantId == tenant && c.Cg004Isactive == true)
-                .OrderBy(c => c.Cg004Descricao).Select(c => new { Title = c.Cg004Descricao ?? "---", c.Cg004Id }),
+                .OrderBy(c => c.Cg004Descricao).Select(c => new { Title = c.Cg004Descricao ?? "---", Id = c.Cg004Id }),
             
 
                 _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
@@ -598,4 +598,4 @@ namespace CSCore.Ifs.Repository.Combo
       
     }
     }
-}
+
