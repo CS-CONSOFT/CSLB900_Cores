@@ -10,7 +10,7 @@ namespace CSCore.Application.Dto.Mapper.CG.CG06X
 {
     public static class CG063Mapper
     {
-        public static DtoGetCG063 ToDtoGetCG063(Osusr8dwCsicpCg063 entity)
+        public static DtoGetCG063 ToDtoGetCG063(this Osusr8dwCsicpCg063 entity)
         {
             return new DtoGetCG063
             {

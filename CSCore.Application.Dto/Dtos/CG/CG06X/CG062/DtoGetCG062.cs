@@ -68,12 +68,12 @@ namespace CSCore.Application.Dto.Dtos.CG.CG06X.CG062
 
         public DtoGetCG011? NavCG011CtaGerencial_CredN4ID { get; set; }
 
-        public DtoGetCG060? NavCG060RegramentoID_CG062 { get; set; }
+        public DtoGetCG060Padrao? NavCG060RegramentoID_CG062 { get; set; }
 
-        public DtoGetCG054? NavCG054EventoValorTpID_CG062 { get; set; }
+        public DtoGetCG054Padrao? NavCG054EventoValorTpID_CG062 { get; set; }
 
-        public DtoGetCG054? NavCG054EventoValorTpDebID_CG062 { get; set; }
+        public PadraoDtoGetCG054? NavCG054EventoValorTpDebID_CG062 { get; set; }
 
-        public DtoGetCG054? NavCG054EventoValorTpCredID_CG062 { get; set; }
+        public DtoGetCG054Padrao? NavCG054EventoValorTpCredID_CG062 { get; set; }
     }
 }

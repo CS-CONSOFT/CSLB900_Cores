@@ -15,10 +15,8 @@ namespace CSCore.Application.Dto.Dtos.CG.CG05X.CG050
 
         public string? Cg050Txdescricao { get; set; }
 
-        [ForeignKey("NavUnPeriodo")]
         public int? Cg050Periodicidadeid { get; set; }
 
-        [ForeignKey("NavModuloID")]
         public int? Cg050Moduloid { get; set; }
 
         public bool? Cg050Flonline { get; set; }

@@ -22,9 +22,22 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG062
             return await _appDbContext.Osusr8dwCsicpCg062s
                 .AsNoTracking()
                 .Where(e => e.TenantId == InTenantID && e.Cg062Id == InCG062ID)
+                .Include(e => e.NavCG005HistDeb_CG062)
+                .Include(e => e.NavCG005HistCred_CG062)
+                .Include(e => e.NavCG006ContaDeb_CG062)
+                .Include(e => e.NavCG006ContaCred_CG062)
+                .Include(e => e.NavCG011CtaGerencial_DebN2ID)
+                .Include(e => e.NavCG011CtaGerencial_DebN3ID)
+                .Include(e => e.NavCG011CtaGerencial_DebN4ID)
+                .Include(e => e.NavCG011CtaGerencial_CredN2ID)
+                .Include(e => e.NavCG011CtaGerencial_CredN3ID)
+                .Include(e => e.NavCG011CtaGerencial_CredN4ID)
+                .Include(e => e.NavCG060RegramentoID_CG062)
+                .Include(e => e.NavCG054EventoValorTpID_CG062)
+                .Include(e => e.NavCG054EventoValorTpDebID_CG062)
+                .Include(e => e.NavCG054EventoValorTpCredID_CG062)
                 .FirstOrDefaultAsync();
         }
-
         public async Task<(List<Osusr8dwCsicpCg062>, int)> GetListAsync(
             int InTenantID,
             long? InRegramentoID,
