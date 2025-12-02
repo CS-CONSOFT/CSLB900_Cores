@@ -12,7 +12,7 @@ namespace CSCore.Application.Dto.Dtos.CG.CG06X.CG063
     {
         public long? Cg063Regramentoid { get; set; }
 
-        public string? Cg063Parametroid { get; set; }
+        public long? Cg063Parametroid { get; set; }
 
         public long? Cg063Eventopartpid { get; set; }
 

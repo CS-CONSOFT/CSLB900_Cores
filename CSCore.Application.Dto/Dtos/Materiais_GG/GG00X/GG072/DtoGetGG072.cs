@@ -1,5 +1,6 @@
 ﻿using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG520;
 using CSCore.Domain.CS_Models.CSICP_GG;
+using CSCore.Domain.CS_Models.Staticas.GG;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,5 +49,6 @@ namespace CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG072
         public string? GG008ProdutoDescricao { get; set; }
         public DtoGetGG520Simples? NavGG520Saidasaldo { get; set; }
         public DtoGetGG520Simples? Gg072Entradasaldo { get; set; }
+        public CSICP_GG072Stq? NavCSICP_GG072Stq { get; set; }
     }
 }
