@@ -10,6 +10,7 @@ using static CSCore.Domain.ComboTypes;
 
 namespace CSCore.Ifs.Repository.Combo
 {
+
     public class NaoEstaticasComboRepositoryImpl(AppDbContext context) :
        IComboRepository
     {
@@ -167,7 +168,7 @@ namespace CSCore.Ifs.Repository.Combo
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<object>> GetComboGG001(int tenant, string? estabelecimentoId, bool? ignoraVirtual = false)
+        public async Task<IEnumerable<object>> GetComboGG001(int tenant, string estabelecimentoId, bool? ignoraVirtual = false)
         {
             var gg001TAlmoxVirtual = await _appDbContext.CSICP_GG001Talmoxes
                 .Where(c => c.Label == "Virtual")
@@ -178,8 +179,8 @@ namespace CSCore.Ifs.Repository.Combo
                 .Include(e => e.BB001FilialNav)
                 .Where(c => c.TenantId == tenant);
 
-            if (estabelecimentoId != null && estabelecimentoId != string.Empty)
-                query = query.Where(c => c.Gg001Filialid == estabelecimentoId);
+            query = query.Where(c => c.Gg001Filialid == estabelecimentoId);
+
 
             if (ignoraVirtual.HasValue && ignoraVirtual.Value)
                 query = query.Where(c => c.Gg001Tipoalmoxarifado != gg001TAlmoxVirtual);
@@ -228,6 +229,36 @@ namespace CSCore.Ifs.Repository.Combo
                     });
             return await novaQuery.ToListAsync();
         }
+
+
+        public async Task<IEnumerable<object>> GG016fGradeLinha(int tenant, GG016F_IS_GRADE_LINHA gG016F_IS_GRADE_LINHA)
+        {
+         
+            var query = _appDbContext.OsusrE9aCsicpGg016fs
+                .Where(e => e.TenantId == tenant).AsQueryable();
+            if (gG016F_IS_GRADE_LINHA == GG016F_IS_GRADE_LINHA.GG016F_LINHA)
+            {
+                query = query.Include(e => e.NavGg016fGradelinha)
+                     .Where(e => e.NavGg016fGradelinha != null);
+            } 
+            if (gG016F_IS_GRADE_LINHA == GG016F_IS_GRADE_LINHA.GG016F_COLUNA)
+            {
+                query = query.Include(e => e.NavGg016fGradecoluna)
+                  .Where(e => e.NavGg016fGradecoluna != null);
+            }
+
+            query = query.OrderBy(c => c.Gg016fId);
+            IQueryable<object> novaQuery = query.Select(c =>
+                    new
+                    {
+                        Title = gG016F_IS_GRADE_LINHA == GG016F_IS_GRADE_LINHA.GG016F_LINHA
+                ? c.NavGg016fGradelinha!.Gg016Descricao
+                : c.NavGg016fGradecoluna!.Gg016Descricao,
+                        Id = c.Gg016fId
+                    });
+            return await novaQuery.ToListAsync();
+        }
+
 
         public async Task<IEnumerable<object>> GetCommonListForComboRR(int tenant, ComboTypeRR comboType)
         {
