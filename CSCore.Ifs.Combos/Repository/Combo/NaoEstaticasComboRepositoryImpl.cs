@@ -260,6 +260,24 @@ namespace CSCore.Ifs.Repository.Combo
         }
 
 
+        public async Task<IEnumerable<object>> GG016(int tenant, string ID_csicp_gg016b)
+        {
+
+            var query = _appDbContext.OsusrE9aCsicpGg016s
+                .Where(e => e.TenantId == tenant && e.Gg016Lincolid == int.Parse(ID_csicp_gg016b)).AsQueryable();
+      
+            query = query.OrderBy(c => c.Gg016Descricao);
+            IQueryable<object> novaQuery = query.Select(c =>
+                    new
+                    {
+                        Title = c.Gg016Descricao,
+                        Id = c.Id
+                    });
+            return await novaQuery.ToListAsync();
+        }
+
+
+
         public async Task<IEnumerable<object>> GetCommonListForComboRR(int tenant, ComboTypeRR comboType)
         {
             IQueryable<object> query = comboType switch

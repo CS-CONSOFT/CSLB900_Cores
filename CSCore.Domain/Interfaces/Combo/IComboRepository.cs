@@ -27,7 +27,7 @@ namespace CSCore.Domain.Interfaces.Combo
         Task<IEnumerable<object>> GetCommonListForComboBB008(int tenant, string FormaPagamentoID);
         Task<IEnumerable<object>> GetCommonListForComboBB026(int tenant, TIPO_ESPECIE ESPECIE);
         Task<IEnumerable<object>> GG016fGradeLinha(int tenant, GG016F_IS_GRADE_LINHA gG016F_IS_GRADE_LINHA);
-
+        Task<IEnumerable<object>> GG016(int tenant, string ID_csicp_gg016b);
         Task<IEnumerable<object>> GG019(int tenant,
        string InProdutoID_gg008,
        string? InSaldoID);
