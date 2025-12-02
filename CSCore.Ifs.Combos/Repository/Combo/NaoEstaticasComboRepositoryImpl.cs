@@ -213,9 +213,10 @@ namespace CSCore.Ifs.Repository.Combo
                 .FirstAsync();
 
             IQueryable<CSICP_GG019> query = _appDbContext.OsusrE9aCsicpGg019s
-                .Where(c => c.TenantId == tenant && c.Gg019Produtoid == InProdutoID_gg008
-                && (c.Gg019KeysldId == null || c.Gg019KeysldId == InSaldoID
-                && ((c.Gg019TipocbarraId != NSID && c.Gg019TipocbarraId != SistemaID) || c.Gg019TipocbarraId == null)));
+                .Where(c => c.TenantId == tenant
+                    && c.Gg019Produtoid == InProdutoID_gg008
+                    && (c.Gg019KeysldId == null || c.Gg019KeysldId == InSaldoID)
+                    && ((c.Gg019TipocbarraId != NSID && c.Gg019TipocbarraId != SistemaID) || c.Gg019TipocbarraId == null));
 
 
             query = query.OrderBy(c => c.Gg019Codbarrasalfa);
