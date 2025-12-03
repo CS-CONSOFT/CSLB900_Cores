@@ -1556,10 +1556,7 @@ namespace CSCore.Ifs.CS_Context
                         .HasColumnName("CG063_PARAMETROID");
                     entity.Property(e => e.Cg063Regramentoid).HasColumnName("CG063_REGRAMENTOID");
                     entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-                      entity.HasOne(d => d.NavCG051PrmEvento_CG063)
-        .WithMany()
-        .HasForeignKey(d => d.Cg063Parametroid)
-        .OnDelete(DeleteBehavior.ClientSetNull);
+                      
                 });
 
                     modelBuilder.Entity<Osusr8dwCsicpCg064>(entity =>

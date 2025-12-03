@@ -37,7 +37,8 @@ namespace CSCore.Ifs.CG.Repository.CG05X.CG050
                 .Include(e => e.NavUnPeriodo)
                 .Include(e => e.NavModuloID);
 
-            var count = await query.CountAsync();
+            var queryCount = query;
+            var count = await queryCount.CountAsync();
             query = query.OrderByDescending(e => e.Cg050Id);
             query = query.PaginacaoNoBanco(InPageNumber, InPageSize);
 

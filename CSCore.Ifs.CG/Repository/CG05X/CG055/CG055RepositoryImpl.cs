@@ -35,7 +35,8 @@ namespace CSCore.Ifs.CG.Repository.CG05X.CG055
                 .Where(e => e.TenantId == InTenantID)
                 .Include(e => e.NavModuloID_CG055);
 
-            var count = await query.CountAsync();
+            var queryCount = query;
+            var count = await queryCount.CountAsync();
             query = query.OrderByDescending(e => e.Cg055Id);
             query = query.PaginacaoNoBanco(InPageNumber, InPageSize);
 

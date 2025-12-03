@@ -27,7 +27,8 @@ namespace CSCore.Ifs.CG.Repository.CG05X.CG051
                 .Include(e => e.NavCG050TipoEvento_CG051)
                 .Include(e => e.NavCG052PrmEvento_CG051);
 
-            var count = await query.CountAsync();
+            var queryCount = query;
+            var count = await queryCount.CountAsync();
             query = query.OrderByDescending(e => e.Cg051Id);
             query = query.PaginacaoNoBanco(InPageNumber, InPageSize);
 
