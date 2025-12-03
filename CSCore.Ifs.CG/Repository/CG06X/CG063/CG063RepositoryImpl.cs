@@ -22,6 +22,8 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG063
             return await _appDbContext.Osusr8dwCsicpCg063s
                 .AsNoTracking()
                 .Where(e => e.TenantId == InTenantID && e.Cg063Id == InCG063ID)
+                .Include(e => e.NavCG051PrmEvento_CG063)
+                .Include(e => e.NavCG060RegramentoID_CG063)
                 .FirstOrDefaultAsync();
         }
 
@@ -34,7 +36,7 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG063
             var queryCount = query;
             var count = await queryCount.CountAsync();
 
-            query = query.OrderBy(e => e.Cg063Regramentoid);
+            query = query.OrderByDescending(e => e.Cg063Id);
             query = query.PaginacaoNoBanco(InPageNumber, InPageSize);
 
             return (await query.ToListAsync(), count);

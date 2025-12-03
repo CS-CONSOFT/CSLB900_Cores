@@ -1,4 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
+using CSCore.Domain.EstaticasLabel.GG;
 using CSCore.Domain.Interfaces.GG;
 using CSCore.Ifs.Compartilhado.Utilidade;
 using CSCore.Ifs.CS_Context;
@@ -40,11 +41,15 @@ namespace CSCore.Ifs.Repository.GG
             (int tenant, string? estabID, string? codAlmox, int pageSize, int page, string? search, bool isAtivo)
         {
             IQueryable<CSICP_GG001> q1 = _appDbContext.CSICP_GG001s
+                .AsNoTrackingWithIdentityResolution()
                 .AsSplitQuery()
                 .Where(e => e.TenantId == tenant).AsNoTracking()
                 .Include(e => e.BB001FilialNav)
                 .Include(e => e.Gg001TipoalmoxarifadoNavigation)
                 .OrderBy(e => e.Gg001Descalmox);
+
+            var idVirtual = await this._appDbContext.CSICP_GG001Talmoxes.Where(e => e.Label != Entities.GG001_TAlmox.Virtual).Select(e => e.Id).FirstAsync();
+            q1 = q1.Where(e => e.Gg001Tipoalmoxarifado != idVirtual);
 
             q1 = FiltraQuandoExisteFiltros(search, estabID, codAlmox, q1, isAtivo);
 

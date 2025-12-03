@@ -21,6 +21,8 @@ namespace CSCore.Ifs.CG.Repository.CG08X.CG082
         {
             IQueryable<Osusr8dwCsicpCg082> query = _appDbContext.Osusr8dwCsicpCg082s
                 .AsNoTracking()
+                .Include(e => e.NavCG081ContRelRegID_CG082)
+                .Include(e => e.NavCG006ContConta_CG082)
                 .Where(e => e.TenantId == InTenantID
                     && e.Cg082Contrelregid == InCG081ID);
             //verificar se a propriedade Cg082Contrelregid é a correta
@@ -28,8 +30,6 @@ namespace CSCore.Ifs.CG.Repository.CG08X.CG082
             var queryCount = query;
             var count = await queryCount.CountAsync();
 
-            query = query.OrderBy(e => e.Cg082Contrelregid)
-                         .ThenBy(e => e.Cg082Contcontaid);
             query = query.PaginacaoNoBanco(InPageNumber, InPageSize);
 
             return (await query.ToListAsync(), count);

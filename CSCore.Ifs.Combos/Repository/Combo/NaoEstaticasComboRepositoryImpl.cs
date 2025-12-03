@@ -10,6 +10,7 @@ using static CSCore.Domain.ComboTypes;
 
 namespace CSCore.Ifs.Repository.Combo
 {
+
     public class NaoEstaticasComboRepositoryImpl(AppDbContext context) :
        IComboRepository
     {
@@ -167,7 +168,7 @@ namespace CSCore.Ifs.Repository.Combo
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<object>> GetComboGG001(int tenant, string? estabelecimentoId, bool? ignoraVirtual = false)
+        public async Task<IEnumerable<object>> GetComboGG001(int tenant, string estabelecimentoId, bool? ignoraVirtual = false)
         {
             var gg001TAlmoxVirtual = await _appDbContext.CSICP_GG001Talmoxes
                 .Where(c => c.Label == "Virtual")
@@ -178,8 +179,8 @@ namespace CSCore.Ifs.Repository.Combo
                 .Include(e => e.BB001FilialNav)
                 .Where(c => c.TenantId == tenant);
 
-            if (estabelecimentoId != null && estabelecimentoId != string.Empty)
-                query = query.Where(c => c.Gg001Filialid == estabelecimentoId);
+            query = query.Where(c => c.Gg001Filialid == estabelecimentoId);
+
 
             if (ignoraVirtual.HasValue && ignoraVirtual.Value)
                 query = query.Where(c => c.Gg001Tipoalmoxarifado != gg001TAlmoxVirtual);
@@ -213,9 +214,10 @@ namespace CSCore.Ifs.Repository.Combo
                 .FirstAsync();
 
             IQueryable<CSICP_GG019> query = _appDbContext.OsusrE9aCsicpGg019s
-                .Where(c => c.TenantId == tenant && c.Gg019Produtoid == InProdutoID_gg008
-                && (c.Gg019KeysldId == null || c.Gg019KeysldId == InSaldoID
-                && ((c.Gg019TipocbarraId != NSID && c.Gg019TipocbarraId != SistemaID) || c.Gg019TipocbarraId == null)));
+                .Where(c => c.TenantId == tenant
+                    && c.Gg019Produtoid == InProdutoID_gg008
+                    && (c.Gg019KeysldId == null || c.Gg019KeysldId == InSaldoID)
+                    && ((c.Gg019TipocbarraId != NSID && c.Gg019TipocbarraId != SistemaID) || c.Gg019TipocbarraId == null));
 
 
             query = query.OrderBy(c => c.Gg019Codbarrasalfa);
@@ -227,6 +229,54 @@ namespace CSCore.Ifs.Repository.Combo
                     });
             return await novaQuery.ToListAsync();
         }
+
+
+        public async Task<IEnumerable<object>> GG016fGradeLinha(int tenant, GG016F_IS_GRADE_LINHA gG016F_IS_GRADE_LINHA)
+        {
+         
+            var query = _appDbContext.OsusrE9aCsicpGg016fs
+                .Where(e => e.TenantId == tenant).AsQueryable();
+            if (gG016F_IS_GRADE_LINHA == GG016F_IS_GRADE_LINHA.GG016F_LINHA)
+            {
+                query = query.Include(e => e.NavGg016fGradelinha)
+                     .Where(e => e.NavGg016fGradelinha != null);
+            } 
+            if (gG016F_IS_GRADE_LINHA == GG016F_IS_GRADE_LINHA.GG016F_COLUNA)
+            {
+                query = query.Include(e => e.NavGg016fGradecoluna)
+                  .Where(e => e.NavGg016fGradecoluna != null);
+            }
+
+            query = query.OrderBy(c => c.Gg016fId);
+            IQueryable<object> novaQuery = query.Select(c =>
+                    new
+                    {
+                        Title = gG016F_IS_GRADE_LINHA == GG016F_IS_GRADE_LINHA.GG016F_LINHA
+                ? c.NavGg016fGradelinha!.Gg016Descricao
+                : c.NavGg016fGradecoluna!.Gg016Descricao,
+                        Id = c.Gg016fId
+                    });
+            return await novaQuery.ToListAsync();
+        }
+
+
+        public async Task<IEnumerable<object>> GG016(int tenant, string ID_csicp_gg016b)
+        {
+
+            var query = _appDbContext.OsusrE9aCsicpGg016s
+                .Where(e => e.TenantId == tenant && e.Gg016Lincolid == int.Parse(ID_csicp_gg016b)).AsQueryable();
+      
+            query = query.OrderBy(c => c.Gg016Descricao);
+            IQueryable<object> novaQuery = query.Select(c =>
+                    new
+                    {
+                        Title = c.Gg016Descricao,
+                        Id = c.Id
+                    });
+            return await novaQuery.ToListAsync();
+        }
+
+
 
         public async Task<IEnumerable<object>> GetCommonListForComboRR(int tenant, ComboTypeRR comboType)
         {
@@ -271,17 +321,6 @@ namespace CSCore.Ifs.Repository.Combo
                 .Where(c => c.TenantId == tenant)
                 .OrderBy(c => c.Rr020Descricao)
                 .Select(c => new { Title = c.Rr020Descricao ?? "---", c.Id }),
-
-                ComboTypeRR.Csicp_RR030 => _appDbContext.OsusrTo3CsicpRr030s
-                .Where(c => c.TenantId == tenant)
-                .OrderBy(c => c.Rr030Descricao)
-                .Select(c => new { Title = c.Rr030Descricao ?? "---", c.Id }),
-
-                ComboTypeRR.Csicp_RR035 => _appDbContext.OsusrTo3CsicpRr035s
-                .Where(c => c.TenantId == tenant)
-                .OrderBy(c => c.Rr035Descricao)
-                .Select(c => new { Title = c.Rr035Descricao ?? "---", c.Id }),
-
 
                 _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
             };
@@ -586,5 +625,27 @@ namespace CSCore.Ifs.Repository.Combo
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<object>> GetCommonListForComboCG(int tenant, ComboTypeCG comboType)
+        {
+            IQueryable<object> query = comboType switch
+            {
+                ComboTypeCG.csicp_cg003 => _appDbContext.Osusr8dwCsicpCg003s.Where(c => c.TenantId == tenant && c.Cg003Isactive == true)
+                .OrderBy(c => c.Cg003Descricao).Select(c => new { Title = c.Cg003Descricao ?? "---", Id= c.Cg003Id }),
+                ComboTypeCG.csicp_cg005 => _appDbContext.Osusr8dwCsicpCg005s.Where(c => c.TenantId == tenant && c.Cg005Isactive == true)
+                .OrderBy(c => c.Cg005Historicoresumido).Select(c => new { Title = c.Cg005Historicoresumido ?? "---", Id = c.Cg005Id }),
+                ComboTypeCG.csicp_cg004 => _appDbContext.Osusr8dwCsicpCg004s.Where(c => c.TenantId == tenant && c.Cg004Isactive == true)
+                .OrderBy(c => c.Cg004Descricao).Select(c => new { Title = c.Cg004Descricao ?? "---", Id = c.Cg004Id }),
+            
+
+                _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
+            };
+
+            return await query.ToListAsync();
+        }
+
+
+      
     }
-}
+    }
+

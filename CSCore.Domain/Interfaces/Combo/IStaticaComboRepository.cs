@@ -7,7 +7,7 @@ namespace CSCore.Domain.Interfaces.Combo
     {
         Task<IReadOnlyCollection<object>> GetComboStaticasByTypeAA(StaticTypeAA staticTypeAA);
         Task<IReadOnlyCollection<object>> GetComboStaticasByTypeBB(StaticTypeBB staticTypeBB);
-        Task<IReadOnlyCollection<object>> GetComboStaticasByTypeCG(StaticTypeCG staticTypeCG);
+        Task<IEnumerable<object>> GetCommonListForComboCG(int tenant, ComboTypeCGStaticas comboType);
         Task<IReadOnlyCollection<object>> GetComboStaticasByTypeFF(StaticTypeFF staticTypeFF);
         Task<IReadOnlyCollection<object>> GetComboStaticasByTypeGG(StaticTypeGG staticTypeGG);
         Task<IReadOnlyCollection<object>> GetComboStaticasByTypeNN(StaticTypeNN staticTypeNN);

@@ -18,7 +18,7 @@ namespace CSCore.Application.Dto.Dtos.CG.CG06X.CG061
 
         public string? Cg061Estabid { get; set; }
 
-        public DtoGetCG060? NavCG060RegramentoID_CG061 { get; set; }
+        public DtoGetCG060Padrao? NavCG060RegramentoID_CG061 { get; set; }
 
         public Dto_GetBB001_Exibicao? NavBB001Estab_CG061 { get; set; }
     }
