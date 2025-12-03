@@ -113,7 +113,7 @@ namespace CSCore.Ifs.Repository.SY
         }
 
 
-        }
+        
 
 
         public async Task<Csicp_Sy001> AlterarSenha(Csicp_Sy001 csicp_Sy001)
