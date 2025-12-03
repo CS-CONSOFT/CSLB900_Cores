@@ -13,7 +13,6 @@ public partial class Osusr8dwCsicpCg063
     [ForeignKey("NavCG060RegramentoID_CG063")]
     public long? Cg063Regramentoid { get; set; }
 
-    [ForeignKey("NavCG051PrmEvento_CG063")]
     public string? Cg063Parametroid { get; set; }
 
     [ForeignKey("NavCG051PrmEvento_CG063")]
