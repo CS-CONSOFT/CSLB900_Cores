@@ -97,13 +97,22 @@ namespace CSCore.Ifs.Repository.SY
 
         public async Task<List<Csicp_Sy005>> GetGruposUsuarioList(string id, int tenant)
         {
-            //Retorna a lista de Avatares do usuario.
-            List<Csicp_Sy005> csicp_Sy005s = await _appDbContext.OsusrE9aCsicpSy005s
-            .AsNoTracking()
-            .Where(e => e.TenantId == tenant && e.Sy005Userid == id)
-            .Include(e => e.Sy005Grupo)
-            .ToListAsync();
+
+            var csicp_Sy005s = await (from sy005 in this._appDbContext.OsusrE9aCsicpSy005s
+                                      join sy002 in this._appDbContext.OsusrE9aCsicpSy002s
+                                      on sy005.Sy005Grupoid equals sy002.Id
+                                      join sy807 in this._appDbContext.OsusrE9aCsicpSy807Cssps
+                                      on sy002.sy002_erpid equals sy807.Id
+                                      where sy005.TenantId == tenant
+                                      && sy005.Sy005Userid == id
+                                      && sy807.Label == "SOPHIA ERP"
+                                      select sy005).Include(e => e.Sy005Grupo).AsNoTracking().ToListAsync();
+
+
             return csicp_Sy005s;
+        }
+
+
         }
 
 

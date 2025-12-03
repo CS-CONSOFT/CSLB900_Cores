@@ -40,6 +40,22 @@
             CSICP_BB062_STA,
         }
 
+        public enum StaticTypeCG
+        {
+            Csicp_CG002_stat,
+            Csicp_CG007_stat,
+            Csicp_CG991,
+            Csicp_CG992,
+            Csicp_CG993,
+            Csicp_CG994,
+            Csicp_CG995,
+            Csicp_CG996,
+            Csicp_CG997,
+            Csicp_CG998,
+            Csicp_CG999,
+            Csicp_CG070_sta
+        }
+
         public enum StaticTypeFF
         {
             Csicp_Ff000Basecalcs,
@@ -279,6 +295,37 @@
 
         }
 
+
+        public enum ComboTypeCGStaticas
+        {
+            csicp_cg996,
+       
+            csicp_cg999,
+            Csicp_CG002_stat,
+            Csicp_CG007_stat,
+            Csicp_CG991,
+            Csicp_CG992,
+            Csicp_CG993,
+            Csicp_CG994,
+            Csicp_CG995,
+         
+            Csicp_CG997,
+            Csicp_CG998,
+      
+            Csicp_CG070_sta
+
+        }
+
+        public enum ComboTypeCG
+        {
+           
+            csicp_cg003,
+            
+            csicp_cg005,
+            csicp_cg004
+
+        }
+
         public enum ComboTypeAA
         {
             Csicp_aa026,
@@ -322,6 +369,9 @@
             Csicp_RR007,
             Csicp_RR008,
             Csicp_RR020,
+
+            Csicp_RR030,
+            Csicp_RR035,
         }
 
         public enum ComboTypeSYS

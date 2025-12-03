@@ -39,11 +39,24 @@ namespace CSCore.Ex
                 // Continuar pipeline
                 await _next(context);
             }
+            catch (OperationCanceledException ex) when (context.RequestAborted.IsCancellationRequested)
+            {
+                // ✅ NÃO TRATA - Deixa o CancellationMiddleware tratar
+                _logger.LogDebug("OperationCanceledException detectada - repassando para CancellationMiddleware");
+                throw;
+            }
+            catch (TaskCanceledException ex) when (context.RequestAborted.IsCancellationRequested)
+            {
+                // ✅ NÃO TRATA - Deixa o CancellationMiddleware tratar
+                _logger.LogDebug("TaskCanceledException detectada - repassando para CancellationMiddleware");
+                throw;
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Exceção não tratada capturada pelo middleware global");
                 await HandleExceptionAsync(context, ex);
             }
+          
         }
 
 

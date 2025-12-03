@@ -88,6 +88,28 @@ namespace CSCore.Ifs.Repository.Statica
             return await query.Cast<object>().ToListAsync();
         }
 
+        public async Task<IReadOnlyCollection<object>> GetStaticasByTypeCG(StaticTypeCG staticTypeCG)
+        {
+            IQueryable query = staticTypeCG switch
+            {
+                StaticTypeCG.Csicp_CG002_stat => _appDbContext.Osusr8dwCsicpCg002Stats.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeCG.Csicp_CG007_stat => _appDbContext.Osusr8dwCsicpCg007Stats.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeCG.Csicp_CG991 => _appDbContext.Osusr8dwCsicpCg991s.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeCG.Csicp_CG992 => _appDbContext.Osusr8dwCsicpCg992s.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeCG.Csicp_CG993 => _appDbContext.Osusr8dwCsicpCg993s.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeCG.Csicp_CG994 => _appDbContext.Osusr8dwCsicpCg994s.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeCG.Csicp_CG995 => _appDbContext.Osusr8dwCsicpCg995s.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeCG.Csicp_CG996 => _appDbContext.Osusr8dwCsicpCg996s.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeCG.Csicp_CG997 => _appDbContext.Osusr8dwCsicpCg997s.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeCG.Csicp_CG998 => _appDbContext.Osusr8dwCsicpCg998s.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeCG.Csicp_CG999 => _appDbContext.Osusr8dwCsicpCg999s.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                StaticTypeCG.Csicp_CG070_sta => _appDbContext.Osusr8dwCsicpCg070Sta.Where(c => c.IsActive == true).OrderBy(c => c.Label),
+                _ => throw new ArgumentOutOfRangeException(nameof(staticTypeCG), "Tipo estático inválido")
+            };
+
+            return await query.Cast<object>().ToListAsync();
+        }
+
         public async Task<IReadOnlyCollection<object>> GetStaticasByTypeClient(StaticaTypes.StaticTypeClient staticTypeClient)
         {
             IQueryable query = staticTypeClient switch

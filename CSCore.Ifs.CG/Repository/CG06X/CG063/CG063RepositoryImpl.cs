@@ -34,7 +34,7 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG063
             var queryCount = query;
             var count = await queryCount.CountAsync();
 
-            query = query.OrderBy(e => e.Cg063Regramentoid);
+            query = query.OrderByDescending(e => e.Cg063Id);
             query = query.PaginacaoNoBanco(InPageNumber, InPageSize);
 
             return (await query.ToListAsync(), count);

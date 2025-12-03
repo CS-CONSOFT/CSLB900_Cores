@@ -26,19 +26,22 @@ namespace CSCore.Ifs.CG.Repository.CG08X.CG081
         }
 
         public async Task<(List<Osusr8dwCsicpCg081>, int)> GetListAsync(
-            int InTenantID, long InCG080ID, string InUsuarioID, int InPageNumber, int InPageSize)
+            int InTenantID, long InCG080ID, int InPageNumber, int InPageSize)
         {
             IQueryable<Osusr8dwCsicpCg081> query = _appDbContext.Osusr8dwCsicpCg081s
                 .AsNoTracking()
-                .Where(e => e.TenantId == InTenantID 
-                    && e.Cg081Contrelconfid == InCG080ID); 
-            //verificar esse filtro se é necessário o InUsuarioID e se a propriedade Contrelconfid é a correta
+                .Where(e => e.TenantId == InTenantID
+                    && e.Cg081Contrelconfid == InCG080ID)
+                .Include(e => e.NavCG081ContRelConf)
+                .Include(e => e.NavCG081ASID)
+                .Include(e => e.NavCG081ContRelRegistroSup)
+                .Include(e => e.NavCG993NaturezaSaldo); 
+            //verificar se a propriedade Contrelconfid é a correta
 
             var queryCount = query;
             var count = await queryCount.CountAsync();
 
-            query = query.OrderBy(e => e.Cg081Nrlinha)
-                         .ThenBy(e => e.Cg081Treeorder);
+            query = query.OrderBy(e => e.Cg081Id);
             query = query.PaginacaoNoBanco(InPageNumber, InPageSize);
 
             return (await query.ToListAsync(), count);
