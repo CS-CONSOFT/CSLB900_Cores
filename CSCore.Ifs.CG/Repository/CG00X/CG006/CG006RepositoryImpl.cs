@@ -63,9 +63,9 @@ namespace CSCore.Ifs.CG.Repository.CG00X.CG006
 
             query = AplicaFiltro(query, GetFiltrosParaAplicar(InTenantID, prm));
 
-            var count = query.Count();
+            var count = await query.CountAsync();
             query = query.OrderBy(e => e.Cg006Codigoplano);
-            query.PaginacaoNoBanco(prm.PageNumber, prm.PageSize);
+            query = query.PaginacaoNoBanco(prm.PageNumber, prm.PageSize);
 
             return (await query.ToListAsync(), count);
         }

@@ -9,6 +9,7 @@ public class ParametrosBaseFiltro
     [Required]
     public int PageNumber { get; set; } = 1;
 
+
     
     public bool? DeveExcederOMaxPageSize { get; set; } = false;
     private int _pageSize = 50;
