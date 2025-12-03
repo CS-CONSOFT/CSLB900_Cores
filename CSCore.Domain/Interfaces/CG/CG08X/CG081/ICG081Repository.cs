@@ -7,6 +7,6 @@ namespace CSCore.Domain.Interfaces.CG.CG08X.CG081
     public interface ICG081Repository : IRepositorioBaseV2<Osusr8dwCsicpCg081>
     {
         Task<Osusr8dwCsicpCg081?> GetByIdAsync(int InTenantID, long InCG081ID);
-        Task<(List<Osusr8dwCsicpCg081>, int)> GetListAsync(int InTenantID, long InCG080ID, string InUsuarioID, int InPageNumber, int InPageSize);
+        Task<(List<Osusr8dwCsicpCg081>, int)> GetListAsync(int InTenantID, long InCG080ID, int InPageNumber, int InPageSize);
     }
 }

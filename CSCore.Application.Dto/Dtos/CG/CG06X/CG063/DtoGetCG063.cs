@@ -21,8 +21,8 @@ namespace CSCore.Application.Dto.Dtos.CG.CG06X.CG063
 
         public long? Cg063Eventopartpid { get; set; }
 
-        public DtoGetCG051? NavCG051PrmEvento_CG063 { get; set; }
+        public DtoGetCG051Padrao? NavCG051PrmEvento_CG063 { get; set; }
 
-        public DtoGetCG060? NavCG060RegramentoID_CG063 { get; set; }
+        public DtoGetCG060Padrao? NavCG060RegramentoID_CG063 { get; set; }
     }
 }

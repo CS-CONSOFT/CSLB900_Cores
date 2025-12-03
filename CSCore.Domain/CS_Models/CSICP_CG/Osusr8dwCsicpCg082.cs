@@ -18,6 +18,6 @@ public partial class Osusr8dwCsicpCg082
 
     public DateTime? Cg082Datefinal { get; set; }
 
-    public Osusr8dwCsicpCg081? NavCG082ContRelRegID { get; set; }
-    public CSICP_CG006? NavCG082ContConta { get; set; }
+    public Osusr8dwCsicpCg081? NavCG081ContRelRegID_CG082 { get; set; }
+    public CSICP_CG006? NavCG006ContConta_CG082 { get; set; }
 }
