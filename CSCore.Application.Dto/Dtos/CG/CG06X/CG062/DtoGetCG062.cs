@@ -48,19 +48,19 @@ namespace CSCore.Application.Dto.Dtos.CG.CG06X.CG062
 
         public string? Cg062CtagerencialCren4Id { get; set; }
 
-        public DtoGetCG005? NavCG005HistDeb_CG062 { get; set; }
+        public DtoGetCG005Padrao? NavCG005HistDeb_CG062 { get; set; }
 
-        public DtoGetCG005? NavCG005HistCred_CG062 { get; set; }
+        public DtoGetCG005Padrao? NavCG005HistCred_CG062 { get; set; }
 
-        public DtoGetCG006? NavCG006ContaDeb_CG062 { get; set; }
+        public DtoGetCG006Padrao? NavCG006ContaDeb_CG062 { get; set; }
 
-        public DtoGetCG006? NavCG006ContaCred_CG062 { get; set; }
+        public DtoGetCG006Padrao? NavCG006ContaCred_CG062 { get; set; }
 
         public DtoGetCG011? NavCG011CtaGerencial_DebN2ID { get; set; }
 
         public DtoGetCG011? NavCG011CtaGerencial_DebN3ID { get; set; }
 
-        public DtoGetCG011? NavCG011CtaGerencial_DebN4ID { get; set; }
+        public DtoGetCG011? NavCG011CtaGerencial_DebN4ID   { get; set; }
 
         public DtoGetCG011? NavCG011CtaGerencial_CredN2ID { get; set; }
 
@@ -72,7 +72,7 @@ namespace CSCore.Application.Dto.Dtos.CG.CG06X.CG062
 
         public DtoGetCG054Padrao? NavCG054EventoValorTpID_CG062 { get; set; }
 
-        public PadraoDtoGetCG054? NavCG054EventoValorTpDebID_CG062 { get; set; }
+        public DtoGetCG054Padrao? NavCG054EventoValorTpDebID_CG062 { get; set; }
 
         public DtoGetCG054Padrao? NavCG054EventoValorTpCredID_CG062 { get; set; }
     }

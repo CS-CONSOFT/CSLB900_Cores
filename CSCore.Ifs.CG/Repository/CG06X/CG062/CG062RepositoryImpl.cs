@@ -40,19 +40,12 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG062
         }
         public async Task<(List<Osusr8dwCsicpCg062>, int)> GetListAsync(
             int InTenantID,
-            long? InRegramentoID,
             int InPageNumber,
             int InPageSize)
         {
             IQueryable<Osusr8dwCsicpCg062> query = _appDbContext.Osusr8dwCsicpCg062s
                 .AsNoTracking()
                 .Where(e => e.TenantId == InTenantID);
-
-            // Filtro opcional por regramento
-            if (InRegramentoID.HasValue)
-            {
-                query = query.Where(e => e.Cg062Regramentoid == InRegramentoID.Value);
-            }
 
             var queryCount = query;
             var count = await queryCount.CountAsync();

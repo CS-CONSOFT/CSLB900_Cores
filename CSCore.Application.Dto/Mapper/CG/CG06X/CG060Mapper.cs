@@ -37,5 +37,26 @@ namespace CSCore.Application.Dto.Mapper.CG.CG06X
             };
         }
 
+        public static DtoGetCG060Padrao ToDtoGetCG060Padrao(this Osusr8dwCsicpCg060 entity)
+        {
+            return new DtoGetCG060Padrao
+            {
+                TenantId = entity.TenantId,
+                Cg060Id = entity.Cg060Id,
+                Cg060Eventoid = entity.Cg060Eventoid,
+                Cg060Dtini = entity.Cg060Dtini,
+                Cg060Dtfim = entity.Cg060Dtfim,
+                Cg060Nrnumero = entity.Cg060Nrnumero,
+                Cg060Flagrupadeb = entity.Cg060Flagrupadeb,
+                Cg060Flagrupacred = entity.Cg060Flagrupacred,
+                Cg060Eventotpdebid = entity.Cg060Eventotpdebid,
+                Cg060Eventotpcredid = entity.Cg060Eventotpcredid,
+                Cg060Txdescricao = entity.Cg060Txdescricao,
+                Cg060Estabid = entity.Cg060Estabid,
+                Cg060Idprevia = entity.Cg060Idprevia,
+                Cg060Qparprenchidos = entity.Cg060Qparprenchidos
+            };
+        }
+
     }
 }
