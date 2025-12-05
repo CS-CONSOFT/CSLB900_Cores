@@ -163,6 +163,7 @@ namespace EnviaNFeHercules.C82Application.Mapper.DD00X
                 NavAA032Csticm = entity.NavAA032Csticm,
                 NavAA033Cstipi = entity.NavAA033Cstipi,
                 NavAA034Cstpi = entity.NavAA034Cstpi,
+                NavAA035Cstcof = entity.NavAA035Cstcof,
                 NavAA038Modst = entity.NavAA038Modst,
                 NavBB027Modal = entity.NavBB027Modal,
                 NavBB027Motivo = entity.NavBB027Motivo,

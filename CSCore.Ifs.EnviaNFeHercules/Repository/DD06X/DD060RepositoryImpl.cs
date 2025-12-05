@@ -88,10 +88,11 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                         from aa035_cstcof in dd061_cfgimp_aa035_cstcof_join.DefaultIfEmpty()
 
                         join spedInCfop in _appDbContext.Osusr66cSpedInCfops
-                        on dd061_cfgimp.Dd061Bb027bCfopStaticaId equals spedInCfop.Id into dd061_cfgimp_spedInCfop_join
+                        on dd061_cfgimp.Dd061Bb027CfopId equals spedInCfop.Id into dd061_cfgimp_spedInCfop_join
                         from spedInCfop in dd061_cfgimp_spedInCfop_join.DefaultIfEmpty()
+                            //Propriedade alterada dia 05-12-2025. Estava "Dd061Bb027bCfopStaticaId".
 
-                        //fazer dto e mapeamento
+                            //fazer dto e mapeamento
                         join aa144_classtrib in _appDbContext.OsusrE9aCsicpAa144s
                         on dd061_cfgimp.Ub13Ub14RfclasstribId equals aa144_classtrib.Id into dd061_cfgimp_aa144_classtrib_join
                         from aa144_classtrib in dd061_cfgimp_aa144_classtrib_join.DefaultIfEmpty()
@@ -890,6 +891,16 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                                 IsActive = aa034_cstpis.IsActive,
                                 CstDigito = aa034_cstpis.CstDigito,
                             } : null,
+
+                            NavAA035Cstcof = aa035_cstcof != null ? new CSICP_AA035Cstcof
+                            {
+                                Id = aa035_cstcof.Id,
+                                Label = aa035_cstcof.Label,
+                                Order = aa035_cstcof.Order,
+                                IsActive = aa035_cstcof.IsActive,
+                                CstDigito = aa035_cstcof.CstDigito,
+                            } : null,
+
 
                             NavAA038Modst = aa038_modst != null ? new CSICP_AA038Modst
                             {
