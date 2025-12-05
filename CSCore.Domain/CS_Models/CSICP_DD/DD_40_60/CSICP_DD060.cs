@@ -307,8 +307,6 @@ public partial class CSICP_DD060
     public CSICP_GG008Kdx? NavGG008Kdx { get; set; }
     [NotMapped]
     public CSICP_GG021? NavGG021 { get; set; }
-    //[NotMapped]
-    //public CSICP_DD040? NavDD040NF { get; set; }
     [NotMapped]
     public CSICP_DD061Cfgimp? NavDD061Cfgimp { get; set; }
     [NotMapped]
@@ -320,7 +318,7 @@ public partial class CSICP_DD060
     [NotMapped]
     public CSICP_AA034Cstpi? NavAA034Cstpi { get; set; }
     [NotMapped]
-    public CSICP_AA035Cstcof? CSICP_AA035Cstcof { get; set; }
+    public CSICP_AA035Cstcof? NavAA035Cstcof { get; set; }
     [NotMapped]
     public CSICP_AA038Modst? NavAA038Modst { get; set; }
     [NotMapped]
