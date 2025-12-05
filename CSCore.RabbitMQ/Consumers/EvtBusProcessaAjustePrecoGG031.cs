@@ -50,7 +50,7 @@ namespace CSCore.RabbitMQ.Bus
                 await _hubContext.Clients.Group("ajuste-de-preco-gg031-" + context.Message.usuarioID)
             .SendAsync(HubMethodNames.AJUSTE_PRECO_GG031, new
             {
-                Success = false,
+                Success = true,
                 Message = "Sucesso ao realizar ajuste de preço",
                 Timestamp = DateTime.UtcNow
             });
