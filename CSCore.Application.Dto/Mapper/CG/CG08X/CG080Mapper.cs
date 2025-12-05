@@ -1,4 +1,4 @@
-using CSCore.Application.Dto.Dtos.CG.CG080;
+using CSCore.Application.Dto.Dtos.CG.CG08X.CG080;
 using CSCore.Domain.CS_Models.CSICP_CG;
 
 namespace CSCore.Application.Dto.Mapper.CG.CG08X
@@ -18,25 +18,5 @@ namespace CSCore.Application.Dto.Mapper.CG.CG08X
                 Cg080Isprojfromprov = entity.Cg080Isprojfromprov,
             };
         }
-
-        /*public static Osusr8dwCsicpCg080 ToEntity(this DtoCreateUpdateCG080 dto, int tenantId, int? id = null)
-        {
-            var entity = new Osusr8dwCsicpCg080
-            {
-                Cg080Dtvigenciaini = dto.Cg080Dtvigenciaini,
-                Cg080Dtvigenciafim = dto.Cg080Dtvigenciafim,
-                Cg080Isactive = dto.Cg080Isactive,
-                Cg080Isprojfromprov = dto.Cg080Isprojfromprov,
-                Cg080Nome = dto.Cg080Nome,
-                TenantId = tenantId
-            };
-
-            if (id.HasValue)
-            {
-                entity.Cg080Id = id.Value;
-            }
-
-            return entity;
-        }*/
     }
 }

@@ -94,18 +94,19 @@ public partial class OsusrTo3CsicpRr022
             return CSResult<string>.Failure("A data do peso atual não está definida.");
 
         // Validar último peso
-        decimal ultimoPeso = this.Rr001Ultpeso
-                              ?? this.NavRR001Animal_RR022.Rr001Pesonasc
-                              ?? 0m;
+        decimal ultimoPeso = (this.Rr001Ultpeso.HasValue && this.Rr001Ultpeso.Value > 0)
+                              ? this.Rr001Ultpeso.Value
+                              : (this.NavRR001Animal_RR022.Rr001Pesonasc ?? 0m);
 
         if (ultimoPeso == 0m)
             return CSResult<string>.Failure("Não há último peso disponível (último peso ou peso de nascimento).");
 
         // Validar última data de peso
-        DateTime? ultimaDataPeso = this.Rr001Dtultpeso
-                                   ?? this.NavRR001Animal_RR022.Rr001Dtnascimento;
+        DateTime? ultimaDataPeso = (this.Rr001Dtultpeso.HasValue && this.Rr001Dtultpeso.Value > new DateTime(1900, 1, 1))
+                                   ? this.Rr001Dtultpeso.Value
+                                   : this.NavRR001Animal_RR022.Rr001Dtnascimento;
 
-        if (ultimaDataPeso == null)
+        if (!ultimaDataPeso.HasValue)
             return CSResult<string>.Failure("Não há última data disponível (data do último peso ou data de nascimento).");
 
         int diasDecorridos = (int)(this.Rr022Dtpeso.Value - ultimaDataPeso.Value).TotalDays;

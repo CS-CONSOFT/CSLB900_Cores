@@ -1,4 +1,4 @@
-using CSCore.Application.Dto.Dtos.CG.CG007;
+using CSCore.Application.Dto.Dtos.CG.CG00X.CG007;
 using CSCore.Domain.CS_Models.CSICP_CG;
 
 namespace CSCore.Application.Dto.Mapper.CG.CG00X

@@ -38,6 +38,7 @@ public partial class CSICP_GG072
 
     public decimal? Gg072UnSecQtde { get; set; }
 
+    [ForeignKey("NavCSICP_GG072Stq")]
     public int? Gg072Statusestqid { get; set; }
 
     public string? Dd080Id { get; set; }
@@ -52,4 +53,5 @@ public partial class CSICP_GG072
     public CSICP_GG520? Gg072Entradasaldo { get; set; }
 
     public CSICP_GG520? NavGG520Saidasaldo { get; set; }
+    public CSICP_GG072Stq? NavCSICP_GG072Stq    { get; set; }
 }

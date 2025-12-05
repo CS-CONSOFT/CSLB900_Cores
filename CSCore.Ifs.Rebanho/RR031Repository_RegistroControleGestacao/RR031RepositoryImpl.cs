@@ -67,5 +67,17 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
                 new FiltroIATFRR030IdRR031(filtros.In_IATFRR030ID),
             ];
         }
+
+        public async Task<OsusrTo3CsicpRr031?> GetByIdSimplesAsync(int In_TenantID, string In_IDRR031)
+        {
+            IQueryable<OsusrTo3CsicpRr031> query = _appDbContext.OsusrTo3CsicpRr031s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.TenantId == In_TenantID);
+
+            OsusrTo3CsicpRr031? CSICP_RR031 = await query
+                .FirstOrDefaultAsync(e => e.Id == In_IDRR031);
+            return CSICP_RR031;
+        }
     }
 }

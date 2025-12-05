@@ -120,6 +120,11 @@ namespace CSCore.RabbitMQ
         public static string ExchangePR119_AtualizaSaldoMensalContabil => "Exchange_PR119_AtualizaSaldoMensalContabil";
         public static string ActionPR119_AtualizaSaldoMensalContabil => "Action_PR119_AtualizaSaldoMensalContabil";
 
+        //PR139 Fechamento Anual Contábil
+        public static string FilaPR139_REALIZA_FECHAMENTO_ANUAL_PLANO_CONTA=> "Queue_PR139_REALIZA_FECHAMENTO_ANUAL_PLANO_CONTA";
+        public static string ExchangePR139_REALIZA_FECHAMENTO_ANUAL_PLANO_CONTA=> "Exchange_PR139_REALIZA_FECHAMENTO_ANUAL_PLANO_CONTA";
+        public static string ActionPR139_REALIZA_FECHAMENTO_ANUAL_PLANO_CONTA=> "Action_PR139_REALIZA_FECHAMENTO_ANUAL_PLANO_CONTA";
+
         //PROCESSAR LOTE E ATUALIZA PESO REBANHO
         public static string FilaProcessaLoteEAtualizaPesoRebanho => "Queue_ProcessaLoteEAtualizaPesoRebanho";
         public static string ExchangeProcessaLoteEAtualizaPesoRebanho => "Exchange_ProcessaLoteEAtualizaPesoRebanho";

@@ -1,4 +1,5 @@
-using CSCore.Application.Dto.Dtos.CG.CG081;
+using CSCore.Application.Dto.Dtos.CG.CG08X.CG081;
+using CSCore.Application.Dto.Mapper.GG00X;
 using CSCore.Domain.CS_Models.CSICP_CG;
 
 namespace CSCore.Application.Dto.Mapper.CG.CG08X
@@ -8,6 +9,33 @@ namespace CSCore.Application.Dto.Mapper.CG.CG08X
         public static DtoGetCG081 ToDtoGet(this Osusr8dwCsicpCg081 entity)
         {
             return new DtoGetCG081
+            {
+                TenantId = entity.TenantId,
+                Cg081Id = entity.Cg081Id,
+                Cg081Contrelconfid = entity.Cg081Contrelconfid,
+                Cg081Asid = entity.Cg081Asid,
+                Cg081Txdescricao = entity.Cg081Txdescricao,
+                Cg081Contrelregistrosup = entity.Cg081Contrelregistrosup,
+                Cg081Naturezasaldo = entity.Cg081Naturezasaldo,
+                Cg081Nrlinha = entity.Cg081Nrlinha,
+                Cg081Nrgrau = entity.Cg081Nrgrau,
+                Cg081Fllinharetaap = entity.Cg081Fllinharetaap,
+                Cg081Fllinhatracap = entity.Cg081Fllinhatracap,
+                Cg081Flnegrito = entity.Cg081Flnegrito,
+                Cg081Flespacobranco = entity.Cg081Flespacobranco,
+                Cg081Txnotaexplicativa = entity.Cg081Txnotaexplicativa,
+                Cg081Isnewpage = entity.Cg081Isnewpage,
+                Cg081Treeorder = entity.Cg081Treeorder,
+                NavCG081ContRelConf = entity.NavCG081ContRelConf?.ToDtoGet(),
+                NavCG081ASID = entity.NavCG081ASID,
+                NavCG081ContRelRegistroSup = entity.NavCG081ContRelRegistroSup?.ToDtoGetPadrao(),
+                NavCG993NaturezaSaldo = entity.NavCG993NaturezaSaldo?.ToDtoGetGG993()
+            };
+        }
+
+        public static DtoGetCG081Padrao ToDtoGetPadrao(this Osusr8dwCsicpCg081 entity)
+        {
+            return new DtoGetCG081Padrao
             {
                 TenantId = entity.TenantId,
                 Cg081Id = entity.Cg081Id,

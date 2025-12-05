@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.CG.Repository.CG00X.CG000
 {
-    public class CG000RepositoryImpl : RepositorioBaseImpl<CSICP_CG000> , ICG000Repository
+    public class CG000RepositoryImpl : RepositorioBaseImplV2<CSICP_CG000> , ICG000Repository
     {
         private readonly AppDbContext _appDbContext;
         public CG000RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Cg000Id") 
@@ -24,7 +24,19 @@ namespace CSCore.Ifs.CG.Repository.CG00X.CG000
                 .AsNoTracking()
                 .Include(e => e.NavBB001Estab_CG000)
                 .Include(e => e.NavStatica_CG000)
-                .Where(e => e.Cg000Id == InIDCG000);
+                .Where(e => e.TenantId == InTenant 
+                && e.Cg000Id == InIDCG000);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<CSICP_CG000?> GetByIdPorEstabIDAsync(int InTenant, string InEstabCG000ID)
+        {
+            var query = _appDbContext.Osusr8dwCsicpCg000s
+                .AsNoTracking()
+                .Include(e => e.NavBB001Estab_CG000)
+                .Include(e => e.NavStatica_CG000)
+                .Where(e => e.TenantId == InTenant
+                && e.Cg000Filialid == InEstabCG000ID);
             return await query.FirstOrDefaultAsync();
         }
 
@@ -39,9 +51,9 @@ namespace CSCore.Ifs.CG.Repository.CG00X.CG000
             query = AplicaFiltro(query, GetFiltrosParaAplicar(InTenant, InPrm));
 
             var queryCount = query;
-            var count = queryCount.Count();
+            var count = await queryCount.CountAsync();
             query = query.OrderBy(e => e.Cg000Id);
-            query.PaginacaoNoBanco(InPrm.PageNumber, InPrm.PageSize);
+            query = query.PaginacaoNoBanco(InPrm.PageNumber, InPrm.PageSize);
             return (await query.ToListAsync(), count);
         }
 

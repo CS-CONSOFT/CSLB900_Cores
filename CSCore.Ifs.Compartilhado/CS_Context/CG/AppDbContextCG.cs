@@ -1556,6 +1556,7 @@ namespace CSCore.Ifs.CS_Context
                         .HasColumnName("CG063_PARAMETROID");
                     entity.Property(e => e.Cg063Regramentoid).HasColumnName("CG063_REGRAMENTOID");
                     entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+                      
                 });
 
                     modelBuilder.Entity<Osusr8dwCsicpCg064>(entity =>
