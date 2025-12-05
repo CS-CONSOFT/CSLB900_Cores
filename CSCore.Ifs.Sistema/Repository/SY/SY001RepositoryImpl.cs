@@ -273,6 +273,10 @@ namespace CSCore.Ifs.Repository.SY
                                        on sy013.Sy013Filialid equals bb001.Id
                                        join bb001Img in this._appDbContext.E9ACSICP_BB001Imgs
                                        on bb001.Id equals bb001Img.Empresaid into imgGroup
+                                       join sy001 in this._appDbContext.OsusrE9aCsicpSy001s
+                                        on sy013.Sy013Usuarioid equals sy001.Id into sy001Group
+                                        from sy001Item in sy001Group.DefaultIfEmpty()
+
                                        from img in imgGroup.DefaultIfEmpty()
                                        where bb001.Id == GetDefaultValueId && bb001.TenantId == tenant
                                        && sy013.Sy013Usuarioid == InUsuarioID
@@ -280,14 +284,19 @@ namespace CSCore.Ifs.Repository.SY
                                        select new
                                        {
                                            Empresa = bb001,
-                                           Imagem = img
+                                           Imagem = img,
+                                           Sy001 = sy001Item
                                        })
                            .AsNoTracking()
                            .FirstAsync();
 
-            returnValue.EstabelecimentoId = queryExecuted.Empresa == null ? "" : queryExecuted.Empresa.Id;
-            returnValue.NomeEstabelecimento = queryExecuted.Empresa == null ? "" : queryExecuted.Empresa.Bb001Nomefantasia ?? "-";
-            returnValue.Estab_Path_Img = queryExecuted.Imagem == null ? "" : queryExecuted.Imagem.Path ?? "-";
+            returnValue.EstabelecimentoId = queryExecuted.Empresa == null ? "-" : queryExecuted.Empresa.Id;
+            returnValue.NomeEstabelecimento = queryExecuted.Empresa == null ? "-" : queryExecuted.Empresa.Bb001Nomefantasia ?? "-";
+            returnValue.Estab_Path_Img = queryExecuted.Imagem == null ? "-" : queryExecuted.Imagem.Path ?? "-";
+            returnValue.TenantId = tenant;
+            returnValue.UsuarioId = InUsuarioID;
+            returnValue.UserID = queryExecuted.Sy001 == null ? 0 : queryExecuted.Sy001.Userid ?? 0;
+            returnValue.NomeUsuario = queryExecuted.Sy001 == null ? "" : queryExecuted.Sy001.Sy001Nome ?? "-";
         }
 
         private async Task PreencherDadosEstabelecimentoUsuarioPadrao(string InUsuarioID, int logo, string? GetDefaultValueId,int tenant, UsuarioPosLoginModel returnValue)
@@ -298,6 +307,9 @@ namespace CSCore.Ifs.Repository.SY
                                        join bb001Img in this._appDbContext.E9ACSICP_BB001Imgs
                                        on bb001.Id equals bb001Img.Empresaid into imgGroup
                                        from img in imgGroup.DefaultIfEmpty()
+                                       join sy001 in this._appDbContext.OsusrE9aCsicpSy001s
+                                        on sy013.Sy013Usuarioid equals sy001.Id into sy001Group
+                                        from sy001Item in sy001Group.DefaultIfEmpty()
                                        where (string.IsNullOrEmpty(InUsuarioID) ? sy013.Sy013Usuarioid == null : sy013.Sy013Usuarioid == InUsuarioID && sy013.TenantId == tenant)
                                        && bb001.Id == GetDefaultValueId
                                        && (img == null || ((img.Path ?? "") != "" && img.Isactive == true && img.Status == logo))
@@ -305,16 +317,22 @@ namespace CSCore.Ifs.Repository.SY
                                        {
                                            Empresa = bb001,
                                            Imagem = img,
-                                           Estabelecimento = sy013
+                                           Estabelecimento = sy013,
+                                           Sy001 = sy001Item
                                        })
                            .AsNoTracking()
                            .FirstOrDefaultAsync();
 
             if (queryExecuted != null)
             {
-                returnValue.EstabelecimentoId = queryExecuted.Empresa.Id;
-                returnValue.NomeEstabelecimento = queryExecuted.Empresa.Bb001Nomefantasia ?? "-";
-                returnValue.Estab_Path_Img = queryExecuted.Imagem?.Path ?? "-";
+                returnValue.EstabelecimentoId = queryExecuted.Empresa == null ? "-" : queryExecuted.Empresa.Id;
+                returnValue.NomeEstabelecimento = queryExecuted.Empresa == null ? "-" : queryExecuted.Empresa.Bb001Nomefantasia ?? "-";
+                returnValue.Estab_Path_Img = queryExecuted.Imagem == null ? "-" : queryExecuted.Imagem.Path ?? "-";
+                returnValue.TenantId = tenant;
+                returnValue.UsuarioId = InUsuarioID;
+                returnValue.UserID = queryExecuted.Sy001 == null ? 0 : queryExecuted.Sy001.Userid ?? 0;
+                returnValue.NomeUsuario = queryExecuted.Sy001 == null ? "" : queryExecuted.Sy001.Sy001Nome ?? "-";
+
             }
         }
 
