@@ -268,6 +268,10 @@ namespace CSCore.Ifs.Repository.SY
 
         private async Task PreencherDadosEstabelecimentoUsuario(string InUsuarioID, int logo, string GetDefaultValueId,int tenant, UsuarioPosLoginModel returnValue)
         {
+            Console.WriteLine("===============================================================================================================================");
+            Console.WriteLine($"PreencherDadosEstabelecimentoUsuario: InUsuarioID={InUsuarioID}, GetDefaultValueId={GetDefaultValueId}, tenant={tenant}");
+            Console.WriteLine("===============================================================================================================================");
+
             var queryExecuted = await (from sy013 in this._appDbContext.OsusrE9aCsicpSy013s
                                        join bb001 in this._appDbContext.E9ACSICP_BB001s
                                        on sy013.Sy013Filialid equals bb001.Id
@@ -301,6 +305,9 @@ namespace CSCore.Ifs.Repository.SY
 
         private async Task PreencherDadosEstabelecimentoUsuarioPadrao(string InUsuarioID, int logo, string? GetDefaultValueId,int tenant, UsuarioPosLoginModel returnValue)
         {
+            Console.WriteLine("===============================================================================================================================");
+            Console.WriteLine($"PreencherDadosEstabelecimentoUsuarioPadrao: InUsuarioID={InUsuarioID}, GetDefaultValueId={GetDefaultValueId}, tenant={tenant}");
+            Console.WriteLine("===============================================================================================================================");
             var queryExecuted = await (from sy013 in this._appDbContext.OsusrE9aCsicpSy013s
                                        join bb001 in this._appDbContext.E9ACSICP_BB001s
                                        on sy013.Sy013Filialid equals bb001.Id
