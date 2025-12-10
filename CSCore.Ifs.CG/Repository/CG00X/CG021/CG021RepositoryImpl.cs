@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.CG.Repository.CG00X.CG021
 {
-    public class CG021RepositoryImpl : RepositorioBaseImpl<Osusr8dwCsicpCg021>, ICG021Repository
+    public class CG021RepositoryImpl : RepositorioBaseImplV2<Osusr8dwCsicpCg021>, ICG021Repository
     {
         private readonly AppDbContext _appDbContext;
 
@@ -36,11 +36,11 @@ namespace CSCore.Ifs.CG.Repository.CG00X.CG021
             query = AplicaFiltro(query, GetFiltrosParaAplicar(InTenant, InPrm));
 
             var queryCount = query;
-            var count = queryCount.Count();
+            var count = await queryCount.CountAsync();
             
             query = query.OrderBy(e => e.Cg021Nrolancamento)
                          .ThenBy(e => e.Cg021Seq);
-            query.PaginacaoNoBanco(InPrm.PageNumber, InPrm.PageSize);
+            query = query.PaginacaoNoBanco(InPrm.PageNumber, InPrm.PageSize);
             
             return (await query.ToListAsync(), count);
         }

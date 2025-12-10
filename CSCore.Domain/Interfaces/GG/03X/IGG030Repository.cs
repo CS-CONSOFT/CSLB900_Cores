@@ -16,6 +16,7 @@ namespace CSCore.Domain.Interfaces.GG._03X
 
         Task<(IEnumerable<CSICP_GG030Est>, int)> GetListGG030EstAsync(int tenant,string? gg030_id, int pageSize, int page);
         Task<CSICP_GG030?> GetByIdAsync(string id, int tenant);
+        Task<CSICP_GG030?> GetByIdParaUpdateAsync(string id, int tenant);
 
         Task<bool> DeleteGg030Est(long id, int tenant);
         Task<string> CreateGg030Est(CSICP_GG030Est entity);

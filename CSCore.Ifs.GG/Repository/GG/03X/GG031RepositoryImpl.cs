@@ -3,6 +3,7 @@ using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Domain.Interfaces.GG._03X;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
+using CSLB900.MSTools.Calculos;
 using CSLB900.MSTools.Extensao;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
@@ -33,20 +34,17 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
                 CSICP_GG030 movimento = await GetMovimento_GG030(movimentoId, tenantId, in_StID_Gg030Status_Solicitado);
                 List<CSICP_GG031> getDetalhesProdutoList = await GetDetalhesProdutosList_GG031(movimentoId, tenantId);
 
-                await PercorreDetalhesProdutosListEAtualizaPrecos(
-                    tenantId,
-                    in_StID_Gg023_Val_Venda,
-                    in_StID_Gg023_Val_CustoReal,
-                    in_StID_Gg023_Val_Custo,
-                    in_StID_Gg023_Val_Reposicao,
-                    in_StID_Gg023_Val_CustoMedio,
-                    in_StID_Gg023_Val_ECommmerce,
-                    getDetalhesProdutoList);
 
                 movimento.Gg030Status = in_StID_Gg030_Atendido;
                 _appDbContext.OsusrE9aCsicpGg030s.Update(movimento);
 
                 List<string?> listaFiliaisID = await RecuperaListaFiliaisIdDoMovimentoAtual_GG030Est(movimentoId, tenantId);
+
+                // Se a lista de filiais estiver vazia, adiciona um elemento nulo para garantir a combinação
+                if (listaFiliaisID.Count == 0)
+                {
+                    listaFiliaisID.Add(null);
+                }
 
                 var combinacoesListaFiliaisID_DetalhesProduto = from filialId in listaFiliaisID
                                                                 from gg031 in getDetalhesProdutoList
@@ -54,9 +52,12 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
 
                 foreach (var currentCombinacao in combinacoesListaFiliaisID_DetalhesProduto)
                 {
-                    var currentKardex = await _appDbContext.OsusrE9aCsicpGg008Kdxes
-                        .Where(x => x.Gg008Produtoid == currentCombinacao.gg031.Gg031Produtoid)
-                        .Where(x => x.Gg008Filialid == currentCombinacao.filialId)
+                    var query = _appDbContext.OsusrE9aCsicpGg008Kdxes
+                        .Where(x => x.Gg008Produtoid == currentCombinacao.gg031.Gg031Produtoid);
+                    if (currentCombinacao.filialId != null)
+                        query = query.Where(e => e.Gg008Filialid == currentCombinacao.filialId);
+
+                    var currentKardex = await query
                         .FirstOrDefaultAsync()
                         ?? throw new KeyNotFoundException("Kardex nao encontrado: " + currentCombinacao.gg031.Gg031KardexId);
 
@@ -75,6 +76,7 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
                         _appDbContext
                         );
 
+                    _appDbContext.Entry(currentCombinacao.gg031).State = EntityState.Detached;
                     _appDbContext.OsusrE9aCsicpGg008Kdxes.Update(currentKardex);
                 }
                 await _appDbContext.SaveChangesAsync();
@@ -87,10 +89,6 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
                 throw new Exception(HandlerExceptionMessage.CreateExceptionMessage(ex));
             }
         }
-
-
-
-
 
 
         public async Task<RepoDto_CSICP_GG031?> GetByIdAsync(string id, int tenant)
@@ -365,39 +363,6 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
         }
 
 
-        private async Task PercorreDetalhesProdutosListEAtualizaPrecos(int tenantId,
-            int in_StID_Gg023_Val_Venda,
-            int in_StID_Gg023_Val_CustoReal,
-            int in_StID_Gg023_Val_Custo,
-            int in_StID_Gg023_Val_Reposicao,
-            int in_StID_Gg023_Val_CustoMedio,
-            int in_StID_Gg023_Val_ECommmerce,
-            List<CSICP_GG031> getDetalhesProdutoList)
-        {
-
-            foreach (var current_gg031 in getDetalhesProdutoList)
-            {
-                var currentKardex = await _appDbContext.OsusrE9aCsicpGg008Kdxes
-                    .Where(x => x.Gg008Kardexid == current_gg031.Gg031KardexId)
-                    .FirstOrDefaultAsync() ?? throw new KeyNotFoundException("Kardex nao encontrado: " + current_gg031.Gg031KardexId);
-
-                CSICP_GG008p? gg008p = await RecuperaGG008pPeloKardex(tenantId, current_gg031);
-
-                AtualizarPrecos(
-                    in_StID_Gg023_Val_CustoReal,
-                    in_StID_Gg023_Val_Venda,
-                    in_StID_Gg023_Val_Custo,
-                    in_StID_Gg023_Val_Reposicao,
-                    in_StID_Gg023_Val_CustoMedio,
-                    in_StID_Gg023_Val_ECommmerce,
-                    current_gg031,
-                    currentKardex,
-                    gg008p,
-                    _appDbContext);
-
-                _appDbContext.OsusrE9aCsicpGg008Kdxes.Update(currentKardex);
-            }
-        }
 
         private async Task<CSICP_GG008p?> RecuperaGG008pPeloKardex(int tenantId, CSICP_GG031 current)
         {
@@ -427,20 +392,12 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
                 currentKardex.Gg008PrcVendavarejo = current_gg031.Gg031PrcMovimento;
                 currentKardex.Gg008Ultreajprcvenda = DateTime.UtcNow.ToLocalTime();
 
-                if (currentGG008p is null)
-                {
-                    var gg008pNew = new CSICP_GG008p
-                    {
-                        Gg008Id = current_gg031.Gg031KardexId ?? "",
-                        Gg008pPrecoBase = current_gg031.Gg031PrcMovimento,
-                    };
-                    appDbContext.OsusrE9aCsicpGg008ps.Add(gg008pNew);
-                }
-                else
+                if (currentGG008p is not null)
                 {
                     RecalculaPrecosVenda(currentGG008p);
                     appDbContext.OsusrE9aCsicpGg008ps.Update(currentGG008p);
                 }
+       
             }
             else if (current_gg031.Gg031PrecoajusteId == in_StID_Gg023_Val_Custo)
             {
@@ -463,20 +420,15 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
 
         private static void RecalculaPrecosVenda(CSICP_GG008p gg008p)
         {
-            gg008p.Gg008pPrecoVenda1 = gg008p.Gg008pPrecoBase == 0 ? 0 : (gg008p.Gg008pPrecoBase * (gg008p.Gg008pPrecoVenda1 / 100)) + 1;
-            gg008p.Gg008pPrecoVenda2 = CalculaPreco(gg008p.Gg008pPrecoBase, gg008p.Gg008pPrecoVenda1, gg008p.Gg008pPrecoVenda2);
-            gg008p.Gg008pPrecoVenda3 = gg008p.Gg008pPrecoBase == 0 ? 0 : (gg008p.Gg008pPrecoVenda2 * (gg008p.Gg008pPrecoVenda3 / 100)) + 1;
-            gg008p.Gg008pPrecoVenda4 = gg008p.Gg008pPrecoBase == 0 ? 0 : (gg008p.Gg008pPrecoVenda3 * (gg008p.Gg008pPrecoVenda4 / 100)) + 1;
-            gg008p.Gg008pPrecoVenda5 = gg008p.Gg008pPrecoBase == 0 ? 0 : (gg008p.Gg008pPrecoVenda4 * (gg008p.Gg008pPrecoVenda5 / 100)) + 1;
-            gg008p.Gg008pPrecoVenda6 = gg008p.Gg008pPrecoBase == 0 ? 0 : (gg008p.Gg008pPrecoVenda5 * (gg008p.Gg008pPrecoVenda6 / 100)) + 1;
-            gg008p.Gg008pPrecoVenda7 = gg008p.Gg008pPrecoBase == 0 ? 0 : (gg008p.Gg008pPrecoVenda6 * (gg008p.Gg008pPrecoVenda7 / 100)) + 1;
-            gg008p.Gg008pPrecoVenda8 = gg008p.Gg008pPrecoBase == 0 ? 0 : (gg008p.Gg008pPrecoVenda7 * (gg008p.Gg008pPrecoVenda8 / 100)) + 1;
-            gg008p.Gg008pPrecoVenda9 = gg008p.Gg008pPrecoBase == 0 ? 0 : (gg008p.Gg008pPrecoVenda8 * (gg008p.Gg008pPrecoVenda9 / 100)) + 1;
-        }
-
-        private static decimal CalculaPreco(decimal? in_precoBase, decimal? in_precoVenda_init, decimal? in_precoVenda_fim)
-        {
-            return in_precoBase == 0 ? 0 : (in_precoVenda_init * (in_precoVenda_fim / 100)) + 1 ?? 0;
+            gg008p.Gg008pPrecoVenda1 = gg008p.Gg008pPrecoVenda1.CalculaPercentual(gg008p.Gg008pPrecoBase, gg008p.Gg008pPercVenda1);
+            gg008p.Gg008pPrecoVenda2 = gg008p.Gg008pPrecoVenda2.CalculaPercentual(gg008p.Gg008pPrecoVenda1, gg008p.Gg008pPercVenda2);
+            gg008p.Gg008pPrecoVenda3 = gg008p.Gg008pPrecoVenda3.CalculaPercentual(gg008p.Gg008pPrecoVenda2, gg008p.Gg008pPercVenda3);
+            gg008p.Gg008pPrecoVenda4 = gg008p.Gg008pPrecoVenda4.CalculaPercentual(gg008p.Gg008pPrecoVenda3, gg008p.Gg008pPercVenda4);
+            gg008p.Gg008pPrecoVenda5 = gg008p.Gg008pPrecoVenda5.CalculaPercentual(gg008p.Gg008pPrecoVenda4, gg008p.Gg008pPercVenda5);
+            gg008p.Gg008pPrecoVenda6 = gg008p.Gg008pPrecoVenda6.CalculaPercentual(gg008p.Gg008pPrecoVenda5, gg008p.Gg008pPercVenda6);
+            gg008p.Gg008pPrecoVenda7 = gg008p.Gg008pPrecoVenda7.CalculaPercentual(gg008p.Gg008pPrecoVenda6, gg008p.Gg008pPercVenda7);
+            gg008p.Gg008pPrecoVenda8 = gg008p.Gg008pPrecoVenda8.CalculaPercentual(gg008p.Gg008pPrecoVenda7, gg008p.Gg008pPercVenda8);
+            gg008p.Gg008pPrecoVenda9 = gg008p.Gg008pPrecoVenda9.CalculaPercentual(gg008p.Gg008pPrecoVenda8, gg008p.Gg008pPercVenda9);
         }
 
     }

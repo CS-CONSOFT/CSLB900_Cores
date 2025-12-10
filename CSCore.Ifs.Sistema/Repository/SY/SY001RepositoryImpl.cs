@@ -4,10 +4,19 @@ using CSCore.Domain.Interfaces.SY;
 using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 
 namespace CSCore.Ifs.Repository.SY
 {
+
+
+
+
+
+
+
+
     public class SY001RepositoryImpl : ISY001Repository
     {
         private AppDbContext _appDbContext;
@@ -36,6 +45,47 @@ namespace CSCore.Ifs.Repository.SY
             q1 = FiltraQuandoExisteFiltros(search, q1);
             return await q1.ToListAsync();
         }
+
+        public async Task<UsuarioPosLoginResponse> GetDadosPosLogin(string Dominio, string InUsuarioID)
+        {
+            int? tenant = await this._appDbContext.OssysTenants.Where(e => e.IsActive == true && e.Name == Dominio).Select(e => e.Id).FirstOrDefaultAsync();
+            if(tenant is null) throw new KeyNotFoundException("Tenant não encontrado para o domínio informado.");
+
+            var id = await this._appDbContext.OsusrE9aCsicpSy994Padraos
+                .Where(e => e.Label == "Usuario Empresa")
+                .Select(e => e.Id)
+                .FirstAsync();
+
+            var logo = await this._appDbContext.E9ACSICP_BB001Staimgs
+                .Where(e => e.Label == "logo")
+                .Select(e => e.Id)
+                .FirstAsync();
+
+            var GetDefaultValueId = this._appDbContext.OsusrE9aCsicpSy994s
+                .Where(e => e.TenantId == tenant && e.Sy994PadraoId == id && e.Sy994UsuarioId == InUsuarioID)
+                .Select(e => e.Sy994ExternalId)
+                .FirstOrDefault();
+
+            UsuarioPosLoginModel modelData = new();
+
+            if (GetDefaultValueId != null)
+                await PreencherDadosEstabelecimentoUsuario(InUsuarioID, logo, GetDefaultValueId,tenant ?? 0, modelData);
+            else
+                await PreencherDadosEstabelecimentoUsuarioPadrao(InUsuarioID, logo, GetDefaultValueId, tenant ?? 0, modelData);
+
+            var listaEstabs = await GetListaEstab(InUsuarioID, tenant ?? 0);
+
+            return new UsuarioPosLoginResponse
+            {
+                IsOk = true,
+                Msg = "Ok",
+                Key = InUsuarioID,
+                Model = modelData,
+                Lista_Estabs_Usuario = listaEstabs
+            };
+        }
+
+
 
         public async Task AtualizaSenhasDesseTenant(int tenant)
         {
@@ -97,14 +147,23 @@ namespace CSCore.Ifs.Repository.SY
 
         public async Task<List<Csicp_Sy005>> GetGruposUsuarioList(string id, int tenant)
         {
-            //Retorna a lista de Avatares do usuario.
-            List<Csicp_Sy005> csicp_Sy005s = await _appDbContext.OsusrE9aCsicpSy005s
-            .AsNoTracking()
-            .Where(e => e.TenantId == tenant && e.Sy005Userid == id)
-            .Include(e => e.Sy005Grupo)
-            .ToListAsync();
+
+            var csicp_Sy005s = await (from sy005 in this._appDbContext.OsusrE9aCsicpSy005s
+                                      join sy002 in this._appDbContext.OsusrE9aCsicpSy002s
+                                      on sy005.Sy005Grupoid equals sy002.Id
+                                      join sy807 in this._appDbContext.OsusrE9aCsicpSy807Cssps
+                                      on sy002.sy002_erpid equals sy807.Id
+                                      where sy005.TenantId == tenant
+                                      && sy005.Sy005Userid == id
+                                      && sy807.Label == "SOPHIA ERP"
+                                      select sy005).Include(e => e.Sy005Grupo).AsNoTracking().ToListAsync();
+
+
             return csicp_Sy005s;
         }
+
+
+        
 
 
         public async Task<Csicp_Sy001> AlterarSenha(Csicp_Sy001 csicp_Sy001)
@@ -183,6 +242,98 @@ namespace CSCore.Ifs.Repository.SY
             return await CreateBaseQuery(tenant)
                  .Include(e => e.OsusrE9aCsicpSy001Imgs)
                 .FirstOrDefaultAsync(e => e.Id == id);
+        }
+        private async Task<List<EstabelecimentoUsuarioModel>> GetListaEstab(string InUsuarioID, int tenant)
+        {
+            var listaEstabelecimentos = await (from sy013 in this._appDbContext.OsusrE9aCsicpSy013s
+                                               join bb001 in this._appDbContext.E9ACSICP_BB001s
+                                               on sy013.Sy013Filialid equals bb001.Id
+                                               where ((string.IsNullOrWhiteSpace(InUsuarioID) && sy013.Sy013Usuarioid == null)
+                                                     || (!string.IsNullOrWhiteSpace(InUsuarioID) && sy013.Sy013Usuarioid == InUsuarioID && sy013.Sy013Usuarioid != null))
+                                               && bb001.Bb001Isactive == true
+                                               && sy013.TenantId == tenant
+                                               select new EstabelecimentoUsuarioModel
+                                               {
+                                                   EstabelecimentoId = bb001.Id,
+                                                   CodigoEstab = (bb001.Bb001Codigoempresa ?? 0).ToString(),
+                                                   NomeEstabelecimento = bb001.Bb001Razaosocial ?? string.Empty,
+                                                   NomeFantasia = bb001.Bb001Nomefantasia ?? string.Empty
+                                               })
+                                  .AsNoTracking()
+                                  .ToListAsync();
+
+            return listaEstabelecimentos;
+        }
+        
+
+        private async Task PreencherDadosEstabelecimentoUsuario(string InUsuarioID, int logo, string GetDefaultValueId,int tenant, UsuarioPosLoginModel returnValue)
+        {
+            var queryExecuted = await (from sy013 in this._appDbContext.OsusrE9aCsicpSy013s
+                                       join bb001 in this._appDbContext.E9ACSICP_BB001s
+                                       on sy013.Sy013Filialid equals bb001.Id
+                                       join bb001Img in this._appDbContext.E9ACSICP_BB001Imgs
+                                       on bb001.Id equals bb001Img.Empresaid into imgGroup
+                                       join sy001 in this._appDbContext.OsusrE9aCsicpSy001s
+                                        on sy013.Sy013Usuarioid equals sy001.Id into sy001Group
+                                        from sy001Item in sy001Group.DefaultIfEmpty()
+
+                                       from img in imgGroup.DefaultIfEmpty()
+                                       where bb001.Id == GetDefaultValueId && bb001.TenantId == tenant
+                                       && sy013.Sy013Usuarioid == InUsuarioID
+                                       && (img == null || (img.Path != null && img.Path != "" && img.Isactive == true && img.Status == logo))
+                                       select new
+                                       {
+                                           Empresa = bb001,
+                                           Imagem = img,
+                                           Sy001 = sy001Item
+                                       })
+                           .AsNoTracking()
+                           .FirstAsync();
+
+            returnValue.EstabelecimentoId = queryExecuted.Empresa == null ? "-" : queryExecuted.Empresa.Id;
+            returnValue.NomeEstabelecimento = queryExecuted.Empresa == null ? "-" : queryExecuted.Empresa.Bb001Nomefantasia ?? "-";
+            returnValue.Estab_Path_Img = queryExecuted.Imagem == null ? "-" : queryExecuted.Imagem.Path ?? "-";
+            returnValue.TenantId = tenant;
+            returnValue.UsuarioId = InUsuarioID;
+            returnValue.UserID = queryExecuted.Sy001 == null ? 0 : queryExecuted.Sy001.Userid ?? 0;
+            returnValue.NomeUsuario = queryExecuted.Sy001 == null ? "" : queryExecuted.Sy001.Sy001Nome ?? "-";
+        }
+
+        private async Task PreencherDadosEstabelecimentoUsuarioPadrao(string InUsuarioID, int logo, string? GetDefaultValueId,int tenant, UsuarioPosLoginModel returnValue)
+        {
+            var queryExecuted = await (from sy013 in this._appDbContext.OsusrE9aCsicpSy013s
+                                       join bb001 in this._appDbContext.E9ACSICP_BB001s
+                                       on sy013.Sy013Filialid equals bb001.Id
+                                       join bb001Img in this._appDbContext.E9ACSICP_BB001Imgs
+                                       on bb001.Id equals bb001Img.Empresaid into imgGroup
+                                       from img in imgGroup.DefaultIfEmpty()
+                                       join sy001 in this._appDbContext.OsusrE9aCsicpSy001s
+                                        on sy013.Sy013Usuarioid equals sy001.Id into sy001Group
+                                        from sy001Item in sy001Group.DefaultIfEmpty()
+                                       where (string.IsNullOrEmpty(InUsuarioID) ? sy013.Sy013Usuarioid == null : sy013.Sy013Usuarioid == InUsuarioID && sy013.TenantId == tenant)
+                                       && bb001.Id == GetDefaultValueId
+                                       && (img == null || ((img.Path ?? "") != "" && img.Isactive == true && img.Status == logo))
+                                       select new
+                                       {
+                                           Empresa = bb001,
+                                           Imagem = img,
+                                           Estabelecimento = sy013,
+                                           Sy001 = sy001Item
+                                       })
+                           .AsNoTracking()
+                           .FirstOrDefaultAsync();
+
+            if (queryExecuted != null)
+            {
+                returnValue.EstabelecimentoId = queryExecuted.Empresa == null ? "-" : queryExecuted.Empresa.Id;
+                returnValue.NomeEstabelecimento = queryExecuted.Empresa == null ? "-" : queryExecuted.Empresa.Bb001Nomefantasia ?? "-";
+                returnValue.Estab_Path_Img = queryExecuted.Imagem == null ? "-" : queryExecuted.Imagem.Path ?? "-";
+                returnValue.TenantId = tenant;
+                returnValue.UsuarioId = InUsuarioID;
+                returnValue.UserID = queryExecuted.Sy001 == null ? 0 : queryExecuted.Sy001.Userid ?? 0;
+                returnValue.NomeUsuario = queryExecuted.Sy001 == null ? "" : queryExecuted.Sy001.Sy001Nome ?? "-";
+
+            }
         }
 
     }

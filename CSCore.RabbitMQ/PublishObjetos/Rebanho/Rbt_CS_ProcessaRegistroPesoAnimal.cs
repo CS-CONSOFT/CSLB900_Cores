@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace CSCore.RabbitMQ.PublishObjetos.Rebanho
 {
-    public class Rbt_CS_ProcessaRegistroPesoAnimal : IConsumerUsuarioId
+    public class Rbt_CS_ProcessaRegistroPesoAnimal : IConsumerUsuarioId, ITenantId
     {
         /// <summary>
         /// ID do Tenant
         /// </summary>
-        public int TenantID { get; set; }
+        public int InTenantID { get; set; }
 
         /// <summary>
         /// ID do Lote (RR022)

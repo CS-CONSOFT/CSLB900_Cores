@@ -7,6 +7,7 @@ namespace CSCore.Domain.Interfaces.Estatica
     {
         Task<IReadOnlyCollection<object>> GetStaticasByTypeAA(StaticTypeAA staticTypeAA);
         Task<IReadOnlyCollection<object>> GetStaticasByTypeBB(StaticTypeBB staticTypeBB);
+        Task<IReadOnlyCollection<object>> GetStaticasByTypeCG(StaticTypeCG staticTypeCG);
         Task<IReadOnlyCollection<object>> GetStaticasByTypeClient(StaticTypeClient staticTypeClient);
         Task<IReadOnlyCollection<object>> GetStaticasByTypeFF(StaticTypeFF staticTypeFF);
         Task<IReadOnlyCollection<object>> GetStaticasByTypeGG(StaticTypeGG staticTypeGG);

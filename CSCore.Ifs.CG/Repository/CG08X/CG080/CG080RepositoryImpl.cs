@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.CG.Repository.CG08X.CG080
 {
-    public class CG080RepositoryImpl : RepositorioBaseImpl<Osusr8dwCsicpCg080>, ICG080Repository
+    public class CG080RepositoryImpl : RepositorioBaseImplV2<Osusr8dwCsicpCg080>, ICG080Repository
     {
         private readonly AppDbContext _appDbContext;
 
@@ -24,7 +24,8 @@ namespace CSCore.Ifs.CG.Repository.CG08X.CG080
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<(List<Osusr8dwCsicpCg080>, int)> GetListAsync(int InTenantID, string? InNome, int InPageNumber, int InPageSize)
+        public async Task<(List<Osusr8dwCsicpCg080>, int)> GetListAsync(
+            int InTenantID, string? InNome, int InPageNumber, int InPageSize)
         {
             IQueryable<Osusr8dwCsicpCg080> query = _appDbContext.Osusr8dwCsicpCg080s
                 .AsNoTracking()

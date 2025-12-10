@@ -1,4 +1,4 @@
-﻿using CSLB900.MSTools.GenerateId;
+using CSLB900.MSTools.GenerateId;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,19 +23,13 @@ public partial class CSICP_CG009
 
     public int? Cg009Ano { get; set; }
 
-    public int? Cg009Mes { get; set; }
+    public int Cg009Mes { get; set; }
 
     public decimal? Cg009Totaldebito { get; set; }
 
     public decimal? Cg009Totalcredito { get; set; }
 
     public decimal? Cg009Saldo { get; set; }
-
-
-    public CSICP_BB001? NavBB001Estab_CG009 { get; set; } = null;
-    public CSICP_CG006? NavCG006Conta_CG009 { get; set; } = null;
-    public CSICP_CG008? NavCG008TipoSaldo_CG009 { get; set; } = null;
-
 
 
     public CSICP_CG009() { }
@@ -51,10 +45,28 @@ public partial class CSICP_CG009
             Cg009TipoSaldoId = cg009TipoSaldoId,
             Cg009ContaId = cg009ContaId,
             Cg009Ano = cg009Ano,
-            Cg009Mes = cg009Mes,
+            Cg009Mes = cg009Mes ?? -1,
             Cg009Totaldebito = cg009Totaldebito,
             Cg009Totalcredito = cg009Totalcredito,
             Cg009Saldo = cg009Saldo,
+        };
+    }
+
+    public static CSICP_CG009 CreateInstance(
+    int tenant, string cg009Id, string? cg009FilialId, string? cg009TipoSaldoId, string? cg009ContaId, int cg009Ano, int? cg009Mes)
+    {
+        return new CSICP_CG009
+        {
+            TenantId = tenant,
+            Cg009Id = cg009Id,
+            Cg009FilialId = cg009FilialId,
+            Cg009TipoSaldoId = cg009TipoSaldoId,
+            Cg009ContaId = cg009ContaId,
+            Cg009Ano = cg009Ano,
+            Cg009Mes = cg009Mes ?? -1,
+            Cg009Totaldebito = 0,
+            Cg009Totalcredito = 0,
+            Cg009Saldo = 0,
         };
     }
 
@@ -75,7 +87,7 @@ public partial class CSICP_CG009
             Cg009TipoSaldoId = cg009TipoSaldoId,
             Cg009ContaId = cg009ContaId,
             Cg009Ano = cg009Ano,
-            Cg009Mes = cg009Mes,
+            Cg009Mes = cg009Mes ?? -1,
             Cg009Totaldebito = 0,
             Cg009Totalcredito = 0,
             Cg009Saldo = 0,
@@ -105,7 +117,7 @@ public partial class CSICP_CG009
                 };
             }
 
-    public static CSICP_CG009 CreateInstanceComValoresDebitoCreditoMesDoze(
+    public static CSICP_CG009 CreateInstanceComValoresDebitoCreditoMesZero(
      int tenant, ICS_GenerateId ICS_GenerateId,
      string? cg009FilialId,
      string? cg009TipoSaldoId,
@@ -121,29 +133,18 @@ public partial class CSICP_CG009
             Cg009TipoSaldoId = cg009TipoSaldoId,
             Cg009ContaId = cg009ContaId,
             Cg009Ano = cg009Ano,
-            Cg009Mes =12,
+            Cg009Mes =0,
             Cg009Totaldebito = 0,
             Cg009Totalcredito = 0,
             Cg009Saldo = Saldo,
         };
     }
 
-    public static CSICP_CG009 CreateInstance(
-        int tenant, string cg009Id, string? cg009FilialId, string? cg009TipoSaldoId, string? cg009ContaId, int cg009Ano, int? cg009Mes)
-    {
-        return new CSICP_CG009
-        {
-            TenantId = tenant,
-            Cg009Id = cg009Id,
-            Cg009FilialId = cg009FilialId,
-            Cg009TipoSaldoId = cg009TipoSaldoId,
-            Cg009ContaId = cg009ContaId,
-            Cg009Ano = cg009Ano,
-            Cg009Mes = cg009Mes
-        };
-    }
 
 
 
+    public CSICP_BB001? NavBB001Estab_CG009 { get; set; }
+    public CSICP_CG006? NavCG006Conta_CG009 { get; set; } = CSICP_CG006.Empty();
+    public CSICP_CG008? NavCG008TipoSaldo_CG009 { get; set; }
 
     }

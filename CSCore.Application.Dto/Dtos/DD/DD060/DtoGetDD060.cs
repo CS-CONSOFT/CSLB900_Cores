@@ -304,7 +304,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD060
         public CSICP_AA032Csticm? NavAA032Csticm { get; set; }
         public CSICP_AA033Cstipi? NavAA033Cstipi { get; set; }
         public CSICP_AA034Cstpi? NavAA034Cstpi { get; set; }
-        public CSICP_AA035Cstcof? CSICP_AA035Cstcof { get; set; }
+        public CSICP_AA035Cstcof? NavAA035Cstcof { get; set; }
         public CSICP_AA038Modst? NavAA038Modst { get; set; }
         public CSICP_Bb027Modal? NavBB027Modal { get; set; }
         public CSICP_Bb027Motivo? NavBB027Motivo { get; set; }

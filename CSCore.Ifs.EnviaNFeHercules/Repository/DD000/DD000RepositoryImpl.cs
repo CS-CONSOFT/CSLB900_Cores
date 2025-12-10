@@ -20,7 +20,8 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD000
                 .Select(e => new CSICP_DD000
                 {
                     Dd000Arqcertdigitalbinario = e.Dd000Arqcertdigitalbinario,
-                    Dd000Senhacertdigital = e.Dd000Senhacertdigital
+                    Dd000Senhacertdigital = e.Dd000Senhacertdigital,
+                    
                 }).FirstOrDefaultAsync() ?? throw new KeyNotFoundException("DD000 não encontrada!");
 
             return WorkCSICP_DD000;

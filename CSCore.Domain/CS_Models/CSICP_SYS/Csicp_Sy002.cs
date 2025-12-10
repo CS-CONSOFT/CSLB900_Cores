@@ -12,7 +12,7 @@ public partial class Csicp_Sy002
 
     public string? Sy002Descricao { get; set; }
 
-    [Column("sy002_erpid")]
+    [Column("SY002_ERPID")]
     public int? sy002_erpid { get; set; }
 
     }

@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 
 namespace CSCore.Ifs.CG.Repository.CG00X.CG003
 {
-    public class CG003RepositoryImpl : RepositorioBaseImpl<CSICP_CG003>, ICG003Repository
+    public class CG003RepositoryImpl : RepositorioBaseImplV2<CSICP_CG003>, ICG003Repository
     {
         private readonly AppDbContext _appDbContext;
 
@@ -40,9 +40,10 @@ namespace CSCore.Ifs.CG.Repository.CG00X.CG003
 
             query = AplicaFiltro(query, GetFiltrosParaAplicar(InTenantID, prm));
 
-            var count = query.Count();
+            var queryCount = query;
+            var count = await queryCount.CountAsync();
             query = query.OrderBy(e => e.Cg003Id);
-            query.PaginacaoNoBanco(prm.PageNumber, prm.PageSize);
+            query = query.PaginacaoNoBanco(prm.PageNumber, prm.PageSize);
 
             return (await query.ToListAsync(), count);
         }
