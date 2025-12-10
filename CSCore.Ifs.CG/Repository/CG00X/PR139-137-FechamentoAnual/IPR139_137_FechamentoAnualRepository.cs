@@ -1,4 +1,4 @@
-﻿using CSCore.Domain;
+using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_CG;
 using CSLB900.MSTools.GenerateId;
 using System;

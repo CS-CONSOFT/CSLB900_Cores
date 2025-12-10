@@ -1,4 +1,4 @@
-﻿using CSLB900.MSTools.GenerateId;
+using CSLB900.MSTools.GenerateId;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
