@@ -24,7 +24,9 @@ namespace CSCore.Application.Dto.Mapper.CG.CG05X
                 Cg050Flencerramento = entity.Cg050Flencerramento,
                 Cg050Flperman = entity.Cg050Flperman,
                 Cg050Flperexc = entity.Cg050Flperexc,
-                Cg050Isactive = entity.Cg050Isactive
+                Cg050Isactive = entity.Cg050Isactive,
+                NavModuloID = entity.NavModuloID,
+                NavUnPeriodo = entity.NavUnPeriodo
             };
         }
     }

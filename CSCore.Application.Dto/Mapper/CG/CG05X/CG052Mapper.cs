@@ -20,7 +20,8 @@ namespace CSCore.Application.Dto.Mapper.CG.CG05X
                 Cg052Txdescricao = entity.Cg052Txdescricao,
                 Cg052Txcomando = entity.Cg052Txcomando,
                 Cg052Txtabelas = entity.Cg052Txtabelas,
-                Cg052Moduloid = entity.Cg052Moduloid
+                Cg052Moduloid = entity.Cg052Moduloid,
+                NavModuloID_CG052 = entity.NavModuloID_CG052
             };
         }
     }

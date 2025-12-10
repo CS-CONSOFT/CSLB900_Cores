@@ -7,5 +7,6 @@ namespace CSCore.Domain.Interfaces.CG.CG06X.CG063
     {
         Task<Osusr8dwCsicpCg063?> GetByIdAsync(int InTenantID, long InCG063ID);
         Task<(List<Osusr8dwCsicpCg063>, int)> GetListAsync(int InTenantID, int InPageNumber, int InPageSize);
+        Task<int> CriarParametrosCG062Async(int InTenantID, long InCG060ID);
     }
 }
