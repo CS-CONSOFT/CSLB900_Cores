@@ -105,8 +105,8 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG062
 
             if (novosRegistros.Any())
             {
-                // Usa BulkCreateAsync da classe base para inserção em lote
-                await BulkCreateAsync(novosRegistros);
+                await _appDbContext.Osusr8dwCsicpCg062s.AddRangeAsync(novosRegistros);
+                await _appDbContext.SaveChangesAsync();
             }
 
             return novosRegistros.Count;
