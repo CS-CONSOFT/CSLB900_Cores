@@ -33,7 +33,7 @@ namespace CSCore.Application.Dto.Dtos.CG.CG06X.CG060
 
         public string? Cg060Txdescricao { get; set; }
 
-        public string? Cg060Estabid { get; set; }
+        public string? Cg060Estabid { get; set; } = null;
 
         public int? Cg060Idprevia { get; set; }
 

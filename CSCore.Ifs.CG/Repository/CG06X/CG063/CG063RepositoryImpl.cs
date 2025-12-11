@@ -42,7 +42,7 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG063
             return (await query.ToListAsync(), count);
         }
 
-        public async Task<int> CriarParametrosCG062Async(int InTenantID, long InCG060ID)
+        public async Task<int> CriarParametrosCG063Async(int InTenantID, long InCG060ID)
         {
             // 1. Busca CG060
             var eventoCg060 = await _appDbContext.Osusr8dwCsicpCg060s
@@ -92,7 +92,8 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG063
 
             if (novosRegistros.Any())
             {
-                await BulkCreateAsync(novosRegistros);
+                await _appDbContext.Osusr8dwCsicpCg063s.AddRangeAsync(novosRegistros);
+                await _appDbContext.SaveChangesAsync();
             }
 
             return novosRegistros.Count;
