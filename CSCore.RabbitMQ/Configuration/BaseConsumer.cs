@@ -130,14 +130,14 @@ namespace CSCore.RabbitMQ.Configuration
             var msg = new MessageDto
             {
                 Content = finalMessage,
-                GroupName = Group + context.Message.UsuarioID,
+                GroupName = Group + "-" + context.Message.UsuarioID,
                 MethodName = Method,
                 Message = Message,
                 Success = true,
                 IDReferente = IdReferencia
             };
             var result = await client.PostAsJsonAsync(
-                "https://apidsv17.sophiaerp.cloud/signalR/Message", msg);
+                "https://apidsv17.sophiaerp.cloud/signalR", msg);
             if (!result.IsSuccessStatusCode)
             {
                 Log.Information($"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}");
@@ -164,14 +164,14 @@ namespace CSCore.RabbitMQ.Configuration
             var msg = new MessageDto
             {
                 Content = finalMessage,
-                GroupName = Group + context.Message.UsuarioID,
+                GroupName = Group + "-" + context.Message.UsuarioID,
                 MethodName = Method,
                 Message = Message,
                 Success = true,
                 IDReferente = IdReferencia
             };
             var result = await client.PostAsJsonAsync(
-                   "https://apidsv17.sophiaerp.cloud/signalR/Message", msg);
+                    "https://apidsv17.sophiaerp.cloud/signalR", msg);
             if (!result.IsSuccessStatusCode)
             {
                 Log.Information($"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}");
