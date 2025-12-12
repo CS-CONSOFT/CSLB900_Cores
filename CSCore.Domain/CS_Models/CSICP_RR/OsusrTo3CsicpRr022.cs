@@ -42,6 +42,9 @@ public partial class OsusrTo3CsicpRr022
 
     public OsusrTo3CsicpRr021? NavRR021LoteXAnimal_RR022 { get; set; } = null;
 
+    [NotMapped]
+    public List<OsusrTo3CsicpRr022>? NavUltimos5Registros { get; set; }
+
     public CSResult<string> CalcularIdadeDiasAtual()
     {
 

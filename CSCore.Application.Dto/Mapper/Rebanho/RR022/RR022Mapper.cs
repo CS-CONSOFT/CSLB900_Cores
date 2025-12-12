@@ -29,7 +29,10 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR022
 
                 // Navegações
                 NavRR001Animal = entity.NavRR001Animal_RR022?.ToDtoGetRR001Padrao(),
-                NavRR021LoteXAnimal = entity.NavRR021LoteXAnimal_RR022?.ToDtoGetRR021Padrao()
+                NavRR021LoteXAnimal = entity.NavRR021LoteXAnimal_RR022?.ToDtoGetRR021Padrao(),
+                NavUltimos5Registros = entity.NavUltimos5Registros?
+                    .Select(x => x.ToDtoGetRR022Historico())
+                    .ToList(),
             };
         }
 
@@ -52,6 +55,19 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR022
                 Rr022Dthrregistro = entity.Rr022Dthrregistro,
                 Rr022Usuarioid = entity.Rr022Usuarioid,
                 Rr022IsProcessado = entity.Rr022IsProcessado
+            };
+        }
+
+        public static DtoGetRR022Historico ToDtoGetRR022Historico(this OsusrTo3CsicpRr022 entity)
+        {
+            return new DtoGetRR022Historico
+            {
+                Rr022Animalid = entity.Rr022Animalid,
+                Rr022Dtpeso = entity.Rr022Dtpeso,
+                Rr022Idadediasatual = entity.Rr022Idadediasatual,
+                Rr022Peso = entity.Rr022Peso,
+                Rr022Gmd = entity.Rr022Gmd,
+                Rr022Gpd = entity.Rr022Gpd
             };
         }
     }
