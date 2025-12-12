@@ -1,9 +1,15 @@
-﻿using CSCore.Ifs.Compartilhado;
+﻿using CSCore.Domain;
+using CSCore.Ifs.Compartilhado;
 using CSCore.RabbitMQ.Hub;
 using CSCore.RabbitMQ.Hub.Ax;
+using CSCore.RabbitMQ.PublishObjetos.Rebanho;
+using CSLB900.MSTools.Util;
 using DocumentFormat.OpenXml.InkML;
 using MassTransit;
+using MassTransit.Logging;
 using Microsoft.AspNetCore.SignalR;
+using Serilog;
+using System.Net.Http.Json;
 
 namespace CSCore.RabbitMQ.Configuration
 {
@@ -66,13 +72,11 @@ namespace CSCore.RabbitMQ.Configuration
     /*NOVA CLASSE 2 */
     public abstract class BaseConsumerV3<T> : IConsumer<T> where T : class, IConsumerUsuarioId, ITenantId
     {
-        private readonly IHubContext<HubNotification> _hubContext;
         private readonly IRepoSaveLogServiceCenter _repoSaveLogServiceCenter;
+        private static readonly HttpClient client = new();
 
-
-        protected BaseConsumerV3(IHubContext<HubNotification> hubContext, IRepoSaveLogServiceCenter repoSaveLogServiceCenter)
+        protected BaseConsumerV3(IRepoSaveLogServiceCenter repoSaveLogServiceCenter)
         {
-            _hubContext = hubContext;
             _repoSaveLogServiceCenter = repoSaveLogServiceCenter;
         }
 
@@ -82,7 +86,7 @@ namespace CSCore.RabbitMQ.Configuration
             return Task.CompletedTask;
         }
 
-        public virtual async Task SaveLogServiceCenter(int TenantID, string mensagem, string jsonParametros)
+        private async Task SaveLogServiceCenter(int TenantID, string mensagem, string jsonParametros)
         {
             await _repoSaveLogServiceCenter.SalvarLogAsync(
                 TenantID,
@@ -92,17 +96,94 @@ namespace CSCore.RabbitMQ.Configuration
                 jsonParametros);
         }
 
-        public abstract void LogMessage(ConsumeContext<T> context);
-        public virtual async Task SendMessageToHub(string usuarioID, string hubGroupName, string hubMethodName, string message)
+        private void LogMessage(ConsumeContext<T> context)
         {
-            await _hubContext.Clients.Group(hubGroupName + usuarioID)
-               .SendAsync(hubMethodName, new
-               {
-                   Success = true,
-                   Message = message,
-                   Timestamp = DateTime.UtcNow
-               });
+            Log.Information(
+                "\n====================[RabbitMQ - Consumer Recebeu Mensagem]====================\n" +
+                "Consumer     : {Consumer}\n" +
+                "TipoMensagem : {MessageType}\n" +
+                "TenantID     : {TenantID}\n" +
+                "LoteID       : {LoteID}\n" +
+                "DataPeso     : {DataPeso}\n" +
+                "UsuarioID    : {UsuarioID}\n" +
+                "Timestamp    : {Ti mestamp}\n" +
+                "Ambiente     : {Environment}\n" +
+                "===============================================================================",
+                this.GetType().Name,
+                context.Message.GetType().Name,
+                context.Message.InTenantID,
+                context.Message.UsuarioID,
+                DateTime.UtcNow.ToLocalTime(),
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
         }
+
+        protected async Task NotificarSucessoProcessamento(
+            ConsumeContext<T> context,
+            string Message,
+            string Group,
+            string Method,
+            string JsonParametrosParaServiceCenter,
+            string? IdReferencia = null)
+        {
+            LogMessage(context);
+            var finalMessage = $"Sucesso ao processar {Group} - {Method}";
+            var msg = new MessageDto
+            {
+                Content = finalMessage,
+                GroupName = Group + context.Message.UsuarioID,
+                MethodName = Method,
+                Message = Message,
+                Success = true,
+                IDReferente = IdReferencia
+            };
+            var result = await client.PostAsJsonAsync(
+                "https://apidsv17.sophiaerp.cloud/signalR/Message", msg);
+            if (!result.IsSuccessStatusCode)
+            {
+                Log.Information($"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}");
+                finalMessage = finalMessage + " || ERRO AO NOTIFICAR VIA SIGNAL - " + $"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}";
+            }
+
+            await SaveLogServiceCenter(
+             context.Message.InTenantID,
+             finalMessage,
+             JsonParametrosParaServiceCenter);
+        }
+
+        protected async Task NotificarFalhaProcessamento(
+                 ConsumeContext<T> context,
+                 string Message,
+                 string Group,
+                 string Method,
+                 string JsonParametrosParaServiceCenter,
+                 string? IdReferencia = null)
+        {
+            LogMessage(context);
+
+            var finalMessage = $"Falha ao processar {Group} - {Method}";
+            var msg = new MessageDto
+            {
+                Content = finalMessage,
+                GroupName = Group + context.Message.UsuarioID,
+                MethodName = Method,
+                Message = Message,
+                Success = true,
+                IDReferente = IdReferencia
+            };
+            var result = await client.PostAsJsonAsync(
+                   "https://apidsv17.sophiaerp.cloud/signalR/Message", msg);
+            if (!result.IsSuccessStatusCode)
+            {
+                Log.Information($"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}");
+                finalMessage = finalMessage + " || ERRO AO NOTIFICAR VIA SIGNAL - "+ $"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}";
+            }
+
+            await SaveLogServiceCenter(
+             context.Message.InTenantID,
+             finalMessage,
+             JsonParametrosParaServiceCenter);
+        }
+
     }
 
     /*INTERFACES*/
@@ -114,5 +195,15 @@ namespace CSCore.RabbitMQ.Configuration
     public interface ITenantId
     {
         int InTenantID { get; }
+    }
+
+    public class MessageDto
+    {
+        public string Content { get; set; } = string.Empty;
+        public string GroupName { get; set; } = string.Empty;
+        public string MethodName { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
+        public bool Success { get; set; }
+        public string? IDReferente { get; set; } = string.Empty;
     }
 }
