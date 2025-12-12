@@ -167,7 +167,7 @@ namespace CSCore.RabbitMQ.Configuration
                 GroupName = Group + "-" + context.Message.UsuarioID,
                 MethodName = Method,
                 Message = Message,
-                Success = true,
+                Success = false,
                 IDReferente = IdReferencia
             };
             var result = await client.PostAsJsonAsync(
