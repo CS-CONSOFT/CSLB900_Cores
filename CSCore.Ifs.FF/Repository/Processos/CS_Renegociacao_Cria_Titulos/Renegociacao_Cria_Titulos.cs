@@ -1,9 +1,9 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ex.Personalizada;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Cria_Titulos.Parametro;
 using CSCore.Ifs.LB900.AdapterGerarValores;
+using CSCore.Ifs.LB900.Repository;
 using CSLB900.MSTools.GenerateId;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;

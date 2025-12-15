@@ -1,12 +1,6 @@
-﻿using CSCore.Domain;
-using CSCore.Ifs.Compartilhado;
+﻿using CSCore.Ifs.Compartilhado;
 using CSCore.RabbitMQ.Hub;
-using CSCore.RabbitMQ.Hub.Ax;
-using CSCore.RabbitMQ.PublishObjetos.Rebanho;
-using CSLB900.MSTools.Util;
-using DocumentFormat.OpenXml.InkML;
 using MassTransit;
-using MassTransit.Logging;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
 using System.Net.Http.Json;
@@ -103,8 +97,6 @@ namespace CSCore.RabbitMQ.Configuration
                 "Consumer     : {Consumer}\n" +
                 "TipoMensagem : {MessageType}\n" +
                 "TenantID     : {TenantID}\n" +
-                "LoteID       : {LoteID}\n" +
-                "DataPeso     : {DataPeso}\n" +
                 "UsuarioID    : {UsuarioID}\n" +
                 "Timestamp    : {Ti mestamp}\n" +
                 "Ambiente     : {Environment}\n" +
@@ -185,6 +177,8 @@ namespace CSCore.RabbitMQ.Configuration
         }
 
     }
+
+
 
     /*INTERFACES*/
     public interface IConsumerUsuarioId

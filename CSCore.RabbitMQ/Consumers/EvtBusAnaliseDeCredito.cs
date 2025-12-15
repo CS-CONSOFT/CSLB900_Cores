@@ -7,7 +7,7 @@ using MassTransit;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
 
-namespace CSCore.RabbitMQ.Bus
+namespace CSCore.RabbitMQ.Consumers
 {
     public class EvtBusAnaliseDeCredito(CreditoSemScore creditoSemScore, IHubContext<HubNotification> hubContext) : IConsumer<Rbt_CS_AnaliseCredito>
     {

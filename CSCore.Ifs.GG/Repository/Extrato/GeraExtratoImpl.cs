@@ -1,7 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.Eventos.Repository;
+using CSCore.Ifs.LB900.Repository;
 using CSLB900.MSTools.GenerateId;
 using Microsoft.EntityFrameworkCore;
 

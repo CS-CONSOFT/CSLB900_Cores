@@ -1,5 +1,5 @@
 ﻿using CSCore.Application.Dto.Dtos.EvtRabbitMQ;
-using CSCore.Ifs.Eventos.Repository;
+using CSCore.Ifs.LB900.Repository;
 using CSCore.RabbitMQ.Hub;
 using CSCore.RabbitMQ.Hub.Ax;
 using CSLB900.MSTools.Util;
@@ -7,7 +7,7 @@ using MassTransit;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
 
-namespace CSCore.RabbitMQ.Bus
+namespace CSCore.RabbitMQ.Consumers
 {
     public class EvtBusGeraProtocoloCI(IGenerateProtocolo generateProtocolo, IHubContext<HubNotification> hubContext) : IConsumer<DtoGerarProtocoloCI>
     {
