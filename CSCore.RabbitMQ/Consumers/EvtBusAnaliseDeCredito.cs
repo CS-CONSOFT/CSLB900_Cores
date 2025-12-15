@@ -9,7 +9,8 @@ using Serilog;
 
 namespace CSCore.RabbitMQ.Consumers
 {
-    public class EvtBusAnaliseDeCredito(CreditoSemScore creditoSemScore, IHubContext<HubNotification> hubContext) : IConsumer<Rbt_CS_AnaliseCredito>
+    public class EvtBusAnaliseDeCredito(CreditoSemScore creditoSemScore
+        , IHubContext<HubNotification> hubContext) : IConsumer<Rbt_CS_AnaliseCredito>
     {
         private CreditoSemScore _creditoSemScore = creditoSemScore;
         private readonly IHubContext<HubNotification> _hubContext = hubContext;
