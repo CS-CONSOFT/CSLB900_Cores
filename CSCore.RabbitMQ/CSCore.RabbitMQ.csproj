@@ -16,7 +16,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\..\CSDD114_API_Faturamento\Submodulos\CSLB900_Cores\CSCore.Ifs.AnaliseDeCredito\CSCore.Ifs.AnaliseDeCredito.csproj" />
 		<ProjectReference Include="..\CSCompartilhado.CSLB900_MSTools\CSLB900.MSTools.csproj" />
 		<ProjectReference Include="..\CSCore.Application.Dto\CSCore.Application.Dto.csproj" />
 		<ProjectReference Include="..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />
