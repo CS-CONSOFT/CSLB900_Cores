@@ -180,6 +180,128 @@ namespace CSCore.RabbitMQ.Configuration
 
 
 
+    /*NOVA CLASSE 3 -- NAO DEVE USAR ESSE PARA NOVOS CONSUMIDORES, ELA FOI CRIADA APENAS PARA DIMINUIR
+     O PESO DE REFATORAR OS ANTIGOS, USAR SEMPRE A V3 PARA NOVOS*/
+    public abstract class BaseConsumeRefactor<T> : IConsumer<T> where T : class
+    {
+        private readonly IRepoSaveLogServiceCenter _repoSaveLogServiceCenter;
+        private static readonly HttpClient client = new();
+
+        protected BaseConsumeRefactor(IRepoSaveLogServiceCenter repoSaveLogServiceCenter)
+        {
+            _repoSaveLogServiceCenter = repoSaveLogServiceCenter;
+        }
+
+        public virtual Task Consume(ConsumeContext<T> context)
+        {
+            LogMessage(context);
+            return Task.CompletedTask;
+        }
+
+        private async Task SaveLogServiceCenter(int TenantID, string mensagem, string jsonParametros)
+        {
+            await _repoSaveLogServiceCenter.SalvarLogAsync(
+                TenantID,
+                "RabbitMQ_Consumer",
+                "0",
+                mensagem,
+                jsonParametros);
+        }
+
+        private void LogMessage(ConsumeContext<T> context, int tenant = -1, string usuario ="-")
+        {
+            Log.Information(
+                "\n====================[RabbitMQ - Consumer Recebeu Mensagem]====================\n" +
+                "Consumer     : {Consumer}\n" +
+                "TipoMensagem : {MessageType}\n" +
+                "TenantID     : {TenantID}\n" +
+                "UsuarioID    : {UsuarioID}\n" +
+                "Timestamp    : {Ti mestamp}\n" +
+                "Ambiente     : {Environment}\n" +
+                "===============================================================================",
+                this.GetType().Name,
+                context.Message.GetType().Name,
+               tenant,
+                usuario,
+                DateTime.UtcNow.ToLocalTime(),
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+        }
+
+        protected async Task NotificarSucessoProcessamento(
+            string InUsuarioID,
+            int TenantID,
+            ConsumeContext<T> context,
+            string Message,
+            string Group,
+            string Method,
+            string JsonParametrosParaServiceCenter,
+            string? IdReferencia = null)
+        {
+            LogMessage(context, TenantID, InUsuarioID);
+            var finalMessage = $"Sucesso ao processar {Group} - {Method}";
+            var msg = new MessageDto
+            {
+                Content = finalMessage,
+                GroupName = Group + "-" + InUsuarioID,
+                MethodName = Method,
+                Message = Message,
+                Success = true,
+                IDReferente = IdReferencia
+            };
+            var result = await client.PostAsJsonAsync(
+                "https://apidsv17.sophiaerp.cloud/signalR", msg);
+            if (!result.IsSuccessStatusCode)
+            {
+                Log.Information($"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}");
+                finalMessage = finalMessage + " || ERRO AO NOTIFICAR VIA SIGNAL - " + $"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}";
+            }
+
+            await SaveLogServiceCenter(
+             TenantID,
+             finalMessage,
+             JsonParametrosParaServiceCenter);
+        }
+
+        protected async Task NotificarFalhaProcessamento(
+              string InUsuarioID,
+            int TenantID,
+                 ConsumeContext<T> context,
+                 string Message,
+                 string Group,
+                 string Method,
+                 string JsonParametrosParaServiceCenter,
+                 string? IdReferencia = null)
+        {
+            LogMessage(context, TenantID, InUsuarioID);
+
+            var finalMessage = $"Falha ao processar {Group} - {Method}";
+            var msg = new MessageDto
+            {
+                Content = finalMessage,
+                GroupName = Group + "-" + InUsuarioID,
+                MethodName = Method,
+                Message = Message,
+                Success = false,
+                IDReferente = IdReferencia
+            };
+            var result = await client.PostAsJsonAsync(
+                    "https://apidsv17.sophiaerp.cloud/signalR", msg);
+            if (!result.IsSuccessStatusCode)
+            {
+                Log.Information($"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}");
+                finalMessage = finalMessage + " || ERRO AO NOTIFICAR VIA SIGNAL - " + $"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}";
+            }
+
+            await SaveLogServiceCenter(
+             TenantID,
+             finalMessage,
+             JsonParametrosParaServiceCenter);
+        }
+
+    }
+
+
+
     /*INTERFACES*/
     public interface IConsumerUsuarioId
     {

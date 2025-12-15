@@ -4,6 +4,7 @@ using CSCore.Ex.Personalizada;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102;
+using CSCore.Ifs.LB900.Repository;
 using CSLB900.MSTools.GenerateId;
 using Microsoft.EntityFrameworkCore;
 using Moq;
