@@ -303,9 +303,6 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
                      = await staticaLabelRepository
                      .GetIDStaticaByLabel<OsusrE9aCsicpGg032Stum>(Entities.CodCS_GG032Sta.Solicitado);
 
-
-
-
                 var inventario = new CSICP_GG032
                 {
                     TenantId = in_tenantID,
