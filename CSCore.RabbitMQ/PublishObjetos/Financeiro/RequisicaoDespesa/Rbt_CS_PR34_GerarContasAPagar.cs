@@ -17,4 +17,16 @@ namespace CSCore.RabbitMQ.PublishObjetos.Financeiro.RequisicaoDespesa
        decimal? Prm_Total_Fatura = 0,
        decimal? Prm_Valor_Entrada = 0
    );
+
+    public record Rbt_CS_PR34_GerarContasAPagarV2
+(
+   int in_tenant,
+   DateOnly Prm_1o_Vencto,
+   long ff140ID,
+   string usuarioID,
+   string InEMPRESA_ID,
+   int InNumeroParcelas = 0,
+   decimal? Prm_Total_Fatura = 0,
+   decimal? Prm_Valor_Entrada = 0
+);
 }

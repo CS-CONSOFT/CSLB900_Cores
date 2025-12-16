@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CSCore.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -101,5 +102,48 @@ namespace CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB02X.BB027
         public decimal? Bb027bPreducaoibs { get; set; }
         public decimal? Bb027bPreducaocbs { get; set; }
         public int? Bb027bCcredpreid { get; set; }
+
+        // Navegações existentes
+        public CSICP_Bb027Fdesen? NavBB027bFcalcicmsdes { get; set; }
+        public CSICP_Bb027Modal? NavBB027bModbc { get; set; }
+        public CSICP_Bb027Motivo? NavBB027bMotdesoneracao { get; set; }
+
+        // Navegações para CSICP_Statica
+        public CSICP_Statica? NavBB027ImpBaixaEstoque { get; set; }
+        public CSICP_Statica? NavBB027ImpGeraCReceber { get; set; }
+        public CSICP_Statica? NavBB027ImpAtualizaPrCompra { get; set; }
+        public CSICP_Statica? NavBB027ImpCalcSubstituicao { get; set; }
+        public CSICP_Statica? NavBB027ImpCalculaISS { get; set; }
+        public CSICP_Statica? NavBB027ImpAgregaSubsTrib { get; set; }
+        public CSICP_Statica? NavBB027ImpDIFA { get; set; }
+        public CSICP_Statica? NavBB027ImpICST { get; set; }
+        public CSICP_Statica? NavBB027ImpIRRF { get; set; }
+        public CSICP_Statica? NavBB027ImpPIS { get; set; }
+        public CSICP_Statica? NavBB027ImpCOFINS { get; set; }
+        public CSICP_Statica? NavBB027ImpIRPJ { get; set; }
+        public CSICP_Statica? NavBB027ImpICMSDiferido { get; set; }
+        public CSICP_Statica? NavBB027ImpGeraEstatistica { get; set; }
+        public CSICP_Statica? NavBB027ImpCalcAjusteICMS { get; set; }
+        public CSICP_Statica? NavBB027ImpCalcIS { get; set; }
+
+        // Navegações para outras tabelas BB027
+        public CSICP_Bb027Entsai? NavBB027ImpEntsai { get; set; }
+        public CSICP_Bb027Cicm? NavBB027ImpCalcICMS { get; set; }
+        public CSICP_Bb027Cicm? NavBB027ImpCalcIPI { get; set; }
+        public CSICP_Bb027Sipi? NavBB027ImpSomaIPIBaseICMS { get; set; }
+        public CSICP_Bb027Bcalc? NavBB027ImpIPIBruto { get; set; }
+        public CSICP_Bb027Bcalc? NavBB027ImpBaseICMSBrutaLiq { get; set; }
+        public CSICP_Bb027Bcalc? NavBB027ImpBaseSubsBrutaLiq { get; set; }
+
+        // Navegações para SPED
+        public Osusr66cSpedInCfop? NavBB027ImpCFOPStatica { get; set; }
+        public Osusr66cSpedInCfop? NavBB027ImpCFOPForaEstado { get; set; }
+        public Osusr66cSpedInCodAjuste? NavBB027ImpCodgAjusteICMS { get; set; }
+
+        // Navegação para BB027 pai
+        public CSICP_Bb027? NavBB027ImpTransacao { get; set; }
+
+        // Navegação para Regime
+        public CSICP_AA030Regime? NavBB027ImpRegime { get; set; }
     }
 }

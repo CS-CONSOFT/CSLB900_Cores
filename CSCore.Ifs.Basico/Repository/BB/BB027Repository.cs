@@ -21,13 +21,12 @@ namespace CSCore.Ifs.Repository.BB
             return await GetEntityById(id, tenant);
         }
 
-        public async Task<IEnumerable<CSICP_Bb027>> GetListAsync(int tenant, string? search, int? searchCode)
+        public async Task<IEnumerable<CSICP_Bb027>> GetListAsync(int tenant, string? search, int? searchCode, int? regimeId)
         {
-            IQueryable<CSICP_Bb027> q1 = CreateBaseQuery(tenant)
+            IQueryable<CSICP_Bb027> q1 = CreateBaseQuery(tenant).AsQueryable();
 
-                .AsQueryable();
+            q1 = FiltraQuandoExisteFiltros(search, searchCode, q1, regimeId);
 
-            q1 = FiltraQuandoExisteFiltros(search, searchCode, q1);
             return await q1.ToListAsync();
         }
 
@@ -46,7 +45,7 @@ namespace CSCore.Ifs.Repository.BB
         }
 
 
-        private static IQueryable<CSICP_Bb027> FiltraQuandoExisteFiltros(string? search, int? searchCode, IQueryable<CSICP_Bb027> query)
+        private static IQueryable<CSICP_Bb027> FiltraQuandoExisteFiltros(string? search, int? searchCode, IQueryable<CSICP_Bb027> query, int? regimeId)
         {
             if (search != null)
             {
@@ -59,6 +58,12 @@ namespace CSCore.Ifs.Repository.BB
                 query = query
                    .Where(entity => (entity.Bb027Codigo.ToString() ?? "").Contains(searchCode.ToString() ?? ""));
             }
+
+            if (regimeId != null)
+            {
+                query = query.Where(entity => entity.Bb027RegimeId == regimeId);
+            }
+
             return query;
         }
 
@@ -68,7 +73,33 @@ namespace CSCore.Ifs.Repository.BB
             return _appDbContext.OsusrE9aCsicpBb027s
                 .AsSplitQuery()
                 .AsNoTracking()
-                 .Include(e => e.Bb027Tdevolucao)
+                 .Include(e => e.NavBB027BaixaEstoque)
+                 .Include(e => e.NavBB027GeraCReceber)
+                 .Include(e => e.NavBB027AtualizaPrCompra)
+                 .Include(e => e.NavBB027CalcSubstituicao)
+                 .Include(e => e.NavBB027CalculaISS)
+                 .Include(e => e.NavBB027AgregaSubsTrib)
+                 .Include(e => e.NavBB027ICST)
+                 .Include(e => e.NavBB027IRRF)
+                 .Include(e => e.NavBB027PIS)
+                 .Include(e => e.NavBB027COFINS)
+                 .Include(e => e.NavBB027IRPJ)
+                 .Include(e => e.NavBB027ICMSDiferido)
+                 .Include(e => e.NavBB027GeraEstatistica)
+                 .Include(e => e.NavBB027CalcAjusteICMS)
+                 .Include(e => e.NavBB027CalcIS)
+                 .Include(e => e.NavBB027Entsai)
+                 .Include(e => e.NavBB027CalcICMS)
+                 .Include(e => e.NavBB027CalcIPI)
+                 .Include(e => e.NavBB027SomaIPIBaseICMS)
+                 .Include(e => e.NavBB027IPIBruto)
+                 .Include(e => e.NavBB027BaseICMSBrutaLiq)
+                 .Include(e => e.NavBB027BaseSubsBrutaLiq)
+                 .Include(e => e.NavBB027CFOPStatica)
+                 .Include(e => e.NavBB027CFOPForaEstado)
+                 .Include(e => e.NavBB027CodgAjusteICMS)
+                 .Include(e => e.NavBB027Tdevolucao)
+                 .Include(e => e.NavAA030_BB027Regime)
             .Where(e => e.TenantId == tenant);
         }
 

@@ -4,6 +4,7 @@ using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Domain.Interfaces.BB;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Eventos.Repository;
+using CSCore.Ifs.LB900.Repository;
 using CSLB900.MSTools.GenerateId;
 using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
