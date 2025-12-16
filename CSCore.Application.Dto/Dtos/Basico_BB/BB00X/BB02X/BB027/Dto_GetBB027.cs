@@ -15,10 +15,8 @@ namespace CSBS101._82Application.Dto.BB00X.BB027
 
         public string? Bb027Descricao { get; set; }
 
-        [ForeignKey("NavBB027BaixaEstoque")]
         public int? Bb027Baixaestoque { get; set; }
         
-        [ForeignKey("NavBB027GeraCReceber")]
         public int? Bb027Geracreceber { get; set; }
 
         public int? Bb027Atualizaprcompra { get; set; }

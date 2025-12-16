@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace CSCore.Domain.Interfaces.BB
 {
-    public interface IBB027ImpRepository : IGetListBase<CSICP_Bb027Imp, PrmFiltrosBB027Imp>, IRepositorioBaseV2<CSICP_Bb027Imp>
+    public interface IBB027ImpRepository 
+        : IGetListBase<CSICP_Bb027Imp, PrmFiltrosBB027Imp>, IRepositorioBase<CSICP_Bb027Imp>
     {
         Task<CSICP_Bb027Imp?> GetByIdAsync(int InTenantID, string InBB027ID);
         Task<(List<CSICP_Bb027Imp>, int)> GetListAsync(int InTenantID, PrmFiltrosBB027Imp prm);

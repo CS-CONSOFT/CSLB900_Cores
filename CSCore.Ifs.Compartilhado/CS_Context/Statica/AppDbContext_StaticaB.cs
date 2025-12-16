@@ -1132,9 +1132,9 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("BB027B_PREDUCAOCBS");
                 entity.Property(e => e.Bb027bCcredpreid).HasColumnName("BB027B_CCREDPREID");
 
-                entity.HasOne(d => d.NavBB027bFcalcicmsdes).WithMany(p => p.OsusrE9aCsicpBb027Imps)
-                    .HasForeignKey(d => d.Bb027bFcalcicmsdesId)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_BB027_IMP_OSUSR_E9A_CSICP_BB027_FDESEN_BB027B_FCALCICMSDES_ID");
+                //entity.HasOne(d => d.NavBB027bFcalcicmsdes).WithMany(p => p.OsusrE9aCsicpBb027Imps)
+                    //.HasForeignKey(d => d.Bb027bFcalcicmsdesId)
+                    //.HasConstraintName("OSFRK_OSUSR_E9A_CSICP_BB027_IMP_OSUSR_E9A_CSICP_BB027_FDESEN_BB027B_FCALCICMSDES_ID");
 
                 //entity.HasOne(d => d.Bb027bModbc).WithMany(p => p.OsusrE9aCsicpBb027Imps)
                   //  .HasForeignKey(d => d.Bb027bModbcId)

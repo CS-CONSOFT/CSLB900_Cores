@@ -103,7 +103,7 @@ public partial class CSICP_Bb027
     [ForeignKey("NavBB027Tdevolucao")]
     public string? Bb027TdevolucaoId { get; set; }
 
-    [ForeignKey("NavBB027Regime")]
+    [ForeignKey("NavAA030_BB027Regime")]
     public int? Bb027RegimeId { get; set; }
 
     [ForeignKey("NavBB027CFOPForaEstado")]

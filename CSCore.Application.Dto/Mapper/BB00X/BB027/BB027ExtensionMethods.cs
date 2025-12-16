@@ -1,4 +1,5 @@
 ﻿using CSBS101._82Application.Dto.BB00X.BB027;
+using CSBS101._82Application.Mapper.AA00X.AA027;
 using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB02X.BB027;
 using CSCore.Domain;
 using CSLB900.MSTools.Extensao;
@@ -275,35 +276,30 @@ namespace CSBS101._82Application.ExtensionsMethods.BB00X
                 Bb027bCcredpreid = entity.Bb027bCcredpreid,
                 NavBB027bFcalcicmsdes = entity.NavBB027bFcalcicmsdes,
                 NavBB027bModbc = entity.NavBB027bModbc,
-                NavBB027bMotdesoneracao = entity.NavBB027bMotdesoneracao,
-                NavBB027ImpBaixaEstoque = entity.NavBB027ImpBaixaEstoque,
-                NavBB027ImpGeraCReceber = entity.NavBB027ImpGeraCReceber,
-                NavBB027ImpAtualizaPrCompra = entity.NavBB027ImpAtualizaPrCompra,
-                NavBB027ImpCalcSubstituicao = entity.NavBB027ImpCalcSubstituicao,
-                NavBB027ImpCalculaISS = entity.NavBB027ImpCalculaISS,
-                NavBB027ImpAgregaSubsTrib = entity.NavBB027ImpAgregaSubsTrib,
-                NavBB027ImpDIFA = entity.NavBB027ImpDIFA,
-                NavBB027ImpICST = entity.NavBB027ImpICST,
-                NavBB027ImpIRRF = entity.NavBB027ImpIRRF,
-                NavBB027ImpPIS = entity.NavBB027ImpPIS,
-                NavBB027ImpCOFINS = entity.NavBB027ImpCOFINS,
-                NavBB027ImpIRPJ = entity.NavBB027ImpIRPJ,
-                NavBB027ImpICMSDiferido = entity.NavBB027ImpICMSDiferido,
-                NavBB027ImpGeraEstatistica = entity.NavBB027ImpGeraEstatistica,
-                NavBB027ImpCalcAjusteICMS = entity.NavBB027ImpCalcAjusteICMS,
-                NavBB027ImpCalcIS = entity.NavBB027ImpCalcIS,
-                NavBB027ImpEntsai = entity.NavBB027ImpEntsai,
-                NavBB027ImpCalcICMS = entity.NavBB027ImpCalcICMS,
-                NavBB027ImpCalcIPI = entity.NavBB027ImpCalcIPI,
-                NavBB027ImpSomaIPIBaseICMS = entity.NavBB027ImpSomaIPIBaseICMS,
-                NavBB027ImpIPIBruto = entity.NavBB027ImpIPIBruto,
-                NavBB027ImpBaseICMSBrutaLiq = entity.NavBB027ImpBaseICMSBrutaLiq,
-                NavBB027ImpBaseSubsBrutaLiq = entity.NavBB027ImpBaseSubsBrutaLiq,
+                NavBB027bMotdesoneracao = entity.NavBB027bMotdesoneracao,   
+                NavBB027ImpTransacao = entity.NavBB027ImpTransacao?.ToDtoGetSimples(),
+                NavBB027ImpRegime = entity.NavBB027ImpRegime,
+                NavBB027ImpOrigem = entity.NavBB027ImpOrigem,
+                NavBB027ImpCstIcms = entity.NavBB027ImpCstIcms,
+                NavBB027ImpCstIpi = entity.NavBB027ImpCstIpi,
+                NavBB027ImpCstPis = entity.NavBB027ImpCstPis,
+                NavBB027ImpNatBcCredPis = entity.NavBB027ImpNatBcCredPis,
+                NavBB027ImpCstCofins = entity.NavBB027ImpCstCofins,
+                NavBB027ImpNatBcCredCofins = entity.NavBB027ImpNatBcCredCofins,
+                NavBB027ImpUfDest = entity.NavBB027ImpUfDest?.ToDtoGetAA027SASimples(),
+                NavBB027ImpClasseConta = entity.NavBB027ImpClasseConta,
+                NavBB027ImpModalbcIcmsSt = entity.NavBB027ImpModalbcIcmsSt,
+                NavBB027ImpMp255 = entity.NavBB027ImpMp255,
                 NavBB027ImpCFOPStatica = entity.NavBB027ImpCFOPStatica,
-                NavBB027ImpCFOPForaEstado = entity.NavBB027ImpCFOPForaEstado,
-                NavBB027ImpCodgAjusteICMS = entity.NavBB027ImpCodgAjusteICMS,
-                NavBB027ImpTransacao = entity.NavBB027ImpTransacao,
-                NavBB027ImpRegime = entity.NavBB027ImpRegime
+                NavBB027ImpCenquadIpi = entity.NavBB027ImpCenquadIpi,
+                NavBB027ImpVicmsdesonSub = entity.NavBB027ImpVicmsdesonSub,
+                NavBB027ImpIndpres = entity.NavBB027ImpIndpres,
+                NavBB027ImpRfClasstrib = entity.NavBB027ImpRfClasstrib,
+                NavBB027ImpRflc = entity.NavBB027ImpRflc,
+                NavBB027ImpTpDebCre = entity.NavBB027ImpTpDebCre,
+                NavBB027ImpRfClasstrib2 = entity.NavBB027ImpRfClasstrib2,
+                NavBB027ImpCCredPre = entity.NavBB027ImpCCredPre
+                
             };
         }
     }
