@@ -1,10 +1,12 @@
-﻿using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB02X.BB027;
-using CSCore.Domain;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CSBS101._82Application.Dto.BB00X.BB027
+namespace CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB02X.BB027
 {
-    public class Dto_GetBB027
+    public class DtoGetBB027SemNavs
     {
         public int TenantId { get; set; }
 
@@ -17,7 +19,7 @@ namespace CSBS101._82Application.Dto.BB00X.BB027
         public string? Bb027Descricao { get; set; }
 
         public int? Bb027Baixaestoque { get; set; }
-        
+
         public int? Bb027Geracreceber { get; set; }
 
         public int? Bb027Atualizaprcompra { get; set; }
@@ -99,43 +101,5 @@ namespace CSBS101._82Application.Dto.BB00X.BB027
         public decimal? Bb027PicmsDiferido { get; set; }
 
         public int? BB027_CalcIS_ID { get; set; }
-
-        public CSICP_Statica? NavBB027BaixaEstoque { get; set; }
-        public CSICP_Statica? NavBB027GeraCReceber { get; set; }
-        public CSICP_Statica? NavBB027AtualizaPrCompra { get; set; }
-        public CSICP_Statica? NavBB027CalcSubstituicao { get; set; }
-        public CSICP_Statica? NavBB027CalculaISS { get; set; }
-        public CSICP_Statica? NavBB027AgregaSubsTrib { get; set; }
-        public CSICP_Statica? NavBB027DIFA { get; set; }
-        public CSICP_Statica? NavBB027ICST { get; set; }
-        public CSICP_Statica? NavBB027IRRF { get; set; }
-        public CSICP_Statica? NavBB027PIS { get; set; }
-        public CSICP_Statica? NavBB027COFINS { get; set; }
-        public CSICP_Statica? NavBB027IRPJ { get; set; }
-        public CSICP_Statica? NavBB027ICMSDiferido { get; set; }
-        public CSICP_Statica? NavBB027GeraEstatistica { get; set; }
-        public CSICP_Statica? NavBB027CalcAjusteICMS { get; set; }
-        public CSICP_Statica? NavBB027CalcIS { get; set; }
-
-        // Navegações para outras tabelas BB027
-        public CSICP_Bb027Entsai? NavBB027Entsai { get; set; }
-        public CSICP_Bb027Cicm? NavBB027CalcICMS { get; set; }
-        public CSICP_Bb027Cicm? NavBB027CalcIPI { get; set; }
-        public CSICP_Bb027Sipi? NavBB027SomaIPIBaseICMS { get; set; }
-        public CSICP_Bb027Bcalc? NavBB027IPIBruto { get; set; }
-        public CSICP_Bb027Bcalc? NavBB027BaseICMSBrutaLiq { get; set; }
-        public CSICP_Bb027Bcalc? NavBB027BaseSubsBrutaLiq { get; set; }
-
-        // Navegações para SPED
-        public Osusr66cSpedInCfop? NavBB027CFOPStatica { get; set; }
-        public Osusr66cSpedInCfop? NavBB027CFOPForaEstado { get; set; }
-        public Osusr66cSpedInCodAjuste? NavBB027CodgAjusteICMS { get; set; }
-
-        // Navegação auto-relacionamento
-        public DtoGetBB027SemNavs? NavBB027Tdevolucao { get; set; }
-
-        // Navegação para Regime
-        public CSICP_AA030Regime? NavAA030_BB027Regime { get; set; }
-
     }
 }

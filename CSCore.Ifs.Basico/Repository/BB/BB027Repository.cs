@@ -87,7 +87,7 @@ namespace CSCore.Ifs.Repository.BB
                  .Include(e => e.NavBB027ICMSDiferido)
                  .Include(e => e.NavBB027GeraEstatistica)
                  .Include(e => e.NavBB027CalcAjusteICMS)
-                 .Include(e => e.NavBB027CalcIS)
+                 //.Include(e => e.NavBB027CalcIS)
                  .Include(e => e.NavBB027Entsai)
                  .Include(e => e.NavBB027CalcICMS)
                  .Include(e => e.NavBB027CalcIPI)

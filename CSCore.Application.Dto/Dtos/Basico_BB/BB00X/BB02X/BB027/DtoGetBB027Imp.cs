@@ -116,7 +116,7 @@ namespace CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB02X.BB027
         // ========== NAVEGAÇÕES CORRETAS ==========
 
         // Navegação para BB027 pai (Transação principal)
-        public Dto_GetBB027Simples? NavBB027ImpTransacao { get; set; }
+        public DtoGetBB027SemNavs? NavBB027ImpTransacao { get; set; }
 
         // Navegação para csicp_aa030_Regime
         public CSICP_AA030Regime? NavBB027ImpRegime { get; set; }

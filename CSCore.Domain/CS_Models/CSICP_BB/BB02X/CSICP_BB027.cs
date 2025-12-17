@@ -123,6 +123,9 @@ public partial class CSICP_Bb027
 
     public decimal? Bb027PicmsDiferido { get; set; }
 
+    [ForeignKey("NavBB027CalcIS")]
+    public int? BB027_CalcIS_ID { get; set; }
+
     // Navegações para CSICP_Statica
     public CSICP_Statica? NavBB027BaixaEstoque { get; set; }
     public CSICP_Statica? NavBB027GeraCReceber { get; set; }
@@ -143,6 +146,7 @@ public partial class CSICP_Bb027
 
     // Navegações para outras tabelas BB027
     public CSICP_Bb027Entsai? NavBB027Entsai { get; set; }
+    //PoderTercID? Colocar?
     public CSICP_Bb027Cicm? NavBB027CalcICMS { get; set; }
     public CSICP_Bb027Cicm? NavBB027CalcIPI { get; set; }
     public CSICP_Bb027Sipi? NavBB027SomaIPIBaseICMS { get; set; }
