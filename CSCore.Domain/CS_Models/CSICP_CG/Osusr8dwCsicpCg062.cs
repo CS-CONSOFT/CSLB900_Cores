@@ -36,34 +36,22 @@ public partial class Osusr8dwCsicpCg062
 
     public bool? Cg062Isignorevalor { get; set; }
 
-    [ForeignKey("NavCG011CtaGerencial_DebN2ID")]
     public string? Cg062CtagerencialDebn2Id { get; set; }
 
-    [ForeignKey("NavCG011CtaGerencial_DebN3ID")]
     public string? Cg062CtagerencialDebn3Id { get; set; }
 
-    [ForeignKey("NavCG011CtaGerencial_DebN4ID")]
     public string? Cg062CtagerencialDebn4Id { get; set; }
 
-    [ForeignKey("NavCG011CtaGerencial_CredN2ID")]
     public string? Cg062CtagerencialCren2Id { get; set; }
 
-    [ForeignKey("NavCG011CtaGerencial_CredN3ID")]
     public string? Cg062CtagerencialCren3Id { get; set; }
 
-    [ForeignKey("NavCG011CtaGerencial_CredN4ID")]
     public string? Cg062CtagerencialCren4Id { get; set; }
 
     public CSICP_CG005? NavCG005HistDeb_CG062 { get; set; }
     public CSICP_CG005? NavCG005HistCred_CG062 { get; set; }
     public CSICP_CG006? NavCG006ContaDeb_CG062 { get; set; }
     public CSICP_CG006? NavCG006ContaCred_CG062 { get; set; }
-    public Osusr8dwCsicpCg011? NavCG011CtaGerencial_DebN2ID { get; set; }
-    public Osusr8dwCsicpCg011? NavCG011CtaGerencial_DebN3ID { get; set; }
-    public Osusr8dwCsicpCg011? NavCG011CtaGerencial_DebN4ID { get; set; }
-    public Osusr8dwCsicpCg011? NavCG011CtaGerencial_CredN2ID { get; set; }
-    public Osusr8dwCsicpCg011? NavCG011CtaGerencial_CredN3ID { get; set; }
-    public Osusr8dwCsicpCg011? NavCG011CtaGerencial_CredN4ID { get; set; }
     public Osusr8dwCsicpCg060? NavCG060RegramentoID_CG062 { get; set; }
     public Osusr8dwCsicpCg054? NavCG054EventoValorTpID_CG062 { get; set; }
     public Osusr8dwCsicpCg054? NavCG054EventoValorTpDebID_CG062 { get; set; }
