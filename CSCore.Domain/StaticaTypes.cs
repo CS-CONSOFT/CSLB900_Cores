@@ -320,9 +320,10 @@
         {
            
             csicp_cg003,
-            
+            csicp_cg004,
             csicp_cg005,
-            csicp_cg004
+            csicp_cg006,
+            csicp_cg008
 
         }
 
