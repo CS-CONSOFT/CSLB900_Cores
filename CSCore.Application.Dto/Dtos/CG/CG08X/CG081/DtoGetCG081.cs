@@ -41,6 +41,6 @@ namespace CSCore.Application.Dto.Dtos.CG.CG08X.CG081
         public DtoGetCG080? NavCG081ContRelConf { get; set; }
         public Osusr8dwCsicpCg997? NavCG081ASID { get; set; }
         public DtoGetCG081Padrao? NavCG081ContRelRegistroSup { get; set; }
-        public DtoGetGG993? NavCG993NaturezaSaldo { get; set; }
+        public DtoGetCG993? NavCG993NaturezaSaldo { get; set; }
     }
 }

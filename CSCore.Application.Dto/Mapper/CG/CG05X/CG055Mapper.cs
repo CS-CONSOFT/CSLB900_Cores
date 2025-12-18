@@ -18,6 +18,19 @@ namespace CSCore.Application.Dto.Mapper.CG.CG05X
                 Cg055Id = entity.Cg055Id,
                 Cg055Txcodigo = entity.Cg055Txcodigo,
                 Cg055Txdescricao = entity.Cg055Txdescricao,
+                Cg055Moduloid = entity.Cg055Moduloid,
+                NavModuloID_CG055 = entity.NavModuloID_CG055
+            };
+        }
+
+        public static DtoGetCG055Padrao ToDtoGetCG055Padrao(this Osusr8dwCsicpCg055 entity)
+        {
+            return new DtoGetCG055Padrao
+            {
+                TenantId = entity.TenantId,
+                Cg055Id = entity.Cg055Id,
+                Cg055Txcodigo = entity.Cg055Txcodigo,
+                Cg055Txdescricao = entity.Cg055Txdescricao,
                 Cg055Moduloid = entity.Cg055Moduloid
             };
         }

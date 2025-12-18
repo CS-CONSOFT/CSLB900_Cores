@@ -45,7 +45,21 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG062
         {
             IQueryable<Osusr8dwCsicpCg062> query = _appDbContext.Osusr8dwCsicpCg062s
                 .AsNoTracking()
-                .Where(e => e.TenantId == InTenantID);
+                .Where(e => e.TenantId == InTenantID)
+                .Include(e => e.NavCG005HistDeb_CG062)
+                .Include(e => e.NavCG005HistCred_CG062)
+                .Include(e => e.NavCG006ContaDeb_CG062)
+                .Include(e => e.NavCG006ContaCred_CG062)
+                .Include(e => e.NavCG011CtaGerencial_DebN2ID)
+                .Include(e => e.NavCG011CtaGerencial_DebN3ID)
+                .Include(e => e.NavCG011CtaGerencial_DebN4ID)
+                .Include(e => e.NavCG011CtaGerencial_CredN2ID)
+                .Include(e => e.NavCG011CtaGerencial_CredN3ID)
+                .Include(e => e.NavCG011CtaGerencial_CredN4ID)
+                .Include(e => e.NavCG060RegramentoID_CG062)
+                .Include(e => e.NavCG054EventoValorTpID_CG062)
+                .Include(e => e.NavCG054EventoValorTpDebID_CG062)
+                .Include(e => e.NavCG054EventoValorTpCredID_CG062);
 
             var queryCount = query;
             var count = await queryCount.CountAsync();

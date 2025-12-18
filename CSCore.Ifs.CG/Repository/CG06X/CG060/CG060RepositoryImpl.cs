@@ -22,6 +22,10 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG060
             return await _appDbContext.Osusr8dwCsicpCg060s
                 .AsNoTracking()
                 .Where(e => e.TenantId == InTenantID && e.Cg060Id == InCG060ID)
+                .Include(e => e.NavCG050Evento_CG060)
+                .Include(e => e.NavCG050EventoTpDeb_CG060)
+                .Include(e => e.NavCG050EventoTpCred_CG060)
+                .Include(e => e.NavBB001Estab_CG060)
                 .FirstOrDefaultAsync();
         }
 

@@ -29,7 +29,7 @@ namespace CSCore.Application.Dto.Mapper.CG.CG08X
                 NavCG081ContRelConf = entity.NavCG081ContRelConf?.ToDtoGet(),
                 NavCG081ASID = entity.NavCG081ASID,
                 NavCG081ContRelRegistroSup = entity.NavCG081ContRelRegistroSup?.ToDtoGetPadrao(),
-                NavCG993NaturezaSaldo = entity.NavCG993NaturezaSaldo?.ToDtoGetGG993()
+                NavCG993NaturezaSaldo = entity.NavCG993NaturezaSaldo?.ToDtoGet()
             };
         }
 

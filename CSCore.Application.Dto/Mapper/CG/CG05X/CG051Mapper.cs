@@ -19,8 +19,8 @@ namespace CSCore.Application.Dto.Mapper.CG.CG05X
                 Cg051Eventotpid = entity.Cg051Eventotpid,
                 Cg051Parametrotpid = entity.Cg051Parametrotpid,
                 Flobrigatorio = entity.Flobrigatorio,
-                NavCG050TipoEvento_CG051 = entity.NavCG050TipoEvento_CG051?.ToDtoGetCG050(),
-                NavCG052PrmEvento_CG051 = entity.NavCG052PrmEvento_CG051?.ToDtoGetCG052()
+                NavCG050TipoEvento_CG051 = entity.NavCG050TipoEvento_CG051?.ToDtoGetCG050Padrao(),
+                NavCG052PrmEvento_CG051 = entity.NavCG052PrmEvento_CG051?.ToDtoGetCG052Padrao()
             };
         }
 
