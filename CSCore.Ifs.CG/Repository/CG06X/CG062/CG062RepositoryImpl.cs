@@ -34,12 +34,13 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG062
         }
         public async Task<(List<Osusr8dwCsicpCg062>, int)> GetListAsync(
             int InTenantID,
+            long InCG060ID,
             int InPageNumber,
             int InPageSize)
         {
             IQueryable<Osusr8dwCsicpCg062> query = _appDbContext.Osusr8dwCsicpCg062s
                 .AsNoTracking()
-                .Where(e => e.TenantId == InTenantID)
+                .Where(e => e.TenantId == InTenantID && e.Cg062Regramentoid == InCG060ID)
                 .Include(e => e.NavCG005HistDeb_CG062)
                 .Include(e => e.NavCG005HistCred_CG062)
                 .Include(e => e.NavCG006ContaDeb_CG062)

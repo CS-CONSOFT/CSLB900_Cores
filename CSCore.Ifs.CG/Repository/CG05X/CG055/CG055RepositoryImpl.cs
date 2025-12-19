@@ -38,7 +38,7 @@ namespace CSCore.Ifs.CG.Repository.CG05X.CG055
                 .Include(e => e.NavModuloID_CG055);
 
             if (InDescricao != null)
-                query = query.Where(e => e.Cg055Txdescricao.Contains(InDescricao));
+                query = query.Where(e => e.Cg055Txdescricao!.Contains(InDescricao));
 
                 var queryCount = query;
             var count = await queryCount.CountAsync();

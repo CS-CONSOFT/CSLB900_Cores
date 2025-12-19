@@ -18,12 +18,13 @@ namespace CSCore.Ifs.CG.Repository.CG05X.CG051
 
         public async Task<(List<Osusr8dwCsicpCg051>, int)> GetListAsync(
             int InTenantID,
+            long InCG050ID,
             int InPageNumber,
             int InPageSize)
         {
             IQueryable<Osusr8dwCsicpCg051> query = _appDbContext.Osusr8dwCsicpCg051s
                 .AsNoTracking()
-                .Where(e => e.TenantId == InTenantID)
+                .Where(e => e.TenantId == InTenantID && e.Cg051Eventotpid == InCG050ID)
                 .Include(e => e.NavCG050TipoEvento_CG051)
                 .Include(e => e.NavCG052PrmEvento_CG051);
 

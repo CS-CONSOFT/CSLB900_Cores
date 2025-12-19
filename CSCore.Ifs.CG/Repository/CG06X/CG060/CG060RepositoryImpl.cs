@@ -31,6 +31,8 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG060
 
         public async Task<(List<Osusr8dwCsicpCg060>, int)> GetListAsync(
             int InTenantID,
+            string? InDescricao,
+            long? InEventoID,
             int InPageNumber, 
             int InPageSize)
         {
@@ -41,6 +43,16 @@ namespace CSCore.Ifs.CG.Repository.CG06X.CG060
                 .Include(e => e.NavCG050EventoTpDeb_CG060)
                 .Include(e => e.NavCG050EventoTpCred_CG060)
                 .Include(e => e.NavBB001Estab_CG060);
+
+            if (!string.IsNullOrWhiteSpace(InDescricao))
+            {
+                query = query.Where(e => e.Cg060Txdescricao!.Contains(InDescricao));
+            }
+
+            if (InEventoID.HasValue)
+            {
+                query = query.Where(e => e.Cg060Eventoid == InEventoID.Value);
+            }
 
             var queryCount = query;
             var count = await queryCount.CountAsync();
