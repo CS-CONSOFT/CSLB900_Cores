@@ -18,8 +18,8 @@ namespace CSCore.Application.Dto.Mapper.CG.CG05X
                 Cg054Id = entity.Cg054Id,
                 Cg054Eventotpid = entity.Cg054Eventotpid,
                 Cg054Valortpid = entity.Cg054Valortpid,
-                NavCG050TipoEvento_CG054 = entity.NavCG050TipoEvento_CG054?.ToDtoGetCG050(),
-                NavCG055ValorEvento_CG054 = entity.NavCG055ValorEvento_CG054?.ToDtoGetCG055()
+                NavCG050TipoEvento_CG054 = entity.NavCG050TipoEvento_CG054?.ToDtoGetCG050Padrao(),
+                NavCG055ValorEvento_CG054 = entity.NavCG055ValorEvento_CG054?.ToDtoGetCG055Padrao()
 
             };
         }

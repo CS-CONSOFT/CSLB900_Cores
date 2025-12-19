@@ -18,10 +18,8 @@
 	<ItemGroup>
 		<ProjectReference Include="..\CSCompartilhado.CSLB900_MSTools\CSLB900.MSTools.csproj" />
 		<ProjectReference Include="..\CSCore.Application.Dto\CSCore.Application.Dto.csproj" />
-		<ProjectReference Include="..\CSCore.Domain\CSCore.Domain.csproj" />
-		<ProjectReference Include="..\CSCore.Ifs.AnaliseDeCredito\CSCore.Ifs.AnaliseDeCredito.csproj" />
-		<ProjectReference Include="..\CSCore.Ifs.FF\CSCore.Ifs.FF.csproj" />
-		<ProjectReference Include="..\CSCore.Ifs.GG\CSCore.Ifs.GG.csproj" />
+		<ProjectReference Include="..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />
+		<ProjectReference Include="..\CSCore.Ifs.LB900\CSCore.Ifs.LB900.csproj" />
 		<ProjectReference Include="..\CSCore.Logger\CS_Logs.csproj" />
 	</ItemGroup>
 

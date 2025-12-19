@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_SYS.Depreciadas_Tabelas;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.LB900.Repository;
 using CSLB900.MSTools.GenerateId;
 using Microsoft.EntityFrameworkCore;
 

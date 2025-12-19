@@ -1,7 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.Eventos.Repository;
+using CSCore.Ifs.LB900.Repository;
 using CSLB900.MSTools.GenerateId;
 using Microsoft.EntityFrameworkCore;
 
@@ -51,12 +51,9 @@ namespace CSCore.Ifs.GG.Repository.Extrato
         public async Task CS_CriaExtratoOrigem(ParametroGeraExtrato_2 parametroGeraExtrato, int tenant)
         {
             CSICP_GG520? saldoEncontrado = await GetSaldoParaExtrato(parametroGeraExtrato.GG520_ID, tenant);
-
             decimal protocolo = await _generateProtocolo.Fcn_ProtocoloGeral(saldoEncontrado.Gg520Filialid!, tenant);
-
             CSICP_GG028 gg028 = new()
             {
-                //teste do comit
                 TenantId = tenant,
                 Id = _generateId.GenerateUuId(),
                 Gg028Filialid = saldoEncontrado.Gg520Filialid,
@@ -69,18 +66,19 @@ namespace CSCore.Ifs.GG.Repository.Extrato
                 Gg028KardexId = parametroGeraExtrato.Nav_CSICP_GG520?.Gg520KardexId,
                 Gg028Produtoid = saldoEncontrado.Nav_GG008Kardex!.Gg008Produtoid,
                 Gg028Saldoid = parametroGeraExtrato.GG520_ID,
+
                 Gg028Protocolnumber = protocolo.ToString(),
+                Gg028DocProtocolnumber = parametroGeraExtrato.Protocolo_Documento,
+
                 Gg028Usuarioid = parametroGeraExtrato.UsuarioID,
                 Gg028QtdMovimento = parametroGeraExtrato.QuantidadeASerBaixada,
                 Gg028ValorUnitario = parametroGeraExtrato.ValorUnitario,
-
-                Gg028DocProtocolnumber = parametroGeraExtrato.Protocolo_Documento,
                 Gg028SaldoAnterior = parametroGeraExtrato.QuantidadeAnterior,
                 Gg028EntsaidaId = parametroGeraExtrato.GG028_Tmov_EntradaSaida_ID,
                 Gg028NaturezaId = parametroGeraExtrato.GG028_Nat_ID
             };
             _appDbContext.Add(gg028);
-            //await _appDbContext.SaveChangesAsync();
+
         }
 
       

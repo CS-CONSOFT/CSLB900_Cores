@@ -1,8 +1,8 @@
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Processar;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.FinanciamentoCalculador;
+using CSCore.Ifs.LB900.Repository;
 using CSLB900.MSTools.CalculoAdicaoDataStrategy;
 using CSLB900.MSTools.Calculos;
 using CSLB900.MSTools.GenerateId;

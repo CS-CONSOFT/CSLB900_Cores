@@ -1,4 +1,4 @@
-using CSCore.Domain;
+ï»¿using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_RR;
 using CSCore.Domain.Interfaces.RR._00X.IRR022;
 using CSCore.Domain.Interfaces.V2;
@@ -50,6 +50,59 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             query = query.PaginacaoNoBanco(prm.PageNumber, prm.PageSize);
             var listItems = await query.ToListAsync();
 
+            // Carrega os Ãºltimos 5 registros para cada animal
+            if (listItems.Any())
+            {
+                var animalIds = listItems
+                    .Where(x => !string.IsNullOrEmpty(x.Rr022Animalid))
+                    .Select(x => x.Rr022Animalid!)
+                    .Distinct()
+                    .ToList();
+
+                var todosHistoricos = await _appDbContext.OsusrTo3CsicpRr022s
+                    .AsNoTracking()
+                    .Where(e => e.TenantId == In_TenantID
+                        && animalIds.Contains(e.Rr022Animalid)
+                        && e.Rr022IsProcessado == true)
+                    .OrderByDescending(e => e.Rr022Dtpeso)
+                    .Select(e => new
+                    {
+                        e.Id,
+                        e.Rr022Animalid,
+                        e.Rr022Dtpeso,
+                        e.Rr022Idadediasatual,
+                        e.Rr022Peso,
+                        e.Rr022Gmd,
+                        e.Rr022Gpd
+                    })
+                    .ToListAsync();
+
+                // Agrupa e atribui tudo de uma vez
+                var historicosPorAnimal = todosHistoricos
+                    .GroupBy(h => h.Rr022Animalid)
+                    .ToDictionary(g => g.Key ?? "", g => g.ToList());
+
+                // Popula diretamente sem dicionÃ¡rio intermediÃ¡rio
+                foreach (var item in listItems)
+                {
+                    item.NavUltimos5Registros = historicosPorAnimal
+                        .GetValueOrDefault(item.Rr022Animalid ?? "")?
+                        .Where(h => h.Id != item.Id)
+                        .Take(5)
+                        .Select(x => new OsusrTo3CsicpRr022
+                        {
+                            Rr022Animalid = x.Rr022Animalid,
+                            Rr022Dtpeso = x.Rr022Dtpeso,
+                            Rr022Idadediasatual = x.Rr022Idadediasatual,
+                            Rr022Peso = x.Rr022Peso,
+                            Rr022Gmd = x.Rr022Gmd,
+                            Rr022Gpd = x.Rr022Gpd
+                        })
+                        .ToList()
+                        ?? new List<OsusrTo3CsicpRr022>();
+                }
+            }
+
             return (listItems, count);
         }
 
@@ -57,7 +110,7 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
         {
             var filtros = Filtros as PrmFiltrosRR022;
             if (filtros == null)
-                throw new ArgumentNullException(nameof(Filtros), "Parâmetros de filtro inválidos.");
+                throw new ArgumentNullException(nameof(Filtros), "ParÃ¢metros de filtro invÃ¡lidos.");
 
             return [
                 new FiltroLoteIdRR022(filtros.In_LoteId),
@@ -120,11 +173,11 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
             {
                 if (rr022 == null)
                     continue;
-                //Faço uma validação para esse NAVAnimal?
+                //FaÃ§o uma validaÃ§Ã£o para esse NAVAnimal?
                 rr022.NavRR001Animal_RR022.DefinirUltimoPesoQuandoOPesoENull(
                     rr022.NavRR001Animal_RR022.Rr001Dtnascimento, rr022.NavRR001Animal_RR022.Rr001Pesonasc);
                 
-                // Atualizando campo data último peso na tabela RR022 pegando campo data último peso da tabela RR001 (Animal) 
+                // Atualizando campo data Ãºltimo peso na tabela RR022 pegando campo data Ãºltimo peso da tabela RR001 (Animal) 
                 rr022.Rr001Dtultpeso = rr022.NavRR001Animal_RR022.Rr001Dtultpeso;
                 rr022.Rr001Ultpeso = rr022.NavRR001Animal_RR022.Rr001Ultpeso;
 
@@ -193,10 +246,54 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
                                         e.Rr022Dtpeso.Value < dataFim);
             }
 
-            // Retorna até 999 registros por vez (ajuste conforme necessário)
-            var listItems = await query.Take(999).ToListAsync(); //verificar essa quantidade de registros (Aumenta ou diminui?)
+            // Retorna atÃ© 999 registros por vez (ajuste conforme necessÃ¡rio)
+            var listItems = await query.Take(999).ToListAsync(); 
 
             return listItems;
+        }
+
+        public async Task<Dictionary<string, List<OsusrTo3CsicpRr022>>> GetUltimos5RegistrosPorAnimaisAsync(
+            int In_TenantID,
+            List<string> In_AnimalIds,
+            List<string> In_IdsExcluir)
+        {
+            if (!In_AnimalIds.Any())
+                return new Dictionary<string, List<OsusrTo3CsicpRr022>>();
+
+            var historicoCompleto = await _appDbContext.OsusrTo3CsicpRr022s
+                .AsNoTracking()
+                .Where(e => e.TenantId == In_TenantID
+                    && In_AnimalIds.Contains(e.Rr022Animalid)
+                    && !In_IdsExcluir.Contains(e.Id)
+                    && e.Rr022IsProcessado == true)
+                .OrderByDescending(e => e.Rr022Dtpeso)
+                .Select(e => new
+                {
+                    e.Rr022Animalid,
+                    e.Rr022Dtpeso,
+                    e.Rr022Idadediasatual,
+                    e.Rr022Peso,
+                    e.Rr022Gmd,
+                    e.Rr022Gpd
+                })
+                .ToListAsync();
+
+            // Agrupa por animal e pega os 5 mais recentes
+            var resultado = historicoCompleto
+                .GroupBy(x => x.Rr022Animalid)
+                .ToDictionary(
+                    g => g.Key ?? "",
+                    g => g.Take(5).Select(x => new OsusrTo3CsicpRr022
+                    {
+                        Rr022Dtpeso = x.Rr022Dtpeso,
+                        Rr022Idadediasatual = x.Rr022Idadediasatual,
+                        Rr022Peso = x.Rr022Peso,
+                        Rr022Gmd = x.Rr022Gmd,
+                        Rr022Gpd = x.Rr022Gpd
+                    }).ToList()
+                );
+
+            return resultado;
         }
     }
 }

@@ -23,7 +23,7 @@ public partial class Osusr8dwCsicpCg081
     [ForeignKey("NavCG081ContRelRegistroSup")]
     public long? Cg081Contrelregistrosup { get; set; }
 
-    [ForeignKey("NavNaturezaSaldo")]
+    [ForeignKey("NavCG993NaturezaSaldo")]
     public int? Cg081Naturezasaldo { get; set; }
 
     public long? Cg081Nrlinha { get; set; }
@@ -47,5 +47,5 @@ public partial class Osusr8dwCsicpCg081
     public Osusr8dwCsicpCg080? NavCG081ContRelConf { get; set; }
     public Osusr8dwCsicpCg997? NavCG081ASID { get; set; }
     public Osusr8dwCsicpCg081? NavCG081ContRelRegistroSup { get; set; }
-    public OsusrE9aCsicpGg993? NavCG993NaturezaSaldo { get; set; }
+    public csicp_cg993_st? NavCG993NaturezaSaldo { get; set; }
 }

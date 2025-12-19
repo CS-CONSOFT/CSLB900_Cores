@@ -1,4 +1,4 @@
-﻿namespace CSCore.Ifs.Eventos.Repository
+﻿namespace CSCore.Ifs.LB900.Repository
 {
     public interface IGenerateProtocolo
     {

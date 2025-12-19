@@ -643,9 +643,9 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Bb027Icmsdiferido)
                     .HasDefaultValueSql("(NULL)")
                     .HasColumnName("BB027_ICMSDIFERIDO");
-                //entity.Property(e => e.Bb027Icmsdiferidoid)
-                //    .HasDefaultValueSql("(NULL)")
-                //    .HasColumnName("BB027_ICMSDIFERIDOID");
+                entity.Property(e => e.Bb027Icmsdiferidoid)
+                    .HasDefaultValueSql("(NULL)")
+                    .HasColumnName("BB027_ICMSDIFERIDOID");
                 entity.Property(e => e.Bb027Icst)
                     .HasDefaultValueSql("(NULL)")
                     .HasColumnName("BB027_ICST");

@@ -24,6 +24,26 @@ namespace CSCore.Application.Dto.Mapper.CG.CG05X
                 Cg050Flencerramento = entity.Cg050Flencerramento,
                 Cg050Flperman = entity.Cg050Flperman,
                 Cg050Flperexc = entity.Cg050Flperexc,
+                Cg050Isactive = entity.Cg050Isactive,
+                NavModuloID = entity.NavModuloID,
+                NavUnPeriodo = entity.NavUnPeriodo
+            };
+        }
+
+        public static DtoGetCG050Padrao ToDtoGetCG050Padrao(this Osusr8dwCsicpCg050 entity)
+        {
+            return new DtoGetCG050Padrao
+            {
+                TenantId = entity.TenantId,
+                Cg050Id = entity.Cg050Id,
+                Cg050Txcodigo = entity.Cg050Txcodigo,
+                Cg050Txdescricao = entity.Cg050Txdescricao,
+                Cg050Periodicidadeid = entity.Cg050Periodicidadeid,
+                Cg050Moduloid = entity.Cg050Moduloid,
+                Cg050Flonline = entity.Cg050Flonline,
+                Cg050Flencerramento = entity.Cg050Flencerramento,
+                Cg050Flperman = entity.Cg050Flperman,
+                Cg050Flperexc = entity.Cg050Flperexc,
                 Cg050Isactive = entity.Cg050Isactive
             };
         }

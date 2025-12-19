@@ -1,7 +1,7 @@
 ﻿using CSCore.Domain.CS_Models.Staticas.FF;
 using CSCore.Domain.EstaticasLabel.GG;
 using CSCore.Domain.Interfaces.Estatica;
-using CSCore.Ifs.Eventos.Repository;
+using CSCore.Ifs.LB900.Repository;
 using CSLB900.MSTools.GenerateId;
 using System;
 using System.Collections.Generic;

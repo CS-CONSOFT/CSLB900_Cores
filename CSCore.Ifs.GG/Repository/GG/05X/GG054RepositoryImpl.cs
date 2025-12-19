@@ -3,7 +3,7 @@ using CSCore.Domain.CS_Models.Staticas.GG;
 using CSCore.Domain.CS_QueryFilters.Specific;
 using CSCore.Domain.Interfaces.GG._05X;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.Eventos.Repository;
+using CSCore.Ifs.LB900.Repository;
 using CSLB900.MSTools.Extensao;
 using CSLB900.MSTools.GenerateId;
 using CSLB900.MSTools.Util;

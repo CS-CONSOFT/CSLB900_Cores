@@ -28,6 +28,7 @@ namespace CSCore.Ifs.CG.Repository.CG05X.CG050
 
         public async Task<(List<Osusr8dwCsicpCg050>, int)> GetListAsync(
             int InTenantID,
+            string? InDescricao,
             int InPageNumber,
             int InPageSize)
         {
@@ -36,6 +37,11 @@ namespace CSCore.Ifs.CG.Repository.CG05X.CG050
                 .Where(e => e.TenantId == InTenantID)
                 .Include(e => e.NavUnPeriodo)
                 .Include(e => e.NavModuloID);
+
+            if (!string.IsNullOrWhiteSpace(InDescricao))
+            {
+                query = query.Where(e => e.Cg050Txdescricao!.Contains(InDescricao));
+            }
 
             var queryCount = query;
             var count = await queryCount.CountAsync();

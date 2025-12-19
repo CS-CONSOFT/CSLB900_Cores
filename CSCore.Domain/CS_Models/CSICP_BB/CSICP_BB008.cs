@@ -52,15 +52,5 @@ public partial class CSICP_Bb008
     public CSICP_Statica? NavBB008_Aprova_Venda { get; set; }
     public CSICP_Statica? NavBB008_ParcLiquidadas { get; set; }
     public CSICP_Statica? NavBB008_EntLiquidada { get; set; }
-
     public CSICP_BB001? CSICP_BB001 { get; set; }
-
-
-    //public ICollection<CSICP_Bb017> OsusrE9aCsicpBb017s { get; set; } = new List<CSICP_Bb017>();
-
-    //public ICollection<CSICP_Bb020> OsusrE9aCsicpBb020s { get; set; } = new List<CSICP_Bb020>();
-
-    //public ICollection<CSICP_Bb026> OsusrE9aCsicpBb026s { get; set; } = new List<CSICP_Bb026>();
-
-    //public ICollection<CSICP_Bb060> OsusrE9aCsicpBb060s { get; set; } = new List<CSICP_Bb060>();
 }

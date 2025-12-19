@@ -1,4 +1,4 @@
-﻿using CSCore.Ifs.Eventos.Repository;
+﻿using CSCore.Ifs.LB900.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
