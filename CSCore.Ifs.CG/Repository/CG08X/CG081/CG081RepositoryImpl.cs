@@ -20,7 +20,11 @@ namespace CSCore.Ifs.CG.Repository.CG08X.CG081
         {
             var query = _appDbContext.Osusr8dwCsicpCg081s
                 .AsNoTracking()
-                .Where(e => e.Cg081Id == InCG081ID && e.TenantId == InTenantID);
+                .Where(e => e.Cg081Id == InCG081ID && e.TenantId == InTenantID)
+                .Include(e => e.NavCG081ContRelConf)
+                .Include(e => e.NavCG081ASID)
+                .Include(e => e.NavCG081ContRelRegistroSup)
+                .Include(e => e.NavCG993NaturezaSaldo);
 
             return await query.FirstOrDefaultAsync();
         }
@@ -35,8 +39,7 @@ namespace CSCore.Ifs.CG.Repository.CG08X.CG081
                 .Include(e => e.NavCG081ContRelConf)
                 .Include(e => e.NavCG081ASID)
                 .Include(e => e.NavCG081ContRelRegistroSup)
-                .Include(e => e.NavCG993NaturezaSaldo); 
-            //verificar se a propriedade Contrelconfid é a correta
+                .Include(e => e.NavCG993NaturezaSaldo);
 
             var queryCount = query;
             var count = await queryCount.CountAsync();

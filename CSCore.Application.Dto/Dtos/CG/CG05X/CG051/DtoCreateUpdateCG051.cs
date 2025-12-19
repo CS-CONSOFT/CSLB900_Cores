@@ -1,15 +1,19 @@
 using CSCore.Domain.CS_Models.CSICP_CG;
 using CSLB900.MSTools.InterfaceBase;
+using System.ComponentModel.DataAnnotations;
 
 namespace CSCore.Application.Dto.Dtos.CG.CG05X.CG051
 {
     public class DtoCreateUpdateCG051 : IConverteParaEntidade<Osusr8dwCsicpCg051>
     {
-        public long? Cg051Eventotpid { get; set; }
+        [Required(ErrorMessage = "O ID do tipo de evento é obrigatório")]
+        public long Cg051Eventotpid { get; set; }
 
-        public long? Cg051Parametrotpid { get; set; }
+        [Required(ErrorMessage = "O ID do parâmetro é obrigatório")]
+        public long Cg051Parametrotpid { get; set; }
 
-        public bool? Flobrigatorio { get; set; }
+        [Required(ErrorMessage = "O campo 'Flobrigatorio' é obrigatório")]
+        public bool? Flobrigatorio { get; set; } //verificar
 
         public Osusr8dwCsicpCg051 ToEntity(int tenant, string? _)
         {

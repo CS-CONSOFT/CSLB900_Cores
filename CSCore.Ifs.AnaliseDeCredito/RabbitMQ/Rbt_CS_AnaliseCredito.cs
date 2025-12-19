@@ -1,4 +1,4 @@
-﻿namespace CSCore.RabbitMQ.PublishObjetos
+﻿namespace CSCore.Ifs.AnaliseDeCredito.RabbitMQ
 {
     public class Rbt_CS_AnaliseCredito
     {

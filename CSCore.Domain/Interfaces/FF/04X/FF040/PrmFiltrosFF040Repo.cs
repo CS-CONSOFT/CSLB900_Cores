@@ -11,5 +11,5 @@ namespace CSCore.Ifs.FF.Repository.FF04X.FF040
         public DateTime? InDataFim { get; set; }
         public int? InTipoRegistro { get; set; }
         public int? InSituacaoID { get; set; }
-        }
+    }
 }

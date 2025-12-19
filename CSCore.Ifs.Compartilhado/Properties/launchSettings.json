@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "CSCore.Ifs.Compartilhado": {
+      "commandName": "Project"
+    },
+    "Perfil 1": {
+      "commandName": "Executable"
+    },
+    "Perfil 2": {
+      "commandName": "Executable",
+      "executablePath": "Z:\\Programacao\\CSConsoft\\CSRR106_APIRebanho\\CSRB_106Rebanho.sln"
+    }
+  }
+}

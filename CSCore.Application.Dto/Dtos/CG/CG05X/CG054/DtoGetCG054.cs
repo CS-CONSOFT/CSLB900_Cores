@@ -19,7 +19,7 @@ namespace CSCore.Application.Dto.Dtos.CG.CG05X.CG054
 
         public long? Cg054Valortpid { get; set; }
 
-        public DtoGetCG050? NavCG050TipoEvento_CG054 { get; set; }
-        public DtoGetCG055? NavCG055ValorEvento_CG054 { get; set; }
+        public DtoGetCG050Padrao? NavCG050TipoEvento_CG054 { get; set; }
+        public DtoGetCG055Padrao? NavCG055ValorEvento_CG054 { get; set; }
     }
 }

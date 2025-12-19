@@ -19,6 +19,7 @@
     {
         COM_SALDO = 1,
         SEM_SALDO = 2,
-        NEGATIVO_SALDO = 3
+        NEGATIVO_SALDO = 3,
+        TODOS = 4
     }
 }

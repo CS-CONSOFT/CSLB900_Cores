@@ -11,6 +11,11 @@
         {
         }
 
+        public static CSResult<T> Empty()
+        {
+            return new CSResult<T> { IsSuccess = true };
+        }
+
         public static CSResult<T> Success(T data, string? message = null)
         {
             return new CSResult<T> { IsSuccess = true, Data = data, Message = message };

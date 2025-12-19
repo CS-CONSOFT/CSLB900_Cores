@@ -38,5 +38,7 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
         // Navegações
         public DtoGetRR001Padrao? NavRR001Animal { get; set; }
         public DtoGetRR021Padrao? NavRR021LoteXAnimal { get; set; }
+
+        public List<DtoGetRR022Historico>? NavUltimos5Registros { get; set; }
     }
 }
