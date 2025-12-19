@@ -640,6 +640,18 @@ namespace CSCore.Ifs.Repository.Combo
                 .OrderBy(c => c.Cg006Descricao).Select(c => new { Title = c.Cg006Descricao ?? "---", Id = c.Cg006Id }),
                 ComboTypeCG.csicp_cg008 => _appDbContext.Osusr8dwCsicpCg008s.Where(c => c.TenantId == tenant && c.Cg008Isactive == true)
                 .OrderBy(c => c.Cg008Descricao).Select(c => new { Title = c.Cg008Descricao ?? "---", Id = c.Cg008Id }),
+                ComboTypeCG.csicp_cg052 => _appDbContext.Osusr8dwCsicpCg052s.Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Cg052Txdescricao).Select(c => new { Title = c.Cg052Txdescricao ?? "---", Id = c.Cg052Id }),
+                ComboTypeCG.csicp_cg055 => _appDbContext.Osusr8dwCsicpCg055s.Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Cg055Txdescricao).Select(c => new { Title = c.Cg055Txdescricao ?? "---", Id = c.Cg055Id }),
+
+                ComboTypeCG.csicp_cg054 => _appDbContext.Osusr8dwCsicpCg054s
+                .Where(c => c.TenantId == tenant)
+                .Include(c => c.NavCG050TipoEvento_CG054)
+                .OrderBy(c => c.Cg054Id)
+                .Select(c => new {
+                    Title = (c.NavCG050TipoEvento_CG054 != null ? c.NavCG050TipoEvento_CG054.Cg050Txdescricao : "---"), Id = c.Cg054Id
+                }),
 
                 _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
             };

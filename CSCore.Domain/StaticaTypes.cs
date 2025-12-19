@@ -323,7 +323,10 @@
             csicp_cg004,
             csicp_cg005,
             csicp_cg006,
-            csicp_cg008
+            csicp_cg008,
+            csicp_cg052,
+            csicp_cg054,
+            csicp_cg055,
 
         }
 
