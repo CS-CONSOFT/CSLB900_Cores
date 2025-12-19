@@ -1,10 +1,10 @@
 using System;
 using CSCore.Domain.CS_Models.CSICP_FF;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.Eventos.Repository;
 using CSCore.Ifs.FF.Repository.Processos.CS_GeraMemoriaCalculoFF043_FF102;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Parametro;
 using CSCore.Ifs.FF.Repository.Processos.CS_Renegociacao_Calc_Titulos.Strategy.FinanciamentoCalculador;
+using CSCore.Ifs.LB900.Repository;
 using CSLB900.MSTools.CalculoAdicaoDataStrategy;
 using CSLB900.MSTools.Calculos;
 using CSLB900.MSTools.GenerateId;

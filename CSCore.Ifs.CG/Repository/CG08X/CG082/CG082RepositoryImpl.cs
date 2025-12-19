@@ -25,7 +25,6 @@ namespace CSCore.Ifs.CG.Repository.CG08X.CG082
                 .Include(e => e.NavCG006ContConta_CG082)
                 .Where(e => e.TenantId == InTenantID
                     && e.Cg082Contrelregid == InCG081ID);
-            //verificar se a propriedade Cg082Contrelregid é a correta
 
             var queryCount = query;
             var count = await queryCount.CountAsync();

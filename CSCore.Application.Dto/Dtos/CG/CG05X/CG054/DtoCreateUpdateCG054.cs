@@ -2,6 +2,7 @@
 using CSLB900.MSTools.InterfaceBase;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,11 @@ namespace CSCore.Application.Dto.Dtos.CG.CG05X.CG054
 {
     public class DtoCreateUpdateCG054 : IConverteParaEntidade<Osusr8dwCsicpCg054>
     {
-        public long? Cg054Eventotpid { get; set; }
+        [Required(ErrorMessage = "O ID do tipo de evento é obrigatório")]
+        public long Cg054Eventotpid { get; set; }
 
-        public long? Cg054Valortpid { get; set; }
+        [Required(ErrorMessage = "O ID do valor é obrigatório")]
+        public long Cg054Valortpid { get; set; }
 
         public Osusr8dwCsicpCg054 ToEntity(int tenant, string? _)
         {

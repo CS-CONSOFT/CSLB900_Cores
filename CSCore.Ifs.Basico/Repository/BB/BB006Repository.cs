@@ -99,6 +99,7 @@ namespace CSCore.Ifs.Repository.BB
         private async Task<CSICP_Bb006?> GetEntityById(string id, int tenant)
         {
             return await CreateBaseQuery(tenant)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
     }

@@ -115,6 +115,7 @@ namespace CSCore.Ifs.Repository.BB
         private async Task<CSICP_BB007?> GetEntityById(string id, int tenant)
         {
             return await CreateBaseQuery(tenant)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
     }

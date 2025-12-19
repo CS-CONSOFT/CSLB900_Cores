@@ -4,7 +4,7 @@ using CSCore.Domain.CS_QueryFilters.GG032;
 using CSCore.Domain.EstaticasLabel.GG;
 using CSCore.Domain.Interfaces.Estatica;
 using CSCore.Ifs.CS_Context;
-using CSCore.Ifs.Eventos.Repository;
+using CSCore.Ifs.LB900.Repository;
 using CSCore.Ifs.Repository.GG._03X;
 using CSLB900.MSTools.GenerateId;
 using CSLB900.MSTools.Util;
@@ -302,9 +302,6 @@ namespace CSCore.Ifs.GG.Repository.GG._03X
                 int gg032StatusSolicitado_ID
                      = await staticaLabelRepository
                      .GetIDStaticaByLabel<OsusrE9aCsicpGg032Stum>(Entities.CodCS_GG032Sta.Solicitado);
-
-
-
 
                 var inventario = new CSICP_GG032
                 {

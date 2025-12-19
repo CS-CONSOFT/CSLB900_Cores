@@ -22,8 +22,8 @@ namespace CSCore.Application.Dto.Dtos.CG.CG05X.CG051
 
         public bool? Flobrigatorio { get; set; }
 
-        public DtoGetCG050? NavCG050TipoEvento_CG051 { get; set; }
+        public DtoGetCG050Padrao? NavCG050TipoEvento_CG051 { get; set; }
 
-        public DtoGetCG052? NavCG052PrmEvento_CG051 { get; set; }
+        public DtoGetCG052Padrao? NavCG052PrmEvento_CG051 { get; set; }
     }
 }
