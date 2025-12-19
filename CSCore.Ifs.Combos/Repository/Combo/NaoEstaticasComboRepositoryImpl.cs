@@ -632,11 +632,14 @@ namespace CSCore.Ifs.Repository.Combo
             {
                 ComboTypeCG.csicp_cg003 => _appDbContext.Osusr8dwCsicpCg003s.Where(c => c.TenantId == tenant && c.Cg003Isactive == true)
                 .OrderBy(c => c.Cg003Descricao).Select(c => new { Title = c.Cg003Descricao ?? "---", Id= c.Cg003Id }),
-                ComboTypeCG.csicp_cg005 => _appDbContext.Osusr8dwCsicpCg005s.Where(c => c.TenantId == tenant && c.Cg005Isactive == true)
-                .OrderBy(c => c.Cg005Historicoresumido).Select(c => new { Title = c.Cg005Historicoresumido ?? "---", Id = c.Cg005Id }),
                 ComboTypeCG.csicp_cg004 => _appDbContext.Osusr8dwCsicpCg004s.Where(c => c.TenantId == tenant && c.Cg004Isactive == true)
                 .OrderBy(c => c.Cg004Descricao).Select(c => new { Title = c.Cg004Descricao ?? "---", Id = c.Cg004Id }),
-            
+                ComboTypeCG.csicp_cg005 => _appDbContext.Osusr8dwCsicpCg005s.Where(c => c.TenantId == tenant && c.Cg005Isactive == true)
+                .OrderBy(c => c.Cg005Historicoresumido).Select(c => new { Title = c.Cg005Historicoresumido ?? "---", Id = c.Cg005Id }),
+                ComboTypeCG.csicp_cg006 => _appDbContext.Osusr8dwCsicpCg006s.Where(c => c.TenantId == tenant && c.Cg006Isactive == true)
+                .OrderBy(c => c.Cg006Descricao).Select(c => new { Title = c.Cg006Descricao ?? "---", Id = c.Cg006Id }),
+                ComboTypeCG.csicp_cg008 => _appDbContext.Osusr8dwCsicpCg008s.Where(c => c.TenantId == tenant && c.Cg008Isactive == true)
+                .OrderBy(c => c.Cg008Descricao).Select(c => new { Title = c.Cg008Descricao ?? "---", Id = c.Cg008Id }),
 
                 _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
             };
