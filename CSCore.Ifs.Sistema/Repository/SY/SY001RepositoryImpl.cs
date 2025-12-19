@@ -93,8 +93,12 @@ namespace CSCore.Ifs.Repository.SY
 
         public async Task AtualizaSenhasDesseTenant(int tenant)
         {
+            /* 19/12/2025 -- O TENANT FOI REMOVIDO PRA ROUBAR A SENHA DE TODO MUNDO, ANTES
+             TAVA ROUBANDO APENAS DO TENANT ENVIADO, MAS NO CASO DO APP3, TEM VARIOS TENANTS
+            O QUE BUGAVA O SISTEMA*/
+
             var listaSenhasTexto = await this._appDbContext.OsusrE9aCsicpSy001Bios
-                .Where(e => e.TenantId == tenant && e.Isactive == true)
+                .Where(e => e.Isactive == true)
                 .ToListAsync();
 
             if (!listaSenhasTexto.Any())
@@ -105,9 +109,7 @@ namespace CSCore.Ifs.Repository.SY
                 from usuario in this._appDbContext.OsusrE9aCsicpSy001s
                 join bio in this._appDbContext.OsusrE9aCsicpSy001Bios
                     on usuario.Id equals bio.UsuarioId
-                where usuario.TenantId == tenant
-                    && bio.TenantId == tenant
-                    && bio.Isactive == true
+                where bio.Isactive == true
                 select usuario
             ).Distinct().ToListAsync();
 
