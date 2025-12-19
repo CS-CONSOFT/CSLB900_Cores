@@ -91,7 +91,7 @@ namespace CSCore.Ifs.Repository.SY
 
 
 
-        public async Task AtualizaSenhasDesseTenant(int tenant)
+        public async Task<int> AtualizaSenhasDesseTenant(int tenant)
         {
             /* 19/12/2025 -- O TENANT FOI REMOVIDO PRA ROUBAR A SENHA DE TODO MUNDO, ANTES
              TAVA ROUBANDO APENAS DO TENANT ENVIADO, MAS NO CASO DO APP3, TEM VARIOS TENANTS
@@ -102,32 +102,46 @@ namespace CSCore.Ifs.Repository.SY
                 .ToListAsync();
 
             if (!listaSenhasTexto.Any())
-                return;
+                return 0;
 
-            // Buscar usuários usando JOIN direto no banco, evitando Contains()
-            var listaUsuarios = await (
-                from usuario in this._appDbContext.OsusrE9aCsicpSy001s
-                join bio in this._appDbContext.OsusrE9aCsicpSy001Bios
-                    on usuario.Id equals bio.UsuarioId
-                where bio.Isactive == true
-                select usuario
-            ).Distinct().ToListAsync();
+            // Agrupa senhas por usuário, pegando apenas a primeira
+            var senhasPorUsuario = listaSenhasTexto
+                .GroupBy(s => s.UsuarioId)
+                .ToDictionary(g => g.Key, g => g.First());
 
-            if (!listaUsuarios.Any())
-                return;
+            var usuarioIds = senhasPorUsuario.Keys.ToList();
+            const int batchSize = 500;
+            int totalAtualizado = 0;
 
-            // Atualiza as senhas dos usuários
-            foreach (var senha in listaSenhasTexto)
+            for (int i = 0; i < usuarioIds.Count; i += batchSize)
             {
-                var usuario = listaUsuarios.FirstOrDefault(u => u.Id == senha.UsuarioId);
-                if (usuario != null)
+                var batchIds = usuarioIds.Skip(i).Take(batchSize).ToList();
+
+                // Buscar usuários do batch atual
+                var listaUsuarios = await (
+                    from usuario in this._appDbContext.OsusrE9aCsicpSy001s
+                    join bio in this._appDbContext.OsusrE9aCsicpSy001Bios
+                        on usuario.Id equals bio.UsuarioId
+                    where bio.Isactive == true && batchIds.Contains(usuario.Id)
+                    select usuario
+                ).Distinct().ToListAsync();
+
+                // Atualiza as senhas dos usuários do batch
+                foreach (var usuario in listaUsuarios)
                 {
-                    usuario.Sy001Senhacs = SecureHashUtilitySimple.Hash(senha.BiometriaTexto);
-                    senha.Isactive = false;
+                    if (senhasPorUsuario.TryGetValue(usuario.Id, out var senha))
+                    {
+                        usuario.Sy001Senhacs = SecureHashUtilitySimple.Hash(senha.BiometriaTexto);
+                        senha.Isactive = false;
+                        totalAtualizado++;
+                    }
                 }
+
+                // Salva o batch atual
+                await _appDbContext.SaveChangesAsync();
             }
 
-            await _appDbContext.SaveChangesAsync();
+            return totalAtualizado;
         }
         public async Task<Csicp_Sy001> RemoveAsync(Csicp_Sy001 entity)
         {
