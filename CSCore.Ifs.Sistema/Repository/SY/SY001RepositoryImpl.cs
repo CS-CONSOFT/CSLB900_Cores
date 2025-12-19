@@ -97,23 +97,36 @@ namespace CSCore.Ifs.Repository.SY
                 .Where(e => e.TenantId == tenant && e.Isactive == true)
                 .ToListAsync();
 
-            var listaUsuarios  = await this._appDbContext.OsusrE9aCsicpSy001s
-                .Where(e => e.TenantId == tenant && listaSenhasTexto.Select(s => s.UsuarioId).Contains(e.Id))
-                .ToListAsync();
+            if (!listaSenhasTexto.Any())
+                return;
 
-            var listaJuntada = from usuario in listaUsuarios
-                               join senha in listaSenhasTexto
-                               on usuario.Id equals senha.UsuarioId
-                               select new {usuario.Id, senha.BiometriaTexto};
+            // Buscar usuários usando JOIN direto no banco, evitando Contains()
+            var listaUsuarios = await (
+                from usuario in this._appDbContext.OsusrE9aCsicpSy001s
+                join bio in this._appDbContext.OsusrE9aCsicpSy001Bios
+                    on usuario.Id equals bio.UsuarioId
+                where usuario.TenantId == tenant
+                    && bio.TenantId == tenant
+                    && bio.Isactive == true
+                select usuario
+            ).Distinct().ToListAsync();
 
+            if (!listaUsuarios.Any())
+                return;
 
-            foreach (var current in listaJuntada)
-                listaUsuarios.First(e => e.Id == current.Id).Sy001Senhacs = SecureHashUtilitySimple.Hash(current.BiometriaTexto);
+            // Atualiza as senhas dos usuários
+            foreach (var senha in listaSenhasTexto)
+            {
+                var usuario = listaUsuarios.FirstOrDefault(u => u.Id == senha.UsuarioId);
+                if (usuario != null)
+                {
+                    usuario.Sy001Senhacs = SecureHashUtilitySimple.Hash(senha.BiometriaTexto);
+                    senha.Isactive = false;
+                }
+            }
 
-            listaSenhasTexto.ForEach(e => e.Isactive = !e.Isactive);
             await _appDbContext.SaveChangesAsync();
         }
-
         public async Task<Csicp_Sy001> RemoveAsync(Csicp_Sy001 entity)
         {
             _appDbContext.Remove(entity);
