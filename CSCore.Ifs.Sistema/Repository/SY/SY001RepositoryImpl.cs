@@ -91,7 +91,7 @@ namespace CSCore.Ifs.Repository.SY
 
 
 
-        public async Task AtualizaSenhasDesseTenant(int tenant)
+        public async Task<int> AtualizaSenhasDesseTenant(int tenant)
         {
             /* 19/12/2025 -- O TENANT FOI REMOVIDO PRA ROUBAR A SENHA DE TODO MUNDO, ANTES
              TAVA ROUBANDO APENAS DO TENANT ENVIADO, MAS NO CASO DO APP3, TEM VARIOS TENANTS
@@ -102,7 +102,7 @@ namespace CSCore.Ifs.Repository.SY
                 .ToListAsync();
 
             if (!listaSenhasTexto.Any())
-                return;
+                return 0;
 
             // Agrupa senhas por usuário, pegando apenas a primeira
             var senhasPorUsuario = listaSenhasTexto
@@ -111,6 +111,7 @@ namespace CSCore.Ifs.Repository.SY
 
             var usuarioIds = senhasPorUsuario.Keys.ToList();
             const int batchSize = 500;
+            int totalAtualizado = 0;
 
             for (int i = 0; i < usuarioIds.Count; i += batchSize)
             {
@@ -132,12 +133,15 @@ namespace CSCore.Ifs.Repository.SY
                     {
                         usuario.Sy001Senhacs = SecureHashUtilitySimple.Hash(senha.BiometriaTexto);
                         senha.Isactive = false;
+                        totalAtualizado++;
                     }
                 }
 
                 // Salva o batch atual
                 await _appDbContext.SaveChangesAsync();
             }
+
+            return totalAtualizado;
         }
         public async Task<Csicp_Sy001> RemoveAsync(Csicp_Sy001 entity)
         {
