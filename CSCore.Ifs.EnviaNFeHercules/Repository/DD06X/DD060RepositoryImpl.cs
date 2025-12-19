@@ -977,7 +977,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.DD06X
                                 Bb027CodgajusteicmsId = bb027_reforma.Bb027CodgajusteicmsId,
                                 //Bb027Icmsdiferidoid = bb027_reforma.Bb027Icmsdiferidoid,
                                 Bb027PicmsDiferido = bb027_reforma.Bb027PicmsDiferido,
-                                Bb027Tdevolucao = bb027_reforma.Bb027Tdevolucao,
+                                //Bb027Tdevolucao = bb027_reforma.Bb027Tdevolucao,
                             } : null,
 
                             NavSpedInCenqIpi = spedIncenq_IPI != null ? new Osusr66cSpedInCenqIpi
