@@ -1,4 +1,8 @@
-﻿namespace CSCore.Domain.CS_Models.CSICP_DD;
+﻿using CSCore.Domain.CS_Models.CSICP_FF;
+using CSCore.Domain.CS_Models.CSICP_GG;
+using CSCore.Domain.CS_Models.Staticas.NFS;
+
+namespace CSCore.Domain.CS_Models.CSICP_DD;
 
 public partial class CSICP_DD000
 {
@@ -188,20 +192,79 @@ public partial class CSICP_DD000
 
     public bool? Dd000Iscanccomentrega { get; set; }
 
-    public virtual CSICP_DD903Anfe? Dd000AmbNfe { get; set; }
+    // ========== NAVIGATION PROPERTIES ==========
 
-    public virtual CSICP_DD000Fcom? Dd000FormaPcom { get; set; }
+    // Forma de Pagamento Comissão
+    public CSICP_DD000Fcom? NavDD000FormaPcom { get; set; }
 
-    public virtual CSICP_DD907? Dd000Lcertdigital { get; set; }
+    // Estabelecimento/Filial
+    public CSICP_BB001? NavDD000Filial { get; set; }
 
-    public virtual CSICP_DD000Ocom? Dd000OrigPcomissao { get; set; }
+    // Centros de Custo
+    public CSICP_Bb005? NavDD000PvCcusto { get; set; }
+    public CSICP_Bb005? NavDD000PdCcusto { get; set; }
+    public CSICP_Bb005? NavDD000PdvCcusto { get; set; }
+    public CSICP_Bb005? NavDD000CtCcusto { get; set; }
+    public CSICP_Bb005? NavDD000NdCcusto { get; set; }
+    public CSICP_Bb005? NavDD000DcCcusto { get; set; }
+    public CSICP_Bb005? NavDD000DisCcusto { get; set; }
+    public CSICP_Bb005? NavDD000CpCcusto { get; set; }
 
-    public virtual CSICP_DD000Rneg? Dd000QualregraaplicarNavigation { get; set; }
+    // Agentes Cobradores
+    public CSICP_Bb006? NavDD000PvAgcobrador { get; set; }
+    public CSICP_Bb006? NavDD000PdAgcobrador { get; set; }
+    public CSICP_Bb006? NavDD000PdvAgcobrador { get; set; }
+    public CSICP_Bb006? NavDD000CtAgcobrador { get; set; }
+    public CSICP_Bb006? NavDD000NdAgcobrador { get; set; }
+    public CSICP_Bb006? NavDD000DcAgcobrador { get; set; }
+    public CSICP_Bb006? NavDD000DisAgcobrador { get; set; }
+    public CSICP_Bb006? NavDD000CpAgcobrador { get; set; }
 
-    public virtual CSICP_DD000Rdesc? Dd000Regralimitedesconto { get; set; }
+    // Naturezas de Operação
+    public CSICP_Bb025? NavDD000PvNatoperacao { get; set; }
+    public CSICP_Bb025? NavDD000PdNatoperacao { get; set; }
+    public CSICP_Bb025? NavDD000PdvNatoperacao { get; set; }
+    public CSICP_Bb025? NavDD000CtNatoperacao { get; set; }
+    public CSICP_Bb025? NavDD000NdNatoperacao { get; set; }
+    public CSICP_Bb025? NavDD000DcNatoperacao { get; set; }
+    public CSICP_Bb025? NavDD000DisNatoperacao { get; set; }
 
-    public virtual CSICP_DD905Vnfe? Dd000VersaoNfe { get; set; }
+    // Conta
+    public CSICP_BB012? NavDD000PvConta { get; set; }
 
-    public virtual CSICP_DD000Tdz? Dd000Zonetime { get; set; }
+    // Séries de Notas
+    public CSICP_Aa013? NavDD000CtrlSerieNf { get; set; }
+    public CSICP_Aa013? NavDD000CtrlSerieCf { get; set; }
+    public CSICP_Aa013? NavDD000CtrlSerieNfce { get; set; }
+    public CSICP_Aa013? NavDD000CtrlContigenciaNfce { get; set; }
 
+    // Condição de Pagamento
+    public CSICP_Bb008? NavDD000CpCondpagto { get; set; }
+
+    // Formas de Pagamento
+    public CSICP_Bb026? NavDD000CpFormapagto { get; set; }
+    public CSICP_Bb026? NavDD000Formapgt { get; set; }
+
+    // UF
+    public CSICP_Aa027? NavDD000UfOrgao { get; set; }
+
+    // Espécie de Título
+    public CSICP_FF003? NavDD000ComEspecie { get; set; }
+
+    // Almoxarifado
+    public CSICP_GG001? NavDD000AlmoxPadraoTroca { get; set; }
+
+    // Estáticas (para os IDs que são int e representam valores estáticos)
+    public CSICP_DD000Rneg? NavDD000QualRegraAplicar { get; set; }
+    public CSICP_DD903Anfe? NavDD000AmbNfe { get; set; }
+    public CSICP_DD905Vnfe? NavDD000VersaoNfe { get; set; }
+    public CSICP_DD907? NavDD000LcertDigital { get; set; }
+    public CSICP_DD000Tdz? NavDD000ZoneTime { get; set; }
+    public CSICP_DD000Ocom? NavDD000OrigPcomissao { get; set; }
+    public Osusr66cCsicpNfsPadrao? NavDD000NfsPadrao { get; set; } //Qual é a tabela? (nfsPadrao)
+    public Osusr66cCsicpNfsRegtrib? NavDD000NfsRegEspTrib { get; set; }
+    public Osusr66cCsicpNfsOptsn? NavDD000NfsOtpSN { get; set; }
+    public Osusr66cCsicpNfsInccult? NavDD000NfsIncCult { get; set; }
+    public Osusr66cCsicpNfsNatoper? NavDD000NfsNatOp { get; set; }
+    public CSICP_DD000Rdesc? NavDD000RegraLimiteDesconto { get; set; }
 }
