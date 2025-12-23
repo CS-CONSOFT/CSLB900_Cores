@@ -47,7 +47,7 @@ namespace CSCore.Application.Dto.Mapper.DD
                 Dd000AmbNfeId = entity.Dd000AmbNfeId,
                 Dd000VersaoNfeId = entity.Dd000VersaoNfeId,
                 Dd000LcertdigitalId = entity.Dd000LcertdigitalId,
-                Dd000Arqcertdigitalbinario = entity.Dd000Arqcertdigitalbinario,
+                //Dd000Arqcertdigitalbinario = entity.Dd000Arqcertdigitalbinario,
                 Dd000Arqcertdigital = entity.Dd000Arqcertdigital,
                 Dd000Senhacertdigital = entity.Dd000Senhacertdigital,
                 Dd000NdCcustoId = entity.Dd000NdCcustoId,

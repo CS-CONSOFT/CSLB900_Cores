@@ -204,7 +204,11 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Dd000Arqcertdigital)
                     .HasMaxLength(255)
                     .HasColumnName("DD000_ARQCERTDIGITAL");
-                entity.Property(e => e.Dd000Arqcertdigitalbinario).HasColumnName("DD000_ARQCERTDIGITALBINARIO");
+
+                //entity.Property(e => e.Dd000Arqcertdigitalbinario)
+                entity.Ignore(e => e.Dd000Arqcertdigitalbinario);
+                //.HasColumnName("DD000_ARQCERTDIGITALBINARIO");
+
                 entity.Property(e => e.Dd000Comespecieid)
                     .HasMaxLength(36)
                     .HasColumnName("DD000_COMESPECIEID");

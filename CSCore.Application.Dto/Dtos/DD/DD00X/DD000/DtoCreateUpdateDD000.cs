@@ -56,7 +56,7 @@ namespace CSCore.Application.Dto.Dtos.DD.DD00X.DD000
 
         public int? Dd000LcertdigitalId { get; set; }
 
-        public byte[]? Dd000Arqcertdigitalbinario { get; set; }
+        //public byte[]? Dd000Arqcertdigitalbinario { get; set; }
 
         public string? Dd000Arqcertdigital { get; set; }
 
@@ -221,7 +221,7 @@ namespace CSCore.Application.Dto.Dtos.DD.DD00X.DD000
                 Dd000AmbNfeId = Dd000AmbNfeId,
                 Dd000VersaoNfeId = Dd000VersaoNfeId,
                 Dd000LcertdigitalId = Dd000LcertdigitalId,
-                Dd000Arqcertdigitalbinario = Dd000Arqcertdigitalbinario,
+                //Dd000Arqcertdigitalbinario = Dd000Arqcertdigitalbinario,
                 Dd000Arqcertdigital = Dd000Arqcertdigital,
                 Dd000Senhacertdigital = Dd000Senhacertdigital,
                 Dd000NdCcustoId = Dd000NdCcustoId,
