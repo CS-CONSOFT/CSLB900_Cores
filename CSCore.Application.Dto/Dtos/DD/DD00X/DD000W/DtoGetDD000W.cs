@@ -1,6 +1,10 @@
-﻿namespace CSCore.Domain.CS_Models.CSICP_DD;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using CSCore.Domain.CS_Models.CSICP_DD;
 
-public partial class CSICP_DD000W
+namespace CSCore.Application.Dto.Dtos.DD.DD00X.DD000W;
+
+public class DtoGetDD000W
 {
     public int TenantId { get; set; }
 
@@ -20,6 +24,7 @@ public partial class CSICP_DD000W
 
     public string? Dd000UfOrgaoId { get; set; }
 
+    // ========== NAVIGATION PROPERTIES ==========
     public CSICP_DD000? NavDD000Config { get; set; }
 
     public CSICP_DD999Nfcf? NavDD000Nfcf { get; set; }

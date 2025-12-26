@@ -311,7 +311,7 @@ public partial class CSICP_DD000
     public CSICP_DD907? NavDD000LcertDigital { get; set; }
     public CSICP_DD000Tdz? NavDD000ZoneTime { get; set; }
     public CSICP_DD000Ocom? NavDD000OrigPcomissao { get; set; }
-    public Osusr66cCsicpNfsPadrao? NavDD000NfsPadrao { get; set; } //Qual é a tabela? (nfsPadrao)
+    public Osusr66cCsicpNfsPadrao? NavDD000NfsPadrao { get; set; }
     public Osusr66cCsicpNfsRegtrib? NavDD000NfsRegEspTrib { get; set; }
     public Osusr66cCsicpNfsOptsn? NavDD000NfsOtpSN { get; set; }
     public Osusr66cCsicpNfsInccult? NavDD000NfsIncCult { get; set; }

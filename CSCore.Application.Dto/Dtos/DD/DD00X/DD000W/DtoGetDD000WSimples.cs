@@ -1,6 +1,8 @@
-﻿namespace CSCore.Domain.CS_Models.CSICP_DD;
+using System.ComponentModel.DataAnnotations;
 
-public partial class CSICP_DD000W
+namespace CSCore.Application.Dto.Dtos.DD.DD00X.DD000W;
+
+public class DtoGetDD000WSimples
 {
     public int TenantId { get; set; }
 
@@ -19,10 +21,4 @@ public partial class CSICP_DD000W
     public string? Dd000UrlHomologacao { get; set; }
 
     public string? Dd000UfOrgaoId { get; set; }
-
-    public CSICP_DD000? NavDD000Config { get; set; }
-
-    public CSICP_DD999Nfcf? NavDD000Nfcf { get; set; }
-
-    public CSICP_DD904Snfe? NavDD000Servnfe { get; set; }
 }
