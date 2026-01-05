@@ -16,4 +16,8 @@ public partial class CSICP_DD810
     public string? Dd810Anotacao { get; set; }
 
     public string? Dd810Hashid { get; set; }
+
+    public Osusr66cSpedInCfop NavDD810_CFOP_Saida { get; set; }
+
+    public Osusr66cSpedInCfop NavDD810_CFOP_Entrada { get; set; }
 }
