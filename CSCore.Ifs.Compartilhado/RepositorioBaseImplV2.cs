@@ -21,7 +21,7 @@ namespace CSCore.Ifs.Repository
         : IRepositorioBaseV2<TEntity> where TEntity : class
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-
+        public virtual object? GetDbContext() => _appDbContext;
         public virtual TEntity Create(TEntity entity)
         {
             ArgumentNullException.ThrowIfNull(entity);
@@ -135,6 +135,11 @@ namespace CSCore.Ifs.Repository
                 : existingEntity;
         }
 
+        /// <summary>
+        /// Recupera o ID da entidade passada como parâmetro.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public object GetEntityId(TEntity entity)
         {
             var idProperty = entity.GetType().GetProperty(IdIdentifierName);
@@ -237,17 +242,18 @@ namespace CSCore.Ifs.Repository
             await command.ExecuteNonQueryAsync();
         }
 
+        [Obsolete]
         protected virtual ICSInclude<TEntity>[] GetIncludesParaAplicar()
         {
             throw new NotImplementedException("Implementação do GetInclude deve ser feita na classe filha");
         }
 
-
+        [Obsolete]
         protected virtual ICSFilter<TEntity>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)
         {
             throw new NotImplementedException("Implementação do GetOutrosFiltros deve ser feita na classe filha");
         }
-
+        [Obsolete]
         protected virtual ICSFilter<TEntity>[] GetFiltrosParaAplicar<TFiltros>(int TenantId, TFiltros Filtros)
         {
             var filtrosPersonalizados = GetOutrosFiltros(TenantId, Filtros) ?? [];
@@ -257,6 +263,7 @@ namespace CSCore.Ifs.Repository
                 .ToArray();
         }
 
+        [Obsolete]
         protected IQueryable<TEntity> AplicaIncludes(IQueryable<TEntity> query, params ICSInclude<TEntity>[] InIncludes)
         {
             foreach (var include in InIncludes)
@@ -265,7 +272,7 @@ namespace CSCore.Ifs.Repository
             }
             return query;
         }
-
+        [Obsolete]
         protected IQueryable<TEntity> AplicaFiltro(IQueryable<TEntity> query, params ICSFilter<TEntity>[] InFiltros)
         {
             foreach (var filtro in InFiltros)

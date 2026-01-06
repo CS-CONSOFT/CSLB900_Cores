@@ -1,7 +1,7 @@
 ﻿
 using CSCore.Domain.CS_Models.CSICP_AA;
 using CSCore.Domain.CS_Models.Staticas.AA;
-using CSCore.Domain.DELETAR;
+using CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 
 namespace CSCore.Domain;
 

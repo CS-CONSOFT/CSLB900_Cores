@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CSCore.Domain.DELETAR;
+namespace CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 
 public partial class OsusrE9aCsicpGg008rftransacao
 {
