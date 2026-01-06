@@ -13,5 +13,7 @@ public partial class OsusrE9aCsicpSy036
 
     public string? Actionname { get; set; }
 
-    public virtual OsusrE9aCsicpSy035? Resource { get; set; }
 }
+
+
+

@@ -24,17 +24,17 @@ namespace CSCore.Ifs.LB900
         protected abstract IRepositorioBaseV2ComGets<TEntity> GetRepository();
         protected abstract ICS_GenerateId GetIdGenerator();
 
-        public async Task<int> BulkCreateAsync(List<TDtoCreate> dtoList)
+        public virtual async Task<int> BulkCreateAsync(List<TDtoCreate> dtoList)
         {
             throw new NotImplementedException("Método precisa ser implementado no SERVICE BASE V3! Ainda nao tem");
         }
 
-        public async Task<int> BulkCreateAsync(IEnumerable<TDtoCreate> dtoList)
+        public virtual async Task<int> BulkCreateAsync(IEnumerable<TDtoCreate> dtoList)
         {
             throw new NotImplementedException("Método precisa ser implementado no SERVICE BASE V3! Ainda nao tem");
         }
 
-        public async Task Create(TDtoCreate dto, int tenant)
+        public virtual async Task Create(TDtoCreate dto, int tenant)
         {
             var newID = GetIdGenerator().GenerateUuId();
             var entidade = dto.ToEntity(tenant, newID);
@@ -42,18 +42,18 @@ namespace CSCore.Ifs.LB900
             await UnitOfWork.SaveChangesAsync();
         }
 
-        public async Task CreateRange(List<TDtoCreate> dtoList)
+        public virtual async Task CreateRange(List<TDtoCreate> dtoList)
         {
             throw new NotImplementedException("Método precisa ser implementado no SERVICE BASE V3! Ainda nao tem");
         }
 
-        public async Task<IEnumerable<TDtoGetList>> GetAllAsync(IEnumerable<FiltrosDinamicos> filtros)
+        public virtual async Task<IEnumerable<TDtoGetList>> GetAllAsync(IEnumerable<FiltrosDinamicos> filtros)
         {
             var lista = await GetRepository().GetAllAsync(filtros);
             return lista.Select(TDtoGetList.FromEntity);
         }
 
-        public async Task<TDtoGetById?> GetByIdAsync(string id, int tenant)
+        public virtual async Task<TDtoGetById?> GetByIdAsync(string id, int tenant)
         {
             var entity = await GetRepository().GetByIdAsync(id, tenant);
             if (entity == null)
@@ -61,7 +61,7 @@ namespace CSCore.Ifs.LB900
             return TDtoGetById.FromEntity(entity);
         }
 
-        public async Task<TDtoGetById?> GetByIdAsync(long id, int tenant)
+        public virtual async Task<TDtoGetById?> GetByIdAsync(long id, int tenant)
         {
             var entity = await GetRepository().GetByIdAsync(id, tenant);
             if (entity == null)
@@ -69,26 +69,26 @@ namespace CSCore.Ifs.LB900
             return TDtoGetById.FromEntity(entity);
         }
 
-        public async Task RemoveAsync(string id, int tenant)
+        public virtual async Task RemoveAsync(string id, int tenant)
         {
             await GetRepository().RemoveAsync(id, tenant);
             await UnitOfWork.SaveChangesAsync();
         }
 
-        public async Task RemoveAsync(long id, int tenant)
+        public virtual async Task RemoveAsync(long id, int tenant)
         {
             await GetRepository().RemoveAsync(id, tenant);
             await UnitOfWork.SaveChangesAsync();
         }
 
-        public async Task<TDtoUpdate?> UpdateAsync(string id, int tenant, TDtoUpdate dto)
+        public virtual async Task<TDtoUpdate?> UpdateAsync(string id, int tenant, TDtoUpdate dto)
         {
             await GetRepository().UpdateAsync(id, tenant, dto.ToEntity(tenant, id));
             await UnitOfWork.SaveChangesAsync();
             return dto;
         }
 
-        public async Task<TDtoUpdate?> UpdateAsync(long id, int tenant, TDtoUpdate dto)
+        public virtual async Task<TDtoUpdate?> UpdateAsync(long id, int tenant, TDtoUpdate dto)
         {
             await GetRepository().UpdateAsync(id, tenant, dto.ToEntity(tenant, id.ToString()));
             await UnitOfWork.SaveChangesAsync();

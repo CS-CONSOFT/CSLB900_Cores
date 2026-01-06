@@ -14,6 +14,4 @@ public partial class OsusrE9aCsicpSy031
     public string? Sy031Grupoid { get; set; }
 
     public bool? Sy031Isactive { get; set; }
-
-    public virtual OsusrE9aCsicpSy030? Sy031Grupo { get; set; }
 }

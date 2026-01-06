@@ -14,8 +14,4 @@ public partial class OsusrE9aCsicpSy043
     public int? Orderindex { get; set; }
 
     public bool? Isrequired { get; set; }
-
-    public virtual OsusrE9aCsicpSy040? Filter { get; set; }
-
-    public virtual OsusrE9aCsicpSy035? Resource { get; set; }
 }

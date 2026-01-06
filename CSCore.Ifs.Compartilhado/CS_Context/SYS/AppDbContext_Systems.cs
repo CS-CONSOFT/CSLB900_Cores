@@ -238,9 +238,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RESOURCETYPE");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent)
-                    .HasForeignKey(d => d.Parentid)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_SY035_OSUSR_E9A_CSICP_SY035_PARENTID");
+             
             });
 
             modelBuilder.Entity<OsusrE9aCsicpSy036>(entity =>
@@ -264,9 +262,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RESOURCEID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(d => d.Resource).WithMany(p => p.OsusrE9aCsicpSy036s)
-                    .HasForeignKey(d => d.Resourceid)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_SY036_OSUSR_E9A_CSICP_SY035_RESOURCEID");
+          
             });
 
             modelBuilder.Entity<OsusrE9aCsicpSy037>(entity =>
@@ -294,9 +290,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RESOURCEID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(d => d.Resource).WithMany(p => p.OsusrE9aCsicpSy037s)
-                    .HasForeignKey(d => d.Resourceid)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_SY037_OSUSR_E9A_CSICP_SY035_RESOURCEID");
+            
             });
 
             modelBuilder.Entity<OsusrE9aCsicpSy038>(entity =>
@@ -358,9 +352,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RULENAME");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                entity.HasOne(d => d.Policy).WithMany(p => p.OsusrE9aCsicpSy039s)
-                    .HasForeignKey(d => d.Policyid)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_SY039_OSUSR_E9A_CSICP_SY038_POLICYID");
+            
             });
 
             modelBuilder.Entity<OsusrE9aCsicpSy040>(entity =>
@@ -433,13 +425,6 @@ namespace CSCore.Ifs.CS_Context
                     .HasMaxLength(36)
                     .HasColumnName("OPERATORID");
 
-                entity.HasOne(d => d.Filter).WithMany(p => p.OsusrE9aCsicpSy042s)
-                    .HasForeignKey(d => d.Filterid)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_SY042_OSUSR_E9A_CSICP_SY040_FILTERID");
-
-                entity.HasOne(d => d.Operator).WithMany(p => p.OsusrE9aCsicpSy042s)
-                    .HasForeignKey(d => d.Operatorid)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_SY042_OSUSR_E9A_CSICP_SY041_OPERATORID");
             });
 
             modelBuilder.Entity<OsusrE9aCsicpSy043>(entity =>
@@ -462,13 +447,6 @@ namespace CSCore.Ifs.CS_Context
                     .HasMaxLength(36)
                     .HasColumnName("RESOURCEID");
 
-                entity.HasOne(d => d.Filter).WithMany(p => p.OsusrE9aCsicpSy043s)
-                    .HasForeignKey(d => d.Filterid)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_SY043_OSUSR_E9A_CSICP_SY040_FILTERID");
-
-                entity.HasOne(d => d.Resource).WithMany(p => p.OsusrE9aCsicpSy043s)
-                    .HasForeignKey(d => d.Resourceid)
-                    .HasConstraintName("OSFRK_OSUSR_E9A_CSICP_SY043_OSUSR_E9A_CSICP_SY035_RESOURCEID");
             });
             modelBuilder.HasSequence("Seq_PK_ID");
 

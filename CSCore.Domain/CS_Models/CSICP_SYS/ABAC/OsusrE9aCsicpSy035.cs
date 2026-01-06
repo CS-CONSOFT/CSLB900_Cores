@@ -23,13 +23,5 @@ public partial class OsusrE9aCsicpSy035
 
     public string? Parentid { get; set; }
 
-    public virtual ICollection<OsusrE9aCsicpSy035> InverseParent { get; set; } = new List<OsusrE9aCsicpSy035>();
-
-    public virtual ICollection<OsusrE9aCsicpSy036> OsusrE9aCsicpSy036s { get; set; } = new List<OsusrE9aCsicpSy036>();
-
-    public virtual ICollection<OsusrE9aCsicpSy037> OsusrE9aCsicpSy037s { get; set; } = new List<OsusrE9aCsicpSy037>();
-
-    public virtual ICollection<OsusrE9aCsicpSy043> OsusrE9aCsicpSy043s { get; set; } = new List<OsusrE9aCsicpSy043>();
-
-    public virtual OsusrE9aCsicpSy035? Parent { get; set; }
+   
 }

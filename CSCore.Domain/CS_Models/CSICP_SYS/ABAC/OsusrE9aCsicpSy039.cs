@@ -23,5 +23,4 @@ public partial class OsusrE9aCsicpSy039
 
     public string? Resources { get; set; }
 
-    public virtual OsusrE9aCsicpSy038? Policy { get; set; }
 }

@@ -74,8 +74,18 @@
     }
     public record FiltrosDinamicos
     {
+        /// <summary>
+        /// O nome da propriedade da classe de entidade!
+        /// </summary>
         public string NomePropriedade { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Valor dessa propriedade para comparação!
+        /// </summary>
         public object? ValorPropriedade { get; set; } = null;
+        /// <summary>
+        /// Igualdade a ser utilizada na comparação!
+        /// </summary>
         public TipoFiltroDinamico TipoDeIgualdade { get; set; } = TipoFiltroDinamico.Igual;
 
     }

@@ -17,5 +17,5 @@ public partial class OsusrE9aCsicpSy037
 
     public string? Attributetype { get; set; }
 
-    public virtual OsusrE9aCsicpSy035? Resource { get; set; }
+
 }
