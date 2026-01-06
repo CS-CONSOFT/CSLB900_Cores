@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 
+//Resource
 public partial class OsusrE9aCsicpSy035
 {
     public int? TenantId { get; set; }
