@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain.CS_QueryFilters;
 using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
+using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.Repository
@@ -114,25 +115,60 @@ namespace CSCore.Ifs.Repository
         public async Task<TEntity> GetEntityForUpdateAsync(string id, int tenantId)
         {
             var entityType = typeof(TEntity);
-            var tenantProperty = entityType.GetProperty(TenantIdentifierName) ?? throw new InvalidOperationException($"O tipo {entityType.Name} não possui a propriedade {TenantIdentifierName}.");
-            var existingEntity = await _appDbContext.Set<TEntity>()
-             .FirstOrDefaultAsync(e => EF.Property<int>(e, TenantIdentifierName) == tenantId && EF.Property<string>(e, IdIdentifierName) == id);
 
-            return existingEntity == null
-                ? throw new KeyNotFoundException($"Entidade com {IdIdentifierName}: {id} e {TenantIdentifierName}: {tenantId} não encontrada.")
-                : existingEntity;
+            if (IsTenantValid(tenantId))
+            {
+                if (entityType.GetProperty(TenantIdentifierName) is null)
+                    throw new InvalidOperationException($"O tipo {entityType.Name} não possui a propriedade {TenantIdentifierName}.");
+
+                var entity = await _appDbContext.Set<TEntity>()
+                    .FirstOrDefaultAsync(e =>
+                        EF.Property<int>(e, TenantIdentifierName) == tenantId &&
+                        EF.Property<string>(e, IdIdentifierName) == id);
+
+                return entity ?? throw new KeyNotFoundException(
+                    $"Entidade com {IdIdentifierName}: {id} e {TenantIdentifierName}: {tenantId} não encontrada.");
+            }
+            else
+            {
+                var entity = await _appDbContext.Set<TEntity>()
+                    .FirstOrDefaultAsync(e => EF.Property<string>(e, IdIdentifierName) == id);
+
+                return entity ?? throw new KeyNotFoundException(
+                    $"Entidade com {IdIdentifierName}: {id} e {TenantIdentifierName}: {tenantId} não encontrada.");
+            }
+        }
+
+        private static bool IsTenantValid(int tenantId)
+        {
+            return Constantes.ENTIDADE_SEM_TENANT != tenantId;
         }
 
         public async Task<TEntity> GetEntityForUpdateAsync(long id, int tenantId)
         {
             var entityType = typeof(TEntity);
-            var tenantProperty = entityType.GetProperty(TenantIdentifierName) ?? throw new InvalidOperationException($"O tipo {entityType.Name} não possui a propriedade {TenantIdentifierName}.");
-            var existingEntity = await _appDbContext.Set<TEntity>()
-             .FirstOrDefaultAsync(e => EF.Property<int>(e, TenantIdentifierName) == tenantId && EF.Property<long>(e, IdIdentifierName) == id);
 
-            return existingEntity == null
-                ? throw new KeyNotFoundException($"Entidade com {IdIdentifierName}: {id} e {TenantIdentifierName}: {tenantId} não encontrada.")
-                : existingEntity;
+            if (IsTenantValid(tenantId))
+            {
+                if (entityType.GetProperty(TenantIdentifierName) is null)
+                    throw new InvalidOperationException($"O tipo {entityType.Name} não possui a propriedade {TenantIdentifierName}.");
+
+                var entity = await _appDbContext.Set<TEntity>()
+                    .FirstOrDefaultAsync(e =>
+                        EF.Property<int>(e, TenantIdentifierName) == tenantId &&
+                        EF.Property<long>(e, IdIdentifierName) == id);
+
+                return entity ?? throw new KeyNotFoundException(
+                    $"Entidade com {IdIdentifierName}: {id} e {TenantIdentifierName}: {tenantId} não encontrada.");
+            }
+            else
+            {
+                var entity = await _appDbContext.Set<TEntity>()
+                    .FirstOrDefaultAsync(e => EF.Property<long>(e, IdIdentifierName) == id);
+
+                return entity ?? throw new KeyNotFoundException(
+                    $"Entidade com {IdIdentifierName}: {id} e {TenantIdentifierName}: {tenantId} não encontrada.");
+            }
         }
 
         /// <summary>

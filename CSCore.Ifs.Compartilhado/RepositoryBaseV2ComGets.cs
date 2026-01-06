@@ -26,8 +26,10 @@ namespace CSCore.Ifs.Compartilhado
             Expression comparison = null!;
             foreach (var item in filtros)
             {
-                var property = Expression.Property(parameter, item.NomePropriedade); // representa e.NomePropriedade
-                var constant = Expression.Constant(item.ValorPropriedade); // representa o valor a ser comparado
+                var property = Expression.Property(parameter, item.NomePropriedade); 
+                var propertyType = property.Type;
+                var constantValue = Convert.ChangeType(item.ValorPropriedade, Nullable.GetUnderlyingType(propertyType) ?? propertyType);
+                var constant = Expression.Constant(constantValue, propertyType);
                 comparison = item.TipoDeIgualdade switch
                 {
                     TipoFiltroDinamico.Igual => Expression.Equal(property, constant),
