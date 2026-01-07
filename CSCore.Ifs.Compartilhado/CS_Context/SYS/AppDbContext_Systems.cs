@@ -99,23 +99,23 @@ namespace CSCore.Ifs.CS_Context
 
         public DbSet<OsusrE9aCsicpSy032> OsusrE9aCsicpSy032s { get; set; }
 
-        public DbSet<OsusrE9aCsicpSy035> OsusrE9aCsicpSy035s { get; set; }
+        public DbSet<ABAC_CSSPH_RESOURCE> ABAC_CSSPH_RESOURCE { get; set; }
 
-        public DbSet<OsusrE9aCsicpSy036> OsusrE9aCsicpSy036s { get; set; }
+        public DbSet<ABAC_CSSPH_RESOURCEACTIONS> ABAC_CSSPH_RESOURCEACTIONS { get; set; }
 
-        public DbSet<OsusrE9aCsicpSy037> OsusrE9aCsicpSy037s { get; set; }
+        public DbSet<ABAC_CSSPH_RESOURCEATRIB> ABAC_CSSPH_RESOURCEATRIB { get; set; }
 
         public DbSet<OsusrE9aCsicpSy038> OsusrE9aCsicpSy038s { get; set; }
 
         public DbSet<OsusrE9aCsicpSy039> OsusrE9aCsicpSy039s { get; set; }
 
-        public DbSet<OsusrE9aCsicpSy040> OsusrE9aCsicpSy040s { get; set; }
+        public DbSet<ABAC_CSSPH_FILTERS> ABAC_CSSPH_FILTERS { get; set; }
 
-        public DbSet<OsusrE9aCsicpSy041> OsusrE9aCsicpSy041s { get; set; }
+        public DbSet<ABAC_CSSPH_OPERADORES> ABAC_CSSPH_OPERADORES { get; set; }
 
-        public DbSet<OsusrE9aCsicpSy042> OsusrE9aCsicpSy042s { get; set; }
+        public DbSet<ABAC_CSSPH_FILTERSOPERADORES> ABAC_CSSPH_FILTERSOPERADORES { get; set; }
 
-        public DbSet<OsusrE9aCsicpSy043> OsusrE9aCsicpSy043s { get; set; }
+        public DbSet<ABAC_CSSPH_FILTERSRESOURCE> ABAC_CSSPH_FILTERSRESOURCE { get; set; }
 
 
         partial void OnModelCreating_CSICP_Systems(ModelBuilder modelBuilder)
@@ -200,99 +200,6 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
             });
 
-            modelBuilder.Entity<OsusrE9aCsicpSy035>(entity =>
-            {
-                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_SY035");
-
-                entity.ToTable("OSUSR_E9A_CSICP_SY035");
-
-                entity.HasIndex(e => e.Displayname, "OSIDX_OSUSR_E9A_CSICP_SY035_11DISPLAYNAME");
-
-                entity.HasIndex(e => e.Name, "OSIDX_OSUSR_E9A_CSICP_SY035_4NAME");
-
-                entity.HasIndex(e => e.Module, "OSIDX_OSUSR_E9A_CSICP_SY035_6MODULE");
-
-                entity.HasIndex(e => e.Parentid, "OSIDX_OSUSR_E9A_CSICP_SY035_8PARENTID");
-
-                entity.Property(e => e.Id)
-                    .HasMaxLength(36)
-                    .HasColumnName("ID");
-                entity.Property(e => e.Displayname)
-                    .HasMaxLength(100)
-                    .HasColumnName("DISPLAYNAME");
-                entity.Property(e => e.Isactive).HasColumnName("ISACTIVE");
-                entity.Property(e => e.Module)
-                    .HasMaxLength(50)
-                    .HasColumnName("MODULE");
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
-                    .HasColumnName("NAME");
-                entity.Property(e => e.Parentid)
-                    .HasMaxLength(36)
-                    .HasColumnName("PARENTID");
-                entity.Property(e => e.Path)
-                    .HasMaxLength(250)
-                    .HasColumnName("PATH");
-                entity.Property(e => e.Resourcetype)
-                    .HasMaxLength(50)
-                    .HasColumnName("RESOURCETYPE");
-                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-
-             
-            });
-
-            modelBuilder.Entity<OsusrE9aCsicpSy036>(entity =>
-            {
-                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_SY036");
-
-                entity.ToTable("OSUSR_E9A_CSICP_SY036");
-
-                entity.HasIndex(e => e.Resourceid, "OSIDX_OSUSR_E9A_CSICP_SY036_10RESOURCEID");
-
-                entity.HasIndex(e => new { e.Resourceid, e.Actionname }, "OSIDX_OSUSR_E9A_CSICP_SY036_10RESOURCEID_10ACTIONNAME");
-
-                entity.Property(e => e.Id)
-                    .HasMaxLength(36)
-                    .HasColumnName("ID");
-                entity.Property(e => e.Actionname)
-                    .HasMaxLength(50)
-                    .HasColumnName("ACTIONNAME");
-                entity.Property(e => e.Resourceid)
-                    .HasMaxLength(36)
-                    .HasColumnName("RESOURCEID");
-                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-
-          
-            });
-
-            modelBuilder.Entity<OsusrE9aCsicpSy037>(entity =>
-            {
-                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_SY037");
-
-                entity.ToTable("OSUSR_E9A_CSICP_SY037");
-
-                entity.HasIndex(e => e.Resourceid, "OSIDX_OSUSR_E9A_CSICP_SY037_10RESOURCEID");
-
-                entity.Property(e => e.Id)
-                    .HasMaxLength(36)
-                    .HasColumnName("ID");
-                entity.Property(e => e.Attributename)
-                    .HasMaxLength(50)
-                    .HasColumnName("ATTRIBUTENAME");
-                entity.Property(e => e.Attributetype)
-                    .HasMaxLength(20)
-                    .HasColumnName("ATTRIBUTETYPE");
-                entity.Property(e => e.Attributevalue)
-                    .HasMaxLength(250)
-                    .HasColumnName("ATTRIBUTEVALUE");
-                entity.Property(e => e.Resourceid)
-                    .HasMaxLength(36)
-                    .HasColumnName("RESOURCEID");
-                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-
-            
-            });
-
             modelBuilder.Entity<OsusrE9aCsicpSy038>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_SY038");
@@ -354,10 +261,102 @@ namespace CSCore.Ifs.CS_Context
 
             
             });
-
-            modelBuilder.Entity<OsusrE9aCsicpSy040>(entity =>
+            modelBuilder.Entity<ABAC_CSSPH_RESOURCE>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_SY040");
+                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_RESOURCE");
+
+                entity.ToTable("OSUSR_E9A_CSICP_SY035");
+
+                entity.HasIndex(e => e.Displayname, "OSIDX_OSUSR_E9A_CSICP_SY035_11DISPLAYNAME");
+
+                entity.HasIndex(e => e.Name, "OSIDX_OSUSR_E9A_CSICP_SY035_4NAME");
+
+                entity.HasIndex(e => e.Module, "OSIDX_OSUSR_E9A_CSICP_SY035_6MODULE");
+
+                entity.HasIndex(e => e.Parentid, "OSIDX_OSUSR_E9A_CSICP_SY035_8PARENTID");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID");
+                entity.Property(e => e.Displayname)
+                    .HasMaxLength(100)
+                    .HasColumnName("DISPLAYNAME");
+                entity.Property(e => e.Isactive).HasColumnName("ISACTIVE");
+                entity.Property(e => e.Module)
+                    .HasMaxLength(50)
+                    .HasColumnName("MODULE");
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .HasColumnName("NAME");
+                entity.Property(e => e.Parentid)
+                    .HasMaxLength(36)
+                    .HasColumnName("PARENTID");
+                entity.Property(e => e.Path)
+                    .HasMaxLength(250)
+                    .HasColumnName("PATH");
+                entity.Property(e => e.Resourcetype)
+                    .HasMaxLength(50)
+                    .HasColumnName("RESOURCETYPE");
+                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+
+            });
+
+            modelBuilder.Entity<ABAC_CSSPH_RESOURCEACTIONS>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_RESOURCEACTIONS");
+
+                entity.ToTable("OSUSR_E9A_CSICP_SY036");
+
+                entity.HasIndex(e => e.Resourceid, "OSIDX_OSUSR_E9A_CSICP_SY036_10RESOURCEID");
+
+                entity.HasIndex(e => new { e.Resourceid, e.Actionname }, "OSIDX_OSUSR_E9A_CSICP_SY036_10RESOURCEID_10ACTIONNAME");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID");
+                entity.Property(e => e.Actionname)
+                    .HasMaxLength(50)
+                    .HasColumnName("ACTIONNAME");
+                entity.Property(e => e.Resourceid)
+                    .HasMaxLength(36)
+                    .HasColumnName("RESOURCEID");
+                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+
+            });
+
+            modelBuilder.Entity<ABAC_CSSPH_RESOURCEATRIB>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_RESOURCEATRIB");
+
+                entity.ToTable("OSUSR_E9A_CSICP_SY037");
+
+                entity.HasIndex(e => e.Resourceid, "OSIDX_OSUSR_E9A_CSICP_SY037_10RESOURCEID");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID");
+                entity.Property(e => e.Attributename)
+                    .HasMaxLength(50)
+                    .HasColumnName("ATTRIBUTENAME");
+                entity.Property(e => e.Attributetype)
+                    .HasMaxLength(20)
+                    .HasColumnName("ATTRIBUTETYPE");
+                entity.Property(e => e.Attributevalue)
+                    .HasMaxLength(250)
+                    .HasColumnName("ATTRIBUTEVALUE");
+                entity.Property(e => e.Resourceid)
+                    .HasMaxLength(36)
+                    .HasColumnName("RESOURCEID");
+                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+
+            });
+
+            modelBuilder.Entity<ABAC_CSSPH_FILTERS>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_FILTERS");
 
                 entity.ToTable("OSUSR_E9A_CSICP_SY040");
 
@@ -386,9 +385,9 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("OPTIONSSOURCE");
             });
 
-            modelBuilder.Entity<OsusrE9aCsicpSy041>(entity =>
+            modelBuilder.Entity<ABAC_CSSPH_OPERADORES>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_SY041");
+                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_OPERADORES");
 
                 entity.ToTable("OSUSR_E9A_CSICP_SY041");
 
@@ -405,9 +404,9 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("OPERATOR");
             });
 
-            modelBuilder.Entity<OsusrE9aCsicpSy042>(entity =>
+            modelBuilder.Entity<ABAC_CSSPH_FILTERSOPERADORES>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_SY042");
+                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_FILTERSOPERADORES");
 
                 entity.ToTable("OSUSR_E9A_CSICP_SY042");
 
@@ -427,9 +426,9 @@ namespace CSCore.Ifs.CS_Context
 
             });
 
-            modelBuilder.Entity<OsusrE9aCsicpSy043>(entity =>
+            modelBuilder.Entity<ABAC_CSSPH_FILTERSRESOURCE>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_SY043");
+                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_FILTERSRESOURCE");
 
                 entity.ToTable("OSUSR_E9A_CSICP_SY043");
 
@@ -448,7 +447,8 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RESOURCEID");
 
             });
-            modelBuilder.HasSequence("Seq_PK_ID");
+
+
 
             modelBuilder.Entity<CSICP_SY997_LOGS>(entity =>
             {

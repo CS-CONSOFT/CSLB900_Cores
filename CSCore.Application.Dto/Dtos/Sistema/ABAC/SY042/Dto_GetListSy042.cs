@@ -3,13 +3,13 @@ using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY042
 {
-    public record Dto_GetListSy042 : IConverteParaEntidadeV2<OsusrE9aCsicpSy042, Dto_GetListSy042>
+    public record Dto_GetListSy042 : IConverteParaEntidadeV2<ABAC_CSSPH_FILTERSOPERADORES, Dto_GetListSy042>
     {
         public string Id { get; init; } = null!;
         public string? Filterid { get; init; }
         public string? Operatorid { get; init; }
 
-        public static Dto_GetListSy042 FromEntity(OsusrE9aCsicpSy042 entity)
+        public static Dto_GetListSy042 FromEntity(ABAC_CSSPH_FILTERSOPERADORES entity)
         {
             return new Dto_GetListSy042
             {

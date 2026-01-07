@@ -3,7 +3,7 @@ using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY035
 {
-    public record Dto_GetListSy035 : IConverteParaEntidadeV2<OsusrE9aCsicpSy035, Dto_GetListSy035>
+    public record Dto_GetListSy035 : IConverteParaEntidadeV2<ABAC_CSSPH_RESOURCE, Dto_GetListSy035>
     {
         public int? TenantId { get; init; }
         public string Id { get; init; } = null!;
@@ -15,7 +15,7 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY035
         public bool? Isactive { get; init; }
         public string? Parentid { get; init; }
 
-        public static Dto_GetListSy035 FromEntity(OsusrE9aCsicpSy035 entity)
+        public static Dto_GetListSy035 FromEntity(ABAC_CSSPH_RESOURCE entity)
         {
             return new Dto_GetListSy035
             {
