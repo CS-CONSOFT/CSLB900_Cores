@@ -1,6 +1,6 @@
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_GG;
-using CSCore.Domain.DELETAR;
+using CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 using CSCore.Domain.Interfaces.GG._00X.GG008;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;

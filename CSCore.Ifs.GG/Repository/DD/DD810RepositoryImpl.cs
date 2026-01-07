@@ -21,6 +21,8 @@ namespace CSCore.Ifs.GG.Repository.DD
         {
             return await _appDbContext.OsusrTeiCsicpDd810s
                 .AsNoTracking()
+                .Include(e => e.NavDD810_CFOP_Saida)
+                .Include(e => e.NavDD810_CFOP_Entrada)
                 .Where(e => e.TenantId == InTenantID && e.Dd810Id == InDD810ID)
                 .FirstOrDefaultAsync();
         }
@@ -38,6 +40,16 @@ namespace CSCore.Ifs.GG.Repository.DD
 
             List<CSICP_DD810> resultList = await query.ToListAsync();
             return (resultList, count);
+        }
+
+        public async Task<string?> GetCfopCodigoByCfopId(int cfopId)
+        {
+            var cfop = await _appDbContext.Osusr66cSpedInCfops
+                .AsNoTracking()
+                .Where(c => c.Id == cfopId)
+                .FirstOrDefaultAsync();
+
+            return cfop?.Codigo;
         }
     }
 }

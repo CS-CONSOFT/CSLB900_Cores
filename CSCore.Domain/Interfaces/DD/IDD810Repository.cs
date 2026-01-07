@@ -7,5 +7,6 @@ namespace CSCore.Domain.Interfaces.DD
     {
         Task<CSICP_DD810?> GetByIdAsync(string InDD810ID, int InTenantID);
         Task<(List<CSICP_DD810>, int)> GetListAsync(int InTenantID, int InPageNumber, int InPageSize);
+        Task<string?> GetCfopCodigoByCfopId(int cfopId);
     }
 }
