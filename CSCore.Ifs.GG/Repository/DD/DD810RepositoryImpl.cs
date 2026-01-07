@@ -31,7 +31,9 @@ namespace CSCore.Ifs.GG.Repository.DD
         {
             IQueryable<CSICP_DD810> query = _appDbContext.OsusrTeiCsicpDd810s
                 .Where(e => e.TenantId == InTenantID)
-                .AsNoTracking();
+                .AsNoTracking()
+                .Include(e => e.NavDD810_CFOP_Saida)
+                .Include(e => e.NavDD810_CFOP_Entrada);
 
             var count = await query.CountAsync();
 
