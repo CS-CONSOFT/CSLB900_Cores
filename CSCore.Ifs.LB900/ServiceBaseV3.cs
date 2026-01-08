@@ -22,7 +22,10 @@ namespace CSCore.Ifs.LB900
         }
 
         protected abstract IRepositorioBaseV2ComGets<TEntity> GetRepository();
-        protected abstract ICS_GenerateId GetIdGenerator();
+        protected virtual ICS_GenerateId GetIdGenerator()
+        {
+            return new SCS_GenerateId();
+        }
 
         public virtual async Task<int> BulkCreateAsync(List<TDtoCreate> dtoList)
         {

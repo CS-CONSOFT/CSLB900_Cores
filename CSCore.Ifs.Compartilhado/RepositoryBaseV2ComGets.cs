@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 
 namespace CSCore.Ifs.Compartilhado
 {
-   
     public class RepositoryBaseV2ComGets<TEntity> : RepositorioBaseImplV2<TEntity>, IRepositorioBaseV2ComGets<TEntity> where TEntity : class
     {
         private readonly AppDbContext _appDbContext;
@@ -37,7 +36,7 @@ namespace CSCore.Ifs.Compartilhado
                     TipoFiltroDinamico.Igual => Expression.Equal(property, constant),
                     TipoFiltroDinamico.Diferente => Expression.NotEqual(property, constant),
                     TipoFiltroDinamico.Maior => Expression.GreaterThan(property, constant),
-                    TipoFiltroDinamico.Menos => Expression.LessThan(property, constant),
+                    TipoFiltroDinamico.Menor => Expression.LessThan(property, constant),
                     _ => throw new NotSupportedException($"Tipo de filtro {item.TipoDeIgualdade} não suportado.")
                 };
 
