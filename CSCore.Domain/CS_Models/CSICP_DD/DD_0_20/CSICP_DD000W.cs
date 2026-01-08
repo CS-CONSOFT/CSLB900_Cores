@@ -20,9 +20,9 @@ public partial class CSICP_DD000W
 
     public string? Dd000UfOrgaoId { get; set; }
 
-    public virtual CSICP_DD000? Dd000Config { get; set; }
+    public CSICP_DD000? NavDD000Config { get; set; }
 
-    public virtual CSICP_DD999Nfcf? Dd000Nfcf { get; set; }
+    public CSICP_DD999Nfcf? NavDD000Nfcf { get; set; }
 
-    public virtual CSICP_DD904Snfe? Dd000Servnfe { get; set; }
+    public CSICP_DD904Snfe? NavDD000Servnfe { get; set; }
 }

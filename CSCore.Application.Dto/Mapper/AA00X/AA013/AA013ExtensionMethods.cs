@@ -48,5 +48,21 @@ namespace CSBS101._82Application.Mapper.AA00X.AA013
             entity.ConverteValoresPadraoParaNulo();
             return entity;
         }
+
+        public static Dto_GetAA013_Simples ToDtoGetAA013_Simples(this CSICP_Aa013 entity)
+        {
+            return new Dto_GetAA013_Simples
+            {
+                Id = entity.Id,
+                TenantId = entity.TenantId,
+                Aa013Filial = entity.Aa013Filial,
+                Aa013Serie = entity.Aa013Serie,
+                Aa013Numero = entity.Aa013Numero,
+                Aa013DataValidade = entity.Aa013DataValidade,
+                Aa013Filialid = entity.Aa013Filialid,
+                Aa013ModId = entity.Aa013ModId,
+                Aa013Isusocontigencia = entity.Aa013Isusocontigencia
+            };
+        }
     }
 }

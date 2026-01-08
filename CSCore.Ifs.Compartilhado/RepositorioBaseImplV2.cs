@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain.CS_QueryFilters;
 using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
+using CSLB900.MSTools.Util;
 using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.Repository
@@ -21,7 +22,7 @@ namespace CSCore.Ifs.Repository
         : IRepositorioBaseV2<TEntity> where TEntity : class
     {
         private readonly AppDbContext _appDbContext = appDbContext;
-
+        public virtual object? GetDbContext() => _appDbContext;
         public virtual TEntity Create(TEntity entity)
         {
             ArgumentNullException.ThrowIfNull(entity);
@@ -114,27 +115,67 @@ namespace CSCore.Ifs.Repository
         public async Task<TEntity> GetEntityForUpdateAsync(string id, int tenantId)
         {
             var entityType = typeof(TEntity);
-            var tenantProperty = entityType.GetProperty(TenantIdentifierName) ?? throw new InvalidOperationException($"O tipo {entityType.Name} não possui a propriedade {TenantIdentifierName}.");
-            var existingEntity = await _appDbContext.Set<TEntity>()
-             .FirstOrDefaultAsync(e => EF.Property<int>(e, TenantIdentifierName) == tenantId && EF.Property<string>(e, IdIdentifierName) == id);
 
-            return existingEntity == null
-                ? throw new KeyNotFoundException($"Entidade com {IdIdentifierName}: {id} e {TenantIdentifierName}: {tenantId} não encontrada.")
-                : existingEntity;
+            if (IsTenantValid(tenantId))
+            {
+                if (entityType.GetProperty(TenantIdentifierName) is null)
+                    throw new InvalidOperationException($"O tipo {entityType.Name} não possui a propriedade {TenantIdentifierName}.");
+
+                var entity = await _appDbContext.Set<TEntity>()
+                    .FirstOrDefaultAsync(e =>
+                        EF.Property<int>(e, TenantIdentifierName) == tenantId &&
+                        EF.Property<string>(e, IdIdentifierName) == id);
+
+                return entity ?? throw new KeyNotFoundException(
+                    $"Entidade com {IdIdentifierName}: {id} e {TenantIdentifierName}: {tenantId} não encontrada.");
+            }
+            else
+            {
+                var entity = await _appDbContext.Set<TEntity>()
+                    .FirstOrDefaultAsync(e => EF.Property<string>(e, IdIdentifierName) == id);
+
+                return entity ?? throw new KeyNotFoundException(
+                    $"Entidade com {IdIdentifierName}: {id} e {TenantIdentifierName}: {tenantId} não encontrada.");
+            }
+        }
+
+        private static bool IsTenantValid(int tenantId)
+        {
+            return Constantes.ENTIDADE_SEM_TENANT != tenantId;
         }
 
         public async Task<TEntity> GetEntityForUpdateAsync(long id, int tenantId)
         {
             var entityType = typeof(TEntity);
-            var tenantProperty = entityType.GetProperty(TenantIdentifierName) ?? throw new InvalidOperationException($"O tipo {entityType.Name} não possui a propriedade {TenantIdentifierName}.");
-            var existingEntity = await _appDbContext.Set<TEntity>()
-             .FirstOrDefaultAsync(e => EF.Property<int>(e, TenantIdentifierName) == tenantId && EF.Property<long>(e, IdIdentifierName) == id);
 
-            return existingEntity == null
-                ? throw new KeyNotFoundException($"Entidade com {IdIdentifierName}: {id} e {TenantIdentifierName}: {tenantId} não encontrada.")
-                : existingEntity;
+            if (IsTenantValid(tenantId))
+            {
+                if (entityType.GetProperty(TenantIdentifierName) is null)
+                    throw new InvalidOperationException($"O tipo {entityType.Name} não possui a propriedade {TenantIdentifierName}.");
+
+                var entity = await _appDbContext.Set<TEntity>()
+                    .FirstOrDefaultAsync(e =>
+                        EF.Property<int>(e, TenantIdentifierName) == tenantId &&
+                        EF.Property<long>(e, IdIdentifierName) == id);
+
+                return entity ?? throw new KeyNotFoundException(
+                    $"Entidade com {IdIdentifierName}: {id} e {TenantIdentifierName}: {tenantId} não encontrada.");
+            }
+            else
+            {
+                var entity = await _appDbContext.Set<TEntity>()
+                    .FirstOrDefaultAsync(e => EF.Property<long>(e, IdIdentifierName) == id);
+
+                return entity ?? throw new KeyNotFoundException(
+                    $"Entidade com {IdIdentifierName}: {id} e {TenantIdentifierName}: {tenantId} não encontrada.");
+            }
         }
 
+        /// <summary>
+        /// Recupera o ID da entidade passada como parâmetro.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public object GetEntityId(TEntity entity)
         {
             var idProperty = entity.GetType().GetProperty(IdIdentifierName);
@@ -237,17 +278,18 @@ namespace CSCore.Ifs.Repository
             await command.ExecuteNonQueryAsync();
         }
 
+        [Obsolete]
         protected virtual ICSInclude<TEntity>[] GetIncludesParaAplicar()
         {
             throw new NotImplementedException("Implementação do GetInclude deve ser feita na classe filha");
         }
 
-
+        [Obsolete]
         protected virtual ICSFilter<TEntity>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)
         {
             throw new NotImplementedException("Implementação do GetOutrosFiltros deve ser feita na classe filha");
         }
-
+        [Obsolete]
         protected virtual ICSFilter<TEntity>[] GetFiltrosParaAplicar<TFiltros>(int TenantId, TFiltros Filtros)
         {
             var filtrosPersonalizados = GetOutrosFiltros(TenantId, Filtros) ?? [];
@@ -257,6 +299,7 @@ namespace CSCore.Ifs.Repository
                 .ToArray();
         }
 
+        [Obsolete]
         protected IQueryable<TEntity> AplicaIncludes(IQueryable<TEntity> query, params ICSInclude<TEntity>[] InIncludes)
         {
             foreach (var include in InIncludes)
@@ -265,7 +308,7 @@ namespace CSCore.Ifs.Repository
             }
             return query;
         }
-
+        [Obsolete]
         protected IQueryable<TEntity> AplicaFiltro(IQueryable<TEntity> query, params ICSFilter<TEntity>[] InFiltros)
         {
             foreach (var filtro in InFiltros)
