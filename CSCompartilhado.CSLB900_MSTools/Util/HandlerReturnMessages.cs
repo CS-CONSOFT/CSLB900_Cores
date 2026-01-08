@@ -25,5 +25,7 @@ namespace CSLB900.MSTools.Util
         public const string LABEL_NOT_FOUND = "Label não encontrada";
         public const string ENTITIES_CREATED_MESSAGE = "Entidades foram geradas com sucesso!";
         public const string ENTITIES_DELETED_MESSAGE = "Entidades foram deletadas com sucesso!";
+
+        public const string ENTITY_FOUND_MESSAGE = "Entidade encontrada!";
     }
 }

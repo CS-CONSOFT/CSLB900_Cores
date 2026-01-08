@@ -16,5 +16,5 @@ public partial class CSICP_DD903Anfe
 
     public string? Parametro { get; set; }
 
-    public virtual ICollection<CSICP_DD000> OsusrTeiCsicpDd000s { get; set; } = new List<CSICP_DD000>();
+    //public virtual ICollection<CSICP_DD000> OsusrTeiCsicpDd000s { get; set; } = new List<CSICP_DD000>();
 }
