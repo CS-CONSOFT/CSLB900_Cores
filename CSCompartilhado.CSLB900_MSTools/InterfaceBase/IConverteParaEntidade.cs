@@ -6,4 +6,11 @@
     {
         TEntity ToEntity(int tenant, string? id);
     }
+
+    public interface IConverteParaEntidadeV2<TEntity, TDto>
+       where TEntity : class
+        where TDto : class
+    {
+        static abstract TDto FromEntity(TEntity entity);
+    }
 }

@@ -1,5 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_RR;
-using CSCore.Domain.DELETAR;
+using CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

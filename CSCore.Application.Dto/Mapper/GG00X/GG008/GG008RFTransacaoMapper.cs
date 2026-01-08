@@ -1,6 +1,6 @@
 ﻿using CSCore.Application.Dto.Dtos.Basico_BB.BB00X.BB02X.BB027;
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG008.GG008RFTransacao;
-using CSCore.Domain.DELETAR;
+using CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 using System;
 using System.Collections.Generic;
 using System.Linq;

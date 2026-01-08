@@ -1,5 +1,5 @@
 using CSCore.Domain.CS_Models.CSICP_GG;
-using CSCore.Domain.DELETAR;
+using CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 using CSCore.Domain.Interfaces.V2;
 using CSLB900.MSTools.InterfaceBase;
 
