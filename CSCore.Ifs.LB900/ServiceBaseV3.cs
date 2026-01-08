@@ -8,8 +8,8 @@ namespace CSCore.Ifs.LB900
     public abstract class ServiceBaseV3<TEntity, TDtoGetList, TDtoGetById, TDtoCreate, TDtoUpdate, TUnitOfWork>
         : IServiceBaseV3<TDtoGetList, TDtoGetById, TDtoCreate, TDtoUpdate>
         where TEntity : class
-        where TDtoGetList : class, IConverteParaEntidadeV2<TEntity, TDtoGetList>
-        where TDtoGetById : class, IConverteParaEntidadeV2<TEntity, TDtoGetById>
+        where TDtoGetList : class, IConverteParaDTO<TEntity, TDtoGetList>
+        where TDtoGetById : class, IConverteParaDTO<TEntity, TDtoGetById>
         where TDtoCreate : class, IConverteParaEntidade<TEntity>
         where TDtoUpdate : class, IConverteParaEntidade<TEntity>
         where TUnitOfWork : IUnitOfWorkBase
@@ -22,7 +22,10 @@ namespace CSCore.Ifs.LB900
         }
 
         protected abstract IRepositorioBaseV2ComGets<TEntity> GetRepository();
-        protected abstract ICS_GenerateId GetIdGenerator();
+        protected virtual ICS_GenerateId GetIdGenerator()
+        {
+            return new SCS_GenerateId();
+        }
 
         public virtual async Task<int> BulkCreateAsync(List<TDtoCreate> dtoList)
         {

@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Dtos\Financeiro_FF\FF1XX\NovaPasta\" />
+    <Folder Include="Dtos\Sistema\ABAC\SY045\" />
   </ItemGroup>
 
 </Project>

@@ -3,7 +3,7 @@ using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY043
 {
-    public record Dto_GetListSy043 : IConverteParaEntidadeV2<ABAC_CSSPH_FILTERSRESOURCE, Dto_GetListSy043>
+    public record Dto_GetListSy043 : IConverteParaDTO<ABAC_CSSPH_FILTERSRESOURCE, Dto_GetListSy043>
     {
         public long Id { get; init; }
         public string? Resourceid { get; init; }

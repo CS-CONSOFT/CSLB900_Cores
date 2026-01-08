@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 
 namespace CSCore.Ifs.Compartilhado
 {
-   
     public class RepositoryBaseV2ComGets<TEntity> : RepositorioBaseImplV2<TEntity>, IRepositorioBaseV2ComGets<TEntity> where TEntity : class
     {
         private readonly AppDbContext _appDbContext;
@@ -23,24 +22,33 @@ namespace CSCore.Ifs.Compartilhado
         {
             var query = this._appDbContext.Set<TEntity>().AsQueryable();
             var parameter = Expression.Parameter(typeof(TEntity), "e"); // representa o "e" -> e.AlgumaCoisa
-            Expression comparison = null!;
+            Expression? comparison = null;
+
             foreach (var item in filtros)
             {
-                var property = Expression.Property(parameter, item.NomePropriedade); 
+                var property = Expression.Property(parameter, item.NomePropriedade);
                 var propertyType = property.Type;
                 var constantValue = Convert.ChangeType(item.ValorPropriedade, Nullable.GetUnderlyingType(propertyType) ?? propertyType);
                 var constant = Expression.Constant(constantValue, propertyType);
-                comparison = item.TipoDeIgualdade switch
+
+                Expression currentComparison = item.TipoDeIgualdade switch
                 {
                     TipoFiltroDinamico.Igual => Expression.Equal(property, constant),
                     TipoFiltroDinamico.Diferente => Expression.NotEqual(property, constant),
                     TipoFiltroDinamico.Maior => Expression.GreaterThan(property, constant),
-                    TipoFiltroDinamico.Menos => Expression.LessThan(property, constant),
+                    TipoFiltroDinamico.Menor => Expression.LessThan(property, constant),
                     _ => throw new NotSupportedException($"Tipo de filtro {item.TipoDeIgualdade} não suportado.")
                 };
+
+                comparison = comparison == null ? currentComparison : Expression.AndAlso(comparison, currentComparison);
             }
-            var lambda = Expression.Lambda<Func<TEntity, bool>>(comparison, parameter); // representa a expressão completa e => e.NomePropriedade == valor
-            query = query.Where(lambda);
+
+            if (comparison != null)
+            {
+                var lambda = Expression.Lambda<Func<TEntity, bool>>(comparison, parameter); // representa a expressão completa e => e.NomePropriedade == valor
+                query = query.Where(lambda);
+            }
+            
             return await query.ToListAsync();
         }
 

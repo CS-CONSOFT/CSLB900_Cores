@@ -6,11 +6,9 @@ namespace CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 //Resource
 public partial class ABAC_CSSPH_RESOURCE
 {
-    public int? TenantId { get; set; }
-
     public string Id { get; set; } = null!;
 
-    public string? Name { get; set; }
+    public string? Name { get; set; } = string.Empty!;
 
     public string? Displayname { get; set; }
 

@@ -3,9 +3,8 @@ using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY036
 {
-    public record Dto_GetSy036 : IConverteParaEntidadeV2<ABAC_CSSPH_RESOURCEACTIONS, Dto_GetSy036>
+    public record Dto_GetSy036 : IConverteParaDTO<ABAC_CSSPH_RESOURCEACTIONS, Dto_GetSy036>
     {
-        public int? TenantId { get; init; }
         public string Id { get; init; } = null!;
         public string? Resourceid { get; init; }
         public string? Actionname { get; init; }
@@ -14,7 +13,6 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY036
         {
             return new Dto_GetSy036
             {
-                TenantId = entity.TenantId,
                 Id = entity.Id,
                 Resourceid = entity.Resourceid,
                 Actionname = entity.Actionname
