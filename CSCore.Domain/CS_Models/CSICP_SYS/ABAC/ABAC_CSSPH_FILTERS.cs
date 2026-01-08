@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 
-public partial class OsusrE9aCsicpSy040
+public partial class ABAC_CSSPH_FILTERS
 {
     public string Id { get; set; } = null!;
 

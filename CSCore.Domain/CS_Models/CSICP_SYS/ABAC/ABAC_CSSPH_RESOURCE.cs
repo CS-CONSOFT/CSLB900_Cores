@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 
 //Resource
-public partial class OsusrE9aCsicpSy035
+public partial class ABAC_CSSPH_RESOURCE
 {
     public int? TenantId { get; set; }
 

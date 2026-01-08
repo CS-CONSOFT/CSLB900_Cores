@@ -3,7 +3,7 @@ using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY040
 {
-    public record Dto_GetListSy040 : IConverteParaEntidadeV2<OsusrE9aCsicpSy040, Dto_GetListSy040>
+    public record Dto_GetListSy040 : IConverteParaEntidadeV2<ABAC_CSSPH_FILTERS, Dto_GetListSy040>
     {
         public string Id { get; init; } = null!;
         public string? Fieldname { get; init; }
@@ -13,7 +13,7 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY040
         public string? Optionssource { get; init; }
         public bool? Isactive { get; init; }
 
-        public static Dto_GetListSy040 FromEntity(OsusrE9aCsicpSy040 entity)
+        public static Dto_GetListSy040 FromEntity(ABAC_CSSPH_FILTERS entity)
         {
             return new Dto_GetListSy040
             {

@@ -3,14 +3,14 @@ using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY036
 {
-    public record Dto_UpdateSy036 : IConverteParaEntidade<OsusrE9aCsicpSy036>
+    public record Dto_UpdateSy036 : IConverteParaEntidade<ABAC_CSSPH_RESOURCEACTIONS>
     {
         public string? Resourceid { get; init; }
         public string? Actionname { get; init; }
 
-        public OsusrE9aCsicpSy036 ToEntity(int tenant, string? id)
+        public ABAC_CSSPH_RESOURCEACTIONS ToEntity(int tenant, string? id)
         {
-            return new OsusrE9aCsicpSy036
+            return new ABAC_CSSPH_RESOURCEACTIONS
             {
                 TenantId = tenant,
                 Id = id ?? string.Empty,

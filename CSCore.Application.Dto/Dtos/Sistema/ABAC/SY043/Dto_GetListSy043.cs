@@ -3,7 +3,7 @@ using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY043
 {
-    public record Dto_GetListSy043 : IConverteParaEntidadeV2<OsusrE9aCsicpSy043, Dto_GetListSy043>
+    public record Dto_GetListSy043 : IConverteParaEntidadeV2<ABAC_CSSPH_FILTERSRESOURCE, Dto_GetListSy043>
     {
         public long Id { get; init; }
         public string? Resourceid { get; init; }
@@ -11,7 +11,7 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY043
         public int? Orderindex { get; init; }
         public bool? Isrequired { get; init; }
 
-        public static Dto_GetListSy043 FromEntity(OsusrE9aCsicpSy043 entity)
+        public static Dto_GetListSy043 FromEntity(ABAC_CSSPH_FILTERSRESOURCE entity)
         {
             return new Dto_GetListSy043
             {
