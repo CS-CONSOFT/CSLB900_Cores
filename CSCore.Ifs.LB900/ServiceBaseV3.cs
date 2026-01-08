@@ -8,8 +8,8 @@ namespace CSCore.Ifs.LB900
     public abstract class ServiceBaseV3<TEntity, TDtoGetList, TDtoGetById, TDtoCreate, TDtoUpdate, TUnitOfWork>
         : IServiceBaseV3<TDtoGetList, TDtoGetById, TDtoCreate, TDtoUpdate>
         where TEntity : class
-        where TDtoGetList : class, IConverteParaEntidadeV2<TEntity, TDtoGetList>
-        where TDtoGetById : class, IConverteParaEntidadeV2<TEntity, TDtoGetById>
+        where TDtoGetList : class, IConverteParaDTO<TEntity, TDtoGetList>
+        where TDtoGetById : class, IConverteParaDTO<TEntity, TDtoGetById>
         where TDtoCreate : class, IConverteParaEntidade<TEntity>
         where TDtoUpdate : class, IConverteParaEntidade<TEntity>
         where TUnitOfWork : IUnitOfWorkBase
