@@ -7,15 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CSCore.Ifs.GG.Repository.DD
 {
-    public class DD810RepositoryImpl : RepositorioBaseImpl<CSICP_DD810>, IDD810Repository
+    public class DD810RepositoryImpl(AppDbContext appDbContext) : IDD810Repository
     {
-        private readonly AppDbContext _appDbContext;
-
-        public DD810RepositoryImpl(AppDbContext appDbContext)
-            : base(appDbContext, IdIdentifierName: "Dd810Id", TenantIdentifierName: "TenantId")
-        {
-            _appDbContext = appDbContext;
-        }
+        private readonly AppDbContext _appDbContext = appDbContext;
 
         public async Task<CSICP_DD810?> GetByIdAsync(string InDD810ID, int InTenantID)
         {
@@ -52,6 +46,27 @@ namespace CSCore.Ifs.GG.Repository.DD
                 .FirstOrDefaultAsync();
 
             return cfop?.Codigo;
+        }
+
+        public async Task<CSICP_DD810> CreateAsync(CSICP_DD810 entity)
+        {
+            _appDbContext.Add(entity);
+            await _appDbContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<CSICP_DD810> UpdateAsync(CSICP_DD810 entity)
+        {
+            _appDbContext.Update(entity);
+            await _appDbContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<CSICP_DD810> RemoveAsync(CSICP_DD810 entity)
+        {
+            _appDbContext.Remove(entity);
+            await _appDbContext.SaveChangesAsync();
+            return entity;
         }
     }
 }

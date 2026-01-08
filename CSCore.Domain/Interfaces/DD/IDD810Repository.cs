@@ -3,7 +3,7 @@ using CSCore.Domain.Interfaces.V2;
 
 namespace CSCore.Domain.Interfaces.DD
 {
-    public interface IDD810Repository : IRepositorioBase<CSICP_DD810>
+    public interface IDD810Repository : IBaseCrud<CSICP_DD810>
     {
         Task<CSICP_DD810?> GetByIdAsync(string InDD810ID, int InTenantID);
         Task<(List<CSICP_DD810>, int)> GetListAsync(int InTenantID, int InPageNumber, int InPageSize);
