@@ -1,11 +1,13 @@
 ﻿using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
 using CSCore.Ifs.Repository;
+using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace CSCore.Ifs.Compartilhado
 {
+   
     public class RepositoryBaseV2ComGets<TEntity> : RepositorioBaseImplV2<TEntity>, IRepositorioBaseV2ComGets<TEntity> where TEntity : class
     {
         private readonly AppDbContext _appDbContext;
@@ -36,7 +38,7 @@ namespace CSCore.Ifs.Compartilhado
                     TipoFiltroDinamico.Igual => Expression.Equal(property, constant),
                     TipoFiltroDinamico.Diferente => Expression.NotEqual(property, constant),
                     TipoFiltroDinamico.Maior => Expression.GreaterThan(property, constant),
-                    TipoFiltroDinamico.Menor => Expression.LessThan(property, constant),
+                    TipoFiltroDinamico.Menos => Expression.LessThan(property, constant),
                     _ => throw new NotSupportedException($"Tipo de filtro {item.TipoDeIgualdade} não suportado.")
                 };
 
@@ -52,6 +54,49 @@ namespace CSCore.Ifs.Compartilhado
             return await query.ToListAsync();
         }
 
+        public async Task<(IEnumerable<TEntity> Data, int TotalCount)> GetAllAsyncComPaginacao(
+            IEnumerable<FiltrosDinamicos> filtros,
+            int pageNumber,
+            int pageSize)
+        {
+            var query = this._appDbContext.Set<TEntity>().AsNoTracking().AsQueryable();
+            var parameter = Expression.Parameter(typeof(TEntity), "e");
+            Expression? comparison = null;
+
+            foreach (var item in filtros)
+            {
+                var property = Expression.Property(parameter, item.NomePropriedade);
+                var propertyType = property.Type;
+                var constantValue = Convert.ChangeType(item.ValorPropriedade, Nullable.GetUnderlyingType(propertyType) ?? propertyType);
+                var constant = Expression.Constant(constantValue, propertyType);
+
+                Expression currentComparison = item.TipoDeIgualdade switch
+                {
+                    TipoFiltroDinamico.Igual => Expression.Equal(property, constant),
+                    TipoFiltroDinamico.Diferente => Expression.NotEqual(property, constant),
+                    TipoFiltroDinamico.Maior => Expression.GreaterThan(property, constant),
+                    TipoFiltroDinamico.Menos => Expression.LessThan(property, constant),
+                    _ => throw new NotSupportedException($"Tipo de filtro {item.TipoDeIgualdade} não suportado.")
+                };
+
+                comparison = comparison == null ? currentComparison : Expression.AndAlso(comparison, currentComparison);
+            }
+
+            if (comparison != null)
+            {
+                var lambda = Expression.Lambda<Func<TEntity, bool>>(comparison, parameter);
+                query = query.Where(lambda);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var data = await query
+                .PaginacaoNoBanco(pageNumber, pageSize)
+                .ToListAsync();
+
+            return (data, totalCount);
+        }
+
         public async Task<TEntity?> GetByIdAsync(string id, int tenant)
         {
             return await FindByIdAndTenantAsync(longId: 0, id, tenant);
@@ -61,9 +106,6 @@ namespace CSCore.Ifs.Compartilhado
         {
             return await FindByIdAndTenantAsync(id, string.Empty, tenant);
         }
-
-
-
 
         /// <summary>
         /// Recupera assincronamente uma entidade pelo seu identificador e valor de tenant.

@@ -20,7 +20,7 @@ namespace CSCore.Ifs.GG.Repository.DD
                 .Where(e => e.TenantId == InTenantID && e.Dd810Id == InDD810ID)
                 .FirstOrDefaultAsync();
         }
-
+        
         public async Task<(List<CSICP_DD810>, int)> GetListAsync(int InTenantID, int InPageNumber, int InPageSize)
         {
             IQueryable<CSICP_DD810> query = _appDbContext.OsusrTeiCsicpDd810s
@@ -54,7 +54,7 @@ namespace CSCore.Ifs.GG.Repository.DD
             await _appDbContext.SaveChangesAsync();
             return entity;
         }
-
+        
         public async Task<CSICP_DD810> UpdateAsync(CSICP_DD810 entity)
         {
             _appDbContext.Update(entity);

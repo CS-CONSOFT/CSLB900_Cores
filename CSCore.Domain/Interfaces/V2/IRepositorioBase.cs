@@ -23,7 +23,7 @@
             string? jsonQuery = null,
             string? jsonBody = null,
             bool isExibiu = false);
-            }
+    }
 
     public interface IRepositorioBaseV2<TEntity>
     where TEntity : class
@@ -45,14 +45,14 @@
         object GetEntityId(TEntity entity);
 
         Task SalvarLogAsync(
-    int tenantId,
-    string nomeUsuario,
-    string severidade,
-    string mensagem,
-    string? jsonHeader = null,
-    string? jsonQuery = null,
-    string? jsonBody = null,
-    bool isExibiu = false);
+            int tenantId,
+            string nomeUsuario,
+            string severidade,
+            string mensagem,
+            string? jsonHeader = null,
+            string? jsonQuery = null,
+            string? jsonBody = null,
+            bool isExibiu = false);
 
 
         /// <summary>
@@ -70,8 +70,9 @@
         Igual = 1,
         Diferente = 2,
         Maior = 3,
-        Menor = 4
+        Menos = 4
     }
+
     public record FiltrosDinamicos
     {
         /// <summary>
@@ -83,11 +84,11 @@
         /// Valor dessa propriedade para comparação!
         /// </summary>
         public object? ValorPropriedade { get; set; } = null;
+
         /// <summary>
         /// Igualdade a ser utilizada na comparação!
         /// </summary>
         public TipoFiltroDinamico TipoDeIgualdade { get; set; } = TipoFiltroDinamico.Igual;
-
     }
 
     /// <summary>
@@ -102,5 +103,17 @@
         Task<TEntity?> GetByIdAsync(string id, int tenant);
         Task<TEntity?> GetByIdAsync(long id, int tenant);
         Task<IEnumerable<TEntity>> GetAllAsync(IEnumerable<FiltrosDinamicos> filtros);
+        
+        /// <summary>
+        /// Recupera todas as entidades com paginação aplicando filtros dinâmicos.
+        /// </summary>
+        /// <param name="filtros">Lista de filtros a serem aplicados na consulta</param>
+        /// <param name="pageNumber">Número da página (base 1)</param>
+        /// <param name="pageSize">Quantidade de registros por página</param>
+        /// <returns>Tupla contendo a lista de entidades e o total de registros encontrados</returns>
+        Task<(IEnumerable<TEntity> Data, int TotalCount)> GetAllAsyncComPaginacao(
+            IEnumerable<FiltrosDinamicos> filtros, 
+            int pageNumber, 
+            int pageSize);
     }
 }
