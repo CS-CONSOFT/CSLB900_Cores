@@ -1,6 +1,7 @@
 ﻿using CSCore.Domain.Interfaces.V2;
 using CSCore.Ex;
 using CSCore.Ifs.LB900.ABAC;
+using CSLB900.MSTools;
 using CSLB900.MSTools.GenerateId;
 using CSLB900.MSTools.InterfaceBase;
 
@@ -57,26 +58,29 @@ namespace CSCore.Ifs.LB900
             return lista.Select(TDtoGetList.FromEntity);
         }
 
-        public virtual async Task<(IEnumerable<TDtoGetList> Data, DtoApiResponsePaginacao Paginacao)> GetAllAsyncComPaginacao(
+        public virtual async Task<PaginationModel<TDtoGetList>> GetAllAsyncComPaginacao(
             IEnumerable<FiltrosDinamicos> filtros,
             int pageNumber,
             int pageSize)
         {
             var (data, totalCount) = await GetRepository().GetAllAsyncComPaginacao(filtros, pageNumber, pageSize);
-            
-            var lista = data.Select(TDtoGetList.FromEntity);
-            
+
+            var lista = data.Select(TDtoGetList.FromEntity).ToList();
+
             var totalPaginas = (int)Math.Ceiling(totalCount / (double)pageSize);
-            
-            var paginacao = new DtoApiResponsePaginacao
+
+            var result = new PaginationModel<TDtoGetList>
             {
-                PaginaAtual = pageNumber,
-                TamanhoPagina = pageSize,
-                TotalRegistros = totalCount,
-                TotalPaginas = totalPaginas
+                CurrentPage = pageNumber,
+                TotalPage = totalPaginas,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                HasPrevius = pageNumber > 1,
+                HasNext = pageNumber < totalPaginas,
+                List = lista
             };
 
-            return (lista, paginacao);
+            return result;
         }
 
         public virtual async Task<TDtoGetById?> GetByIdAsync(string id, int tenant)
