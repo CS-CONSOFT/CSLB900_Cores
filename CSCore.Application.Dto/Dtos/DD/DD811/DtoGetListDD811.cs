@@ -1,5 +1,6 @@
-using CSLB900.MSTools.InterfaceBase;
+using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_DD;
+using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.DD.DD811
 {
@@ -15,6 +16,16 @@ namespace CSCore.Application.Dto.Dtos.DD.DD811
         public string? Dd811Anotacao { get; init; }
         public string? Dd811Hashid { get; init; }
 
+        public Osusr66cSpedInCfop? NavSpedInCFOP_DD811 { get; init; }
+
+        public CSICP_AA032Csticm? NavAA032Csticm_DD811 { get; init; }
+
+        public CSICP_AA033Cstipi? NavAA033Cstpis_DD811 { get; init; }
+
+        public CSICP_AA034Cstpi? NavAA034Cstcofins_DD811 { get; init; }
+
+        public CSICP_AA035Cstcof? NavAA035Cstipi_DD811 { get; init; }
+
         public static DtoGetListDD811 FromEntity(CSICP_DD811 entity)
         {
             return new DtoGetListDD811
@@ -27,7 +38,14 @@ namespace CSCore.Application.Dto.Dtos.DD.DD811
                 Dd811CstCofinsId = entity.Dd811CstCofinsId,
                 Dd811CstIpiId = entity.Dd811CstIpiId,
                 Dd811Anotacao = entity.Dd811Anotacao,
-                Dd811Hashid = entity.Dd811Hashid
+                Dd811Hashid = entity.Dd811Hashid,
+
+                // Mapeando as propriedades de navegação
+                NavSpedInCFOP_DD811 = entity.NavSpedInCFOP_DD811,
+                NavAA032Csticm_DD811 = entity.NavAA032Csticm_DD811,
+                NavAA033Cstpis_DD811 = entity.NavAA033Cstpis_DD811,
+                NavAA034Cstcofins_DD811 = entity.NavAA034Cstcofins_DD811,
+                NavAA035Cstipi_DD811 = entity.NavAA035Cstipi_DD811
             };
         }
     }

@@ -5,7 +5,7 @@ using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 
-namespace CSCore.Ifs.GG.Repository.DD
+namespace CSCore.Ifs.DD.Repository.DD
 {
     public class DD810RepositoryImpl(AppDbContext appDbContext) : IDD810Repository
     {

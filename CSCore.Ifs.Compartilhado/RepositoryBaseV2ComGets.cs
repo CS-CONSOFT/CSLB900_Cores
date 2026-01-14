@@ -54,12 +54,34 @@ namespace CSCore.Ifs.Compartilhado
             return await query.ToListAsync();
         }
 
-        public async Task<(IEnumerable<TEntity> Data, int TotalCount)> GetAllAsyncComPaginacao(
-            IEnumerable<FiltrosDinamicos> filtros,
-            int pageNumber,
-            int pageSize)
+        public virtual async Task<(IEnumerable<TEntity> Data, int TotalCount)> GetAllAsyncComPaginacao(
+           IEnumerable<FiltrosDinamicos> filtros,
+           int pageNumber,
+           int pageSize)
         {
             var query = this._appDbContext.Set<TEntity>().AsNoTracking().AsQueryable();
+            query = AplicaFiltrosDinamicos(query, filtros);
+
+            var totalCount = await query.CountAsync();
+
+            var data = await query
+                .PaginacaoNoBanco(pageNumber, pageSize)
+                .ToListAsync();
+
+            return (data, totalCount);
+        }
+
+        /// <summary>
+        /// Aplica filtros dinâmicos em uma query existente.
+        /// </summary>
+        /// <param name="query">Query base para aplicar os filtros</param>
+        /// <param name="filtros">Lista de filtros dinâmicos</param>
+        /// <returns>Query com os filtros aplicados</returns>
+        protected IQueryable<TEntity> AplicaFiltrosDinamicos(IQueryable<TEntity> query, IEnumerable<FiltrosDinamicos> filtros)
+        {
+            if (!filtros.Any())
+                return query;
+
             var parameter = Expression.Parameter(typeof(TEntity), "e");
             Expression? comparison = null;
 
@@ -88,21 +110,15 @@ namespace CSCore.Ifs.Compartilhado
                 query = query.Where(lambda);
             }
 
-            var totalCount = await query.CountAsync();
-
-            var data = await query
-                .PaginacaoNoBanco(pageNumber, pageSize)
-                .ToListAsync();
-
-            return (data, totalCount);
+            return query;
         }
 
-        public async Task<TEntity?> GetByIdAsync(string id, int tenant)
+        public virtual async Task<TEntity?> GetByIdAsync(string id, int tenant)
         {
             return await FindByIdAndTenantAsync(longId: 0, id, tenant);
         }
 
-        public async Task<TEntity?> GetByIdAsync(long id, int tenant)
+        public virtual async Task<TEntity?> GetByIdAsync(long id, int tenant)
         {
             return await FindByIdAndTenantAsync(id, string.Empty, tenant);
         }

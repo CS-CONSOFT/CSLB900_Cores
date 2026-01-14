@@ -6,7 +6,7 @@ using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 
-namespace CSCore.Ifs.GG.Repository.DD;
+namespace CSCore.Ifs.DD.Repository.DD;
 
 public class DD000WRepositoryImpl : RepositorioBaseImpl<CSICP_DD000W>, IDD000WRepository
 {
