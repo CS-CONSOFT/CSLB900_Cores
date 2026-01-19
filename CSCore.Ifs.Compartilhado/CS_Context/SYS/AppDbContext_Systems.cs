@@ -1,8 +1,9 @@
 ﻿
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_SYS;
-using CSCore.Domain.CS_Models.CSICP_SYS.Depreciadas_Tabelas;
 using CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
+using CSCore.Domain.CS_Models.CSICP_SYS.Depreciadas_Tabelas;
+using CSCore.Domain.DELETAR;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -117,6 +118,9 @@ namespace CSCore.Ifs.CS_Context
 
         public DbSet<ABAC_CSSPH_FILTERSRESOURCE> ABAC_CSSPH_FILTERSRESOURCE { get; set; }
 
+        public virtual DbSet<ABAC_CSSPH_ABACRESOURCEATTRIBUTES> ABAC_CSSPH_ABACRESOURCEATTRIBUTES { get; set; }
+
+        public virtual DbSet<ABAC_CSSPH_ABACUSERATTRIBUTES> ABAC_CSSPH_ABACUSERATTRIBUTES { get; set; }
 
         partial void OnModelCreating_CSICP_Systems(ModelBuilder modelBuilder)
         {
@@ -263,9 +267,9 @@ namespace CSCore.Ifs.CS_Context
             });
             modelBuilder.Entity<ABAC_CSSPH_RESOURCE>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_RESOURCE");
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSSPH_RESOURCE");
 
-                entity.ToTable("OSUSR_E9A_CSICP_SY035");
+                entity.ToTable("OSUSR_E9A_CSSPH_RESOURCE");
 
                 entity.HasIndex(e => e.Displayname, "OSIDX_OSUSR_E9A_CSICP_SY035_11DISPLAYNAME");
 
@@ -297,16 +301,16 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Resourcetype)
                     .HasMaxLength(50)
                     .HasColumnName("RESOURCETYPE");
-                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+             
 
 
             });
 
             modelBuilder.Entity<ABAC_CSSPH_RESOURCEACTIONS>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_RESOURCEACTIONS");
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSSPH_RESOURCEACTIONS");
 
-                entity.ToTable("OSUSR_E9A_CSICP_SY036");
+                entity.ToTable("OSUSR_E9A_CSSPH_RESOURCEACTIONS");
 
                 entity.HasIndex(e => e.Resourceid, "OSIDX_OSUSR_E9A_CSICP_SY036_10RESOURCEID");
 
@@ -321,16 +325,15 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Resourceid)
                     .HasMaxLength(36)
                     .HasColumnName("RESOURCEID");
-                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-
+             
 
             });
 
             modelBuilder.Entity<ABAC_CSSPH_RESOURCEATRIB>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_RESOURCEATRIB");
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSSPH_RESOURCEATRIB");
 
-                entity.ToTable("OSUSR_E9A_CSICP_SY037");
+                entity.ToTable("OSUSR_E9A_CSSPH_RESOURCEATRIB");
 
                 entity.HasIndex(e => e.Resourceid, "OSIDX_OSUSR_E9A_CSICP_SY037_10RESOURCEID");
 
@@ -356,9 +359,9 @@ namespace CSCore.Ifs.CS_Context
 
             modelBuilder.Entity<ABAC_CSSPH_FILTERS>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_FILTERS");
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSSPH_FILTERS");
 
-                entity.ToTable("OSUSR_E9A_CSICP_SY040");
+                entity.ToTable("OSUSR_E9A_CSSPH_FILTERS");
 
                 entity.HasIndex(e => e.Displayname, "OSIDX_OSUSR_E9A_CSICP_SY040_11DISPLAYNAME");
 
@@ -387,9 +390,9 @@ namespace CSCore.Ifs.CS_Context
 
             modelBuilder.Entity<ABAC_CSSPH_OPERADORES>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_OPERADORES");
+                entity.HasKey(e => e.Id).HasName("OSPRK_E9A_CSSPH_OPERADORES");
 
-                entity.ToTable("OSUSR_E9A_CSICP_SY041");
+                entity.ToTable("OSUSR_E9A_CSSPH_OPERADORES");
 
                 entity.HasIndex(e => e.Operator, "OSIDX_OSUSR_E9A_CSICP_SY041_8OPERATOR");
 
@@ -406,9 +409,9 @@ namespace CSCore.Ifs.CS_Context
 
             modelBuilder.Entity<ABAC_CSSPH_FILTERSOPERADORES>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_FILTERSOPERADORES");
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSSPH_FILTERSOPERADORES");
 
-                entity.ToTable("OSUSR_E9A_CSICP_SY042");
+                entity.ToTable("OSUSR_E9A_CSSPH_FILTERSOPERADORES");
 
                 entity.HasIndex(e => e.Operatorid, "OSIDX_OSUSR_E9A_CSICP_SY042_10OPERATORID");
 
@@ -428,9 +431,9 @@ namespace CSCore.Ifs.CS_Context
 
             modelBuilder.Entity<ABAC_CSSPH_FILTERSRESOURCE>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_FILTERSRESOURCE");
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSSPH_FILTERSRESOURCE");
 
-                entity.ToTable("OSUSR_E9A_CSICP_SY043");
+                entity.ToTable("OSUSR_E9A_CSSPH_FILTERSRESOURCE");
 
                 entity.HasIndex(e => e.Resourceid, "OSIDX_OSUSR_E9A_CSICP_SY043_10RESOURCEID");
 
@@ -448,6 +451,67 @@ namespace CSCore.Ifs.CS_Context
 
             });
 
+            modelBuilder.Entity<ABAC_CSSPH_ABACRESOURCEATTRIBUTES>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSSPH_ABACRESOURCEATTRIBUTES");
+
+                entity.ToTable("OSUSR_E9A_CSSPH_ABACRESOURCEATTRIBUTES");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID");
+                entity.Property(e => e.Attributename)
+                    .HasMaxLength(100)
+                    .HasColumnName("ATTRIBUTENAME");
+                entity.Property(e => e.Createdat)
+                    .HasColumnType("datetime")
+                    .HasColumnName("CREATEDAT");
+                entity.Property(e => e.Datatype)
+                    .HasMaxLength(50)
+                    .HasColumnName("DATATYPE");
+                entity.Property(e => e.Description)
+                    .HasMaxLength(255)
+                    .HasColumnName("DESCRIPTION");
+                entity.Property(e => e.Enumvalues)
+                    .HasMaxLength(500)
+                    .HasColumnName("ENUMVALUES");
+                entity.Property(e => e.Isactive).HasColumnName("ISACTIVE");
+                entity.Property(e => e.Iscore).HasColumnName("ISCORE");
+                entity.Property(e => e.Label)
+                    .HasMaxLength(100)
+                    .HasColumnName("LABEL");
+            });
+
+            modelBuilder.Entity<ABAC_CSSPH_ABACUSERATTRIBUTES>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSSPH_ABACUSERATTRIBUTES");
+
+                entity.ToTable("OSUSR_E9A_CSSPH_ABACUSERATTRIBUTES");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID");
+                entity.Property(e => e.Attributename)
+                    .HasMaxLength(100)
+                    .HasColumnName("ATTRIBUTENAME");
+                entity.Property(e => e.Createdat)
+                    .HasColumnType("datetime")
+                    .HasColumnName("CREATEDAT");
+                entity.Property(e => e.Datatype)
+                    .HasMaxLength(50)
+                    .HasColumnName("DATATYPE");
+                entity.Property(e => e.Description)
+                    .HasMaxLength(255)
+                    .HasColumnName("DESCRIPTION");
+                entity.Property(e => e.Enumvalues)
+                    .HasMaxLength(500)
+                    .HasColumnName("ENUMVALUES");
+                entity.Property(e => e.Isactive).HasColumnName("ISACTIVE");
+                entity.Property(e => e.Iscore).HasColumnName("ISCORE");
+                entity.Property(e => e.Label)
+                    .HasMaxLength(100)
+                    .HasColumnName("LABEL");
+            });
 
 
             modelBuilder.Entity<CSICP_SY997_LOGS>(entity =>

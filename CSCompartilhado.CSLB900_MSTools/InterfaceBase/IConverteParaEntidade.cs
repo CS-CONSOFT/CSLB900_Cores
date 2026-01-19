@@ -7,7 +7,7 @@
         TEntity ToEntity(int tenant, string? id);
     }
 
-    public interface IConverteParaEntidadeV2<TEntity, TDto>
+    public interface IConverteParaDTO<TEntity, TDto>
        where TEntity : class
         where TDto : class
     {

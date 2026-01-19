@@ -8,6 +8,6 @@ namespace CSLB900.MSTools.Util
 {
     public static class Constantes
     {
-        public const int ENTIDADE_SEM_TENANT = -1;
+        public const int ENTIDADE_SEM_TENANT = -111;
     }
 }

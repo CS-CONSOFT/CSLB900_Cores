@@ -17,8 +17,7 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY035
         {
             return new ABAC_CSSPH_RESOURCE
             {
-                TenantId = tenant,
-                Id = id ?? string.Empty,
+               
                 Name = this.Name,
                 Displayname = this.Displayname,
                 Resourcetype = this.Resourcetype,

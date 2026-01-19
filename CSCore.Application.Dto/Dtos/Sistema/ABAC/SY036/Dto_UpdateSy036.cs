@@ -12,7 +12,7 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY036
         {
             return new ABAC_CSSPH_RESOURCEACTIONS
             {
-                TenantId = tenant,
+         
                 Id = id ?? string.Empty,
                 Resourceid = this.Resourceid,
                 Actionname = this.Actionname

@@ -1,4 +1,5 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
+using CSCore.Domain.DELETAR;
 using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.GenerateId;
@@ -21,6 +22,8 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
         private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_OPERADORES> _sy041Repository;
         private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERSOPERADORES> _sy042Repository;
         private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERSRESOURCE> _sy043Repository;
+        private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_ABACRESOURCEATTRIBUTES> _ABAC_CSSPH_ABACRESOURCEATTRIBUTESRepository;
+        private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_ABACUSERATTRIBUTES> _ABAC_CSSPH_ABACUSERATTRIBUTESRepository;
 
         public ABAC_UnitOfWork(
             AppDbContext context,
@@ -60,25 +63,29 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
 
         public IRepositorioBaseV2ComGets<OsusrE9aCsicpSy032> GetSY032Repository => _sy032Repository;
 
-        public IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCE> GetSY035Repository => _sy035Repository;
+        public IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCE> GetABAC_CSSPH_RESOURCERepository => _sy035Repository;
 
-        public IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEACTIONS> GetSY036Repository => _sy036Repository;
+        public IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEACTIONS> GetABAC_CSSPH_RESOURCEACTIONSRepository => _sy036Repository;
 
-        public IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEATRIB> GetSY037Repository => _sy037Repository;
+        public IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEATRIB> GetABAC_CSSPH_RESOURCEATRIBRepository => _sy037Repository;
 
         public IRepositorioBaseV2ComGets<OsusrE9aCsicpSy038> GetSY038Repository => _sy038Repository;
 
         public IRepositorioBaseV2ComGets<OsusrE9aCsicpSy039> GetSY039Repository => _sy039Repository;
 
-        public IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERS> GetSY040Repository => _sy040Repository;
+        public IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERS> GetABAC_CSSPH_FILTERSRepository => _sy040Repository;
 
-        public IRepositorioBaseV2ComGets<ABAC_CSSPH_OPERADORES> GetSY041Repository => _sy041Repository;
+        public IRepositorioBaseV2ComGets<ABAC_CSSPH_OPERADORES> GetABAC_CSSPH_OPERADORESRepository => _sy041Repository;
 
-        public IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERSOPERADORES> GetSY042Repository => _sy042Repository;
+        public IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERSOPERADORES> GetABAC_CSSPH_FILTERSOPERADORESRepository => _sy042Repository;
 
-        public IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERSRESOURCE> GetSY043Repository => _sy043Repository;
+        public IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERSRESOURCE> GetABAC_CSSPH_FILTERSRESOURCERepository => _sy043Repository;
 
         public ICS_GenerateId IdGenerator => _idGenerator;
+
+        public IRepositorioBaseV2ComGets<ABAC_CSSPH_ABACRESOURCEATTRIBUTES> GetABAC_CSSPH_ABACRESOURCEATTRIBUTESRepository => _ABAC_CSSPH_ABACRESOURCEATTRIBUTESRepository;
+
+        public IRepositorioBaseV2ComGets<ABAC_CSSPH_ABACUSERATTRIBUTES> GetABAC_CSSPH_ABACUSERATTRIBUTESRepository => _ABAC_CSSPH_ABACUSERATTRIBUTESRepository;
 
         public async Task<int> SaveChangesAsync()
         {
