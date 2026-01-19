@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY030
 {
-    public record Dto_GetSy030 : IConverteParaEntidadeV2<OsusrE9aCsicpSy030, Dto_GetSy030>
+    public record Dto_GetSy030 : IConverteParaDTO<OsusrE9aCsicpSy030, Dto_GetSy030>
     {
         public int TenantId { get; init; }
         public string Id { get; init; } = null!;

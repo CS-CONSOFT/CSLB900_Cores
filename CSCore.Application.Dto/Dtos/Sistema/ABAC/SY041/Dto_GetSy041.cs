@@ -3,7 +3,7 @@ using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY041
 {
-    public record Dto_GetSy041 : IConverteParaEntidadeV2<ABAC_CSSPH_OPERADORES, Dto_GetSy041>
+    public record Dto_GetSy041 : IConverteParaDTO<ABAC_CSSPH_OPERADORES, Dto_GetSy041>
     {
         public string Id { get; init; } = null!;
         public string? Operator { get; init; }

@@ -3,10 +3,11 @@ using CSCore.Domain.CS_Models.CSICP_GG;
 using CSCore.Domain.Interfaces.DD;
 using CSCore.Domain.Interfaces.GG._00X;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.Repository;
 using CSLB900.MSTools.Extensao;
 using Microsoft.EntityFrameworkCore;
 
-namespace CSCore.Ifs.Repository.GG._00X
+namespace CSCore.Ifs.DD.Repository.DD
 {
     public class DD156RepositoryImpl(AppDbContext appDbContext) :
         RepositorioBaseImpl<CSICP_DD156>(appDbContext, "Dd156Id"), IDD156Repository

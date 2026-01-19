@@ -3,7 +3,7 @@ using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY032
 {
-    public record Dto_GetSy032 : IConverteParaEntidadeV2<OsusrE9aCsicpSy032, Dto_GetSy032>
+    public record Dto_GetSy032 : IConverteParaDTO<OsusrE9aCsicpSy032, Dto_GetSy032>
     {
         public int TenantId { get; init; }
         public string Id { get; init; } = null!;

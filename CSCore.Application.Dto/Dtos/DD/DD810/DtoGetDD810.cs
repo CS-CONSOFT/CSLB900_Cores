@@ -21,8 +21,8 @@ namespace CSCore.Application.Dto.Dtos.DD.DD810
 
         public string? Dd810Hashid { get; set; }
 
-        public Osusr66cSpedInCfop NavDD810_CFOP_Saida { get; set; }
+        public Osusr66cSpedInCfop? NavDD810_CFOP_Saida { get; set; }
 
-        public Osusr66cSpedInCfop NavDD810_CFOP_Entrada { get; set; }
+        public Osusr66cSpedInCfop? NavDD810_CFOP_Entrada { get; set; }
     }
 }
