@@ -1,14 +1,14 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 using CSCore.Domain.DELETAR;
 using CSCore.Domain.Interfaces.V2;
-using CSCore.Ifs.LB900.ABAC;
+using CSCore.Ifs.LB900.ABAC.Repository;
 using CSLB900.MSTools.GenerateId;
 
-namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
+namespace CSCore.Ifs.LB900.ABAC
 {
     public interface IABAC_UnitOfWork : IUnitOfWorkBase
     {
-        IRepositorioBaseV2ComGets<OsusrE9aCsicpSy030> GetSY030Repository { get; }
+        SY030RepositoryImpl GetSY030Repository { get; }
         IRepositorioBaseV2ComGets<OsusrE9aCsicpSy031> GetSY031Repository { get; }
         IRepositorioBaseV2ComGets<OsusrE9aCsicpSy032> GetSY032Repository { get; }
         IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCE> GetABAC_CSSPH_RESOURCERepository { get; }

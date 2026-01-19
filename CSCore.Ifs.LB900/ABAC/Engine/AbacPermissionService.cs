@@ -1,5 +1,5 @@
-﻿using CSSY103.C82Application.Dto.ABAC.Engine;
-using CSSY103.C82Application.Service.ABAC.Engine;
+﻿using CSCore.Ifs.LB900.ABAC.Engine;
+using CSSY103.C82Application.Dto.ABAC.Engine;
 
 namespace CSSY103.C82Application.Service.ABAC;
 

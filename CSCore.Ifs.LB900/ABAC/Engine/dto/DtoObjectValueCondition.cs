@@ -34,11 +34,20 @@ namespace CSCore.Ifs.LB900.ABAC.Engine.dto
             return operatorType.ToLower() switch
             {
                 "equals" => new EqualsStrategy(),
+                "contains" => new ContainsStrategy(),
                 _ => new EqualsStrategy(),
             };
         }
     }
 
+    class ContainsStrategy : IComparableStraegy
+    {
+        public bool Compare(string? attributeValue, string conditionValue)
+        {
+            if (string.IsNullOrEmpty(attributeValue)) return false;
+            return attributeValue.Contains(conditionValue, StringComparison.OrdinalIgnoreCase);
+        }
+    }
     class EqualsStrategy : IComparableStraegy
     {
         public bool Compare(string? attributeValue, string conditionValue)

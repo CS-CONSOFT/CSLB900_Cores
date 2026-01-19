@@ -2,6 +2,8 @@
 using CSCore.Domain.DELETAR;
 using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.CS_Context;
+using CSCore.Ifs.LB900.ABAC;
+using CSCore.Ifs.LB900.ABAC.Repository;
 using CSLB900.MSTools.GenerateId;
 
 namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
@@ -10,7 +12,7 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
     {
         private readonly AppDbContext _context;
         private readonly ICS_GenerateId _idGenerator;
-        private readonly IRepositorioBaseV2ComGets<OsusrE9aCsicpSy030> _sy030Repository;
+        private readonly SY030RepositoryImpl _sy030Repository;
         private readonly IRepositorioBaseV2ComGets<OsusrE9aCsicpSy031> _sy031Repository;
         private readonly IRepositorioBaseV2ComGets<OsusrE9aCsicpSy032> _sy032Repository;
         private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCE> _sy035Repository;
@@ -28,7 +30,7 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
         public ABAC_UnitOfWork(
             AppDbContext context,
             ICS_GenerateId idGenerator,
-            IRepositorioBaseV2ComGets<OsusrE9aCsicpSy030> sy030Repository,
+            SY030RepositoryImpl sy030Repository,
             IRepositorioBaseV2ComGets<OsusrE9aCsicpSy031> sy031Repository,
             IRepositorioBaseV2ComGets<OsusrE9aCsicpSy032> sy032Repository,
             IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCE> sy035Repository,
@@ -57,7 +59,7 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
             _sy043Repository = sy043Repository;
         }
 
-        public IRepositorioBaseV2ComGets<OsusrE9aCsicpSy030> GetSY030Repository => _sy030Repository;
+        public SY030RepositoryImpl GetSY030Repository => _sy030Repository;
 
         public IRepositorioBaseV2ComGets<OsusrE9aCsicpSy031> GetSY031Repository => _sy031Repository;
 

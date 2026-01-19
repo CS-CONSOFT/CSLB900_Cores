@@ -9,5 +9,6 @@ namespace CSLB900.MSTools.Util
     public static class Constantes
     {
         public const int ENTIDADE_SEM_TENANT = -111;
+        public const string USER_GROUP = "user.group";
     }
 }

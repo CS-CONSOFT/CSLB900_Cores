@@ -1,14 +1,11 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 using CSCore.Domain.Interfaces.V2;
 using CSCore.Ifs.LB900.ABAC.Engine.Conditions;
-using CSCore.Ifs.LB900.ABAC.Engine.dto;
+using CSLB900.MSTools.Util;
 using CSSY103.C82Application.Dto.ABAC.Engine;
-using CSSY103.C82Application.Service.UnitOfWork.ABAC;
 using System.Data;
-using System.Text.Json;
-using System.Text.RegularExpressions;
 
-namespace CSSY103.C82Application.Service.ABAC.Engine;
+namespace CSCore.Ifs.LB900.ABAC.Engine;
 
 /// <summary>
 /// Engine principal de avaliação ABAC
@@ -309,6 +306,15 @@ public class AbacPermissionEngine
                 a => a.Attributename!,
                 a => a.Attributevalue ?? ""
             );
+
+        IEnumerable<string> listaNomesDosAtributosDaSY031APartirDaSY030 = await _unitOfWork.GetSY030Repository.GetAtributosDeUsuarioAPartirDaSY030(tenantId, userId);
+        if (dicUserAtributos.ContainsKey(Constantes.USER_GROUP))
+            dicUserAtributos[Constantes.USER_GROUP] += "," + string.Join(",", listaNomesDosAtributosDaSY031APartirDaSY030);
+        else
+            dicUserAtributos.Add(Constantes.USER_GROUP, string.Join(",", listaNomesDosAtributosDaSY031APartirDaSY030));
+
+        return dicUserAtributos;
+
     }
     #endregion
 }

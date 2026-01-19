@@ -24,6 +24,7 @@ namespace CSCore.Ifs.LB900
         }
 
         protected abstract IRepositorioBaseV2ComGets<TEntity> GetRepository();
+        
         protected virtual ICS_GenerateId GetIdGenerator()
         {
             return new SCS_GenerateId();
