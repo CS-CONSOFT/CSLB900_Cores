@@ -246,7 +246,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasMaxLength(250)
                     .HasColumnName("ACTIONS");
                 entity.Property(e => e.Conditions)
-                    .HasMaxLength(100)
+                    .HasMaxLength(5000)
                     .HasColumnName("CONDITIONS");
                 entity.Property(e => e.Effect)
                     .HasMaxLength(50)
@@ -352,8 +352,7 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Resourceid)
                     .HasMaxLength(36)
                     .HasColumnName("RESOURCEID");
-                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
-
+              
 
             });
 
