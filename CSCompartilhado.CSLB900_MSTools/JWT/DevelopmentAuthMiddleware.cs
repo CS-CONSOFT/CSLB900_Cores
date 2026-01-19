@@ -21,7 +21,7 @@ public class DevelopmentAuthMiddleware
         if (!context.User.Identity?.IsAuthenticated ?? true)
         {
             // Obter userId e tenantId dos headers (para desenvolvimento)
-            var userId = context.Request.Headers["X-Dev-UserId"].FirstOrDefault() ?? "development";
+            var userId = context.Request.Headers["X-Dev-UserId"].FirstOrDefault() ?? "59bd9971-31e5-4a0b-a7f2-a88ed5d7056b";
             var tenantId = context.Request.Headers["X-Dev-TenantId"].FirstOrDefault() ?? "135";
 
             // Criar claims simuladas

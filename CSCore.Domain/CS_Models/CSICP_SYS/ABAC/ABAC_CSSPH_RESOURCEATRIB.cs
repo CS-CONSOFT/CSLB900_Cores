@@ -6,7 +6,7 @@ namespace CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 //Resource Attribute
 public partial class ABAC_CSSPH_RESOURCEATRIB
 {
-    public int? TenantId { get; set; }
+  
 
     public string Id { get; set; } = null!;
 

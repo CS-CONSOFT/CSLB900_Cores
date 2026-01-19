@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using CSSY103.C82Application.Dto.ABAC.Engine;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace CSSY103.C82Application.Service.ABAC;
 
@@ -31,17 +32,17 @@ public class AbacPermissionCacheService
         string resourceId,
         string actionName,
         int tenantId,
-        out bool isAllowed)
+        out AbacPermissionResult isAllowed)
     {
         var key = GetCacheKey(userId, resourceId, actionName, tenantId);
 
-        if (_cache.TryGetValue<bool>(key, out var cachedValue))
+        if (_cache.TryGetValue<AbacPermissionResult>(key, out var cachedValue))
         {
-            isAllowed = cachedValue;
+            isAllowed = cachedValue ?? AbacPermissionResult.Empty();
             return true;
         }
 
-        isAllowed = false;
+        isAllowed = AbacPermissionResult.Deny("-");
         return false;
     }
 
@@ -53,7 +54,7 @@ public class AbacPermissionCacheService
         string resourceId,
         string actionName,
         int tenantId,
-        bool isAllowed,
+        AbacPermissionResult permisionResult,
         TimeSpan? expiration = null)
     {
         var key = GetCacheKey(userId, resourceId, actionName, tenantId);
@@ -64,7 +65,7 @@ public class AbacPermissionCacheService
             SlidingExpiration = TimeSpan.FromMinutes(5)
         };
 
-        _cache.Set(key, isAllowed, options);
+        _cache.Set(key, permisionResult, options);
     }
 
     /// <summary>
