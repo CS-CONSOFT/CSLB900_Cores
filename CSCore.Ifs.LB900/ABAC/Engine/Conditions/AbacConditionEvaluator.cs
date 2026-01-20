@@ -49,6 +49,7 @@ namespace CSCore.Ifs.LB900.ABAC.Engine.Conditions
                     var atributoUsuario = userAttributes.GetValueOrDefault(condition.Key);
                     //inicializa a estrategia de comparacao como idle, que retorna false sempre
                     var strategyCorrente = StrategyCompareValuesCondition.GetStrategy(CompareValuesConditionType.Idle);
+
                     if (atributoUsuario != null)
                     {
                         //passa a usar estrategia de usuario

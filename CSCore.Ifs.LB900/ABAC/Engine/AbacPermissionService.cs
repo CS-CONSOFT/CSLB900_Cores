@@ -29,11 +29,11 @@ public class AbacPermissionService
         int tenantId,
         Dictionary<string, object>? context = null)
     {
-        // 1. Tentar buscar no cache (RÁPIDO)
-        if (_cache.TryGetPermission(userId, resourceId, actionName, tenantId, out var cachedResult))
-        {
-            return cachedResult;
-        }
+        //// 1. Tentar buscar no cache (RÁPIDO)
+        //if (_cache.TryGetPermission(userId, resourceId, actionName, tenantId, out var cachedResult))
+        //{
+        //    return cachedResult;
+        //}
 
         // 2. Se não estiver no cache, avaliar (VAI AO BANCO)
         var request = new AbacPermissionRequest

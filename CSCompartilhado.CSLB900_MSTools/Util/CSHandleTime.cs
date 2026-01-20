@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,6 +46,6 @@ namespace CSLB900.MSTools.Util
         /// <remarks>O valor retornado reflete o dia da semana com base no fuso horário UTC, e não na
         /// hora do sistema local.</remarks>
         /// <returns>Uma string representando o dia da semana atual em UTC, como "Monday" ou "Friday".</returns>
-        public static string DiaDaSemanaAtual() => DateTime.UtcNow.DayOfWeek.ToString();
+        public static string DiaDaSemanaAtual() => new CultureInfo("pt-BR").DateTimeFormat.GetDayName(DateTime.UtcNow.DayOfWeek);
     }
 }
