@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace CSS_SY103Systems.Middleware;
+namespace CSLB900.MSTools.JWT;
 
 /// <summary>
 /// Middleware para simular autenticação em ambiente de desenvolvimento
@@ -21,8 +21,8 @@ public class DevelopmentAuthMiddleware
         if (!context.User.Identity?.IsAuthenticated ?? true)
         {
             // Obter userId e tenantId dos headers (para desenvolvimento)
-            var userId = context.Request.Headers["X-Dev-UserId"].FirstOrDefault() ?? "59bd9971-31e5-4a0b-a7f2-a88ed5d7056b";
-            var tenantId = context.Request.Headers["X-Dev-TenantId"].FirstOrDefault() ?? "135";
+            var userId = context.Request.Headers["X-UserId"].FirstOrDefault() ?? "59bd9971-31e5-4a0b-a7f2-a88ed5d7056b";
+            var tenantId = context.Request.Headers["X-TenantId"].FirstOrDefault() ?? "135";
 
             // Criar claims simuladas
             var claims = new List<Claim>
