@@ -15,24 +15,24 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.DD.Repository.DD
 {
-    public class DD001RepositoryImpl : RepositoryBaseV2ComGets<CSICP_DD001>, IDD001Repository
+    public class DD013RepositoryImpl : RepositoryBaseV2ComGets<CSICP_DD013>, IDD013Repository
     {
         private readonly AppDbContext _appDbContext;
         
-        public DD001RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Dd001Id", "TenantId")
+        public DD013RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Dd013Id", "TenantId")
         {
             _appDbContext = appDbContext;
         }
 
-        public override async Task<(IEnumerable<CSICP_DD001> Data, int TotalCount)> GetAllAsyncComPaginacao(
+        public override async Task<(IEnumerable<CSICP_DD013> Data, int TotalCount)> GetAllAsyncComPaginacao(
             IEnumerable<FiltrosDinamicos> filtros,
             int pageNumber,
             int pageSize)
         {
-            // Query inicial
-            var query = _appDbContext.OsusrTeiCsicpDd001s
+            // Query inicial com includes
+            var query = _appDbContext.OsusrTeiCsicpDd013s
                 .AsNoTracking()
-                .Include(e => e.NavBB001FilialID_DD001)
+                .Include(e => e.NavBB001FilialID_DD013)
                 .AsQueryable();
 
             // Aplica filtros dinâmicos usando o método da classe base
@@ -44,12 +44,12 @@ namespace CSCore.Ifs.DD.Repository.DD
             return (data, totalCount);
         }
 
-        public override async Task<CSICP_DD001?> GetByIdAsync(string id, int tenant)
+        public override async Task<CSICP_DD013?> GetByIdAsync(string id, int tenant)
         {
-            return await _appDbContext.OsusrTeiCsicpDd001s
+            return await _appDbContext.OsusrTeiCsicpDd013s
                 .AsNoTracking()
-                .Include(e => e.NavBB001FilialID_DD001)
-                .Where(e => e.TenantId == tenant && e.Dd001Id == id)
+                .Include(e => e.NavBB001FilialID_DD013)
+                .Where(e => e.TenantId == tenant && e.Dd013Id == id)
                 .FirstOrDefaultAsync();
         }
     }

@@ -1,3 +1,5 @@
+using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
+using CSBS101.C82Application.Dto.BB00X.BB00X.BB001;
 using CSCore.Domain.CS_Models.CSICP_DD;
 using CSCore.Domain.Interfaces;
 using CSLB900.MSTools.InterfaceBase;
@@ -15,6 +17,8 @@ namespace CSCore.Application.Dto.Dtos.DD.DD001
         public DateTime? Dd001Datainicio { get; init; }
         public DateTime? Dd001Datafim { get; init; }
         public string? Dd001Protocolnumber { get; init; }
+        public Dto_GetBB001Simples? NavBB001FilialID_DD001 { get; init; }
+
 
         public static DtoGetDD001 FromEntity(CSICP_DD001 entity)
         {
@@ -28,7 +32,8 @@ namespace CSCore.Application.Dto.Dtos.DD.DD001
                 Dd001Isactive = entity.Dd001Isactive,
                 Dd001Datainicio = entity.Dd001Datainicio,
                 Dd001Datafim = entity.Dd001Datafim,
-                Dd001Protocolnumber = entity.Dd001Protocolnumber
+                Dd001Protocolnumber = entity.Dd001Protocolnumber,
+                NavBB001FilialID_DD001 = entity.NavBB001FilialID_DD001?.ToDtoGetSimples()
             };
         }
     }

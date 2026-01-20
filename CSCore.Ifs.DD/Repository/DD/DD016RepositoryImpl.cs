@@ -25,8 +25,14 @@ namespace CSCore.Ifs.DD.Repository.DD
             // Query inicial com includes
             var query = _appDbContext.OsusrTeiCsicpDd016s
                 .AsNoTracking()
-                //.Include(e => e.Dd001Rcomercializ)
-                //.Include(e => e.Dd016AplicacaoNavigation)
+                .Include(e => e.NavBB001FilialID_DD016)
+                .Include(e => e.NavBB008CondicaoID_DD016)
+                .Include(e => e.NavGG003GrupoID_DD016)
+                .Include(e => e.NavGG004ClasseID_DD016)
+                .Include(e => e.NavGG005ArtigoID_DD016)
+                .Include(e => e.NavGG006MarcaID_DD016)
+                .Include(e => e.NavDD016Aplicacao_DD016)
+                .Include(e => e.NavDD001RComercializ_DD016)
                 .AsQueryable();
 
             // Aplica filtros dinâmicos usando o método da classe base
@@ -42,8 +48,14 @@ namespace CSCore.Ifs.DD.Repository.DD
         {
             return await _appDbContext.OsusrTeiCsicpDd016s
                 .AsNoTracking()
-                //.Include(e => e.Dd001Rcomercializ)
-                //.Include(e => e.Dd016AplicacaoNavigation)
+                .Include(e => e.NavBB001FilialID_DD016)
+                .Include(e => e.NavBB008CondicaoID_DD016)
+                .Include(e => e.NavGG003GrupoID_DD016)
+                .Include(e => e.NavGG004ClasseID_DD016)
+                .Include(e => e.NavGG005ArtigoID_DD016)
+                .Include(e => e.NavGG006MarcaID_DD016)
+                .Include(e => e.NavDD016Aplicacao_DD016)
+                .Include(e => e.NavDD001RComercializ_DD016)
                 .Where(e => e.TenantId == tenant && e.Dd016Id == id)
                 .FirstOrDefaultAsync();
         }
