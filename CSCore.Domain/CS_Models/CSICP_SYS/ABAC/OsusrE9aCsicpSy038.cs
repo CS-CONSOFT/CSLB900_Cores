@@ -19,5 +19,5 @@ public partial class OsusrE9aCsicpSy038
 
     public bool? Isactive { get; set; }
 
-    
+    public ICollection<OsusrE9aCsicpSy039>? NavAbacRules { get; set; } 
 }

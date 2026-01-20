@@ -1,8 +1,11 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 using CSCore.Domain.Interfaces.V2;
+using CSCore.Ifs.LB900.ABAC.Engine.ClassesAuxiliares;
 using CSCore.Ifs.LB900.ABAC.Engine.Conditions;
+using CSCore.Ifs.LB900.ABAC.Engine.dto;
 using CSLB900.MSTools.Util;
 using CSSY103.C82Application.Dto.ABAC.Engine;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
 
 namespace CSCore.Ifs.LB900.ABAC.Engine;
@@ -13,6 +16,7 @@ namespace CSCore.Ifs.LB900.ABAC.Engine;
 public class AbacPermissionEngine
 {
     private readonly IABAC_UnitOfWork _unitOfWork;
+
 
     public AbacPermissionEngine(IABAC_UnitOfWork unitOfWork)
     {
@@ -41,13 +45,6 @@ public class AbacPermissionEngine
 
             // 3. Buscar ação do recurso
             var action = await GetResourceActionAsync(resource.Id, request.ActionName);
-            if (action == null)
-            {
-                if (request.ActionName.Contains("module:"))
-                {
-
-                }
-            }
 
             // 4. Buscar políticas ativas
             var policies = await GetActivePoliciesAsync(request.TenantId);
@@ -56,11 +53,15 @@ public class AbacPermissionEngine
             // 5. Buscar atributos do usuário
             var userAttributes = await GetUserAttributesAsync(request.UserId, request.TenantId);
 
+            // busca atributos de contexto
+            var contextAttributes = this._unitOfWork.HandleContextAttributes.GetListaContextAttributes();
+
             // 6. Avaliar políticas por prioridade (maior prioridade primeiro)
             if (!policies.Any()) return AbacPermissionResult.Deny("Nenhuma politica encontrada!");
             foreach (var policy in policies.OrderByDescending(p => p.Priority ?? 0))
             {
-                var rules = await GetPolicyRulesAsync(policy.Id);
+                var rules = policy.NavAbacRules ?? [];
+                if (rules.Count == 0) continue;
 
                 foreach (var rule in rules.OrderByDescending(r => r.Priority ?? 0))
                 {
@@ -71,7 +72,7 @@ public class AbacPermissionEngine
                         continue;
 
                     // Verificar condições da regra
-                    RuleEffect ruleEffect = rule.ValidarCondicao(AbacConditionEvaluator.Instance, userAttributes, resourceAttributes);
+                    RuleEffect ruleEffect = rule.ValidarCondicao(AbacConditionEvaluator.Instance, userAttributes, resourceAttributes, contextAttributes);
                     if (ruleEffect == RuleEffect.Deny)
                         continue;
 
@@ -168,9 +169,10 @@ public class AbacPermissionEngine
                 TipoDeIgualdade = TipoFiltroDinamico.Igual
             }
         };
-        var resourceAttrs = await _unitOfWork.GetABAC_CSSPH_RESOURCEATRIBRepository.GetAllAsync(filters);
+        var resourceAttrs = await _unitOfWork.GetABAC_CSSPH_RESOURCEATRIB_Repository.GetAllAsync(filters);
         return resourceAttrs;
     }
+
 
     private async Task<ABAC_CSSPH_RESOURCE?> GetResourceAsync(string resourceId, int tenantId)
     {

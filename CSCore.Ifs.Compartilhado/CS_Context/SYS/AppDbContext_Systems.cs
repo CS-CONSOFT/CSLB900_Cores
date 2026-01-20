@@ -229,6 +229,8 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Policyjson).HasColumnName("POLICYJSON");
                 entity.Property(e => e.Priority).HasColumnName("PRIORITY");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+                entity.HasMany(e => e.NavAbacRules).WithOne().HasForeignKey(e => e.Policyid).IsRequired();
             });
 
             modelBuilder.Entity<OsusrE9aCsicpSy039>(entity =>

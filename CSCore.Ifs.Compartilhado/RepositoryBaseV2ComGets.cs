@@ -20,7 +20,7 @@ namespace CSCore.Ifs.Compartilhado
             _tenantIdentifierName = TenantIdentifierName;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(IEnumerable<FiltrosDinamicos> filtros)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(IEnumerable<FiltrosDinamicos> filtros)
         {
             var query = this._appDbContext.Set<TEntity>().AsQueryable();
             var parameter = Expression.Parameter(typeof(TEntity), "e"); // representa o "e" -> e.AlgumaCoisa

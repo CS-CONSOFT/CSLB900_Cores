@@ -16,7 +16,8 @@ public interface IAbacStaticEvaluator
 {
    bool EvaluateCondition(string conditionsJson,
               Dictionary<string, string> userAttributes,
-              IEnumerable<ABAC_CSSPH_RESOURCEATRIB> resourceAttributes);
+              IEnumerable<ABAC_CSSPH_RESOURCEATRIB> resourceAttributes,
+              IEnumerable<ABAC_ContextAttributes> contextAttributes);
 }
 
 public partial class OsusrE9aCsicpSy039
@@ -60,11 +61,12 @@ public partial class OsusrE9aCsicpSy039
     public RuleEffect ValidarCondicao(
         IAbacStaticEvaluator abacStaticEvaluator,
         Dictionary<string, string> userAttributes,
-        IEnumerable<ABAC_CSSPH_RESOURCEATRIB> resourceAttributes) 
+        IEnumerable<ABAC_CSSPH_RESOURCEATRIB> resourceAttributes,
+        IEnumerable<ABAC_ContextAttributes> contextAttributes) 
     {
         if (string.IsNullOrWhiteSpace(this.Conditions))
             return RuleEffect.Deny;
-        return abacStaticEvaluator.EvaluateCondition(this.Conditions, userAttributes, resourceAttributes) == true ? RuleEffect.Allow : RuleEffect.Deny;
+        return abacStaticEvaluator.EvaluateCondition(this.Conditions, userAttributes, resourceAttributes, contextAttributes) == true ? RuleEffect.Allow : RuleEffect.Deny;
     }
 
     public bool ARegraEhAplicadaAEsseRecurso(string resourceId, string? resourceName)
