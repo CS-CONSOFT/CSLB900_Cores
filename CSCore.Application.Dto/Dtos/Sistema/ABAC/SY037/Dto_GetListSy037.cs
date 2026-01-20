@@ -16,7 +16,7 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY037
         {
             return new Dto_GetListSy037
             {
-                TenantId = entity.TenantId,
+           
                 Id = entity.Id,
                 Resourceid = entity.Resourceid,
                 Attributename = entity.Attributename,

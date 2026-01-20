@@ -59,7 +59,7 @@ public class AbacAuthorizationMiddleware
             tenantId
         );
 
-        if (!hasPermission)
+        if (!hasPermission.IsAllowed)
         {
             context.Response.StatusCode = 403;
             await context.Response.WriteAsJsonAsync(new

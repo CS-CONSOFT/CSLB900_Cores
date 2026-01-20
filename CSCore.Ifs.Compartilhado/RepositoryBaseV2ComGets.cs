@@ -10,7 +10,7 @@ namespace CSCore.Ifs.Compartilhado
    
     public class RepositoryBaseV2ComGets<TEntity> : RepositorioBaseImplV2<TEntity>, IRepositorioBaseV2ComGets<TEntity> where TEntity : class
     {
-        private readonly AppDbContext _appDbContext;
+        protected readonly AppDbContext _appDbContext;
         private readonly string _tenantIdentifierName;
         public RepositoryBaseV2ComGets(AppDbContext appDbContext, string IdIdentifierName = "Id",
             string TenantIdentifierName = "TenantId")
