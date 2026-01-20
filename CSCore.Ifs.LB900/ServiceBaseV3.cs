@@ -55,7 +55,8 @@ namespace CSCore.Ifs.LB900
 
         public virtual async Task<IEnumerable<TDtoGetList>> GetAllAsync(IEnumerable<FiltrosDinamicos> filtros)
         {
-            var lista = await GetRepository().GetAllAsync(filtros);
+            var repo = GetRepository();
+            var lista = await repo.GetAllAsync(filtros);
             return lista.Select(TDtoGetList.FromEntity);
         }
 
