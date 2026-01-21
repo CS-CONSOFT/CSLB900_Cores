@@ -21,6 +21,7 @@ namespace CSCore.Domain.Interfaces.Combo
         Task<IEnumerable<object>> GetCommonListForComboRR(int tenant, ComboTypeRR comboType);
         Task<IEnumerable<object>> GetCommonListForComboSYS(int tenant, ComboTypeSYS comboType);
         Task<IEnumerable<object>> GetCommonListForComboPais(int tenant);
+        Task<IEnumerable<object>> GetComboABAC(int tenant, ComboABAC comboType);
         Task<IEnumerable<object>> GetCommonListForComboUF(int tenant, string? paisId);
         Task<IEnumerable<object>> GetCommonListForComboCidade(string? ufId, string? search, int tenant);
         Task<IEnumerable<object>> GetComboGG001(int tenant, string estabelecimentoId, bool? trasVirtual = false);
@@ -32,5 +33,7 @@ namespace CSCore.Domain.Interfaces.Combo
        string InProdutoID_gg008,
        string? InSaldoID);
         Task<IEnumerable<CSICP_Email>> GetComboStaticaEmail();
+
+
     }
 }
