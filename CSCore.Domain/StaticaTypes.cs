@@ -330,6 +330,23 @@
 
         }
 
+        public enum ComboABAC
+        {
+            Sy030,
+            Sy031,
+            Sy032,
+            Sy038,
+            Sy039,
+            CssphResource,
+            CssphResourceActions,
+            CssphResourceAtrib,
+            CssphFilters,
+            CssphOperadores,
+            CssphFiltersOperadores,
+            CssphFiltersResource,
+            CssphAbacResourceAttributes,
+            CssphAbacUserAttributes
+        }
         public enum ComboTypeAA
         {
             Csicp_aa026,
@@ -382,6 +399,7 @@
         {
             Csicp_SY001
         }
+
 
         public enum StaticaRegistros
         {

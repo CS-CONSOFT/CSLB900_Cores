@@ -39,7 +39,7 @@ namespace CSCore.Ifs.Repository.BB
                 try
                 {
                     _appDbContext.Update(entidade_csicp_bb035);
-                    await _appDbContext.SaveChangesAsync();
+
 
                     if (isUpdate) _appDbContext.Update(entityEnderecocsicp_bb035end);
                     else _appDbContext.Add(entityEnderecocsicp_bb035end);

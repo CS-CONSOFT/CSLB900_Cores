@@ -659,8 +659,76 @@ namespace CSCore.Ifs.Repository.Combo
             return await query.ToListAsync();
         }
 
+        public async Task<IEnumerable<object>> GetComboABAC(int tenant, ComboABAC comboType)
+        {
+            IQueryable<object> query = comboType switch
+            {
+                ComboABAC.Sy030 => _appDbContext.OsusrE9aCsicpSy030s
+                    .Where(c => c.TenantId == tenant)
+                    .OrderBy(c => c.Sy030Name)
+                    .Select(c => new { Title = c.Sy030Name ?? c.Sy030Descricao ?? "---", Id = c.Id }),
 
-      
+                ComboABAC.Sy031 => _appDbContext.OsusrE9aCsicpSy031s
+                    .Where(c => c.TenantId == tenant)
+                    .OrderBy(c => c.Id)
+                    .Select(c => new { Title = "---", Id = c.Id }),
+
+                ComboABAC.Sy032 => _appDbContext.OsusrE9aCsicpSy032s
+                    .Where(c => c.TenantId == tenant)
+                    .OrderBy(c => c.Attributename)
+                    .Select(c => new { Title = c.Attributename != null && c.Attributevalue != null ? c.Attributename + "-" + c.Attributevalue : c.Attributename ?? "---", Id = c.Id }),
+
+                ComboABAC.Sy038 => _appDbContext.OsusrE9aCsicpSy038s
+                    .Where(c => c.TenantId == tenant)
+                    .OrderBy(c => c.Name)
+                    .Select(c => new { Title = c.Name ?? c.Descripton ?? "---", Id = c.Id }),
+
+                ComboABAC.Sy039 => _appDbContext.OsusrE9aCsicpSy039s
+                    .Where(c => c.TenantId == tenant)
+                    .OrderBy(c => c.Rulename)
+                    .Select(c => new { Title = c.Rulename ?? "---", Id = c.Id }),
+
+                ComboABAC.CssphResource => _appDbContext.ABAC_CSSPH_RESOURCE
+                    .OrderBy(c => c.Name)
+                    .Select(c => new { Title = c.Name ?? c.Displayname ?? "---", Id = c.Id }),
+
+                ComboABAC.CssphResourceActions => _appDbContext.ABAC_CSSPH_RESOURCEACTIONS
+                    .OrderBy(c => c.Actionname)
+                    .Select(c => new { Title = c.Actionname ?? "---", Id = c.Id }),
+
+                ComboABAC.CssphResourceAtrib => _appDbContext.ABAC_CSSPH_RESOURCEATRIB
+                    .OrderBy(c => c.Attributename)
+                    .Select(c => new { Title = c.Attributename != null && c.Attributevalue != null ? c.Attributename + "-" + c.Attributevalue : c.Attributename ?? "---", Id = c.Id }),
+
+                ComboABAC.CssphFilters => _appDbContext.ABAC_CSSPH_FILTERS
+                    .OrderBy(c => c.Fieldname)
+                    .Select(c => new { Title = c.Fieldname ?? c.Displayname ?? "---", Id = c.Id }),
+
+                ComboABAC.CssphOperadores => _appDbContext.ABAC_CSSPH_OPERADORES
+                    .OrderBy(c => c.Operator)
+                    .Select(c => new { Title = c.Operator ?? c.Description ?? "---", Id = c.Id }),
+
+                ComboABAC.CssphFiltersOperadores => _appDbContext.ABAC_CSSPH_FILTERSOPERADORES
+                    .OrderBy(c => c.Id)
+                    .Select(c => new { Title = "---", Id = c.Id }),
+
+                ComboABAC.CssphFiltersResource => _appDbContext.ABAC_CSSPH_FILTERSRESOURCE
+                    .OrderBy(c => c.Id)
+                    .Select(c => new { Title = "---", Id = c.Id }),
+
+                ComboABAC.CssphAbacResourceAttributes => _appDbContext.ABAC_CSSPH_ABACRESOURCEATTRIBUTES
+                    .OrderBy(c => c.Attributename)
+                    .Select(c => new { Title = c.Attributename ?? c.Label ?? c.Description ?? "---", Id = c.Id }),
+
+                ComboABAC.CssphAbacUserAttributes => _appDbContext.ABAC_CSSPH_ABACUSERATTRIBUTES
+                    .OrderBy(c => c.Attributename)
+                    .Select(c => new { Title = c.Attributename ?? c.Label ?? c.Description ?? "---", Id = c.Id }),
+
+                _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
+            };
+
+            return await query.ToListAsync();
+        }
     }
     }
 
