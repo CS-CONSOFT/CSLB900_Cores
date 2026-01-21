@@ -89,6 +89,8 @@ namespace CSCore.Ifs.Compartilhado
             {
                 var property = Expression.Property(parameter, item.NomePropriedade);
                 var propertyType = property.Type;
+
+
                 var constantValue = Convert.ChangeType(item.ValorPropriedade, Nullable.GetUnderlyingType(propertyType) ?? propertyType);
                 var constant = Expression.Constant(constantValue, propertyType);
 
@@ -98,6 +100,8 @@ namespace CSCore.Ifs.Compartilhado
                     TipoFiltroDinamico.Diferente => Expression.NotEqual(property, constant),
                     TipoFiltroDinamico.Maior => Expression.GreaterThan(property, constant),
                     TipoFiltroDinamico.Menos => Expression.LessThan(property, constant),
+                    TipoFiltroDinamico.Contem => Expression.Call(property, "Contains", null, constant),
+
                     _ => throw new NotSupportedException($"Tipo de filtro {item.TipoDeIgualdade} não suportado.")
                 };
 

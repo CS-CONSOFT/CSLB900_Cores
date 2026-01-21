@@ -2,7 +2,9 @@ using CSBS101._82Application.Dto.BB00X.BB001;
 using CSBS101._82Application.Mapper.BB00X;
 using CSBS101._82Application.Mapper.BB00X.BB00X.BB001;
 using CSBS101.C82Application.Dto.BB00X.BB00X.BB008;
+using CSCore.Application.Dto.Dtos.DD.DD001;
 using CSCore.Application.Dto.Dtos.Materiais_GG.GG00X.GG006;
+using CSCore.Application.Dto.Mapper.DD;
 using CSCore.Application.Dto.Mapper.GG00X;
 using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_DD;
@@ -40,7 +42,7 @@ namespace CSCore.Application.Dto.Dtos.DD.DD016
         public DtoGetGG005Simples? NavGG005ArtigoID_DD016 { get; init; }
         public DtoGetGG006Simples? NavGG006MarcaID_DD016 { get; init; }
         public CSICP_DD016Apl? NavDD016Aplicacao_DD016 { get; init; }
-        public CSICP_DD001? NavDD001RComercializ_DD016 { get; init; }
+        public DtoGetDD001SemList? NavDD001RComercializ_DD016 { get; init; }
 
         public static DtoGetListDD016 FromEntity(CSICP_DD016 entity)
         {
@@ -68,7 +70,7 @@ namespace CSCore.Application.Dto.Dtos.DD.DD016
                 NavGG005ArtigoID_DD016 = entity.NavGG005ArtigoID_DD016?.ToDtoGetSemFilial(),
                 NavGG006MarcaID_DD016 = entity.NavGG006MarcaID_DD016?.ToDtoGetSimples(),
                 NavDD016Aplicacao_DD016 = entity.NavDD016Aplicacao_DD016,
-                NavDD001RComercializ_DD016 = entity.NavDD001RComercializ_DD016,
+                NavDD001RComercializ_DD016 = entity.NavDD001RComercializ_DD016?.ToDtoGetDD001(),
 
             };
         }

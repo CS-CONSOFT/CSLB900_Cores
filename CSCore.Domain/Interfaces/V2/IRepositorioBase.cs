@@ -70,7 +70,8 @@
         Igual = 1,
         Diferente = 2,
         Maior = 3,
-        Menos = 4
+        Menos = 4,
+        Contem = 5
     }
 
     public record FiltrosDinamicos

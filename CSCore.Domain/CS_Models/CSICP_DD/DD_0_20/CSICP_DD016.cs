@@ -11,7 +11,7 @@ public partial class CSICP_DD016
 
     public string Dd016Id { get; set; } = null!;
 
-    [ForeignKey("NavBB001FilalID_DD016")]
+    [ForeignKey("NavBB001FilialID_DD016")]
     public string? Dd016FilialId { get; set; }
 
     public string? Dd016FormapagtoId { get; set; }
