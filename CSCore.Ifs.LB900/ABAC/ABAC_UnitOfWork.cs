@@ -45,6 +45,7 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
             IRepositorioBaseV2ComGets<ABAC_CSSPH_OPERADORES> sy041Repository,
             IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERSOPERADORES> sy042Repository,
             IRepositorioBaseV2ComGets<ABAC_CSSPH_ABACRESOURCEATTRIBUTES> _ABAC_CSSPH_ABACRESOURCEATTRIBUTESRepository,
+            IRepositorioBaseV2ComGets<ABAC_CSSPH_ABACUSERATTRIBUTES> userAttributes,
             IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERSRESOURCE> sy043Repository)
         {
             _context = context;
@@ -62,6 +63,7 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
             _sy042Repository = sy042Repository;
             _sy043Repository = sy043Repository;
             IHandleContextAttributes = handleContextAttributes;
+            this._ABAC_CSSPH_ABACUSERATTRIBUTESRepository = userAttributes;
             this._ABAC_CSSPH_ABACRESOURCEATTRIBUTESRepository = _ABAC_CSSPH_ABACRESOURCEATTRIBUTESRepository;
         }
 

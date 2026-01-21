@@ -148,13 +148,12 @@ namespace CSCore.Ifs.Compartilhado
             if (entity != null)
             {
                 var tenantProperty = typeof(TEntity).GetProperty(_tenantIdentifierName);
-                if (tenantProperty != null)
+                if (tenantProperty is null) return entity;
+
+                var tenantValue = tenantProperty.GetValue(entity);
+                if (tenantValue != null && Convert.ToInt32(tenantValue) == tenant)
                 {
-                    var tenantValue = tenantProperty.GetValue(entity);
-                    if (tenantValue != null && Convert.ToInt32(tenantValue) == tenant)
-                    {
-                        return entity;
-                    }
+                    return entity;
                 }
             }
             return null;
