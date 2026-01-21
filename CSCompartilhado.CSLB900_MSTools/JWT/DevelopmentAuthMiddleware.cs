@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CSLB900.MSTools.Util;
+using Microsoft.AspNetCore.Http;
+using System.Reflection.Metadata;
 using System.Security.Claims;
 
 namespace CSLB900.MSTools.JWT;
@@ -27,8 +29,8 @@ public class DevelopmentAuthMiddleware
             // Criar claims simuladas
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, userId),
-                new Claim("TenantId", tenantId),
+                new Claim(Constantes.USER_ID_JWT, userId),
+                new Claim(Constantes.TENANT_ID_JWT, tenantId),
                 new Claim(ClaimTypes.Name, "Developer User"),
                 new Claim(ClaimTypes.Email, "dev@example.com")
             };
