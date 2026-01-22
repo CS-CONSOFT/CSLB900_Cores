@@ -40,12 +40,13 @@ namespace CSCore.Ifs.LB900
             throw new NotImplementedException("Método precisa ser implementado no SERVICE BASE V3! Ainda nao tem");
         }
 
-        public virtual async Task Create(TDtoCreate dto, int tenant)
+        public virtual async Task<string> Create(TDtoCreate dto, int tenant)
         {
             var newID = GetIdGenerator().GenerateUuId();
             var entidade = dto.ToEntity(tenant, newID);
             GetRepository().Create(entidade);
             await UnitOfWork.SaveChangesAsync();
+            return newID;
         }
 
         public virtual async Task CreateRange(List<TDtoCreate> dtoList)
