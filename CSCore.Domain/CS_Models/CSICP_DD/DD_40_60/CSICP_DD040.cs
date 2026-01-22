@@ -477,5 +477,12 @@ public partial class CSICP_DD040
     // foreign key definition end
 
     //-------------------------------------------------------//
+
+
+    #region Metodos Extras
+    public bool IsTpTributacaoSimples(int StID_Entities_csicp_bb001_TpTri_simples) => this.NavBB001?.NavBB001Cfgfi?.Bb001TptributacaoId == StID_Entities_csicp_bb001_TpTri_simples;
+
+
+    #endregion
 }
 
