@@ -34,6 +34,11 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
         public string? gg007Unidade;
         public int? Get_AA144cClassTrib_IS_cstibsCbs1;
         public int? Get_AA144cClassTrib_IS_cclasstrib1;
+        public decimal dd061Vicmsufdest;
+        public decimal dd061Vfcp;
+        public decimal dd061Vfcpufdest;
+        public decimal n39Vicmsmono;
+        public decimal dd060TotalLiquido;
 
 
         public bool HasError { get; init; } = false;
@@ -53,7 +58,12 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
             decimal? dd060Quantidade,
             string? gg007Unidade,
             int? Get_AA144cClassTrib_IS_cstibsCbs1,
-            int? Get_AA144cClassTrib_IS_cclasstrib1)
+            int? Get_AA144cClassTrib_IS_cclasstrib1,
+            decimal? dd061Vicmsufdest,
+            decimal? dd061Vfcp,
+            decimal? dd061Vfcpufdest,
+            decimal? n39Vicmsmono,
+            decimal? dd060TotalLiquido)
         {
             this.Csicp_Bb027_Imp_IsComExecao = Csicp_Bb027_Imp_IsComExecao;
             this.Csicp_Bb027_Imp_PossuiRegra = Out_Reg_bb027_Imp != null;
@@ -71,7 +81,11 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
             this.Get_AA144cClassTrib_cstibsCbs = Get_AA144cClassTrib_cstibsCbs;
             this.gg021Ncm = gg021Ncm;
             this.dd060Sequencia = dd060Sequencia;
-
+            this.dd061Vicmsufdest =     dd061Vicmsufdest ?? 0m;
+            this.dd061Vfcp = dd061Vfcp ?? 0m;
+            this.dd061Vfcpufdest = dd061Vfcpufdest ?? 0m;
+            this.n39Vicmsmono = n39Vicmsmono ?? 0m;
+            this.dd060TotalLiquido = dd060TotalLiquido ?? 0m;
         }
     }
 }

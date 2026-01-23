@@ -10,7 +10,14 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
     public static class StrategyCalculaImpostoBase
     {
 
-        public static decimal GetTipoCalculoImposto(EnumTipoCalculoImposto enumTipoCalculoImposto, decimal DD061_CurrentImposto, decimal VlrBaseCalcImposto)
+        public static decimal GetTipoCalculoImposto(
+    EnumTipoCalculoImposto enumTipoCalculoImposto,
+    decimal DD061_CurrentImposto,
+    decimal VlrBaseCalcImposto,
+    decimal dd061_vICMSUFDest,
+    decimal dd061_vFCP,
+    decimal dd061_vFCPUFDest,
+    decimal N39_vICMSMono)
         {
             ICalculaImposto tipoCalculoImpost = enumTipoCalculoImposto switch
             {
@@ -18,6 +25,8 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
                 EnumTipoCalculoImposto.COFINS => new StrategyCalculaImpostoCOFINS(),
                 EnumTipoCalculoImposto.ISS => new StrategyCalculaImpostoISS(),
                 EnumTipoCalculoImposto.II => new StrategyCalculaImpostoII(),
+                EnumTipoCalculoImposto.ICMS => new StrategyCalculaImpostoICMS(dd061_vICMSUFDest, dd061_vFCP, dd061_vFCPUFDest, N39_vICMSMono),
+                EnumTipoCalculoImposto.None => new StrategyNoneCalcula(),
                 _ => throw new NotImplementedException($"Tipo de Cálculo de Imposto {enumTipoCalculoImposto} não implementado."),
             };
             return tipoCalculoImpost.CalculaImposto(DD061_CurrentImposto, VlrBaseCalcImposto);
@@ -29,6 +38,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
         /// </summary>
         public static EnumTipoCalculoImposto GetEnumTipoCalculoImposto(
             int? DD061_Imposto_ID,
+            int? Entities_ICMS,
             int? Entities_PIS,
             int? Entities_COFINS,
             int? Entities_ISS,
@@ -40,7 +50,8 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
                 var id when id == Entities_COFINS => EnumTipoCalculoImposto.COFINS,
                 var id when id == Entities_ISS => EnumTipoCalculoImposto.ISS,
                 var id when id == Entities_II => EnumTipoCalculoImposto.II,
-                _ => throw new NotImplementedException($"Tipo de Cálculo de Imposto não encontrado no Enum."),
+                var id when id == Entities_ICMS => EnumTipoCalculoImposto.ICMS,
+                _ => EnumTipoCalculoImposto.None,
             };
         }
     }

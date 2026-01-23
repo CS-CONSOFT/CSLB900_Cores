@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.Dto.RequestResponseExternaAPI
 {
-    public record DtoRequest_Postregimegeral(string Id, string Versao, DateTime DataHoraEmissao, long Municipio, string Uf, List<DtoWorkItensRecord> Itens)
-    
+    public record DtoRequest_Postregimegeral(string id, string versao, DateTimeOffset dataHoraEmissao, long municipio, string uf,
+        List<DtoWorkItensRecord> itens)
+    {
+
+    };
 }

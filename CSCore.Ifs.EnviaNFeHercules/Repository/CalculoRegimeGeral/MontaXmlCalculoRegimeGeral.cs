@@ -19,11 +19,15 @@ using System.Threading.Tasks;
 
 namespace EnviaNFeHercules.C82Application.Service.CalculoRegimeGeral
 {
-    public sealed class MontaXmlCalculoRegimeGeral
+    public interface IMontaXmlCalculoRegimeGeral
+    {
+        Task<string> CSRF01_Calculadora_OffLine_MontaDD040(string InNotaID_DD040, int TenantID);
+    }
+    public sealed class MontaXmlCalculoRegimeGeral: IMontaXmlCalculoRegimeGeral
     {
         private readonly AppDbContext _context;
         private readonly IConsumirAPIExterna _consumirAPIExterna;
-        private const string _URL_BASE_CalculadoraSophiaerpCloud = "https://calculadora.sophiaerp.cloud/api/calculadora/";
+        private const string _URL_BASE_CalculadoraSophiaerpCloud = "https://calculadora.sophiaerp.cloud/api/calculadora";
         private enum TipoEstaticas
         {
             csicp_bb001_TpTri
@@ -35,7 +39,7 @@ namespace EnviaNFeHercules.C82Application.Service.CalculoRegimeGeral
             this._consumirAPIExterna = consumirAPIExterna;
         }
 
-        public async Task CSRF01_Calculadora_OffLine_MontaDD040(string InNotaID_DD040, int TenantID)
+        public async Task<string> CSRF01_Calculadora_OffLine_MontaDD040(string InNotaID_DD040, int TenantID)
         {
             var nota = await this.GetNota(InNotaID_DD040, TenantID) ?? throw new KeyNotFoundException("Nota não encontrada.");
             var produtos = await this.GetProds_DD060(InNotaID_DD040, nota.Bb012_RFEspecial_ID, TenantID);
@@ -44,33 +48,63 @@ namespace EnviaNFeHercules.C82Application.Service.CalculoRegimeGeral
             var aa037_pis = this.GetCsicp_aa037_Imp("PIS");
             var aa037_cofins = this.GetCsicp_aa037_Imp("COFINS");
             var aa037_iss = this.GetCsicp_aa037_Imp("ISS");
+            var aa037_icms = this.GetCsicp_aa037_Imp("ICMS");
             var aa037_II = this.GetCsicp_aa037_Imp("Imposto Importação");
+            var NFCe = this.Getcsicp_dd040_TNt("NFCe");
             var estatica_sim = this.GetEstatica("SIM");
 
             var notaParaMontagem = new CSICP_DD040();
 
-            var VlrBaseCalcImposto = produtos.Aggregate(0m, (acumulador, produto) =>
+            /*como pegar o total liquido da dd060?*/
+            var VlrBaseCalcImposto = 0m;
+            foreach (var produto in produtos)
             {
-                var enumTipoCalculoImposto = StrategyCalculaImpostoBase.GetEnumTipoCalculoImposto(
-                    produto.GetProds_DD061_Imposto_ID, aa037_pis, aa037_cofins, aa037_iss, aa037_II);
+                 var enumTipoCalculoImposto = StrategyCalculaImpostoBase.GetEnumTipoCalculoImposto(
+                    produto.GetProds_DD061_Imposto_ID, aa037_icms, aa037_pis, aa037_cofins, aa037_iss, aa037_II);
 
-                return acumulador + StrategyCalculaImpostoBase.GetTipoCalculoImposto(
-                    enumTipoCalculoImposto, produto.GetProds_DD061_ValorImposto, acumulador);
-            });
+                 VlrBaseCalcImposto = StrategyCalculaImpostoBase.GetTipoCalculoImposto(
+                    enumTipoCalculoImposto, produto.GetProds_DD061_ValorImposto, VlrBaseCalcImposto,
+                    produto.dd061Vicmsufdest, produto.dd061Vfcp, produto.dd061Vfcpufdest, produto.n39Vicmsmono
+                    );
+            }
 
             var listDtoWorkItensRecord = new List<DtoWorkItensRecord>();
-            PercorreProdutosEPopulaListaParaEnviarNaAPIDeCalculoRegimeGeral(listDtoWorkItensRecord,nota, produtos, notaParaMontagem, VlrBaseCalcImposto);
+            PercorreProdutosEPopulaListaParaEnviarNaAPIDeCalculoRegimeGeral(listDtoWorkItensRecord, nota, produtos, notaParaMontagem, VlrBaseCalcImposto);
 
             var request = new DtoRequest_Postregimegeral(nota.ID!, "0.0.1", nota.DD040_Data_Emissao, 1, "", listDtoWorkItensRecord);
-            _consumirAPIExterna.Post(_URL_BASE_CalculadoraSophiaerpCloud, "regime-geral", request);
 
+            var response = await ConsumindoAPI_CalculoRegimeGeral(request);
+            var xmlOfflineGerado = await ConsumindoAPI_GerarXML_OffLine(nota, NFCe, response);
+            return xmlOfflineGerado is null ? throw new Exception("Erro ao gerar XML OffLine.") : xmlOfflineGerado;
         }
 
 
 
 
-
         #region Metodos Privados
+        private async Task<string?> ConsumindoAPI_GerarXML_OffLine(DtoGetNotaDD040 nota, int NFCe, DtoResponse_PostRegimeGeral? request)
+        {
+            if (request == null) return null;
+            var dictQueryParams = new Dictionary<string, object>
+            {
+                { "tipo", nota.TipoNotaID == NFCe ? "nfce" : "nfe" }
+            };
+            var response = await _consumirAPIExterna
+                .Post<string, DtoResponse_PostRegimeGeral>
+                (_URL_BASE_CalculadoraSophiaerpCloud, "xml/generate", request, dictQueryParams);
+
+            return response;
+        }
+
+        private async Task<DtoResponse_PostRegimeGeral?> ConsumindoAPI_CalculoRegimeGeral(DtoRequest_Postregimegeral request)
+        {
+            return await _consumirAPIExterna
+                            .Post<DtoResponse_PostRegimeGeral, DtoRequest_Postregimegeral>
+                            (_URL_BASE_CalculadoraSophiaerpCloud, "regime-geral", request);
+        }
+
+
+
         private static void PercorreProdutosEPopulaListaParaEnviarNaAPIDeCalculoRegimeGeral(List<DtoWorkItensRecord> listDtoWorkItensRecord, DtoGetNotaDD040 nota, ICollection<DtoGetProdutosDD060> produtos, CSICP_DD040 notaParaMontagem, decimal VlrBaseCalcImposto)
         {
             foreach (var produto in produtos)
@@ -81,17 +115,18 @@ namespace EnviaNFeHercules.C82Application.Service.CalculoRegimeGeral
                         produto.dd060Sequencia,
                         produto.gg021Ncm,
                         "",
-                        produto.Get_AA144cClassTrib_cstibsCbs,
-                        produto.Get_AA144cClassTrib_cclasstrib,
+                        produto.Get_AA144cClassTrib_cstibsCbs.ToString(),
+                        produto.Get_AA144cClassTrib_cclasstrib.ToString(),
                         VlrBaseCalcImposto,
                         produto.dd060Quantidade,
                         produto.gg007Unidade,
                         new ImpostoSeletivoDto(
-                            produto.Out_Reg_AA144_cClasTrib_IS?.CstibsCbs,
-                            VlrBaseCalcImposto,
+                            produto.Out_Reg_AA144_cClasTrib_IS?.CstibsCbs.ToString(),
+                            VlrBaseCalcImposto < 0 ? VlrBaseCalcImposto * -1 : VlrBaseCalcImposto,
                             produto.dd060Quantidade,
                             produto.gg007Unidade,
-                            0m),
+                            0m,
+                            produto.Out_Reg_AA144_cClasTrib_IS?.Cclasstrib.ToString()),
                         new TributacaoRegularDto(
                             "000",
                             "000000"
@@ -118,6 +153,17 @@ namespace EnviaNFeHercules.C82Application.Service.CalculoRegimeGeral
                 .FirstOrDefault();
 
             return items;
+        }
+
+        private int Getcsicp_dd040_TNt(string Label)
+        {
+            var items = this._context.OsusrTeiCsicpDd040Tnts
+                .Where(e => e.Label == Label)
+                .AsNoTracking()
+                .Select(x => x.Id)
+                .FirstOrDefault();
+
+            return items ?? -1;
         }
         private int GetEstatica(string Label)
         {
@@ -167,7 +213,8 @@ namespace EnviaNFeHercules.C82Application.Service.CalculoRegimeGeral
                             NavBB012.bb012_RFEspecial_ID,
                             dd040.DD040_TPDEBCREID,
                             dd040.Dd040Id,
-                            dd040.Dd040DataEmissao);
+                            dd040.Dd040DataEmissao,
+                            dd040.Dd040TiponotaId);
             return await query.AsNoTracking().FirstOrDefaultAsync();
         }
 
@@ -220,7 +267,7 @@ namespace EnviaNFeHercules.C82Application.Service.CalculoRegimeGeral
 
                         join Get_AA144cClassTrib_IS in this._context.OsusrE9aCsicpAa144s
                         on bb027Imp_full.Bb027bIsRfclasstribId2 equals Get_AA144cClassTrib_IS.Id into aa144Group_is
-                        from Get_AA144cClassTrib_IS in aa144Group.DefaultIfEmpty()
+                        from Get_AA144cClassTrib_IS in aa144Group_is.DefaultIfEmpty()
 
                         where gg520.TenantId == TenantID && dd060.Dd040Id == InNotaID_DD040
                         where dd060.Dd060Isfixarcalcimp == false
@@ -240,7 +287,13 @@ namespace EnviaNFeHercules.C82Application.Service.CalculoRegimeGeral
                             dd060.Dd060Quantidade,
                             gg007.Gg007Unidade,
                             Get_AA144cClassTrib_IS.CstibsCbs,
-                            Get_AA144cClassTrib_IS.Cclasstrib
+                            Get_AA144cClassTrib_IS.Cclasstrib,
+
+                            dd061.Dd061Vicmsufdest,
+                            dd061.Dd061Vfcp,
+                            dd061.Dd061Vfcpufdest,
+                            dd061.N39Vicmsmono,
+                            dd060.Dd060TotalLiquido
                             );
 
             return await query.ToListAsync();

@@ -11,6 +11,8 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
         PIS,
         COFINS,
         ISS,
-        II
+        II,
+        ICMS,
+        None
     }
 }
