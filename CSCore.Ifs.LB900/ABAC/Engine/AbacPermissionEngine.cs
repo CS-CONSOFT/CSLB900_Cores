@@ -59,7 +59,11 @@ public class AbacPermissionEngine
             // 6. Avaliar políticas por prioridade (maior prioridade primeiro)
             if (!policies.Any()) return AbacPermissionResult.Deny("Nenhuma politica encontrada!");
 
-            #warning O(N) problema, tem que resolver isso!!
+            var dictPolicies = policies.OrderByDescending(r => r.Priority).ToDictionary(
+                p => p.Id,
+                p => p.NavAbacRules?.OrderByDescending(r => r.Priority ?? 0)
+            );
+
             foreach (var policy in policies.OrderByDescending(p => p.Priority ?? 0))
             {
                 var rules = policy.NavAbacRules ?? [];
