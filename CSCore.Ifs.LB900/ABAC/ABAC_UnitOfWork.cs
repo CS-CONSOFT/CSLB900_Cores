@@ -15,7 +15,7 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
         private readonly ICS_GenerateId _idGenerator;
         private readonly SY030RepositoryImpl _sy030Repository;
         private readonly IHandleContextAttributes IHandleContextAttributes;
-        private readonly IRepositorioBaseV2ComGets<OsusrE9aCsicpSy031> _sy031Repository;
+        private readonly SY031RepositoryImpl _sy031Repository;
         private readonly IRepositorioBaseV2ComGets<OsusrE9aCsicpSy032> _sy032Repository;
         private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCE> _sy035Repository;
         private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEACTIONS> _sy036Repository;
@@ -34,7 +34,7 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
             ICS_GenerateId idGenerator,
             SY030RepositoryImpl sy030Repository,
             IHandleContextAttributes handleContextAttributes,
-            IRepositorioBaseV2ComGets<OsusrE9aCsicpSy031> sy031Repository,
+            SY031RepositoryImpl sy031Repository,
             IRepositorioBaseV2ComGets<OsusrE9aCsicpSy032> sy032Repository,
             IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCE> sy035Repository,
             IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEACTIONS> sy036Repository,
@@ -69,7 +69,7 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
 
         public SY030RepositoryImpl GetSY030Repository => _sy030Repository;
 
-        public IRepositorioBaseV2ComGets<OsusrE9aCsicpSy031> GetSY031Repository => _sy031Repository;
+        public SY031RepositoryImpl GetSY031Repository => _sy031Repository;
 
         public IRepositorioBaseV2ComGets<OsusrE9aCsicpSy032> GetSY032Repository => _sy032Repository;
 
