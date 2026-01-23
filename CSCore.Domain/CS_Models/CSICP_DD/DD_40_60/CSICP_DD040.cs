@@ -31,7 +31,7 @@ public partial class CSICP_DD040
 
     public int? Dd040NoCupom { get; set; }
 
-    public DateTime? Dd040DataEmissao { get; set; }
+    public DateTime Dd040DataEmissao { get; set; }
 
     public DateTime? Dd040Datahoraemissao { get; set; }
 

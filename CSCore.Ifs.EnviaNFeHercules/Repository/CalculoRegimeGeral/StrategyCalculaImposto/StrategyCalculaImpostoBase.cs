@@ -9,7 +9,8 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
 {
     public static class StrategyCalculaImpostoBase
     {
-        public static decimal GetTipoCalculoImposto(EnumTipoCalculoImposto enumTipoCalculoImposto)
+
+        public static decimal GetTipoCalculoImposto(EnumTipoCalculoImposto enumTipoCalculoImposto, decimal DD061_CurrentImposto, decimal VlrBaseCalcImposto)
         {
             ICalculaImposto tipoCalculoImpost = enumTipoCalculoImposto switch
             {
@@ -19,7 +20,28 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
                 EnumTipoCalculoImposto.II => new StrategyCalculaImpostoII(),
                 _ => throw new NotImplementedException($"Tipo de Cálculo de Imposto {enumTipoCalculoImposto} não implementado."),
             };
-            return tipoCalculoImpost.CalculaImposto();
+            return tipoCalculoImpost.CalculaImposto(DD061_CurrentImposto, VlrBaseCalcImposto);
+        }
+
+        /// <summary>
+        /// Determina o EnumTipoCalculoImposto com base no ID do imposto e nas entidades correspondentes.
+        /// Isso é usado no padrão Strategy para selecionar a estratégia correta de cálculo de imposto.
+        /// </summary>
+        public static EnumTipoCalculoImposto GetEnumTipoCalculoImposto(
+            int? DD061_Imposto_ID,
+            int? Entities_PIS,
+            int? Entities_COFINS,
+            int? Entities_ISS,
+            int? Entities_II)
+        {
+            return DD061_Imposto_ID switch
+            {
+                var id when id == Entities_PIS => EnumTipoCalculoImposto.PIS,
+                var id when id == Entities_COFINS => EnumTipoCalculoImposto.COFINS,
+                var id when id == Entities_ISS => EnumTipoCalculoImposto.ISS,
+                var id when id == Entities_II => EnumTipoCalculoImposto.II,
+                _ => throw new NotImplementedException($"Tipo de Cálculo de Imposto não encontrado no Enum."),
+            };
         }
     }
 }
