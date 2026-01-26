@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Json;
+using System.Text.Json;
+using CSLB900.MSTools.ConsomeAPI.Exceptions;
 
 namespace CSLB900.MSTools.ConsomeAPI
 {
@@ -76,10 +78,33 @@ namespace CSLB900.MSTools.ConsomeAPI
                         var statusCode = (int)response.StatusCode;
                         
                         // Log para debug
-                        var jsonDebug = System.Text.Json.JsonSerializer.Serialize(requisicao);
+                        var jsonDebug = JsonSerializer.Serialize(requisicao);
                         Console.WriteLine($"[ERRO {statusCode}] Endpoint: {endpointUrl}");
                         Console.WriteLine($"[ERRO {statusCode}] JSON enviado: {jsonDebug}");
                         Console.WriteLine($"[ERRO {statusCode}] Resposta: {erroResposta}");
+                        
+                        // Tenta parsear a resposta estruturada da API externa
+                        try
+                        {
+                            var errorResponse = JsonSerializer.Deserialize<ApiExternaErrorResponse>(erroResposta, 
+                                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                            
+                            if (errorResponse != null)
+                            {
+                                throw new ApiExternaException(
+                                    statusCode,
+                                    errorResponse.Type,
+                                    errorResponse.Title,
+                                    errorResponse.Detail,
+                                    errorResponse.Instance,
+                                    errorResponse.Timestamp
+                                );
+                            }
+                        }
+                        catch (JsonException)
+                        {
+                            // Se não conseguir parsear, usa o tratamento padrão
+                        }
                         
                         // Não faz retry em erros 4xx (erro do cliente)
                         if (statusCode >= 400 && statusCode < 500)

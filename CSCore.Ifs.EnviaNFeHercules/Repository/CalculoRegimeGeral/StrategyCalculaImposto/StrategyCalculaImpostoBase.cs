@@ -11,24 +11,39 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
     {
 
         public static decimal GetTipoCalculoImposto(
-    EnumTipoCalculoImposto enumTipoCalculoImposto,
-    decimal DD061_CurrentImposto,
-    decimal VlrBaseCalcImposto,
-    decimal dd061_vICMSUFDest,
-    decimal dd061_vFCP,
-    decimal dd061_vFCPUFDest,
-    decimal N39_vICMSMono)
+            EnumTipoCalculoImposto enumTipoCalculoImposto,
+            decimal? DD061_CurrentImposto,
+            decimal? VlrBaseCalcImposto,
+            decimal? dd061_vICMSUFDest,
+            decimal? dd061_vFCP,
+            decimal? dd061_vFCPUFDest,
+            decimal? N39_vICMSMono,
+            bool IsServico)
         {
-            ICalculaImposto tipoCalculoImpost = enumTipoCalculoImposto switch
+            ICalculaImposto tipoCalculoImpost;
+            if (IsServico)
             {
-                EnumTipoCalculoImposto.PIS => new StrategyCalculaImpostoPIS(),
-                EnumTipoCalculoImposto.COFINS => new StrategyCalculaImpostoCOFINS(),
-                EnumTipoCalculoImposto.ISS => new StrategyCalculaImpostoISS(),
-                EnumTipoCalculoImposto.II => new StrategyCalculaImpostoII(),
-                EnumTipoCalculoImposto.ICMS => new StrategyCalculaImpostoICMS(dd061_vICMSUFDest, dd061_vFCP, dd061_vFCPUFDest, N39_vICMSMono),
-                EnumTipoCalculoImposto.None => new StrategyNoneCalcula(),
-                _ => throw new NotImplementedException($"Tipo de Cálculo de Imposto {enumTipoCalculoImposto} não implementado."),
-            };
+                tipoCalculoImpost = enumTipoCalculoImposto switch
+                {
+                    EnumTipoCalculoImposto.PIS => new StrategyCalculaImpostoPIS(),
+                    EnumTipoCalculoImposto.COFINS => new StrategyCalculaImpostoCOFINS(),
+                    EnumTipoCalculoImposto.ISS => new StrategyCalculaImpostoISS(),
+                    EnumTipoCalculoImposto.None => new StrategyNoneCalcula(),
+                    _ => throw new NotImplementedException($"Tipo de Cálculo de Imposto {enumTipoCalculoImposto} não implementado."),
+                };
+            }
+            else
+            {
+                tipoCalculoImpost = enumTipoCalculoImposto switch
+                {
+                    EnumTipoCalculoImposto.PIS => new StrategyCalculaImpostoPIS(),
+                    EnumTipoCalculoImposto.COFINS => new StrategyCalculaImpostoCOFINS(),
+                    EnumTipoCalculoImposto.II => new StrategyCalculaImpostoII(),
+                    EnumTipoCalculoImposto.ICMS => new StrategyCalculaImpostoICMS(dd061_vICMSUFDest, dd061_vFCP, dd061_vFCPUFDest, N39_vICMSMono),
+                    EnumTipoCalculoImposto.None => new StrategyNoneCalcula(),
+                    _ => throw new NotImplementedException($"Tipo de Cálculo de Imposto {enumTipoCalculoImposto} não implementado."),
+                };
+            }
             return tipoCalculoImpost.CalculaImposto(DD061_CurrentImposto, VlrBaseCalcImposto);
         }
 

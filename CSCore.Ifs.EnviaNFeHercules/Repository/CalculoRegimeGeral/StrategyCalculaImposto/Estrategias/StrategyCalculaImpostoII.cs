@@ -8,7 +8,7 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
 {
     public class StrategyCalculaImpostoII : ICalculaImposto
     {
-        public decimal CalculaImposto(decimal DD061_ValorImposto, decimal VlrBaseCalcImposto)
-        => VlrBaseCalcImposto + DD061_ValorImposto;
+        public decimal CalculaImposto(decimal? DD061_ValorImposto, decimal? VlrBaseCalcImposto)
+        => (VlrBaseCalcImposto ?? 0m) + (DD061_ValorImposto ?? 0m);
     }
 }

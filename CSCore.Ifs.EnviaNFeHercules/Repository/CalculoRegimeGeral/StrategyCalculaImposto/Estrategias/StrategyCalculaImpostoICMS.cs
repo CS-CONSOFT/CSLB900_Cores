@@ -13,18 +13,18 @@ namespace CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalc
         private readonly decimal _vFCPUFDest;
         private readonly decimal _vICMSMono;
 
-        public StrategyCalculaImpostoICMS(decimal vICMSUFDest, decimal vFCP, decimal vFCPUFDest, decimal vICMSMono)
+        public StrategyCalculaImpostoICMS(decimal? vICMSUFDest, decimal? vFCP, decimal? vFCPUFDest, decimal? vICMSMono)
         {
-            _vICMSUFDest = vICMSUFDest;
-            _vFCP = vFCP;
-            _vFCPUFDest = vFCPUFDest;
-            _vICMSMono = vICMSMono;
+            _vICMSUFDest = vICMSUFDest ?? 0m;
+            _vFCP = vFCP ?? 0m;
+            _vFCPUFDest = vFCPUFDest ?? 0m;
+            _vICMSMono = vICMSMono ?? 0m;
         }
 
-        public decimal CalculaImposto(decimal DD061_ValorImposto, decimal VlrBaseCalcImposto)
+        public decimal CalculaImposto(decimal? DD061_ValorImposto, decimal? VlrBaseCalcImposto)
         {
-            return VlrBaseCalcImposto
-                - DD061_ValorImposto
+            return (VlrBaseCalcImposto ?? 0m)
+                - (DD061_ValorImposto ?? 0m)
                 - _vICMSUFDest
                 - _vFCP
                 - _vFCPUFDest
