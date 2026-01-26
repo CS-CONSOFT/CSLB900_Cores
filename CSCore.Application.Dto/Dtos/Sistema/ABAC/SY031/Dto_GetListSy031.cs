@@ -1,4 +1,6 @@
 using CSCore.Application.Dto.Dtos.Sistema.ABAC.SY030;
+using CSCore.Application.Dto.Dtos.Sistema.SY001.SY001;
+using CSCore.Application.Dto.Mapper.Sistema;
 using CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 using CSLB900.MSTools.InterfaceBase;
 
@@ -13,6 +15,7 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY031
         public bool? Sy031Isactive { get; init; }
 
         public Dto_GetSy030? NavGrupo { get; init; }
+        public Dto_GetSY001Simples? NavUsuario { get; init; }
         public static Dto_GetListSy031 FromEntity(OsusrE9aCsicpSy031 entity)
         {
             return new Dto_GetListSy031
@@ -22,7 +25,8 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY031
                 Sy031Usuarioid = entity.Sy031Usuarioid,
                 Sy031Grupoid = entity.Sy031Grupoid,
                 Sy031Isactive = entity.Sy031Isactive,
-                NavGrupo = entity.NavGrupo_SY030 != null ? Dto_GetSy030.FromEntity(entity.NavGrupo_SY030) : null
+                NavGrupo = entity.NavGrupo_SY030 != null ? Dto_GetSy030.FromEntity(entity.NavGrupo_SY030) : null,
+                NavUsuario = entity.NavUsuario_SY001?.ToDtoGetSimples()
             };
         }
     }

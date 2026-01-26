@@ -26,6 +26,7 @@ namespace CSCore.Ifs.LB900.ABAC.Repository
         {
             var query = this._appDbContext.OsusrE9aCsicpSy031s
                 .Include(e => e.NavGrupo_SY030)
+                .Include(e => e.NavUsuario_SY001)
                 .AsNoTracking().AsQueryable();
             query = AplicaFiltrosDinamicos(query, filtros);
 
