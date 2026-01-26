@@ -12,10 +12,7 @@
 
 	<ItemGroup>
 	  <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\CSCore.Logger\CS_Logs.csproj" />
+	  <PackageReference Include="Serilog" Version="4.3.0" />
 	</ItemGroup>
 
 </Project>

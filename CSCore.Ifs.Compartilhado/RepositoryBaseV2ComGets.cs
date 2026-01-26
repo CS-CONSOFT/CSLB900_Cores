@@ -87,6 +87,7 @@ namespace CSCore.Ifs.Compartilhado
 
             foreach (var item in filtros)
             {
+                if (item.ValorPropriedade == null) continue;
                 var property = Expression.Property(parameter, item.NomePropriedade);
                 var propertyType = property.Type;
 

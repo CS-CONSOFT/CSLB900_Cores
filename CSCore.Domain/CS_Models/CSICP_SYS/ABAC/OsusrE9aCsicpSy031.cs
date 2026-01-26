@@ -9,7 +9,7 @@ public partial class OsusrE9aCsicpSy031
     public int TenantId { get; set; }
 
     public string Id { get; set; } = null!;
-
+    [ForeignKey("NavUsuario_SY001")]
     public string? Sy031Usuarioid { get; set; }
 
     [ForeignKey("NavGrupo_SY030")]
@@ -18,4 +18,5 @@ public partial class OsusrE9aCsicpSy031
     public bool? Sy031Isactive { get; set; }
 
     public OsusrE9aCsicpSy030? NavGrupo_SY030 { get; set; }
+    public Csicp_Sy001? NavUsuario_SY001 { get; set; }
 }
