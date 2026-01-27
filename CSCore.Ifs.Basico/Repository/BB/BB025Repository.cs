@@ -110,6 +110,7 @@ namespace CSCore.Ifs.Repository.BB
                 .AsNoTracking()
                 .Include(e => e.Bb025Transacao)
                 .Include(e => e.osusr66CSpedInAjIcm)
+                .Include(e => e.NavBb025ModdoctofiscalId)
                 .Where(e => e.TenantId == tenant)
                 .OrderBy(e => e.Bb025Descricao);
         }
