@@ -22,7 +22,12 @@ public partial class AppDbContext : DbContext
     {
         var loggerFactory = LoggerFactory.Create(builder =>
         {
-            builder.AddSerilog();
+            builder
+                .AddConsole()
+                .AddDebug()
+                .AddEventSourceLogger()
+                .SetMinimumLevel(LogLevel.Information)
+                .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Information);
         });
 
         optionsBuilder

@@ -71,18 +71,12 @@ namespace CSLB900.MSTools.ConsomeAPI
                     
                     // ENVIA O OBJETO DIRETAMENTE (não serializa antes)
                     var response = await client.PostAsJsonAsync(endpointUrl, requisicao);
-
+                    
                     if (!response.IsSuccessStatusCode)
                     {
                         var erroResposta = await response.Content.ReadAsStringAsync();
                         var statusCode = (int)response.StatusCode;
-                        
-                        // Log para debug
-                        var jsonDebug = JsonSerializer.Serialize(requisicao);
-                        Console.WriteLine($"[ERRO {statusCode}] Endpoint: {endpointUrl}");
-                        Console.WriteLine($"[ERRO {statusCode}] JSON enviado: {jsonDebug}");
-                        Console.WriteLine($"[ERRO {statusCode}] Resposta: {erroResposta}");
-                        
+
                         // Tenta parsear a resposta estruturada da API externa
                         try
                         {
@@ -120,6 +114,11 @@ namespace CSLB900.MSTools.ConsomeAPI
                         }
                         
                         throw new Exception($"Erro {statusCode} após {maxTentativas} tentativas. Resposta: {erroResposta}");
+                    }
+                    if (typeof(TRetorno) == typeof(string))
+                    {
+                        var conteudo = await response.Content.ReadAsStringAsync();
+                        return (TRetorno)(object)conteudo;
                     }
 
                     return await response.Content.ReadFromJsonAsync<TRetorno>();
