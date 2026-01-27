@@ -3,7 +3,6 @@ using CSCore.Domain.CS_Models.CSICP_TT;
 using CSCore.Ifs.Compartilhado.CS_Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Serilog;
 namespace CSCore.Ifs.CS_Context;
 
 public partial class AppDbContext : DbContext
@@ -22,7 +21,8 @@ public partial class AppDbContext : DbContext
     {
         var loggerFactory = LoggerFactory.Create(builder =>
         {
-            builder.AddSerilog();
+            builder.AddConsole();
+            builder.AddDebug();
         });
 
         optionsBuilder

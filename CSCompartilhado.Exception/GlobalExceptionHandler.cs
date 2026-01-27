@@ -1,13 +1,10 @@
-﻿using CLT900DbCore.CSCore.Domain.ModelDBClinicTime;
-using CSCore.Ex.Personalizada;
+﻿using CSCore.Ex.Personalizada;
+using CSCore.Ifs.CS_Context;
 using CSLB900.MSTools.Util;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 
