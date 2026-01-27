@@ -1,4 +1,6 @@
-﻿namespace CSCore.Domain;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CSCore.Domain;
 
 public partial class CSICP_Bb025
 {
@@ -34,11 +36,13 @@ public partial class CSICP_Bb025
 
     public bool? Bb025Isactive { get; set; }
 
+    [ForeignKey("NavBb025ModdoctofiscalId")]
     public int? Bb025ModdoctofiscalId { get; set; }
 
     public int? Bb025Valorizarprecoid { get; set; }
 
     public CSICP_Bb027? Bb025Transacao { get; set; }
+    public OsusrNnxSpedInDocIcm? NavBb025ModdoctofiscalId { get; set; }
     public Osusr66cSpedInAjIcm? osusr66CSpedInAjIcm { get; set; }
 
     //public ICollection<CSICP_Bb024> OsusrE9aCsicpBb024s { get; set; } = new List<CSICP_Bb024>();
