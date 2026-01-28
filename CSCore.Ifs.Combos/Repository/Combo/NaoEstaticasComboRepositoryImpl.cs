@@ -680,12 +680,12 @@ namespace CSCore.Ifs.Repository.Combo
                     .OrderBy(c => c.Attributename)
                     .Select(c => new { Title = c.Attributename != null && c.Attributevalue != null ? c.Attributename + "-" + c.Attributevalue : c.Attributename ?? "---", Id = c.Id }),
 
-                ComboABAC.Sy038 => _appDbContext.OsusrE9aCsicpSy038s
+                ComboABAC.Sy038 => _appDbContext.cssph_policies
                     .Where(c => c.TenantId == tenant)
                     .OrderBy(c => c.Name)
                     .Select(c => new { Title = c.Name ?? c.Descripton ?? "---", Id = c.Id }),
 
-                ComboABAC.Sy039 => _appDbContext.OsusrE9aCsicpSy039s
+                ComboABAC.Sy039 => _appDbContext.cssph_policies_rules
                     .Where(c => c.TenantId == tenant)
                     .OrderBy(c => c.Rulename)
                     .Select(c => new { Title = c.Rulename ?? "---", Id = c.Id }),

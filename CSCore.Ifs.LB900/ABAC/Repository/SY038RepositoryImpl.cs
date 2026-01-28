@@ -11,15 +11,15 @@ using System.Threading.Tasks;
 
 namespace CSCore.Ifs.LB900.ABAC.Repository
 {
-    public sealed class SY038RepositoryImpl : RepositoryBaseV2ComGets<OsusrE9aCsicpSy038>
+    public sealed class SY038RepositoryImpl : RepositoryBaseV2ComGets<CSSPH_POLICYS>
     {
         public SY038RepositoryImpl(AppDbContext appDbContext, string IdIdentifierName = "Id", string TenantIdentifierName = "TenantId") : base(appDbContext, IdIdentifierName, TenantIdentifierName)
         {
         }
 
-        public override async Task<IEnumerable<OsusrE9aCsicpSy038>> GetAllAsync(IEnumerable<FiltrosDinamicos> filtros)
+        public override async Task<IEnumerable<CSSPH_POLICYS>> GetAllAsync(IEnumerable<FiltrosDinamicos> filtros)
         {
-            var query = this._appDbContext.OsusrE9aCsicpSy038s
+            var query = this._appDbContext.cssph_policies
                 .AsNoTracking()
                 .Include(e => e.NavAbacRules)
                 .AsQueryable();

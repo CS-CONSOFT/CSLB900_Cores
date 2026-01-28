@@ -3,7 +3,7 @@ using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY039
 {
-    public record Dto_GetListSy039 : IConverteParaDTO<OsusrE9aCsicpSy039, Dto_GetListSy039>
+    public record Dto_GetListSy039 : IConverteParaDTO<CSSPH_POLICIESRULES, Dto_GetListSy039>
     {
         public int? TenantId { get; init; }
         public string Id { get; init; } = null!;
@@ -15,7 +15,7 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY039
         public string? Actions { get; init; }
         public string? Resources { get; init; }
 
-        public static Dto_GetListSy039 FromEntity(OsusrE9aCsicpSy039 entity)
+        public static Dto_GetListSy039 FromEntity(CSSPH_POLICIESRULES entity)
         {
             return new Dto_GetListSy039
             {

@@ -21,7 +21,7 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
         private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEACTIONS> _sy036Repository;
         private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEATRIB> _sy037Repository;
         private readonly SY038RepositoryImpl _sy038Repository;
-        private readonly IRepositorioBaseV2ComGets<OsusrE9aCsicpSy039> _sy039Repository;
+        private readonly IRepositorioBaseV2ComGets<CSSPH_POLICIESRULES> _sy039Repository;
         private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERS> _sy040Repository;
         private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_OPERADORES> _sy041Repository;
         private readonly IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERSOPERADORES> _sy042Repository;
@@ -40,7 +40,7 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
             IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEACTIONS> sy036Repository,
             IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEATRIB> sy037Repository,
             SY038RepositoryImpl sy038Repository,
-            IRepositorioBaseV2ComGets<OsusrE9aCsicpSy039> sy039Repository,
+            IRepositorioBaseV2ComGets<CSSPH_POLICIESRULES> sy039Repository,
             IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERS> sy040Repository,
             IRepositorioBaseV2ComGets<ABAC_CSSPH_OPERADORES> sy041Repository,
             IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERSOPERADORES> sy042Repository,
@@ -81,7 +81,7 @@ namespace CSSY103.C82Application.Service.UnitOfWork.ABAC
 
         public SY038RepositoryImpl GetSY038Repository => _sy038Repository;
 
-        public IRepositorioBaseV2ComGets<OsusrE9aCsicpSy039> GetSY039Repository => _sy039Repository;
+        public IRepositorioBaseV2ComGets<CSSPH_POLICIESRULES> GetSY039Repository => _sy039Repository;
 
         public IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERS> GetABAC_CSSPH_FILTERSRepository => _sy040Repository;
 
