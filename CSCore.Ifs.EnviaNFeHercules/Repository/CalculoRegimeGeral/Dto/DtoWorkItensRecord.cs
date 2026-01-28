@@ -3,7 +3,7 @@
     public record class DtoWorkItensRecord
     {
         public int? numero { get; init; }
-        public decimal? ncm { get; init; }
+        public string? ncm { get; init; }
         public string? nbs { get; init; }
         public string? cst { get; init; }
         public string? cClassTrib { get; init; }
@@ -29,7 +29,7 @@
         )
         {
             this.numero = numero;
-            this.ncm = ncm;
+            this.ncm = NormalizeNcm(ncm ?? 0);
             this.nbs = nbs;
             this.cst = NormalizeCst(cst);
             this.cClassTrib = NormalizeCClassTrib(cClassTrib);
@@ -40,6 +40,8 @@
             this.tributacaoRegular = tributacaoRegular;
         }
 
+        private static string NormalizeNcm(decimal value) =>
+            (value.ToString()).PadLeft(8, '0');
         private static string NormalizeCst(string? value) =>
             (string.IsNullOrWhiteSpace(value) ? "0" : value).PadLeft(3, '0');
 

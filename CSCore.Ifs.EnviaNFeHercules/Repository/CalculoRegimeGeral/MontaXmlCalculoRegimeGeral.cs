@@ -12,12 +12,14 @@ using CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalculaI
 using CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalculaImposto.Dtos;
 using CSLB900.MSTools.ConsomeAPI;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using static CSCore.Ifs.EnviaNFeHercules.Repository.CalculoRegimeGeral.StrategyCalculaImposto.Dtos.DtoGetProdutosDD060;
 
@@ -65,6 +67,7 @@ namespace EnviaNFeHercules.C82Application.Service.CalculoRegimeGeral
             var request = new DtoRequest_Postregimegeral(nota.ID!, "0.0.1", nota.DD040_Data_Emissao, nota.Municipio, nota.UF, listDtoWorkItensRecord);
 
             var response = await ConsumindoAPI_CalculoRegimeGeral(request);
+            var jsonResponse = JsonSerializer.Serialize(response);
             var xmlOfflineGerado = await ConsumindoAPI_GerarXML_OffLine(nota, NFCe, response);
             return xmlOfflineGerado is null ? throw new Exception("Erro ao gerar XML OffLine.") : xmlOfflineGerado;
         }
