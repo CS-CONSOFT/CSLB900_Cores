@@ -670,8 +670,10 @@ namespace CSCore.Ifs.Repository.Combo
 
                 ComboABAC.Sy031 => _appDbContext.OsusrE9aCsicpSy031s
                     .Where(c => c.TenantId == tenant)
+                    .Include(e => e.NavGrupo_SY030)
+                    .Include(e => e.NavUsuario_SY001)
                     .OrderBy(c => c.Id)
-                    .Select(c => new { Title = "---", Id = c.Id }),
+                    .Select(c => new { Title = c.NavGrupo_SY030.Sy030Name + " - " + c.NavUsuario_SY001.Sy001Nome, Id = c.Id }),
 
                 ComboABAC.Sy032 => _appDbContext.OsusrE9aCsicpSy032s
                     .Where(c => c.TenantId == tenant)
