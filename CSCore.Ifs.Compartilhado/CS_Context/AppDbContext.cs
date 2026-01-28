@@ -21,8 +21,12 @@ public partial class AppDbContext : DbContext
     {
         var loggerFactory = LoggerFactory.Create(builder =>
         {
-            builder.AddConsole();
-            builder.AddDebug();
+            builder
+                .AddConsole()
+                .AddDebug()
+                .AddEventSourceLogger()
+                .SetMinimumLevel(LogLevel.Information)
+                .AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Information);
         });
 
         optionsBuilder
