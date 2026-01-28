@@ -15,4 +15,9 @@
 	  <PackageReference Include="Serilog" Version="4.3.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="SkillsIA\Financeiros\" />
+	  <Folder Include="SkillsIA\System\" />
+	</ItemGroup>
+
 </Project>
