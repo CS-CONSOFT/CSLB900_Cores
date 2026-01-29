@@ -39,6 +39,20 @@ namespace CSCore.Ifs.FF.Repository.FF00X
             return (await query.ToListAsync(), count);
         }
 
+        public async Task<(IEnumerable<CSICP_FF003>, int)> GetListAsyncPeloTpEspecie(int tenant, int page, int pageSize, int tipoEspecie)
+        {
+            IQueryable<CSICP_FF003> query = GetQueryBase(tenant);
+            query = FiltraQuandoExisteFiltro(null,tipoEspecie, query);
+
+            query = query.OrderBy(e => e.Ff003Descresumida);
+
+            var queryCount = query;
+            var count = queryCount.Count();
+            query = query.PaginacaoNoBanco(page, pageSize);
+
+            return (await query.ToListAsync(), count);
+        }
+
         private static IQueryable<CSICP_FF003> FiltraQuandoExisteFiltro(string? descricao, 
             int? tipoEspecie, IQueryable<CSICP_FF003> query)
         {
@@ -172,5 +186,7 @@ namespace CSCore.Ifs.FF.Repository.FF00X
                        } : null
                    };
         }
+
+     
     }
 }

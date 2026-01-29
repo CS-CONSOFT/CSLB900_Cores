@@ -106,9 +106,9 @@ namespace CSCore.Ifs.CS_Context
 
         public DbSet<ABAC_CSSPH_RESOURCEATRIB> ABAC_CSSPH_RESOURCEATRIB { get; set; }
 
-        public DbSet<OsusrE9aCsicpSy038> OsusrE9aCsicpSy038s { get; set; }
+        public DbSet<CSSPH_POLICYS> cssph_policies { get; set; }
 
-        public DbSet<OsusrE9aCsicpSy039> OsusrE9aCsicpSy039s { get; set; }
+        public DbSet<CSSPH_POLICIESRULES> cssph_policies_rules { get; set; }
 
         public DbSet<ABAC_CSSPH_FILTERS> ABAC_CSSPH_FILTERS { get; set; }
 
@@ -204,9 +204,11 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
             });
 
-            modelBuilder.Entity<OsusrE9aCsicpSy038>(entity =>
+            //cssph_policies
+            modelBuilder.Entity<CSSPH_POLICYS>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_SY038");
+                
+                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_POLICYS");
 
                 entity.ToTable("OSUSR_E9A_CSICP_SY038");
 
@@ -233,9 +235,9 @@ namespace CSCore.Ifs.CS_Context
                 entity.HasMany(e => e.NavAbacRules).WithOne().HasForeignKey(e => e.Policyid).IsRequired();
             });
 
-            modelBuilder.Entity<OsusrE9aCsicpSy039>(entity =>
+            modelBuilder.Entity<CSSPH_POLICIESRULES>(entity =>
             {
-                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_E9A_CSICP_SY039");
+                entity.HasKey(e => e.Id).HasName("OSUSR_E9A_CSSPH_POLICIESRULES");
 
                 entity.ToTable("OSUSR_E9A_CSICP_SY039");
 

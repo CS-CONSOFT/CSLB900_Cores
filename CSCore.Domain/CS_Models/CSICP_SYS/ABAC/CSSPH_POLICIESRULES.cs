@@ -20,7 +20,7 @@ public interface IAbacStaticEvaluator
               IEnumerable<ABAC_ContextAttributes> contextAttributes);
 }
 
-public partial class OsusrE9aCsicpSy039
+public partial class CSSPH_POLICIESRULES
 {
     public int? TenantId { get; set; }
 

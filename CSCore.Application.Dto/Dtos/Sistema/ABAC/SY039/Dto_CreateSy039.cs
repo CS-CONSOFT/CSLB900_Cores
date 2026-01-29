@@ -3,7 +3,7 @@ using CSLB900.MSTools.InterfaceBase;
 
 namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY039
 {
-    public record Dto_CreateSy039 : IConverteParaEntidade<OsusrE9aCsicpSy039>
+    public record Dto_CreateSy039 : IConverteParaEntidade<CSSPH_POLICIESRULES>
     {
         public string? Policyid { get; init; }
         public string? Rulename { get; init; }
@@ -13,9 +13,9 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY039
         public string? Actions { get; init; }
         public string? Resources { get; init; }
 
-        public OsusrE9aCsicpSy039 ToEntity(int tenant, string? id)
+        public CSSPH_POLICIESRULES ToEntity(int tenant, string? id)
         {
-            return new OsusrE9aCsicpSy039
+            return new CSSPH_POLICIESRULES
             {
                 TenantId = tenant,
                 Id = id ?? string.Empty,

@@ -252,7 +252,7 @@ public class AbacPermissionEngine
         return await _unitOfWork.GetABAC_CSSPH_RESOURCEACTIONSRepository.GetAllAsync(filters);
     }
 
-    private async Task<IEnumerable<OsusrE9aCsicpSy038>> GetActivePoliciesAsync(int tenantId)
+    private async Task<IEnumerable<CSSPH_POLICYS>> GetActivePoliciesAsync(int tenantId)
     {
         var filters = new List<FiltrosDinamicos>
         {
@@ -273,7 +273,7 @@ public class AbacPermissionEngine
         return await _unitOfWork.GetSY038Repository.GetAllAsync(filters);
     }
 
-    private async Task<IEnumerable<OsusrE9aCsicpSy039>> GetPolicyRulesAsync(string policyId)
+    private async Task<IEnumerable<CSSPH_POLICIESRULES>> GetPolicyRulesAsync(string policyId)
     {
         var filters = new List<FiltrosDinamicos>
         {

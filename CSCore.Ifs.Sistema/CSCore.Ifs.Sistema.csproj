@@ -11,8 +11,4 @@
     <ProjectReference Include="..\CSCore.Ifs.Compartilhado\CSCore.Ifs.Compartilhado.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repository\ABAC\" />
-  </ItemGroup>
-
 </Project>

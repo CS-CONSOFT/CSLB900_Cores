@@ -17,7 +17,7 @@ namespace CSCore.Ifs.LB900.ABAC
         IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEACTIONS> GetABAC_CSSPH_RESOURCEACTIONSRepository { get; }
         IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEATRIB> GetABAC_CSSPH_RESOURCEATRIB_Repository { get; }
        
-        IRepositorioBaseV2ComGets<OsusrE9aCsicpSy039> GetSY039Repository { get; }
+        IRepositorioBaseV2ComGets<CSSPH_POLICIESRULES> GetSY039Repository { get; }
         IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERS> GetABAC_CSSPH_FILTERSRepository { get; }
         IRepositorioBaseV2ComGets<ABAC_CSSPH_OPERADORES> GetABAC_CSSPH_OPERADORESRepository { get; }
         IRepositorioBaseV2ComGets<ABAC_CSSPH_FILTERSOPERADORES> GetABAC_CSSPH_FILTERSOPERADORESRepository { get; }
