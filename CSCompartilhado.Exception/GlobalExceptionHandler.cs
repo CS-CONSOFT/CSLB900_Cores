@@ -109,8 +109,23 @@ namespace CSCore.Ex
             }
         }
 
+        private static bool IsEntityTrackingError(string message)
+        {
+            return message.Contains("cannot be tracked because another instance") &&
+                   message.Contains("is already being tracked");
+        }
 
-     
+        private static string HumanizeEntityTrackingError(string originalMessage)
+        {
+            // Extrair o nome da entidade usando regex
+            var entityMatch = System.Text.RegularExpressions.Regex.Match(
+                originalMessage,
+                @"entity type '(\w+)'");
+
+            string entityName = entityMatch.Success ? entityMatch.Groups[1].Value : "registro";
+
+            return $"Este {entityName} já está sendo processado em outra operação. Por favor, contate o suporte!";
+        }
 
         private static int DetermineStatusCodeFromMessage(string message)
         {
@@ -211,18 +226,25 @@ namespace CSCore.Ex
             // Default: 500 - Internal Server Error
             return StatusCodes.Status500InternalServerError;
         }
- 
 
-  
+
+
         private async Task GenerateExceptionResponseToClient(
-         HttpContext context,
-         int code,
-         Exception ex,
-         bool? hasToSave = true)
+  HttpContext context,
+  int code,
+  Exception ex,
+  bool? hasToSave = true)
         {
             string errorMessage = !string.IsNullOrEmpty(ex.InnerException?.Message)
                 ? ex.InnerException.Message
                 : ex.Message;
+
+            // Humanizar mensagem de erro de tracking do EF Core
+            string originalErrorMessage = errorMessage; // Guardar mensagem técnica para o log
+            if (IsEntityTrackingError(errorMessage))
+            {
+                errorMessage = HumanizeEntityTrackingError(errorMessage);
+            }
 
             context.Response.StatusCode = code;
 
@@ -234,16 +256,18 @@ namespace CSCore.Ex
             }
 
             if (hasToSave == true)
-                errorMessage = await SaveExceptionLogAsync(context, code, ex, errorMessage, tenant);
-
+            {
+                // Salva a mensagem técnica original no log, não a humanizada
+                await SaveExceptionLogAsync(context, code, ex, originalErrorMessage, tenant);
+            }
 
             await context.Response.WriteAsJsonAsync(new DtoApiResponse<object>
             {
                 Success = false,
-                Message = errorMessage
+                Message = errorMessage // Retorna mensagem humanizada para o cliente
             }, new JsonSerializerOptions
             {
-                PropertyNamingPolicy = null // Mantém a capitalização original
+                PropertyNamingPolicy = null
             });
         }
 
