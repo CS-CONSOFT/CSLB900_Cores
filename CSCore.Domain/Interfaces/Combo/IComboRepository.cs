@@ -10,6 +10,7 @@ namespace CSCore.Domain.Interfaces.Combo
     }
     public interface IComboRepository
     {
+        Task<IEnumerable<object>> GetComboFF003_TP_ESPECIE_ID(int tenant, int InTpEspecieID);
         Task<IEnumerable<object>> GetCommonListForComboBB(int tenant, ComboTypeBB comboType);
         Task<IEnumerable<object>> GetCommonListForComboBB001(
             int tenant, string sy001_usuarioID, ComboTypeBB001 comboTypeBB);
