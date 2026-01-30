@@ -1,11 +1,14 @@
 ﻿using CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 using CSCore.Domain.Interfaces.V2;
+using CSCore.Ifs.LB900.ABAC.Engine.ClassesAuxiliares;
+using CSCore.Ifs.LB900.ABAC.Engine.Conditions;
+using CSCore.Ifs.LB900.ABAC.Engine.dto;
+using CSLB900.MSTools.Util;
 using CSSY103.C82Application.Dto.ABAC.Engine;
-using CSSY103.C82Application.Service.UnitOfWork.ABAC;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
-using System.Text.Json;
 
-namespace CSSY103.C82Application.Service.ABAC.Engine;
+namespace CSCore.Ifs.LB900.ABAC.Engine;
 
 /// <summary>
 /// Engine principal de avaliação ABAC
@@ -13,6 +16,7 @@ namespace CSSY103.C82Application.Service.ABAC.Engine;
 public class AbacPermissionEngine
 {
     private readonly IABAC_UnitOfWork _unitOfWork;
+
 
     public AbacPermissionEngine(IABAC_UnitOfWork unitOfWork)
     {
@@ -27,70 +31,71 @@ public class AbacPermissionEngine
         try
         {
             // 1. Validar entrada
-            if (string.IsNullOrWhiteSpace(request.UserId))
-                return AbacPermissionResult.Deny("UserId is required");
-
-            if (string.IsNullOrWhiteSpace(request.ResourceId))
-                return AbacPermissionResult.Deny("ResourceId is required");
-
-            if (string.IsNullOrWhiteSpace(request.ActionName))
-                return AbacPermissionResult.Deny("ActionName is required");
+            var (_reqIsValid, _reqMessage) = request.IsValidRequest();
+            if (!_reqIsValid) 
+                return AbacPermissionResult.Deny(_reqMessage);
 
             // 2. Buscar recurso
             var resource = await GetResourceAsync(request.ResourceId, request.TenantId);
             if (resource == null)
                 return AbacPermissionResult.Deny($"Resource '{request.ResourceId}' not found");
 
+            // 2.1 Buscar atributos do recurso
+            var resourceAttributes = await GetResourceAttributesAsync(resource.Id);
+
             // 3. Buscar ação do recurso
             var action = await GetResourceActionAsync(resource.Id, request.ActionName);
-            if (action == null)
-                return AbacPermissionResult.Deny($"Action '{request.ActionName}' not found");
 
             // 4. Buscar políticas ativas
             var policies = await GetActivePoliciesAsync(request.TenantId);
-            if (!policies.Any())
-                return AbacPermissionResult.Deny("No active policies found");
+            // se nao tiver policde, oq fazer?
 
             // 5. Buscar atributos do usuário
             var userAttributes = await GetUserAttributesAsync(request.UserId, request.TenantId);
 
+            // busca atributos de contexto
+            var contextAttributes = this._unitOfWork.HandleContextAttributes.GetListaContextAttributes();
+
             // 6. Avaliar políticas por prioridade (maior prioridade primeiro)
+            if (!policies.Any()) return AbacPermissionResult.Deny("Nenhuma politica encontrada!");
+
+            var dictPolicies = policies.OrderByDescending(r => r.Priority).ToDictionary(
+                p => p.Id,
+                p => p.NavAbacRules?.OrderByDescending(r => r.Priority ?? 0)
+            );
+
             foreach (var policy in policies.OrderByDescending(p => p.Priority ?? 0))
             {
-                var rules = await GetPolicyRulesAsync(policy.Id);
+                var rules = policy.NavAbacRules ?? [];
+                if (rules.Count == 0) continue;
 
                 foreach (var rule in rules.OrderByDescending(r => r.Priority ?? 0))
                 {
-                    // Verificar se a regra se aplica a este recurso
-                    if (!RuleAppliesToResource(rule, resource.Id, resource.Name))
+                    if(!rule.ARegraEhAplicadaAEsseRecurso(resource.Id, resource.Name))
                         continue;
 
-                    // Verificar se a regra se aplica a esta ação
-                    if (!RuleAppliesToAction(rule, request.ActionName))
+                    if (!rule.ARegraEhAplicadaAEssaAcao(request.ActionName))
                         continue;
 
                     // Verificar condições da regra
-                    if (!string.IsNullOrWhiteSpace(rule.Conditions))
-                    {
-                        var conditionsMet = EvaluateConditions(rule.Conditions, userAttributes, request.Context);
-                        if (!conditionsMet)
-                            continue;
-                    }
+                    RuleEffect ruleEffect = rule.ValidarCondicao(AbacConditionEvaluator.Instance, userAttributes, resourceAttributes, contextAttributes);
+                    if (ruleEffect == RuleEffect.Deny)
+                        continue;
 
                     // Se chegou aqui, a regra se aplica!
 
                     // DENY tem precedência
-                    if (rule.Effect?.Equals("Deny", StringComparison.OrdinalIgnoreCase) == true)
+                    if (rule.IsDeny())
                     {
                         return AbacPermissionResult.Deny(
-                            $"Denied by policy '{policy.Name}', rule '{rule.Rulename}'");
+                            $"Negado pela politica'{policy.Name}', regra '{rule.Rulename}'");
                     }
 
                     // ALLOW
-                    if (rule.Effect?.Equals("Allow", StringComparison.OrdinalIgnoreCase) == true)
+                    if (rule.IsAllow())
                     {
                         return AbacPermissionResult.Allow(
-                            $"Allowed by policy '{policy.Name}', rule '{rule.Rulename}'",
+                            $"Permitido pela politica '{policy.Name}', regra '{rule.Rulename}'",
                             policy.Id,
                             rule.Id
                         );
@@ -99,7 +104,7 @@ public class AbacPermissionEngine
             }
 
             // Nenhuma regra aplicável = Deny por padrão
-            return AbacPermissionResult.Deny("No applicable rule found (default deny)");
+            return AbacPermissionResult.Deny("Nenhuma regra aplicável");
         }
         catch (Exception ex)
         {
@@ -159,6 +164,22 @@ public class AbacPermissionEngine
 
     #region Private Methods
 
+    private async Task<IEnumerable<ABAC_CSSPH_RESOURCEATRIB>> GetResourceAttributesAsync(string resourceId)
+    {
+        var filters = new List<FiltrosDinamicos>
+        {
+            new()
+            {
+                NomePropriedade = "Resourceid",
+                ValorPropriedade = resourceId,
+                TipoDeIgualdade = TipoFiltroDinamico.Igual
+            }
+        };
+        var resourceAttrs = await _unitOfWork.GetABAC_CSSPH_RESOURCEATRIB_Repository.GetAllAsync(filters);
+        return resourceAttrs;
+    }
+
+
     private async Task<ABAC_CSSPH_RESOURCE?> GetResourceAsync(string resourceId, int tenantId)
     {
         var filters = new List<FiltrosDinamicos>
@@ -210,6 +231,9 @@ public class AbacPermissionEngine
         };
 
         var actions = await _unitOfWork.GetABAC_CSSPH_RESOURCEACTIONSRepository.GetAllAsync(filters);
+
+        //se nao achar, pegar pelo module
+
         return actions.FirstOrDefault();
     }
 
@@ -228,7 +252,7 @@ public class AbacPermissionEngine
         return await _unitOfWork.GetABAC_CSSPH_RESOURCEACTIONSRepository.GetAllAsync(filters);
     }
 
-    private async Task<IEnumerable<OsusrE9aCsicpSy038>> GetActivePoliciesAsync(int tenantId)
+    private async Task<IEnumerable<CSSPH_POLICYS>> GetActivePoliciesAsync(int tenantId)
     {
         var filters = new List<FiltrosDinamicos>
         {
@@ -249,7 +273,7 @@ public class AbacPermissionEngine
         return await _unitOfWork.GetSY038Repository.GetAllAsync(filters);
     }
 
-    private async Task<IEnumerable<OsusrE9aCsicpSy039>> GetPolicyRulesAsync(string policyId)
+    private async Task<IEnumerable<CSSPH_POLICIESRULES>> GetPolicyRulesAsync(string policyId)
     {
         var filters = new List<FiltrosDinamicos>
         {
@@ -284,108 +308,21 @@ public class AbacPermissionEngine
 
         var userAttrs = await _unitOfWork.GetSY032Repository.GetAllAsync(filters);
 
-        return userAttrs
+        var dicUserAtributos = userAttrs
             .Where(a => !string.IsNullOrWhiteSpace(a.Attributename))
             .ToDictionary(
                 a => a.Attributename!,
                 a => a.Attributevalue ?? ""
             );
+
+        IEnumerable<string> listaNomesDosAtributosDaSY031APartirDaSY030 = await _unitOfWork.GetSY030Repository.GetAtributosDeUsuarioAPartirDaSY030(tenantId, userId);
+        if (dicUserAtributos.ContainsKey(Constantes.USER_GROUP))
+            dicUserAtributos[Constantes.USER_GROUP] += "," + string.Join(",", listaNomesDosAtributosDaSY031APartirDaSY030);
+        else
+            dicUserAtributos.Add(Constantes.USER_GROUP, string.Join(",", listaNomesDosAtributosDaSY031APartirDaSY030));
+
+        return dicUserAtributos;
+
     }
-
-    private bool RuleAppliesToResource(OsusrE9aCsicpSy039 rule, string resourceId, string? resourceName)
-    {
-        if (string.IsNullOrWhiteSpace(rule.Resources))
-            return true; // Se não especificou recursos, aplica a todos
-
-        try
-        {
-            var resources = JsonSerializer.Deserialize<List<string>>(rule.Resources) ?? new();
-
-            // Verifica se contém o ID, nome ou wildcard
-            return resources.Contains(resourceId) ||
-                   resources.Contains(resourceName ?? "") ||
-                   resources.Contains("*");
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    private bool RuleAppliesToAction(OsusrE9aCsicpSy039 rule, string actionName)
-    {
-        if (string.IsNullOrWhiteSpace(rule.Actions))
-            return true; // Se não especificou ações, aplica a todas
-
-        try
-        {
-            var actions = JsonSerializer.Deserialize<List<string>>(rule.Actions) ?? new();
-
-            // Verifica se contém a ação ou wildcard
-            return actions.Contains(actionName, StringComparer.OrdinalIgnoreCase) ||
-                   actions.Contains("*");
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    private bool EvaluateConditions(
-        string conditionsJson,
-        Dictionary<string, string> userAttributes,
-        Dictionary<string, object>? context)
-    {
-        try
-        {
-            var conditions = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(conditionsJson);
-            if (conditions == null)
-                return true;
-
-            foreach (var condition in conditions)
-            {
-                var conditionMet = false;
-
-                // Verificar nos atributos do usuário
-                if (userAttributes.TryGetValue(condition.Key, out var userValue))
-                {
-                    conditionMet = CompareValues(userValue, condition.Value);
-                }
-                // Verificar no contexto adicional
-                else if (context != null && context.TryGetValue(condition.Key, out var contextValue))
-                {
-                    conditionMet = CompareValues(contextValue?.ToString() ?? "", condition.Value);
-                }
-
-                if (!conditionMet)
-                    return false;
-            }
-
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    private bool CompareValues(string actualValue, JsonElement expectedValue)
-    {
-        if (expectedValue.ValueKind == JsonValueKind.String)
-        {
-            return actualValue.Equals(expectedValue.GetString(), StringComparison.OrdinalIgnoreCase);
-        }
-
-        if (expectedValue.ValueKind == JsonValueKind.Array)
-        {
-            var values = expectedValue.EnumerateArray()
-                .Select(e => e.GetString() ?? "")
-                .ToList();
-            return values.Contains(actualValue, StringComparer.OrdinalIgnoreCase);
-        }
-
-        return false;
-    }
-
     #endregion
 }

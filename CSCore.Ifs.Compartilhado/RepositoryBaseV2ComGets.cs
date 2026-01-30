@@ -10,7 +10,7 @@ namespace CSCore.Ifs.Compartilhado
    
     public class RepositoryBaseV2ComGets<TEntity> : RepositorioBaseImplV2<TEntity>, IRepositorioBaseV2ComGets<TEntity> where TEntity : class
     {
-        private readonly AppDbContext _appDbContext;
+        protected readonly AppDbContext _appDbContext;
         private readonly string _tenantIdentifierName;
         public RepositoryBaseV2ComGets(AppDbContext appDbContext, string IdIdentifierName = "Id",
             string TenantIdentifierName = "TenantId")
@@ -20,7 +20,7 @@ namespace CSCore.Ifs.Compartilhado
             _tenantIdentifierName = TenantIdentifierName;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(IEnumerable<FiltrosDinamicos> filtros)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(IEnumerable<FiltrosDinamicos> filtros)
         {
             var query = this._appDbContext.Set<TEntity>().AsQueryable();
             var parameter = Expression.Parameter(typeof(TEntity), "e"); // representa o "e" -> e.AlgumaCoisa
@@ -87,8 +87,11 @@ namespace CSCore.Ifs.Compartilhado
 
             foreach (var item in filtros)
             {
+                if (item.ValorPropriedade == null) continue;
                 var property = Expression.Property(parameter, item.NomePropriedade);
                 var propertyType = property.Type;
+
+
                 var constantValue = Convert.ChangeType(item.ValorPropriedade, Nullable.GetUnderlyingType(propertyType) ?? propertyType);
                 var constant = Expression.Constant(constantValue, propertyType);
 
@@ -98,6 +101,8 @@ namespace CSCore.Ifs.Compartilhado
                     TipoFiltroDinamico.Diferente => Expression.NotEqual(property, constant),
                     TipoFiltroDinamico.Maior => Expression.GreaterThan(property, constant),
                     TipoFiltroDinamico.Menos => Expression.LessThan(property, constant),
+                    TipoFiltroDinamico.Contem => Expression.Call(property, "Contains", null, constant),
+
                     _ => throw new NotSupportedException($"Tipo de filtro {item.TipoDeIgualdade} não suportado.")
                 };
 
@@ -144,13 +149,12 @@ namespace CSCore.Ifs.Compartilhado
             if (entity != null)
             {
                 var tenantProperty = typeof(TEntity).GetProperty(_tenantIdentifierName);
-                if (tenantProperty != null)
+                if (tenantProperty is null) return entity;
+
+                var tenantValue = tenantProperty.GetValue(entity);
+                if (tenantValue != null && Convert.ToInt32(tenantValue) == tenant)
                 {
-                    var tenantValue = tenantProperty.GetValue(entity);
-                    if (tenantValue != null && Convert.ToInt32(tenantValue) == tenant)
-                    {
-                        return entity;
-                    }
+                    return entity;
                 }
             }
             return null;

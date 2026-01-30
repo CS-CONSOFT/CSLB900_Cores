@@ -1,5 +1,5 @@
-﻿using CSSY103.C82Application.Dto.ABAC.Engine;
-using CSSY103.C82Application.Service.ABAC.Engine;
+﻿using CSCore.Ifs.LB900.ABAC.Engine;
+using CSSY103.C82Application.Dto.ABAC.Engine;
 
 namespace CSSY103.C82Application.Service.ABAC;
 
@@ -22,18 +22,18 @@ public class AbacPermissionService
     /// <summary>
     /// Verifica permissão com cache
     /// </summary>
-    public async Task<bool> CheckPermissionAsync(
+    public async Task<AbacPermissionResult> CheckPermissionAsync(
         string userId,
         string resourceId,
         string actionName,
         int tenantId,
         Dictionary<string, object>? context = null)
     {
-        // 1. Tentar buscar no cache (RÁPIDO)
-        if (_cache.TryGetPermission(userId, resourceId, actionName, tenantId, out var cachedResult))
-        {
-            return cachedResult;
-        }
+        //// 1. Tentar buscar no cache (RÁPIDO)
+        //if (_cache.TryGetPermission(userId, resourceId, actionName, tenantId, out var cachedResult))
+        //{
+        //    return cachedResult;
+        //}
 
         // 2. Se não estiver no cache, avaliar (VAI AO BANCO)
         var request = new AbacPermissionRequest
@@ -48,9 +48,9 @@ public class AbacPermissionService
         var result = await _engine.EvaluatePermissionAsync(request);
 
         // 3. Armazenar no cache
-        _cache.SetPermission(userId, resourceId, actionName, tenantId, result.IsAllowed);
+        _cache.SetPermission(userId, resourceId, actionName, tenantId, result);
 
-        return result.IsAllowed;
+        return result;
     }
 
     /// <summary>

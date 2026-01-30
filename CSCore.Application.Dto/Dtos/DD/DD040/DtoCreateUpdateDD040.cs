@@ -423,7 +423,7 @@ namespace EnviaNFeHercules.C82Application.Dto.DD.DD040
                 Dd040NoPdv = this.Dd040NoPdv,
                 Dd040SerieCupom = this.Dd040SerieCupom,
                 Dd040NoCupom = this.Dd040NoCupom,
-                Dd040DataEmissao = this.Dd040DataEmissao,
+                Dd040DataEmissao = this.Dd040DataEmissao ?? new DateTime(1999,1,1),
                 Dd040Datahoraemissao = this.Dd040Datahoraemissao,
                 Dd040ContaId = this.Dd040ContaId,
                 Dd040ContarealId = this.Dd040ContarealId,

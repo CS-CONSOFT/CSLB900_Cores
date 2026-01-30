@@ -24,6 +24,7 @@ namespace CSCore.Ifs.LB900
         }
 
         protected abstract IRepositorioBaseV2ComGets<TEntity> GetRepository();
+        
         protected virtual ICS_GenerateId GetIdGenerator()
         {
             return new SCS_GenerateId();
@@ -39,12 +40,13 @@ namespace CSCore.Ifs.LB900
             throw new NotImplementedException("Método precisa ser implementado no SERVICE BASE V3! Ainda nao tem");
         }
 
-        public virtual async Task Create(TDtoCreate dto, int tenant)
+        public virtual async Task<string> Create(TDtoCreate dto, int tenant)
         {
             var newID = GetIdGenerator().GenerateUuId();
             var entidade = dto.ToEntity(tenant, newID);
             GetRepository().Create(entidade);
             await UnitOfWork.SaveChangesAsync();
+            return newID;
         }
 
         public virtual async Task CreateRange(List<TDtoCreate> dtoList)
@@ -54,7 +56,8 @@ namespace CSCore.Ifs.LB900
 
         public virtual async Task<IEnumerable<TDtoGetList>> GetAllAsync(IEnumerable<FiltrosDinamicos> filtros)
         {
-            var lista = await GetRepository().GetAllAsync(filtros);
+            var repo = GetRepository();
+            var lista = await repo.GetAllAsync(filtros);
             return lista.Select(TDtoGetList.FromEntity);
         }
 
