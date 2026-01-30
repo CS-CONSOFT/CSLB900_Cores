@@ -44,6 +44,7 @@ namespace CSBS101._82Application.Dto.BB00X.BB025
 
         public Dto_GetBB027? NavBb025Transacao { get; set; }
         public Osusr66cSpedInAjIcm? NavSpedICMS { get; set; }
+        public OsusrNnxSpedInDocIcm? NavBb025ModdoctofiscalId { get; set; }
         public List<Dto_GetBB024>? NavListbb024_Natureza_CFOP { get; set; } = [];
     }
 

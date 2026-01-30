@@ -14,7 +14,7 @@ namespace CSCore.Ifs.LB900
         Task<TDtoGetById?> GetByIdAsync(string id, int tenant);
         Task<TDtoGetById?> GetByIdAsync(long id, int tenant);
         Task<IEnumerable<TDtoGetList>> GetAllAsync(IEnumerable<FiltrosDinamicos> filtros);
-        Task Create(TDtoCreate dto, int tenant);
+        Task<string> Create(TDtoCreate dto, int tenant);
         Task CreateRange(List<TDtoCreate> dto);
         Task<int> BulkCreateAsync(List<TDtoCreate> dtoList);
         Task<int> BulkCreateAsync(IEnumerable<TDtoCreate> dtoList);

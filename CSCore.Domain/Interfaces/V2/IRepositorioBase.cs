@@ -70,7 +70,8 @@
         Igual = 1,
         Diferente = 2,
         Maior = 3,
-        Menos = 4
+        Menos = 4,
+        Contem = 5
     }
 
     public record FiltrosDinamicos
@@ -78,17 +79,28 @@
         /// <summary>
         /// O nome da propriedade da classe de entidade!
         /// </summary>
-        public string NomePropriedade { get; set; } = string.Empty;
+        public string NomePropriedade { get; init; } = string.Empty;
 
         /// <summary>
         /// Valor dessa propriedade para comparação!
         /// </summary>
-        public object? ValorPropriedade { get; set; } = null;
+        public object? ValorPropriedade { get; init; } = null;
 
         /// <summary>
         /// Igualdade a ser utilizada na comparação!
         /// </summary>
-        public TipoFiltroDinamico TipoDeIgualdade { get; set; } = TipoFiltroDinamico.Igual;
+        public TipoFiltroDinamico TipoDeIgualdade { get; init; } = TipoFiltroDinamico.Igual;
+
+        public static FiltrosDinamicos CriarFiltro(string NomePropriedade, object? ValorPropriedade, TipoFiltroDinamico TipoDeIgualdade)
+        {
+
+            return new FiltrosDinamicos
+            {
+                NomePropriedade = NomePropriedade,
+                ValorPropriedade = ValorPropriedade,
+                TipoDeIgualdade = TipoDeIgualdade
+            } ;
+        }
     }
 
     /// <summary>

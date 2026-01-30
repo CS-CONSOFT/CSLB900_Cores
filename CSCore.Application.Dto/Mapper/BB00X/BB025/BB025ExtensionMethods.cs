@@ -57,6 +57,7 @@ namespace CSBS101._82Application.Mapper.BB00X
                 Bb025Valorizarprecoid = entity.Bb025Valorizarprecoid,
                 NavBb025Transacao = entity.Bb025Transacao?.ToDtoGet(),
                 NavSpedICMS = entity.osusr66CSpedInAjIcm,
+                NavBb025ModdoctofiscalId =  entity.NavBb025ModdoctofiscalId,
 
             };
         }

@@ -12,6 +12,8 @@ namespace CSCore.Domain.Interfaces.FF
     {
         Task<(IEnumerable<CSICP_FF003>, int)> GetListAsync(int tenant, int page, int pageSize,
            string? descricao, int? tipoEspecie);
+
+        Task<(IEnumerable<CSICP_FF003>, int)> GetListAsyncPeloTpEspecie(int tenant, int page, int pageSize, int tipoEspecie);
         Task<CSICP_FF003?> GetByIdAsync(int tenant, string id);
     }
 }

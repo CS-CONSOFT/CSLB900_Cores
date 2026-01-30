@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CSCore.Domain.CS_Models.CSICP_SYS.ABAC;
 
-public partial class OsusrE9aCsicpSy038
+public partial class CSSPH_POLICYS
 {
     public int? TenantId { get; set; }
 
@@ -19,5 +19,5 @@ public partial class OsusrE9aCsicpSy038
 
     public bool? Isactive { get; set; }
 
-    
+    public ICollection<CSSPH_POLICIESRULES>? NavAbacRules { get; set; } 
 }

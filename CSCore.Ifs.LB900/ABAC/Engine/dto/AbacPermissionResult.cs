@@ -32,4 +32,7 @@ public record AbacPermissionResult
             Reason = reason
         };
     }
+
+    public static AbacPermissionResult Empty() { return new AbacPermissionResult { IsAllowed = false }; }
+    public static AbacPermissionResult ValidationOk() { return new AbacPermissionResult { IsAllowed = true }; }
 }
