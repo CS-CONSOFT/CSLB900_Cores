@@ -9,14 +9,6 @@ using System.Security.Cryptography;
 
 namespace CSCore.Ifs.Repository.SY
 {
-
-
-
-
-
-
-
-
     public class SY001RepositoryImpl : ISY001Repository
     {
         private AppDbContext _appDbContext;
@@ -182,10 +174,15 @@ namespace CSCore.Ifs.Repository.SY
         {
 
             var csicp_Sy005s = await (from sy005 in this._appDbContext.OsusrE9aCsicpSy005s
+
                                       join sy002 in this._appDbContext.OsusrE9aCsicpSy002s
-                                      on sy005.Sy005Grupoid equals sy002.Id
+                                      on sy005.Sy005Grupoid equals sy002.Id into sy002Group
+                                      from sy002 in sy002Group.DefaultIfEmpty()
+
                                       join sy807 in this._appDbContext.OsusrE9aCsicpSy807Cssps
-                                      on sy002.sy002_erpid equals sy807.Id
+                                      on sy002.sy002_erpid equals sy807.Id into sy807Group
+                                      from sy807 in sy807Group.DefaultIfEmpty()
+
                                       where sy005.TenantId == tenant
                                       && sy005.Sy005Userid == id
                                       && sy807.Label == "SOPHIA ERP"
