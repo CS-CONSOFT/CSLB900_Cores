@@ -84,6 +84,18 @@ namespace CSCore.Ifs.Repository.Combo
             return await query.Select(e => new {Id = e.Id, Title = e.Bb026Formapagamento }).ToListAsync();
         }
 
+        public async Task<IEnumerable<object>> GetComboFF003_TP_ESPECIE_ID(int tenant, int InTpEspecieID)
+        {
+            var query = from ff003 in this._appDbContext.OsusrE9aCsicpFf003s
+                        where ff003.TenantId == tenant && ff003.Ff003Tipoespecie == InTpEspecieID
+                        select new
+                        {
+                            Id = ff003.Id,
+                            Title = ff003.Ff003Descresumida
+                        };
+            return await query.ToListAsync();
+        }
+
         public async Task<IEnumerable<object>> GetCommonListForComboBB008(int tenant, string FormaPagamentoID)
         {
             var query = _appDbContext.OsusrE9aCsicpBb017s
