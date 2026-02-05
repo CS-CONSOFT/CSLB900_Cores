@@ -22,6 +22,10 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR031
 
         public string? Rr031Semenid { get; set; }
 
+        public int? Rr031Tiporeg { get; set; }
+
+        public bool? Rr031Isabsorveu { get; set; }
+
         // Navegações
         public DtoGetRR001Padrao? NavRR001Animal { get; set; }
         public DtoGetRR030? NavRR030Iatf { get; set; }

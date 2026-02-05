@@ -35,6 +35,10 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
 
         public bool? Rr022IsProcessado { get; set; }
 
+        public string? Rr022Observacao { get; set; }
+        public decimal? Rr022Circexcrotal { get; set; }
+        public long? Rr022Condcriacaid { get; set; }
+
         // Navegações
         public DtoGetRR001Padrao? NavRR001Animal { get; set; }
         public DtoGetRR021Padrao? NavRR021LoteXAnimal { get; set; }
