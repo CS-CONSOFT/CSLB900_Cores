@@ -18,6 +18,10 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR031
 
         public string? Rr031Semenid { get; set; }
 
+        public int? Rr031Tiporeg { get; set; }
+
+        public bool? Rr031Isabsorveu { get; set; }
+
         public OsusrTo3CsicpRr031 ToEntity(int tenant, string? id)
         {
             return new OsusrTo3CsicpRr031
@@ -29,7 +33,9 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR031
                 Rr031Dtregistro = Rr031Dtregistro,
                 Rr031Ispositivo = Rr031Ispositivo,
                 Rr031Montaanimalid = Rr031Montaanimalid,
-                Rr031Semenid = Rr031Semenid
+                Rr031Semenid = Rr031Semenid,
+                Rr031Tiporeg = Rr031Tiporeg,
+                Rr031Isabsorveu = Rr031Isabsorveu
             };
         }
     }

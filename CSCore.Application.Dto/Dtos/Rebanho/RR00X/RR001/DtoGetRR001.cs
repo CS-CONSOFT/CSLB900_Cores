@@ -9,6 +9,7 @@ using CSCore.Domain;
 using CSCore.Domain.CS_Models.CSICP_RR;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,6 +73,10 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR001
 
         public long? Rr001Proprietarioid { get; set; }
 
+        public long? Rr001Proprietario2id { get; set; }
+
+        public long? Rr001Criadorid { get; set; }
+
         //NavsGetList
         public DtoGetRR001Padrao? NavRR001Pai { get; set; }
         public DtoGetRR001Padrao? NavRR001Mae { get; set; }
@@ -85,6 +90,9 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR001
         public OsusrTo3CsicpRr001Cat? NavRR001Categoria { get; set; }
         public OsusrTo3CsicpRr001Sexo? NavRR001Sexo { get; set; }
         public Dto_GetSY001Simples? NavSy001 { get; set; }
+
+        public OsusrTo3CsicpRr007? NavRR007Proprietario2id_RR001 { get; set; }
+        public OsusrTo3CsicpRr007? NavRR001Criadorid_RR001 { get; set; }
 
 
     }

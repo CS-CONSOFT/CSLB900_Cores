@@ -61,5 +61,9 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR001
         public int? Rr001Ultidadediaspeso { get; set; }
 
         public long? Rr001Proprietarioid { get; set; }
+
+        public long? Rr001Proprietario2id { get; set; }
+
+        public long? Rr001Criadorid { get; set; }
     }
 }

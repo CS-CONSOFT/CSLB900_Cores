@@ -80,6 +80,10 @@ namespace CSCore.Ifs.CS_Context
 
                 entity.HasIndex(e => e.TenantId, "OSIDX_OSUSR_TO3_CSICP_RR001_9TENANT_ID");
 
+                entity.HasIndex(e => new { e.Rr001Proprietario2id, e.TenantId }, "OSIDX_OSUSR_TO3_CSICP_RR001_21RR001_PROPRIETARIO2ID_9TENANT_ID");
+                
+                entity.HasIndex(e => new { e.Rr001Criadorid, e.TenantId }, "OSIDX_OSUSR_TO3_CSICP_RR001_15RR001_CRIADORID_9TENANT_ID");
+
                 entity.Property(e => e.Id)
                     .HasMaxLength(36)
                     .HasColumnName("ID");
@@ -140,7 +144,9 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RR001_USUARIOPROPID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                
+                entity.Property(e => e.Rr001Proprietario2id).HasColumnName("RR001_PROPRIETARIO2ID");
+                entity.Property(e => e.Rr001Criadorid).HasColumnName("RR001_CRIADORID");
+
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr001Ativo>(entity =>
@@ -453,11 +459,6 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Rr022IsProcessado).HasColumnName("rr022_IsProcessado");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-         
-
-               // entity.HasOne(d => d.Rr022Lote).WithMany(p => p.OsusrTo3CsicpRr022s)
-                   // .HasForeignKey(d => d.Rr022Loteid)
-                   // .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR022_OSUSR_TO3_CSICP_RR021_RR022_LOTEID");
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr030>(entity =>
@@ -496,6 +497,16 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Rr030Montafinaldias).HasColumnName("RR030_MONTAFINALDIAS");
                 entity.Property(e => e.Rr030Montainicialdias).HasColumnName("RR030_MONTAINICIALDIAS");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+                entity.Property(e => e.Rr030Iadatafinal)
+                    .HasColumnType("datetime")
+                    .HasColumnName("RR030_IA_DATAFINAL");
+
+                entity.Property(e => e.Rr030IaNrodiasfinal).HasColumnName("RR030_IA_NRODIASFINAL");
+
+                entity.Property(e => e.RR030Iadatadgfinal)
+                    .HasColumnType("datetime")
+                    .HasColumnName("RR030_IA_DATADGFINAL");
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr031>(entity =>
@@ -535,15 +546,9 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RR031_SEMENID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-              
-                //entity.HasOne(d => d.Rr031Iatf).WithMany(p => p.OsusrTo3CsicpRr031s)
-                 //   .HasForeignKey(d => d.Rr031IatfId)
-                //    .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR031_OSUSR_TO3_CSICP_RR030_RR031_IATF_ID");
+                entity.Property(e => e.Rr031Tiporeg).HasColumnName("RR031_TIPOREG");
+                entity.Property(e => e.Rr031Isabsorveu).HasColumnName("RR031_ISABSORVEU");
 
-            
-              //  entity.HasOne(d => d.Rr031Semen).WithMany(p => p.OsusrTo3CsicpRr031s)
-                 //   .HasForeignKey(d => d.Rr031Semenid)
-                   // .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR031_OSUSR_TO3_CSICP_RR035_RR031_SEMENID");
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr035>(entity =>
