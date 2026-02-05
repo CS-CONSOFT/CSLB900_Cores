@@ -24,6 +24,8 @@ namespace CSCore.ClinicTime.Motor.Prioridade
         /// <param name="consulta">Dados da consulta do Redis</param>
         /// <param name="dadosAdicionais">Dados adicionais como distância, velocidade, etc.</param>
         /// <returns>Score normalizado (0 a 1) multiplicado pelo peso</returns>
-        decimal CalcularPrioridade(Dictionary<string, string> consulta, DtoAtualizaLocPaciente dto);
+        decimal CalcularPrioridade(Dictionary<string, string> consulta, DtoDadosPrincipaisPaciente dto);
+
+        
     }
 }

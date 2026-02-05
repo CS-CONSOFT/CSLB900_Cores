@@ -7,14 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Fila\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="GeoCoordinate.NetCore" Version="1.0.0.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CSCore.Domain\CSCore.Domain.csproj" />
     <ProjectReference Include="..\CSCompartilhado.CSLB900_MSTools\CSLB900.MSTools.csproj" />
     <ProjectReference Include="..\CSCore.Redis\CSCore.Redis.csproj" />
   </ItemGroup>
