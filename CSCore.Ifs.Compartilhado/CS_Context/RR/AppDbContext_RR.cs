@@ -478,6 +478,9 @@ namespace CSCore.Ifs.CS_Context
 
                 entity.HasIndex(e => e.TenantId, "OSIDX_OSUSR_TO3_CSICP_RR022_9TENANT_ID");
 
+                entity.HasIndex(e => new { e.Rr022Condcriacaid, e.TenantId }, "OSIDX_OSUSR_TO3_CSICP_RR022_18RR022_CONDCRIACAID_9TENANT_ID");
+
+
                 entity.Property(e => e.Id)
                     .HasMaxLength(36)
                     .HasColumnName("ID");
@@ -517,6 +520,15 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RR022_USUARIOID");
                 entity.Property(e => e.Rr022IsProcessado).HasColumnName("rr022_IsProcessado");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+                entity.Property(e => e.Rr022Observacao)
+                    .HasMaxLength(150)
+                    .HasColumnName("RR022_OBSERVACAO");
+
+                entity.Property(e => e.Rr022Circexcrotal)
+                    .HasColumnType("decimal(5, 0)")
+                    .HasColumnName("RR022_CIRCEXCROTAL");
+
 
             });
 
