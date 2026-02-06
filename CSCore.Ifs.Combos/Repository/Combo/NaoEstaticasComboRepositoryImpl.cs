@@ -671,6 +671,17 @@ namespace CSCore.Ifs.Repository.Combo
             return await query.ToListAsync();
         }
 
+
+        public async Task<IEnumerable<object>> GetAbacResourceTipoResource(EnumResourceType ResourceType)
+        {
+            var query = _appDbContext.ABAC_CSSPH_RESOURCE
+                    .Where(e => e.Resourcetype == ResourceType.ToString())
+                    .OrderBy(c => c.Name)
+                    .Select(c => new { Title = c.Name ?? c.Displayname ?? "---", Id = c.Id }),
+
+            return await query.ToListAsync();
+        }
+
         public async Task<IEnumerable<object>> GetComboABAC(int tenant, ComboABAC comboType)
         {
             IQueryable<object> query = comboType switch
