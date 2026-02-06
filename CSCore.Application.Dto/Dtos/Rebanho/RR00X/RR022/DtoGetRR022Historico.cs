@@ -11,5 +11,8 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
         public decimal? Rr022Peso { get; set; }
         public decimal? Rr022Gmd { get; set; }
         public decimal? Rr022Gpd { get; set; }
+        public string? Rr022Observacao { get; set; }
+        public decimal? Rr022Circexcrotal { get; set; }
+        public long? Rr022Condcriacaid { get; set; }
     }
 }

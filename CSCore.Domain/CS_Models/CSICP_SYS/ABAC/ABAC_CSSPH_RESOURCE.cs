@@ -22,5 +22,6 @@ public partial class ABAC_CSSPH_RESOURCE
 
     public string? Parentid { get; set; }
 
-   
+    public ICollection<ABAC_CSSPH_RESOURCEACTIONS> NavResourceActions { get; set; } = [];
+    public ICollection<ABAC_CSSPH_RESOURCEATRIB> NavResourceAttributes { get; set; } = [];
 }

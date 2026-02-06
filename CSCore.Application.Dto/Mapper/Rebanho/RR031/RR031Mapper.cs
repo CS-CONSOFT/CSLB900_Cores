@@ -20,6 +20,8 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR031
                 Rr031Ispositivo = entity.Rr031Ispositivo,
                 Rr031Montaanimalid = entity.Rr031Montaanimalid,
                 Rr031Semenid = entity.Rr031Semenid,
+                Rr031Tiporeg = entity.Rr031Tiporeg,
+                Rr031Isabsorveu = entity.Rr031Isabsorveu,
 
                 // Navegações
                 NavRR001Animal = entity.NavRR001Animal_RR031?.ToDtoGetRR001Padrao(),

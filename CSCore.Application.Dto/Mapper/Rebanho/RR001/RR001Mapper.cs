@@ -44,6 +44,8 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR001
                 Rr001Ultpeso = entity.Rr001Ultpeso,
                 Rr001Ultidadediaspeso = entity.Rr001Ultidadediaspeso,
                 Rr001Proprietarioid = entity.Rr001Proprietarioid,
+                Rr001Proprietario2id = entity.Rr001Proprietario2id,
+                Rr001Criadorid = entity.Rr001Criadorid,
 
                 NavRR001Pai = entity.NavRR001Pai?.ToDtoGetRR001Padrao(),
                 NavRR001Mae = entity.NavRR001Mae?.ToDtoGetRR001Padrao(),
@@ -56,7 +58,9 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR001
                 NavRR001Ativo = entity.NavRR001Ativo_RR001,
                 NavRR001Categoria = entity.NavRR001Categoria_RR001,
                 NavRR001Sexo = entity.NavRR001Sexo_RR001,
-                NavSy001 = entity.NavSy001_RR001?.ToDtoGetSimples()
+                NavSy001 = entity.NavSy001_RR001?.ToDtoGetSimples(),
+                NavRR007Proprietario2id_RR001 = entity.NavRR007Proprietario2id_RR001,
+                NavRR001Criadorid_RR001 = entity.NavRR001Criadorid_RR001
             };
         }
 

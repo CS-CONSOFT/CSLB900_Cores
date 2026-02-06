@@ -29,5 +29,9 @@ public partial class OsusrTo3CsicpRr030
 
     public DateTime? Rr030Dataprovontafinal { get; set; }
 
-    //public virtual ICollection<OsusrTo3CsicpRr031> OsusrTo3CsicpRr031s { get; set; } = new List<OsusrTo3CsicpRr031>();
+    public DateTime? Rr030Iadatafinal { get; set; }
+
+    public int? Rr030IaNrodiasfinal { get; set; }
+
+    public DateTime? RR030Iadatadgfinal { get; set; }
 }

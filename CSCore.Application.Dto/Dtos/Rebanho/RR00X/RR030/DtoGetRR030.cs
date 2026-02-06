@@ -25,5 +25,11 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR030
         public DateTime? Rr030Dataprovontainicial { get; set; }
 
         public DateTime? Rr030Dataprovontafinal { get; set; }
+
+        public DateTime? Rr030Iadatafinal { get; set; }
+
+        public int? Rr030IaNrodiasfinal { get; set; }
+
+        public DateTime? RR030Iadatadgfinal { get; set; }
     }
 }
