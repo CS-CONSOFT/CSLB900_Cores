@@ -677,7 +677,7 @@ namespace CSCore.Ifs.Repository.Combo
             var query = _appDbContext.ABAC_CSSPH_RESOURCE
                     .Where(e => e.Resourcetype == ResourceType.ToString())
                     .OrderBy(c => c.Name)
-                    .Select(c => new { Title = c.Name ?? c.Displayname ?? "---", Id = c.Id }),
+                    .Select(c => new { Title = c.Name ?? c.Displayname ?? "---", Id = c.Id });
 
             return await query.ToListAsync();
         }
