@@ -703,6 +703,7 @@ namespace CSCore.Ifs.Repository.Combo
                     .Select(c => new { Title = c.Rulename ?? "---", Id = c.Id }),
 
                 ComboABAC.CssphResource => _appDbContext.ABAC_CSSPH_RESOURCE
+                    .Where(e => e.Parentid == null)
                     .OrderBy(c => c.Name)
                     .Select(c => new { Title = c.Name ?? c.Displayname ?? "---", Id = c.Id }),
 
