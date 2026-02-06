@@ -1,3 +1,4 @@
+using CSCore.ClinicTime.Motor.Eventos;
 using CSCore.ClinicTime.Motor.Paciente.dto;
 
 namespace CSCore.ClinicTime.Motor.Prioridade.Strategies
@@ -11,23 +12,42 @@ namespace CSCore.ClinicTime.Motor.Prioridade.Strategies
         public string Nome => "Proximidade";
         public decimal Peso => 15m;
 
-        private readonly double _distanciaMaximaKm = 5.0; // Distância máxima considerada para pontuação
+      
 
-        public decimal CalcularPrioridade(Dictionary<string, string> consulta, DtoAtualizaLocPaciente dto)
+        public decimal CalcularPrioridade(Dictionary<string, string> consulta, DtoDadosPrincipaisPaciente dto)
         {
-            bool estaNoLocal = consulta.TryGetValue("checkInNoLocal", out var checkInLocal);
-            
+            _ = consulta.TryGetValue("checkInNoLocal", out var checkInLocal);
+            bool.TryParse(checkInLocal, out bool checkInLocalBool);
+            bool estaNoLocal = checkInLocalBool || dto.PacienteIsChekinLocal;
             if (estaNoLocal)
             {
                 return 0m;
             }
 
-            var scoreProximidade = CalcularScoreProximidade(_distanciaMaximaKm);
+            var scoreProximidade = CalcularScoreProximidade(dto.DistanciaPacienteEstabelecimentoMetros);
+            if (dto.DistanciaPacienteEstabelecimentoMetros < 100)
+            {
+                consulta.Remove("checkInNoLocal");
+                consulta.Add("checkInNoLocal", "true");
+                CSEvtHandler.DispararPacienteChegouAoLocal(new PacienteChegouEventArgs
+                {
+                    PacienteId = dto.PacienteId,
+                    EstabelecimentoId = dto.EstabelecimentoId,
+                    AgendaId = dto.AgendaID,
+                    DistanciaMetros = dto.DistanciaPacienteEstabelecimentoMetros,
+                    AgendaData = dto.AgendaData,
+                    ProfissionalId = dto.ProfissionalId,
+                    AgendaID = dto.AgendaID,
+                    DictConsulta = consulta
+                });
+                return Peso * 1.1m;
+            }
             return Peso * scoreProximidade;
         }
 
-        private decimal CalcularScoreProximidade(double distanciaKm)
+        private decimal CalcularScoreProximidade(double distanciaMetros)
         {
+            double distanciaKm = distanciaMetros / 1000.0;
             if (distanciaKm < 0.5) return 1.0m;   // < 500m
             if (distanciaKm < 1.0) return 0.8m;   // < 1km
             if (distanciaKm < 2.0) return 0.5m;   // < 2km

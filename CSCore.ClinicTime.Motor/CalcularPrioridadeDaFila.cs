@@ -1,8 +1,12 @@
 ﻿using CSCore.ClinicTime.Motor;
 using CSCore.ClinicTime.Motor.EntidadesMock;
+using CSCore.ClinicTime.Motor.Eventos;
+using CSCore.ClinicTime.Motor.Paciente;
 using CSCore.ClinicTime.Motor.Paciente.dto;
 using CSCore.ClinicTime.Motor.Prioridade;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
+using System.Runtime.CompilerServices;
 
 namespace CLT200APIClinicTime.Controllers.Motor
 {
@@ -16,13 +20,22 @@ namespace CLT200APIClinicTime.Controllers.Motor
         /// Recalcula a prioridade de uma consulta na fila
         /// </summary>
         /// <param name="DbRedis">Instância do banco Redis</param>
-        /// <returns>Prioridade calculada</returns>
-        public static async Task<decimal> RecalcularPrioridadeConsulta(IDatabase DbRedis, DtoAtualizaLocPaciente dto)
+        public static async Task RecalcularPrioridadeConsultaAtualizandoNoRedis(IRecuperaDadosDaConsultaDoPacienteDoRedis recuperaDadosDaConsultaDoPaciente,IDatabase DbRedis, DtoDadosPrincipaisPaciente dto, ILogger? logger = null)
         {
-            var calculador = new CalculadorPrioridade(DbRedis);
-            return await calculador.RecalcularPrioridadeConsulta(dto);
+            var calculador = new CalculadorPrioridade(DbRedis, recuperaDadosDaConsultaDoPaciente, logger);
+            await calculador.RecalcularPrioridadeConsultaESalvaNoRedis(dto, EnumTipoEstrategiaCalculoPrioridade.MOVIMENTO);
         }
 
-      
+        /// <summary>
+        /// Apenas Insere o paciente na fila, com score basico de prioridades
+        /// </summary>
+        /// <param name="DbRedis">Instância do banco Redis</param>
+        public static async Task InserePacienteNaFilaNoRedis(IRecuperaDadosDaConsultaDoPacienteDoRedis recuperaDadosDaConsultaDoPaciente,IDatabase DbRedis, DtoDadosPrincipaisPaciente dto)
+        {
+            var calculador = new CalculadorPrioridade( DbRedis, recuperaDadosDaConsultaDoPaciente);
+            await calculador.RecalcularPrioridadeConsultaESalvaNoRedis(dto, EnumTipoEstrategiaCalculoPrioridade.INICIAL);
+        }
+
+
     }
 }

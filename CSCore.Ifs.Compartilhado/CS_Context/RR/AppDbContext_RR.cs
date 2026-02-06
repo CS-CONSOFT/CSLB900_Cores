@@ -33,6 +33,12 @@ namespace CSCore.Ifs.CS_Context
 
         public virtual DbSet<OsusrTo3CsicpRr008> OsusrTo3CsicpRr008s { get; set; }
 
+        public virtual DbSet<OsusrTo3CsicpRr009> OsusrTo3CsicpRr009s { get; set; }
+
+        public virtual DbSet<OsusrTo3CsicpRr010> OsusrTo3CsicpRr010s { get; set; }
+
+        public virtual DbSet<OsusrTo3CsicpRr011> OsusrTo3CsicpRr011s { get; set; }
+
         public virtual DbSet<OsusrTo3CsicpRr020> OsusrTo3CsicpRr020s { get; set; }
 
         public virtual DbSet<OsusrTo3CsicpRr021> OsusrTo3CsicpRr021s { get; set; }
@@ -338,6 +344,66 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
             });
 
+            modelBuilder.Entity<OsusrTo3CsicpRr009>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_TO3_CSICP_RR009");
+
+                entity.ToTable("OSUSR_TO3_CSICP_RR009");
+
+                entity.HasIndex(e => new { e.Rr001Virtualid, e.TenantId }, "OSIDX_OSUSR_TO3_CSICP_RR009_15RR001_VIRTUALID_9TENANT_ID");
+
+                entity.HasIndex(e => new { e.Rr001Id, e.TenantId }, "OSIDX_OSUSR_TO3_CSICP_RR009_8RR001_ID_9TENANT_ID");
+
+                entity.HasIndex(e => e.TenantId, "OSIDX_OSUSR_TO3_CSICP_RR009_9TENANT_ID");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("ID");
+                entity.Property(e => e.Rr001Id)
+                    .HasMaxLength(36)
+                    .HasColumnName("RR001_ID");
+                entity.Property(e => e.Rr001Virtualid)
+                    .HasMaxLength(36)
+                    .HasColumnName("RR001_VIRTUALID");
+                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+            });
+
+            modelBuilder.Entity<OsusrTo3CsicpRr010>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_TO3_CSICP_RR010");
+
+                entity.ToTable("OSUSR_TO3_CSICP_RR010");
+
+                entity.HasIndex(e => new { e.Rr010Condcriacao, e.TenantId }, "OSIDX_OSUSR_TO3_CSICP_RR010_17RR010_CONDCRIACAO_9TENANT_ID");
+
+                entity.HasIndex(e => e.TenantId, "OSIDX_OSUSR_TO3_CSICP_RR010_9TENANT_ID");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.Rr010Condcriacao)
+                    .HasMaxLength(50)
+                    .HasColumnName("RR010_CONDCRIACAO");
+                entity.Property(e => e.Rr010Descritivo)
+                    .HasMaxLength(500)
+                    .HasColumnName("RR010_DESCRITIVO");
+                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+            });
+
+            modelBuilder.Entity<OsusrTo3CsicpRr011>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_TO3_CSICP_RR011");
+
+                entity.ToTable("OSUSR_TO3_CSICP_RR011");
+
+                entity.HasIndex(e => e.TenantId, "OSIDX_OSUSR_TO3_CSICP_RR011_9TENANT_ID");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+                entity.Property(e => e.Rr011Serie)
+                    .HasMaxLength(10)
+                    .HasColumnName("RR011_SERIE");
+                entity.Property(e => e.Rr011Ultrgn).HasColumnName("RR011_ULTRGN");
+                entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+            });
+
             modelBuilder.Entity<OsusrTo3CsicpRr020>(entity =>
             {
                 entity.HasKey(e => e.Id).HasName("OSPRK_OSUSR_TO3_CSICP_RR020");
@@ -368,9 +434,6 @@ namespace CSCore.Ifs.CS_Context
 
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                //entity.HasOne(d => d.Rr020Regalimentar).WithMany(p => p.OsusrTo3CsicpRr020s)
-                   // .HasForeignKey(d => d.Rr020Regalimentarid)
-                    //.HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR020_OSUSR_TO3_CSICP_RR008_RR020_REGALIMENTARID");
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr021>(entity =>
@@ -399,10 +462,6 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RR021_LOTEID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-            
-                //entity.HasOne(d => d.Rr021Lote).WithMany(p => p.OsusrTo3CsicpRr021s)
-                    //.HasForeignKey(d => d.Rr021Loteid)
-                   // .HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR021_OSUSR_TO3_CSICP_RR020_RR021_LOTEID");
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr022>(entity =>
@@ -418,6 +477,9 @@ namespace CSCore.Ifs.CS_Context
                 entity.HasIndex(e => new { e.Rr022Usuarioid, e.TenantId }, "OSIDX_OSUSR_TO3_CSICP_RR022_15RR022_USUARIOID_9TENANT_ID");
 
                 entity.HasIndex(e => e.TenantId, "OSIDX_OSUSR_TO3_CSICP_RR022_9TENANT_ID");
+
+                entity.HasIndex(e => new { e.Rr022Condcriacaid, e.TenantId }, "OSIDX_OSUSR_TO3_CSICP_RR022_18RR022_CONDCRIACAID_9TENANT_ID");
+
 
                 entity.Property(e => e.Id)
                     .HasMaxLength(36)
@@ -458,6 +520,15 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RR022_USUARIOID");
                 entity.Property(e => e.Rr022IsProcessado).HasColumnName("rr022_IsProcessado");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+                entity.Property(e => e.Rr022Observacao)
+                    .HasMaxLength(150)
+                    .HasColumnName("RR022_OBSERVACAO");
+
+                entity.Property(e => e.Rr022Circexcrotal)
+                    .HasColumnType("decimal(5, 0)")
+                    .HasColumnName("RR022_CIRCEXCROTAL");
+
 
             });
 
@@ -597,9 +668,6 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("RR035_VOLUME");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
 
-                //entity.HasOne(d => d.Rr035Raca).WithMany(p => p.OsusrTo3CsicpRr035s)
-                    //.HasForeignKey(d => d.Rr035Racaid)
-                    //.HasConstraintName("OSFRK_OSUSR_TO3_CSICP_RR035_OSUSR_TO3_CSICP_RR004_RR035_RACAID");
             });
             modelBuilder.HasSequence("Seq_PK_ID");
 

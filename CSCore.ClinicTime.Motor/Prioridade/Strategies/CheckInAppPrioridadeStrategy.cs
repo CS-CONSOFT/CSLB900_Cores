@@ -10,7 +10,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade.Strategies
         public string Nome => "CheckIn App";
         public decimal Peso => 20m;
 
-        public decimal CalcularPrioridade(Dictionary<string, string> consulta, DtoAtualizaLocPaciente dto)
+        public decimal CalcularPrioridade(Dictionary<string, string> consulta, DtoDadosPrincipaisPaciente dto)
         {
             if (consulta.TryGetValue("checkIn", out var checkIn))
             {

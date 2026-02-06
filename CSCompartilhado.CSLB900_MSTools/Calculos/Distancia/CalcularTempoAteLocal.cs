@@ -7,22 +7,25 @@ namespace CSLB900.MSTools.Calculos.Distancia
     public static class CalcularTempoAteLocal
     {
         /// <summary>
-        /// Retorna o tempo estimado até o local em minutos, dado a distância em quilômetros e a velocidade média em quilômetros por hora.
+        /// Retorna o tempo estimado até o local em minutos, dado a distância em metros e a velocidade média em metros por segundo.
         /// </summary>
-        /// <param name="distanciaEmKm">Distancia ate o local em quilômetros</param>
-        /// <param name="velocidadeMediaKmH">Velocidade média em quilômetros por hora</param>
+        /// <param name="distanciaEmMetros">Distância até o local em metros</param>
+        /// <param name="velocidadeMediaMS">Velocidade média em metros por segundo (m/s)</param>
         /// <returns>Tempo estimado até o local em minutos</returns>
-        /// <exception cref="ArgumentException"></exception>
-        public static double Calcular(double distanciaEmKm, double velocidadeMediaKmH)
+        /// <exception cref="ArgumentException">Quando a velocidade média é menor ou igual a zero</exception>
+        public static double Calcular(double distanciaEmMetros, double velocidadeMediaMS)
         {
-            if (velocidadeMediaKmH <= 0)
+            if (velocidadeMediaMS <= 0)
             {
-                throw new ArgumentException("A velocidade média deve ser maior que zero.");
+                throw new ArgumentException("A velocidade média deve ser maior que zero.", nameof(velocidadeMediaMS));
             }
-            // Tempo = Distância / Velocidade
-            double tempoEmHoras = distanciaEmKm / velocidadeMediaKmH;
-            // Converter horas para minutos
-            double tempoEmMinutos = tempoEmHoras * 60;
+
+            // Tempo = Distância / Velocidade (resultado em segundos)
+            double tempoEmSegundos = distanciaEmMetros / velocidadeMediaMS;
+
+            // Converter segundos para minutos
+            double tempoEmMinutos = tempoEmSegundos / 60;
+
             return tempoEmMinutos;
         }
     }
