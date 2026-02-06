@@ -306,7 +306,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasMaxLength(50)
                     .HasColumnName("RESOURCETYPE");
              
-
+                entity.HasMany(e => e.NavResourceActions).WithOne().HasForeignKey(e => e.Resourceid).IsRequired();
 
             });
 

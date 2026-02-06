@@ -88,14 +88,70 @@ namespace CSCore.Ifs.Compartilhado
             foreach (var item in filtros)
             {
                 if (item.ValorPropriedade == null) continue;
-                var property = Expression.Property(parameter, item.NomePropriedade);
-                var propertyType = property.Type;
 
+                MemberExpression property;
+                Type propertyType;
+                object? constantValue;
+                ConstantExpression? constant;
+                Expression currentComparison;
 
-                var constantValue = Convert.ChangeType(item.ValorPropriedade, Nullable.GetUnderlyingType(propertyType) ?? propertyType);
-                var constant = Expression.Constant(constantValue, propertyType);
+                if (HasLogicalOperator(item))
+                {
+                    var logicalOperator = item.NomePropriedade.Contains("||") ? "||" : "&&";
+                    var propertyNames = item.NomePropriedade.Split([logicalOperator], StringSplitOptions.RemoveEmptyEntries);
+                    Expression? combinedComparison = null;
+                    foreach (var propertyName in propertyNames)
+                    {
+                        var trimmedPropertyName = propertyName.Trim();
 
-                Expression currentComparison = item.TipoDeIgualdade switch
+                        /*inicia a expressao fazendo e.nomeDaProp*/
+                        property = Expression.Property(parameter, trimmedPropertyName);
+                        /*DEFINE O TIPO DA PROPRIEDADE*/
+                        propertyType = property.Type;
+
+                        /*converte o tipo do valorPropriedade que é um object para o tipo destino, que é o tipo da propriedade na entidade achada pelo name*/
+                        constantValue = Convert.ChangeType(item.ValorPropriedade, Nullable.GetUnderlyingType(propertyType) ?? propertyType);
+
+                        /*cria uma expressão constante com o valor convertido. Ex: Expression.Constant(constantValue, typeof(propertyType))*/
+                        constant = Expression.Constant(constantValue, propertyType);
+
+                        currentComparison = item.TipoDeIgualdade switch
+                        {
+                            /*cria a expressa e.property == constant*/
+                            TipoFiltroDinamico.Igual => Expression.Equal(property, constant),
+                            TipoFiltroDinamico.Diferente => Expression.NotEqual(property, constant),
+                            TipoFiltroDinamico.Maior => Expression.GreaterThan(property, constant),
+                            TipoFiltroDinamico.Menos => Expression.LessThan(property, constant),
+                            TipoFiltroDinamico.Contem => Expression.Call(property, "Contains", null, constant),
+                            _ => throw new NotSupportedException($"Tipo de filtro {item.TipoDeIgualdade} não suportado.")
+                        };
+
+                        /*Cria a primeira comparação, ex: e.nome == Joao. Em seguida, na outra propriedade
+                         * do foreach, como combinedComparison é != null, ele vai utilizar os operadores logicos
+                         || ou && para fazer e.nome == Joao (OR ou &&) Maria*/
+                        combinedComparison = combinedComparison == null ? currentComparison :
+                            logicalOperator == "||" ? Expression.OrElse(combinedComparison, currentComparison) :
+                            Expression.AndAlso(combinedComparison, currentComparison);
+                    }
+
+                    /*Combina combinedComparison, filtro atual que acabou de ser processado dentro do if,
+                     * com filtros anteriores,comparison, que é a expressão acumulada de todos os filtros que já foram processados antes deste.
+                     * usando AND*/
+                    comparison = comparison == null ? combinedComparison : Expression.AndAlso(comparison, combinedComparison);
+                    continue;
+                }
+             
+                property = Expression.Property(parameter, item.NomePropriedade);
+                propertyType = property.Type;
+
+                /*converte o tipo do valorPropriedade que é um object para o tipo destino, que é o tipo da propriedade na entidade achada pelo name*/
+                constantValue = Convert.ChangeType(item.ValorPropriedade, Nullable.GetUnderlyingType(propertyType) ?? propertyType);
+
+                /*cria uma expressão constante com o valor convertido. Ex: Expression.Constant(constantValue, typeof(propertyType))*/
+                constant = Expression.Constant(constantValue, propertyType);
+
+                /*cria a expressa e.property == constant*/
+                currentComparison = item.TipoDeIgualdade switch
                 {
                     TipoFiltroDinamico.Igual => Expression.Equal(property, constant),
                     TipoFiltroDinamico.Diferente => Expression.NotEqual(property, constant),
@@ -116,6 +172,11 @@ namespace CSCore.Ifs.Compartilhado
             }
 
             return query;
+        }
+
+        private static bool HasLogicalOperator(FiltrosDinamicos item)
+        {
+            return item.NomePropriedade.Contains("||") || item.NomePropriedade.Contains("&&");
         }
 
         public virtual async Task<TEntity?> GetByIdAsync(string id, int tenant)
