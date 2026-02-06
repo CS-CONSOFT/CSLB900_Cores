@@ -344,8 +344,7 @@
             CssphOperadores,
             CssphFiltersOperadores,
             CssphFiltersResource,
-            CssphAbacResourceAttributes,
-            CssphAbacUserAttributes
+            CssphAbac_User_ResourceAttributes
         }
         public enum ComboTypeAA
         {
