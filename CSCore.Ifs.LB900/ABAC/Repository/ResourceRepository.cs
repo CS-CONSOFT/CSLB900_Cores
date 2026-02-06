@@ -38,5 +38,17 @@ namespace CSCore.Ifs.LB900.ABAC.Repository
             return (data, totalCount);
         }
 
+        public override async Task<ABAC_CSSPH_RESOURCE?> GetByIdAsync(string id, int tenant)
+        {
+            var query = this._appDbContext.ABAC_CSSPH_RESOURCE
+                .Where(e => e.Id == id)
+              .AsNoTracking()
+              .Include(e => e.NavResourceActions)
+              .AsQueryable();
+
+            return await query.FirstOrDefaultAsync();
+
+        }
+
     }
 }
