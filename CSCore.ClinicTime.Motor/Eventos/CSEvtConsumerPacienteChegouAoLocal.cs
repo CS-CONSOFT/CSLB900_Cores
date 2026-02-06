@@ -3,12 +3,8 @@ using CSCore.ClinicTime.Motor.Prioridade;
 using CSCore.Redis;
 using Microsoft.Extensions.Hosting;
 using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace CSCore.ClinicTime.Motor.Eventos
 {
@@ -39,6 +35,7 @@ namespace CSCore.ClinicTime.Motor.Eventos
         {
             var dbRedis = _redisConnection.GetDatabase();
             var keyPaciente = ConfigRedis.GetKeyDadosPacientePorAgendaMedica(e.AgendaData, e.AgendaID, e.EstabelecimentoId, e.ProfissionalId, e.PacienteId);
+
             await dbRedis.HashSetAsync(
                   keyPaciente,
                   "checkInNoLocal",
@@ -53,8 +50,17 @@ namespace CSCore.ClinicTime.Motor.Eventos
             await dbRedis.HashSetAsync(
             keyPaciente,
             "prioridadeEfetiva",
-            prioridade.ToString("F2")
-        );
+            prioridade.ToString("F2"));
+
+
+            await dbRedis.SetAddAsync(ConfigRedis.GetKeyJobsBackgroundPacienteAguardando(DateOnly.FromDateTime(DateTime.UtcNow.Date)), JsonSerializer.Serialize(new
+            {
+                AgendaData = e.AgendaData,
+                ProfissionalId = e.ProfissionalId,
+                AgendaID = e.AgendaID,
+                EstabID = e.EstabelecimentoId,
+                PacienteID = e.PacienteId
+            }));
         }
     }
 }

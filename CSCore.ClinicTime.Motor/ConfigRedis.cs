@@ -82,8 +82,20 @@ namespace CSCore.ClinicTime.Motor
             new("tempoChegada_Minutos", tempoAteClinica),
             new("velocidadeAtual_KMH", velocidadeAtual),
             new("ultimaAtualizacaoLoc", DateTime.UtcNow.ToString("O")),
-            new("prioridadeEfetiva", 0m.ToString("F2"))
+            new("prioridadeEfetiva", 0m.ToString("F2")),
+            new("tempoEmMinutosQueUsuarioEstaNoLocal", 0),
+            new("horarioAtendimentoPaciente", "-")
                 };
+        }
+
+        internal static RedisKey GetKeyJobsBackgroundPacienteAguardando(DateOnly AgendaData)
+        {
+            return $"dotnet-background-jobs:pacientes-aguardando-atendimento:{AgendaData}";
+        }
+
+        internal static RedisKey GetKeyEstabelecimentoConsultaDados(string estabelecimentoId)
+        {
+           return $"estabelecimento:{estabelecimentoId}:dados";
         }
     }
 }

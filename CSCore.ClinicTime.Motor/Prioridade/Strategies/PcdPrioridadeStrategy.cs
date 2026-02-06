@@ -12,7 +12,9 @@ namespace CSCore.ClinicTime.Motor.Prioridade.Strategies
 
         public decimal CalcularPrioridade(Dictionary<string, string> consulta, DtoDadosPrincipaisPaciente dto)
         {
-            if (consulta.TryGetValue("pacientePcd", out var pcd))
+            _ = consulta.TryGetValue("pacientePcd", out var pacientePcd);
+            bool isTrue = (pacientePcd == "1" || pacientePcd == "true");
+            if (isTrue)
             {
                 return Peso * 1.0m;
             }
