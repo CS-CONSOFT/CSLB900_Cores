@@ -25,6 +25,7 @@ namespace CSCore.Ifs.LB900.ABAC.Repository
             var query = this._appDbContext.ABAC_CSSPH_RESOURCE
                 .AsNoTracking()
                 .Include(e => e.NavResourceActions)
+                .Include(e => e.NavResourceAttributes)
                 .AsQueryable();
 
             query = AplicaFiltrosDinamicos(query, filtros);
@@ -44,6 +45,7 @@ namespace CSCore.Ifs.LB900.ABAC.Repository
                 .Where(e => e.Id == id)
               .AsNoTracking()
               .Include(e => e.NavResourceActions)
+              .Include(e => e.NavResourceAttributes)
               .AsQueryable();
 
             return await query.FirstOrDefaultAsync();
