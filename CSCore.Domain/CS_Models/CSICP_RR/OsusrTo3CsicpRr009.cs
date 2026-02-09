@@ -11,10 +11,10 @@ public partial class OsusrTo3CsicpRr009
     public string Id { get; set; } = null!;
 
     [ForeignKey("NavRR001Animal_RR009")]
-    public string? Rr001Id { get; set; }
+    public string? Rr001Id { get; set; } = null!;
 
     [ForeignKey("NavRR001AnimalVirtual_RR009")]
-    public string? Rr001Virtualid { get; set; }
+    public string? Rr001Virtualid { get; set; } = null!;
 
     // Navegações
     public OsusrTo3CsicpRr001? NavRR001Animal_RR009 { get; set; }

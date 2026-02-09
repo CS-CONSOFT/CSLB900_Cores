@@ -58,11 +58,6 @@ namespace CSCore.Ifs.Rebanho.RR009Repository
                     && x.Rr001Virtualid == In_Rr001Virtualid);
         }
 
-        public async Task<bool> ExisteAnimalRR001Async(int In_TenantID, string In_Rr001Id)
-        {
-            return await _appDbContext.OsusrTo3CsicpRr001s
-                .AnyAsync(x => x.TenantId == In_TenantID && x.Id == In_Rr001Id);
-        }
 
         protected override ICSFilter<OsusrTo3CsicpRr009>[] GetOutrosFiltros<TFiltros>(int TenantId, TFiltros Filtros)
         {

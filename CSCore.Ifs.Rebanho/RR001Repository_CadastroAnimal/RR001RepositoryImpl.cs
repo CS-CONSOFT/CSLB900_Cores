@@ -123,5 +123,11 @@ namespace CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal
 
             return (listItems, count);
         }
+
+        public async Task<bool> ExisteAnimalRR001Async(int In_TenantID, string In_Rr001Id)
+        {
+            return await _appDbContext.OsusrTo3CsicpRr001s
+                .AnyAsync(x => x.TenantId == In_TenantID && x.Id == In_Rr001Id);
+        }
     }
 }

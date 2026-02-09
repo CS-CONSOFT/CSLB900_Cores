@@ -21,9 +21,5 @@ namespace CSCore.Domain.Interfaces.RR._00X.IRR009
         /// </summary>
         Task<bool> ExisteAnimalNoRelacionamentoAsync(int In_TenantID, string In_Rr001Id, string In_Rr001Virtualid);
 
-        /// <summary>
-        /// Valida se o RR001_ID existe na tabela RR001
-        /// </summary>
-        Task<bool> ExisteAnimalRR001Async(int In_TenantID, string In_Rr001Id);
     }
 }
