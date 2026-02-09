@@ -2,6 +2,8 @@ using CSCore.ClinicTime.Motor.Eventos;
 using CSCore.ClinicTime.Motor.Paciente;
 using CSCore.ClinicTime.Motor.Paciente.dto;
 using CSCore.ClinicTime.Motor.Prioridade.Strategies;
+using CSCore.ClinicTime.Motor.Prioridade.Strategies.Novas;
+using CSCore.ClinicTime.Motor.Util;
 using Microsoft.Extensions.Logging;
 using Pipelines.Sockets.Unofficial.Arenas;
 using StackExchange.Redis;
@@ -44,13 +46,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade
                 new HorarioPrioridadeStrategy(),
                 new TempoEsperaPrioridadeStrategy()
             };
-
-            EstrategiaBaseQuandoPacienteEntraNaFilaConsiderandoPrioridades = new List<IPrioridadeStrategy>
-            {
-                new PcdPrioridadeStrategy(),
-                new IdosoPrioridadeStrategy(),
-                new GestantePrioridadeStrategy(),
-            };
+            EstrategiaBaseQuandoPacienteEntraNaFilaConsiderandoPrioridades = [];
             this._logger?.LogInformation("CalculadorPrioridade inicializado com {CountEstrategiasMovimento} estratégias para movimento e {CountEstrategiasBase} estratégias base", EstrategiasQuandoPacienteEstaEmMovimento.Count, EstrategiaBaseQuandoPacienteEntraNaFilaConsiderandoPrioridades.Count);
         }
 
@@ -75,10 +71,10 @@ namespace CSCore.ClinicTime.Motor.Prioridade
 
             var estrategiasASeremUsadas = tipoEstrategia == EnumTipoEstrategiaCalculoPrioridade.MOVIMENTO
                 ? EstrategiasQuandoPacienteEstaEmMovimento
-                : EstrategiaBaseQuandoPacienteEntraNaFilaConsiderandoPrioridades;
+                : GetEstrategiasQuandoIniciaAFila(dict);
 
             foreach (var strategy in estrategiasASeremUsadas)
-            {
+            {   
                 /*dentro da estratégia de proximidade existe um evento que dispara quando o paciente chega ao local da consulta*/
                 var prioridade = strategy.CalcularPrioridade(dict, dto);
                 prioridadeTotal += prioridade;
@@ -94,6 +90,22 @@ namespace CSCore.ClinicTime.Motor.Prioridade
 
 
         #region Métodos Privados
+
+        private IList<IPrioridadeStrategy> GetEstrategiasQuandoIniciaAFila(Dictionary<string, string> dict)
+        {
+            dict.TryGetValue("pacienteEspecial", out var pacienteEspecialStr);
+
+            this._logger?.LogInformation("Verificando se o paciente é especial para aplicar estratégias iniciais. Valor encontrado: {PacienteEspecialStr}", pacienteEspecialStr);
+
+            bool isOk = bool.TryParse(pacienteEspecialStr, out bool isPacienteEspecial);
+            bool _isPacienteEspecial = isOk ? isPacienteEspecial : false;
+
+            this._logger?.LogInformation("Paciente é especial? {IsPacienteEspecial}", _isPacienteEspecial);
+
+            dict.TryGetValue("tipoPacienteEspecial", out var tipoPacienteEspecial);
+            return VerificaTipoPacienteEspecial.ConverteTipoPacienteEspecialParaIPriority(tipoPacienteEspecial);
+
+        }
 
         /*ISSO DEVE ACONTECER DEPOIS DE INSERIR TODOS*/
         private async Task CriaOuAtualizaFilaDosPacientesEmUmaAgenda(DtoDadosPrincipaisPaciente dto, decimal prioridadeTotal, Dictionary<string, string> dadosPacienteConsulta)

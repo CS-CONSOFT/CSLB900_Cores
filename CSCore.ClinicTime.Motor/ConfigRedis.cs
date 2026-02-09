@@ -1,4 +1,5 @@
 ﻿using CSCore.ClinicTime.Motor.EntidadesMock;
+using CSCore.ClinicTime.Motor.Util;
 using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,7 @@ namespace CSCore.ClinicTime.Motor
         /// <param name="EstabID"></param>
         /// <param name="ProfissionalID"></param>
         /// <returns></returns>
-        public static string GetKeyFila(string AgendaID,DateOnly AgendaData, string EstabID, string ProfissionalID )
+        public static string GetKeyFila(string AgendaID, DateOnly AgendaData, string EstabID, string ProfissionalID)
         {
             return $"fila:Agenda:{AgendaData}:{AgendaID}:Estabelecimentos:{EstabID}:Profissionais:{ProfissionalID}";
         }
@@ -66,9 +67,11 @@ namespace CSCore.ClinicTime.Motor
         /// O metodo de redefinicao da fila é CalcularPrioridadeDaFila.RecalcularPrioridadeConsultaESalvaNoRedis
         /// </summary>
         public static HashEntry[] CriaEstruturaDeDadosDoPacienteDeUmaConsulta(
-                bool isPcd,
-                bool isIdoso,
-                bool isGestante,
+                string nomePaciente,
+                string consultaID,
+                int pesoPacienteEspecial,
+                bool isPacienteEspecial,
+                string tipoPacienteEspecial,
                 bool isCheckinLocal,
                 bool isCheckinApp,
                 double distanciaAteClinica,
@@ -78,22 +81,24 @@ namespace CSCore.ClinicTime.Motor
         {
             return new HashEntry[]
                 {
-            new("pacientePcd", isPcd),
-            new("pacienteIdoso", isIdoso),
-            new("pacienteGestante", isGestante),
-            new("checkInApp", isCheckinApp),
-            new("checkInNoLocal", isCheckinLocal),
+            new("pacienteNome", nomePaciente),
+            new("consultaID", consultaID),
+            new("pacienteEspecial", isPacienteEspecial),
+            new("tipoPacienteEspecial", tipoPacienteEspecial),
+            new("pesoPacienteEspecial", pesoPacienteEspecial),
+            new("prioridadeEfetiva", 0m.ToString("F2")),
             new("distanciaClinica_Metros", distanciaAteClinica),
             new("tempoChegada_Minutos", tempoAteClinica),
             new("velocidadeAtual_KMH", velocidadeAtual),
-            new("ultimaAtualizacaoLoc", DateTime.UtcNow.ToString("O")),
-            new("prioridadeEfetiva", 0m.ToString("F2")),
             new("tempoEmMinutosQueUsuarioEstaNoLocal", 0),
-            new("horarioAtendimentoPaciente", "-"),
+            new("checkInApp", isCheckinApp),
+            new("checkInNoLocal", isCheckinLocal),
             new("paciente_em_consulta", false),
-            new("horario_entrada_consulta", DateTime.UtcNow.ToString("t")),
-            new("horario_saida_consulta", DateTime.UtcNow.ToString("t")),
             new("paciente_atendido", false),
+            new("horario_previsto_atendimento_consulta_paciente", "-"),
+            new("ultimaAtualizacaoLoc", "-"),
+            new("horario_entrada_consulta", "-"),
+            new("horario_saida_consulta", "-")
                 };
         }
 
@@ -102,9 +107,14 @@ namespace CSCore.ClinicTime.Motor
             return $"dotnet-background-jobs:pacientes-aguardando-atendimento:{AgendaData}";
         }
 
+        internal static RedisKey GetKeyPacientesQueNaoPuderamSerAtendidosNoHorario(string AgendaID, DateOnly AgendaData, string EstabID, string ProfissionalID)
+        {
+            return $"pacientes-que-nao-puderam-ser-alocados-por-falta-de-horario-medico:{AgendaID}-{AgendaData}:{EstabID}:{ProfissionalID}";
+        }
+
         internal static RedisKey GetKeyEstabelecimentoConsultaDados(string estabelecimentoId)
         {
-           return $"estabelecimento:{estabelecimentoId}:dados";
+            return $"estabelecimento:{estabelecimentoId}:dados";
         }
     }
 }

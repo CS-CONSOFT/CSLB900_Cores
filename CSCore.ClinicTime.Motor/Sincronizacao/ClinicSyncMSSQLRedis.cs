@@ -5,6 +5,7 @@ using CSCore.ClinicTime.Motor.Eventos;
 using CSCore.ClinicTime.Motor.Paciente;
 using CSCore.ClinicTime.Motor.Paciente.dto;
 using CSCore.ClinicTime.Motor.Prioridade;
+using CSCore.ClinicTime.Motor.Util;
 using CSCore.Redis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -45,7 +46,7 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
         {
             var redisDb = this.redisConnection.GetDatabase();
             var query = from agenda in appDbContext.Sph015Agendas
-                            //where agenda.Data == DateOnly.FromDateTime(DateTime.UtcNow)
+                        where agenda.Data == DateOnly.FromDateTime(DateTime.UtcNow)
 
                         join estabelecimento in appDbContext.Sph011Estabelecimentos
                         on agenda.EstabelecimentoId equals estabelecimento.EstabelecimentoId into agendaEstabGroup
@@ -63,7 +64,7 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
 
                                          join Sph906PessoaEspecial in appDbContext.Sph906PessoaEspecials
                                          on paciente.PessoaEspecialId equals Sph906PessoaEspecial.Id into pacienteEspecialGroup
-                                            from pacienteEspecial in pacienteEspecialGroup.DefaultIfEmpty()
+                                         from pacienteEspecial in pacienteEspecialGroup.DefaultIfEmpty()
 
                                          select new
                                          {
@@ -73,7 +74,12 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
                                              {
                                                  paciente.PacienteId,
                                                  paciente.Nome,
-                                                 pacienteEspecial
+                                                 pacienteEspecial = pacienteEspecial != null ? new
+                                                 {
+                                                     pacienteEspecial.Id,
+                                                     pacienteEspecial.Peso,
+                                                     pacienteEspecial.Label
+                                                 } : null
                                              }
                                          }).ToList()
 
@@ -149,16 +155,23 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
                     agenda.ProfissionalId,
                     agenda.Paciente.PacienteId);
 
+                if(agenda.Paciente.pacienteEspecial != null)
+                {
+                    TipoPacienteEspecial? tipoPacienteEspecial = VerificaTipoPacienteEspecial.ObterTipoPacienteEspecial(agenda.Paciente.pacienteEspecial.Label);
+                }
+
                 await redisDb.HashSetAsync(
                     key,
                     ConfigRedis.CriaEstruturaDeDadosDoPacienteDeUmaConsulta(
-                        isPcd: agenda.Paciente.pacienteEspecial != null,
-                        isIdoso: new Random().Next(0, 2) == 1,
-                        isGestante: new Random().Next(0, 2) == 1,
+                        nomePaciente: agenda.Paciente.Nome,
+                        consultaID: agenda.ConsultaId,
+                        isPacienteEspecial: agenda.Paciente.pacienteEspecial != null,
+                        tipoPacienteEspecial: agenda.Paciente.pacienteEspecial?.Label ?? "", 
+                        pesoPacienteEspecial: agenda.Paciente.pacienteEspecial != null ? agenda.Paciente.pacienteEspecial.Peso : -1,
                         isCheckinApp: false,
                         isCheckinLocal: false,
-                        distanciaAteClinica: -1,
-                        tempoAteClinica: -1,
+                        distanciaAteClinica: 0,
+                        tempoAteClinica: 0,
                         velocidadeAtual: 0
                     )
                 );
@@ -170,7 +183,7 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
                     , new HashEntry[]
                     {
                         new HashEntry("estabelecimentoNome", $"{agenda.EstabelecimentoNome}"),
-                        new HashEntry("horariosFuncionamento", string.Join(";", agenda.EstabelecimentoHorariosFuncionamento.Select(h => $"{h.DiaSemana}:{h.HoraInicio}-{h.HoraFim}")))
+                        new HashEntry("horariosFuncionamento", string.Join(";", agenda.EstabelecimentoHorariosFuncionamento.Select(h => $"Dia: {h.DiaSemana}:{h.HoraInicio}-{h.HoraFim}")))
                     }
                     );
 

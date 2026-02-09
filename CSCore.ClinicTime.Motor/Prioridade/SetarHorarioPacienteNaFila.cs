@@ -48,17 +48,14 @@ namespace CSCore.ClinicTime.Motor.Prioridade
                     agendaData, agendaId, estabelecimentoId, profissionalId, pacienteId
                 );
 
-                //RedisValue rvHoraAtendimentoPacienteSalvo = await _dbRedis.HashGetAsync(keyPaciente, "horarioAtendimentoPaciente");
-                //var horaAtendimentoPacienteSalvo = TimeOnly.Parse(rvHoraAtendimentoPacienteSalvo!);
-                //var dataHoraAtendimento = horaAtendimentoPacienteSalvo.AddMinutes(TempoEmMinutosExtensaoConsulta);
 
-                var dataHoraAtendimento = DateTime.UtcNow.AddMinutes(i * TempoEmMinutosExtensaoConsulta);
-                if (i == 0)
-                    dataHoraAtendimento = DateTime.UtcNow.AddMinutes(TempoEmMinutosExtensaoConsulta);
+                RedisValue rvHoraAtendimentoPacienteSalvo = await _dbRedis.HashGetAsync(keyPaciente, "horario_previsto_atendimento_consulta_paciente");
+                var horaAtendimentoPacienteSalvo = TimeOnly.Parse(rvHoraAtendimentoPacienteSalvo!);
+                var dataHoraAtendimento = horaAtendimentoPacienteSalvo.AddMinutes(TempoEmMinutosExtensaoConsulta);
 
                 await _dbRedis.HashSetAsync(keyPaciente,
-                    "horarioAtendimentoPaciente",
-                    dataHoraAtendimento.AddHours(-3).ToString("t")
+                    "horario_previsto_atendimento_consulta_paciente",
+                    dataHoraAtendimento.ToString("t")
                 );
             }
         }
@@ -97,7 +94,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade
                 );
 
                 await _dbRedis.HashSetAsync(keyPaciente,
-                    "horarioAtendimentoPaciente",
+                    "horario_previsto_atendimento_consulta_paciente",
                     dataHoraAtendimento.AddHours(-3).ToString("t")
                 );
             }
@@ -143,7 +140,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade
                     );
 
                     await _dbRedis.HashSetAsync(keyPaciente,
-                        "horarioAtendimentoPaciente",
+                        "horario_previsto_atendimento_consulta_paciente",
                         dataHoraAtendimento.ToString("t")
                     );
 
@@ -154,6 +151,20 @@ namespace CSCore.ClinicTime.Motor.Prioridade
                 {
                     this._logger?.LogWarning("Paciente {PacienteId} na posição {Posicao} excede os horários disponíveis ({TotalHorarios}) para a agenda {AgendaID}.",
                         pacienteId, i + 1, horariosDisponiveis.Count, agendaId);
+
+                    /*NAO TEM HORARIO DISPONIVEL DO MECIDO PRO PACIENTE, ENTAO REMOVER O PACIENTE DA FILA*/
+                    var keyPaciente = ConfigRedis.GetKeyDadosPacientePorAgendaMedica(
+                        agendaData, agendaId, estabelecimentoId, profissionalId, pacienteId
+                    );
+
+                    // Remove o hash completo dos dados do paciente
+                    await _dbRedis.KeyDeleteAsync(keyPaciente);
+
+                    // Remove o paciente do sorted set da fila
+                    await _dbRedis.SortedSetRemoveAsync(keyFila, pacienteId);
+
+
+                    await _dbRedis.ListLeftPushAsync(ConfigRedis.GetKeyPacientesQueNaoPuderamSerAtendidosNoHorario(agendaId, agendaData, estabelecimentoId, profissionalId), pacienteId);
                 }
             }
 

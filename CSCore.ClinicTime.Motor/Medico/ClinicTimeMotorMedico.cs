@@ -42,7 +42,7 @@ namespace CSCore.ClinicTime.Motor.Medico
                 var keyPaciente = ConfigRedis.GetKeyDadosPacientePorAgendaMedica(AgendaData, AgendaID, EstabelecimentoID, ProfissionalID, PacienteID);
                 await dbRedis.HashSetAsync(keyPaciente,
                   [
-                        new HashEntry("paciente_em_consulta", false),
+                    new HashEntry("paciente_em_consulta", false),
                     new HashEntry("paciente_atendido", true),
                     new HashEntry("horario_saida_consulta", DateTime.UtcNow.ToString("t")),
               ]);
@@ -74,7 +74,7 @@ namespace CSCore.ClinicTime.Motor.Medico
                 await dbRedis.HashSetAsync(keyPaciente,
                   [
                     new HashEntry("paciente_em_consulta", true),
-                    new HashEntry("horario_entrada_consulta", DateTime.UtcNow.ToString("t")),
+                    new HashEntry("horario_entrada_consulta", DateTime.UtcNow.AddHours(-3).ToString("t")),
               ]);
 
                 await RemoverPacienteDaFilaDeAguardoDeAtendimento(AgendaID, AgendaData, EstabelecimentoID, ProfissionalID, PacienteID, dbRedis);
