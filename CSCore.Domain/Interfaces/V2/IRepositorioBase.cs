@@ -91,9 +91,11 @@
         /// </summary>
         public TipoFiltroDinamico TipoDeIgualdade { get; init; } = TipoFiltroDinamico.Igual;
 
+        /// <summary>
+        /// Caso queira fazer filtro com multiplas propriedades, use em NomePropriedade || para OU, sem espaços. EX. Nome||DisplayNome. Para AND usar &&
+        /// </summary>
         public static FiltrosDinamicos CriarFiltro(string NomePropriedade, object? ValorPropriedade, TipoFiltroDinamico TipoDeIgualdade)
         {
-
             return new FiltrosDinamicos
             {
                 NomePropriedade = NomePropriedade,
@@ -101,6 +103,7 @@
                 TipoDeIgualdade = TipoDeIgualdade
             } ;
         }
+
     }
 
     /// <summary>
