@@ -33,6 +33,11 @@ namespace CSCore.ClinicTime.Motor.BackgroundServices
             this.logger = logger;
         }
 
+        /// <summary>
+        /// Esse metodo aumenta a prioridade gradativamente conforme o paciente esta aguardando atendimento por muito tempo
+        /// </summary>
+        /// <param name="stoppingToken"></param>
+        /// <returns></returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             this.logger.LogInformation("[PacienteBackgroundService] Iniciando serviço de verificação de pacientes aguardando.");

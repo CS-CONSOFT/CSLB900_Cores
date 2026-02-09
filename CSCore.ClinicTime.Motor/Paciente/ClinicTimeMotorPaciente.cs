@@ -81,7 +81,6 @@ namespace CSCore.ClinicTime.Motor.Paciente
                 this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Localização do paciente {dto.PacienteId} atualizada com sucesso no Redis.");
 
 
-
                 double? distanciaAteClinica = await CalculaDistanciaEntreLocalPacienteEClinica(dto, dbRedis);
 
                 this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Distância do paciente {dto.PacienteId} até o estabelecimento {dto.EstabelecimentoId} é de {distanciaAteClinica} metros.");

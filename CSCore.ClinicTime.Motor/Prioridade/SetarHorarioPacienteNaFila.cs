@@ -10,6 +10,9 @@ namespace CSCore.ClinicTime.Motor.Prioridade
     public interface ISetarHorarioPacienteNaFila
     {
         Task AtribuirHorariosParaTodosPacientesDaFila(string agendaId, DateOnly agendaData, string estabelecimentoId, string profissionalId, TimeOnly horarioInicio, TimeOnly horarioFim);
+        Task AtualizaHorarioPacientesAposUmaFinalizacaoDeConsulta(string agendaId, DateOnly agendaData, string estabelecimentoId, string profissionalId);
+        Task AtualizaHorarioPacientesAposMedicoSolicitarExtensaoDeHorario(
+            string agendaId, DateOnly agendaData, string estabelecimentoId, string profissionalId, long TempoEmMinutosExtensaoConsulta);
     }
     public class SetarHorarioPacienteNaFila : ISetarHorarioPacienteNaFila
     {
@@ -19,6 +22,85 @@ namespace CSCore.ClinicTime.Motor.Prioridade
         {
             this.redisConnection = redisConnection;
             this._logger = logger;
+        }
+
+        public async Task AtualizaHorarioPacientesAposMedicoSolicitarExtensaoDeHorario(
+            string agendaId, DateOnly agendaData, string estabelecimentoId, string profissionalId, long TempoEmMinutosExtensaoConsulta)
+        {
+            var _dbRedis = redisConnection.GetDatabase();
+            var keyFila = ConfigRedis.GetKeyFila(agendaId, agendaData, estabelecimentoId, profissionalId);
+
+            // Recupera todos os pacientes ordenados por prioridade DECRESCENTE (maior score = maior prioridade)
+            var pacientesOrdenados = await _dbRedis.SortedSetRangeByRankAsync(keyFila, 0, -1, Order.Descending);
+
+            if (pacientesOrdenados.Length == 0)
+            {
+                this._logger?.LogInformation("Nenhum paciente na fila da agenda {AgendaID} do dia {AgendaData} para atualizar horários após finalização de consulta.",
+                    agendaId, agendaData);
+                return;
+            }
+
+            // Atualiza o horario do paciente apos a finalizacao do primeiro
+            for (int i = 0; i < pacientesOrdenados.Length; i++)
+            {
+                var pacienteId = pacientesOrdenados[i].ToString();
+                var keyPaciente = ConfigRedis.GetKeyDadosPacientePorAgendaMedica(
+                    agendaData, agendaId, estabelecimentoId, profissionalId, pacienteId
+                );
+
+                //RedisValue rvHoraAtendimentoPacienteSalvo = await _dbRedis.HashGetAsync(keyPaciente, "horarioAtendimentoPaciente");
+                //var horaAtendimentoPacienteSalvo = TimeOnly.Parse(rvHoraAtendimentoPacienteSalvo!);
+                //var dataHoraAtendimento = horaAtendimentoPacienteSalvo.AddMinutes(TempoEmMinutosExtensaoConsulta);
+
+                var dataHoraAtendimento = DateTime.UtcNow.AddMinutes(i * TempoEmMinutosExtensaoConsulta);
+                if (i == 0)
+                    dataHoraAtendimento = DateTime.UtcNow.AddMinutes(TempoEmMinutosExtensaoConsulta);
+
+                await _dbRedis.HashSetAsync(keyPaciente,
+                    "horarioAtendimentoPaciente",
+                    dataHoraAtendimento.AddHours(-3).ToString("t")
+                );
+            }
+        }
+
+
+
+        public async Task AtualizaHorarioPacientesAposUmaFinalizacaoDeConsulta(string agendaId, DateOnly agendaData, string estabelecimentoId, string profissionalId)
+        {
+            var _dbRedis = redisConnection.GetDatabase();
+            var keyFila = ConfigRedis.GetKeyFila(agendaId, agendaData, estabelecimentoId, profissionalId);
+
+            // Recupera todos os pacientes ordenados por prioridade DECRESCENTE (maior score = maior prioridade)
+            var pacientesOrdenados = await _dbRedis.SortedSetRangeByRankAsync(keyFila, 0, -1, Order.Descending);
+
+            if (pacientesOrdenados.Length == 0)
+            {
+                this._logger?.LogInformation("Nenhum paciente na fila da agenda {AgendaID} do dia {AgendaData} para atualizar horários após finalização de consulta.",
+                    agendaId, agendaData);
+                return;
+            }
+
+            // Atualiza o horario do paciente apos a finalizacao do primeiro
+            for (int i = 0; i < pacientesOrdenados.Length; i++)
+            {
+                var pacienteId = pacientesOrdenados[i].ToString();
+
+                /*
+                    primeiro paciente = 0 * 30 = 0 minutos de espera
+                    segundo paciente = 1 * 30 = 30 minutos de espera
+                    terceiro paciente = 2 * 30 = 60 minutos de espera
+                 */
+                var dataHoraAtendimento = DateTime.UtcNow.AddMinutes(i * 30);
+
+                var keyPaciente = ConfigRedis.GetKeyDadosPacientePorAgendaMedica(
+                    agendaData, agendaId, estabelecimentoId, profissionalId, pacienteId
+                );
+
+                await _dbRedis.HashSetAsync(keyPaciente,
+                    "horarioAtendimentoPaciente",
+                    dataHoraAtendimento.AddHours(-3).ToString("t")
+                );
+            }
         }
 
         /// <summary>

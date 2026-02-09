@@ -8,6 +8,7 @@ namespace CSCore.ClinicTime.Motor
 {
     public static class ConfigRedis
     {
+        private const string STR_PACIENTES_ATENDIDOS = "pacientes-atendidos";
         public const string STR_LOCALIZACOES = "localizacao:sistema";
         public const string MBR_LOCALIZACAO_PACIENTES_MEMBRO = "paciente:";
         public const string MBR_LOCALIZACAO_CLINICA_MEMBRO = "clinica:";
@@ -18,6 +19,10 @@ namespace CSCore.ClinicTime.Motor
         public const string STR_CONSULTA_CLINICA = "consulta:clinica:";
         public const string STR_CONSULTA_MEDICO = "consulta:medico:";
 
+        public static string GetKeyPacientesAtendidos(DateOnly AgendaData, string AgendaID, string EstabID, string ProfID)
+        {
+            return $"{STR_PACIENTES_ATENDIDOS}:agenda:{AgendaData}:{AgendaID}:consulta:Estabelecimentos:{EstabID}:Profissionais:{ProfID}";
+        }
 
         /// <summary>
         /// Esse metodo traz a chave para a estrutura
@@ -84,7 +89,11 @@ namespace CSCore.ClinicTime.Motor
             new("ultimaAtualizacaoLoc", DateTime.UtcNow.ToString("O")),
             new("prioridadeEfetiva", 0m.ToString("F2")),
             new("tempoEmMinutosQueUsuarioEstaNoLocal", 0),
-            new("horarioAtendimentoPaciente", "-")
+            new("horarioAtendimentoPaciente", "-"),
+            new("paciente_em_consulta", false),
+            new("horario_entrada_consulta", DateTime.UtcNow.ToString("t")),
+            new("horario_saida_consulta", DateTime.UtcNow.ToString("t")),
+            new("paciente_atendido", false),
                 };
         }
 
