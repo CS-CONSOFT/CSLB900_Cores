@@ -3,10 +3,13 @@ using CSCore.ClinicTime.Motor.Paciente;
 using CSCore.ClinicTime.Motor.Paciente.dto;
 using CSCore.ClinicTime.Motor.Prioridade.Strategies;
 using Microsoft.Extensions.Logging;
+using Pipelines.Sockets.Unofficial.Arenas;
 using StackExchange.Redis;
 
 namespace CSCore.ClinicTime.Motor.Prioridade
 {
+
+
     /// <summary>
     /// Movimento representa a utilização das estratégias quando o paciente já está em movimento (check-in, proximidade, etc) para recalcular a prioridade
     /// Calcula a prioridade inicial conforme os parametros de PCD, Idoso, Gestante
@@ -58,20 +61,17 @@ namespace CSCore.ClinicTime.Motor.Prioridade
         /// </summary>
         public async Task RecalcularPrioridadeConsultaESalvaNoRedis(DtoDadosPrincipaisPaciente dto, EnumTipoEstrategiaCalculoPrioridade tipoEstrategia)
         {
-            if (DataAtualDaConsultaEhIgualADataUmDiaAntesDaConsulta(dto))
+            if (DataAtualDaConsultaEhIgualAOntem(dto))
             {
                 await RemoveFilaDeUmDiaAntesDaConsulta(dto);
                 return;
             }
 
             var dict = await _recuperaDadosDaConsultaDoPaciente.RetornaDadosConsultaPaciente(dto.PacienteId, dto.AgendaData, dto.AgendaID, dto.EstabelecimentoId, dto.ProfissionalId);
-
             if (dict.Count == 0)
                 return;
 
-            dict.TryGetValue("prioridadeEfetiva", out var prioridadeBaseStr);
-            bool isOk = decimal.TryParse(prioridadeBaseStr, out decimal prioridadeBase);
-            decimal prioridadeTotal = isOk ? prioridadeBase : 0m;
+            decimal prioridadeTotal = RecuperaAPrioridadeTotalSalvaNaEstruturaDoUsuario(dict);
 
             var estrategiasASeremUsadas = tipoEstrategia == EnumTipoEstrategiaCalculoPrioridade.MOVIMENTO
                 ? EstrategiasQuandoPacienteEstaEmMovimento
@@ -79,20 +79,25 @@ namespace CSCore.ClinicTime.Motor.Prioridade
 
             foreach (var strategy in estrategiasASeremUsadas)
             {
+                /*dentro da estratégia de proximidade existe um evento que dispara quando o paciente chega ao local da consulta*/
                 var prioridade = strategy.CalcularPrioridade(dict, dto);
                 prioridadeTotal += prioridade;
             }
 
-     
             this._logger?.LogInformation("Prioridade recalculada para paciente {PacienteId} na agenda {AgendaID} do dia {AgendaData}. Nova prioridade: {PrioridadeTotal}", dto.PacienteId, dto.AgendaID, dto.AgendaData, prioridadeTotal);
-            var keyPaciente = ConfigRedis.GetKeyDadosPacientePorAgendaMedica(dto.AgendaData, dto.AgendaID, dto.EstabelecimentoId, dto.ProfissionalId, dto.PacienteId);
-            await _dbRedis.HashSetAsync(
-              keyPaciente,
-              "prioridadeEfetiva",
-              prioridadeTotal.ToString("F2")
-            );
+
+            await AtualizaAPrioridadeEfetivaDoUsuarioAposAtualizacao(dto, prioridadeTotal);
+
+            await CriaOuAtualizaFilaDosPacientesEmUmaAgenda(dto, prioridadeTotal, dict);
+        }
 
 
+
+        #region Métodos Privados
+
+        /*ISSO DEVE ACONTECER DEPOIS DE INSERIR TODOS*/
+        private async Task CriaOuAtualizaFilaDosPacientesEmUmaAgenda(DtoDadosPrincipaisPaciente dto, decimal prioridadeTotal, Dictionary<string, string> dadosPacienteConsulta)
+        {
             await _dbRedis.SortedSetAddAsync(
                 ConfigRedis.GetKeyFila(dto.AgendaID, dto.AgendaData, dto.EstabelecimentoId, dto.ProfissionalId),
                 dto.PacienteId,
@@ -100,14 +105,45 @@ namespace CSCore.ClinicTime.Motor.Prioridade
             );
         }
 
+        private async Task AtualizaAPrioridadeEfetivaDoUsuarioAposAtualizacao(DtoDadosPrincipaisPaciente dto, decimal prioridadeTotal)
+        {
+            var keyPaciente = ConfigRedis.GetKeyDadosPacientePorAgendaMedica(dto.AgendaData, dto.AgendaID, dto.EstabelecimentoId, dto.ProfissionalId, dto.PacienteId);
+            await _dbRedis.HashSetAsync(
+              keyPaciente,
+              "prioridadeEfetiva",
+              prioridadeTotal.ToString("F2")
+            );
+        }
+
+        private static decimal RecuperaAPrioridadeTotalSalvaNaEstruturaDoUsuario(Dictionary<string, string> dict)
+        {
+            dict.TryGetValue("prioridadeEfetiva", out var prioridadeBaseStr);
+            bool isOk = decimal.TryParse(prioridadeBaseStr, out decimal prioridadeBase);
+            decimal prioridadeTotal = isOk ? prioridadeBase : 0m;
+            return prioridadeTotal;
+        }
+
         private async Task RemoveFilaDeUmDiaAntesDaConsulta(DtoDadosPrincipaisPaciente dto)
         {
             await _dbRedis.SortedSetRemoveAsync(ConfigRedis.GetKeyFila(dto.AgendaID, DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1)), dto.EstabelecimentoId, dto.ProfissionalId), dto.PacienteId);
         }
 
-        private static bool DataAtualDaConsultaEhIgualADataUmDiaAntesDaConsulta(DtoDadosPrincipaisPaciente dto)
+        private static bool DataAtualDaConsultaEhIgualAOntem(DtoDadosPrincipaisPaciente dto)
         {
             return dto.AgendaData == DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-1));
         }
+
+        #endregion
+
+        #region Privte Class
+
+        private class HorarioFuncionamento
+        {
+            public DayOfWeek DiaSemana { get; set; }
+            public TimeOnly HoraInicio { get; set; }
+            public TimeOnly HoraFim { get; set; }
+        }
+
+        #endregion
     }
 }

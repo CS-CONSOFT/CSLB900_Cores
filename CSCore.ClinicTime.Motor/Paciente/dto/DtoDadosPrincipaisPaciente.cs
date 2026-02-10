@@ -9,6 +9,9 @@ namespace CSCore.ClinicTime.Motor.Paciente.dto
         
         public string AgendaID { get; init; } = null!;
         public DateOnly AgendaData { get; init; }
+        public TimeOnly AgendaHorarioInicio { get; set; }
+        public TimeOnly AgendaHorarioFim { get; set; }
+
         public string ProfissionalId { get; init; } = null!;
         public string PacienteId { get; init; } = null!;
         public bool PacientePCD { get; init; } = false;
@@ -27,6 +30,8 @@ namespace CSCore.ClinicTime.Motor.Paciente.dto
         public DtoDadosPrincipaisPaciente(
             string AGENDAID,
             DateOnly AgendaData,
+            TimeOnly AgendaHorarioInicio,
+            TimeOnly AgendaHorarioFim,
             string PacienteId,
             string ProfissionalId,
             string EstabelecimentoId,
@@ -34,6 +39,8 @@ namespace CSCore.ClinicTime.Motor.Paciente.dto
             double longitude, 
             double VelocidadeAtualPaciente)
         {
+            this.AgendaHorarioInicio = AgendaHorarioInicio;
+            this.AgendaHorarioFim = AgendaHorarioFim;
             this.AgendaData = AgendaData;
             this.AgendaID = AGENDAID;
             this.PacienteId = PacienteId;
@@ -47,6 +54,8 @@ namespace CSCore.ClinicTime.Motor.Paciente.dto
         public static DtoDadosPrincipaisPaciente DtoVazioPorFaltaDeUsoNesseMetodo() => new DtoDadosPrincipaisPaciente(
             AGENDAID: string.Empty,
             AgendaData: DateOnly.MinValue,
+            AgendaHorarioInicio: TimeOnly.MinValue,
+            AgendaHorarioFim: TimeOnly.MinValue,
             PacienteId: string.Empty,
             ProfissionalId: string.Empty,
             EstabelecimentoId: string.Empty,

@@ -366,6 +366,12 @@ namespace CSCore.Ifs.CS_Context
                     .HasMaxLength(36)
                     .HasColumnName("RR001_VIRTUALID");
                 entity.Property(e => e.TenantId).HasColumnName("TENANT_ID");
+
+                entity.HasOne(e => e.NavRR001AnimalVirtual_RR009)
+                .WithMany()
+                .HasForeignKey(e => e.Rr001Virtualid)
+                .HasPrincipalKey(r => r.Id)
+                .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr010>(entity =>

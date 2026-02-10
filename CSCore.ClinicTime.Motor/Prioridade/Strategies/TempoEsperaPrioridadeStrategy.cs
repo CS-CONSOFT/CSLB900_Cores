@@ -12,13 +12,13 @@ namespace CSCore.ClinicTime.Motor.Prioridade.Strategies
 
         public decimal CalcularPrioridade(Dictionary<string, string> consulta, DtoDadosPrincipaisPaciente dto)
         {
-            if (consulta.TryGetValue("checkInTimestamp", out var timestamp))
+            if (consulta.TryGetValue("tempoEmMinutosQueUsuarioEstaNoLocal", out var tempoEmMinutosString))
             {
-                var checkInTime = DateTime.Parse(timestamp);
-                var minutosEsperando = (DateTime.UtcNow - checkInTime).TotalMinutes;
-
-                var scoreEspera = (decimal)(minutosEsperando / 10);
-                return Peso * scoreEspera;
+               var tempoEmMinutos = int.Parse(tempoEmMinutosString);
+                if (tempoEmMinutos >= 30) return Peso * 1.0m;   // 30+ minutos
+                if (tempoEmMinutos >= 15) return Peso * 0.8m;   // 15-29 minutos
+                if (tempoEmMinutos >= 5) return Peso * 0.5m;    // 5-14 minutos
+                return Peso * 0.2m;                             // <5 minutos
             }
 
             return 0m;

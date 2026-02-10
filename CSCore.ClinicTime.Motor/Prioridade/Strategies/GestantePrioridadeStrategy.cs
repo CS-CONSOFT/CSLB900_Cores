@@ -12,11 +12,12 @@ namespace CSCore.ClinicTime.Motor.Prioridade.Strategies
 
         public decimal CalcularPrioridade(Dictionary<string, string> consulta, DtoDadosPrincipaisPaciente dto)
         {
-            if (consulta.TryGetValue("pacienteGestante", out var gestante))
+            _ = consulta.TryGetValue("pacienteGestante", out var pacienteGestante);
+            bool isTrue = (pacienteGestante == "1" || pacienteGestante == "true");
+            if (isTrue)
             {
                 return Peso * 1.0m;
             }
-
             return 0m;
         }
     }
