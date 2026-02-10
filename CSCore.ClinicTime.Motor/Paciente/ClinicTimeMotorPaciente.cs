@@ -13,6 +13,8 @@ namespace CSCore.ClinicTime.Motor.Paciente
     #region INTERFACES
     public interface IClinicTimeMotorPaciente
     {
+        Task<(bool, string)> PacienteMarcaChekinNoApp(DtoPacienteCheknApp dto);
+
         /// <summary>
         /// Esse método é responsável por atualizar a localização do paciente. A cada 30-60 segundos ou mudança > 50 metros
         /// </summary>
@@ -115,6 +117,34 @@ namespace CSCore.ClinicTime.Motor.Paciente
         }
 
 
+        public async Task<(bool, string)> PacienteMarcaChekinNoApp(DtoPacienteCheknApp dto)
+        {
+            try
+            {
+                Dictionary<string, string> dict = await this.recuperaDadosDaConsultaDoPaciente.RetornaDadosConsultaPaciente(dto.PacienteID, dto.AgendaData, dto.AgendaID, dto.EstabelecimentoID, dto.ProfissionalID);
+                if (dict == null || dict.Count == 0)
+                    return (false, "Paciente sem dados de consulta pra esses parametros: Dia: " + dto.AgendaData + " - Clinica: " + dto.EstabelecimentoID + " - Medico: " + dto.ProfissionalID);
+
+                dict.TryGetValue("chekinApp", out var valorChekinApp);
+                if (valorChekinApp != null && valorChekinApp.Equals("true", StringComparison.OrdinalIgnoreCase))
+                    return (false, "Paciente já tinha feito check-in no app para essa consulta.");
+
+                var dbRedis = this.redisConnection.GetDatabase();
+                var keyPaciente = ConfigRedis.GetKeyDadosPacientePorAgendaMedica(dto.AgendaData, dto.AgendaID, dto.EstabelecimentoID, dto.ProfissionalID, dto.PacienteID);
+                await dbRedis.HashSetAsync(keyPaciente,
+                [
+                    new HashEntry("chekinApp", "true"),
+                    new HashEntry("hora_paciente_chekin_app", dto.HoraChekinApp.ToString("t"))
+                ]);
+
+                return (true, "Check-in no app registrado com sucesso para o paciente.");
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Erro ao registrar check-in no app para o paciente: {ex.Message}");
+            }
+        }
+
         public async Task<(int, double)> RetornaPosicaoPacienteNaFila(DtoDadosPrincipaisPaciente dto)
         {
             this.logger?.LogInformation($"[ClinicMotorPaciente - RetornaPosicaoPacienteNaFila] Retornando posição do paciente {dto.PacienteId} na fila da consulta {dto.PacienteId}");
@@ -186,6 +216,7 @@ namespace CSCore.ClinicTime.Motor.Paciente
                     new HashEntry("ultimaAtualizacaoLoc", DateTime.UtcNow.ToString("O"))
               });
         }
+
 
 
 

@@ -15,7 +15,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade.Strategies
     public class CheckInLocalPrioridadeStrategy : IPrioridadeStrategy
     {
         public string Nome => "CheckIn Local";
-        public decimal Peso => 3000m;
+        public decimal Peso => 10000m;
 
         public decimal CalcularPrioridade(Dictionary<string, string> consulta, DtoDadosPrincipaisPaciente _)
         {

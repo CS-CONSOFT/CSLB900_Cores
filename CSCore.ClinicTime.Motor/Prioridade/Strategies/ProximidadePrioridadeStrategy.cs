@@ -12,36 +12,33 @@ namespace CSCore.ClinicTime.Motor.Prioridade.Strategies
         public string Nome => "Proximidade";
         public decimal Peso => 15m;
 
-      
+        // Flag para indicar se o paciente chegou ao local
+        public bool PacienteChegouAoLocal { get; private set; }
 
         public decimal CalcularPrioridade(Dictionary<string, string> consulta, DtoDadosPrincipaisPaciente dto)
         {
+            PacienteChegouAoLocal = false; // Reset flag
+
             _ = consulta.TryGetValue("checkInNoLocal", out var checkInLocal);
             bool.TryParse(checkInLocal, out bool checkInLocalBool);
             bool estaNoLocal = checkInLocalBool || dto.PacienteIsChekinLocal;
+
             if (estaNoLocal)
             {
                 return 0m;
             }
 
             var scoreProximidade = CalcularScoreProximidade(dto.DistanciaPacienteEstabelecimentoMetros);
+
             if (dto.DistanciaPacienteEstabelecimentoMetros < 100)
             {
-                consulta.Remove("checkInNoLocal");
-                consulta.Add("checkInNoLocal", "true");
-                CSEvtHandler.DispararPacienteChegouAoLocal(new PacienteChegouEventArgs
-                {
-                    PacienteId = dto.PacienteId,
-                    EstabelecimentoId = dto.EstabelecimentoId,
-                    AgendaId = dto.AgendaID,
-                    DistanciaMetros = dto.DistanciaPacienteEstabelecimentoMetros,
-                    AgendaData = dto.AgendaData,
-                    ProfissionalId = dto.ProfissionalId,
-                    AgendaID = dto.AgendaID,
-                    DictConsulta = consulta
-                });
+                // Marca que chegou ao local para processamento posterior
+                PacienteChegouAoLocal = true;
+                consulta["checkInNoLocal"] = "true";
+
                 return Peso * 1.1m;
             }
+
             return Peso * scoreProximidade;
         }
 

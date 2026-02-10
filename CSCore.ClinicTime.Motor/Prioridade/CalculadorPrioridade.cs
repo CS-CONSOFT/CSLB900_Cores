@@ -7,6 +7,7 @@ using CSCore.ClinicTime.Motor.Util;
 using Microsoft.Extensions.Logging;
 using Pipelines.Sockets.Unofficial.Arenas;
 using StackExchange.Redis;
+using System.Globalization;
 
 namespace CSCore.ClinicTime.Motor.Prioridade
 {
@@ -41,7 +42,6 @@ namespace CSCore.ClinicTime.Motor.Prioridade
             _recuperaDadosDaConsultaDoPaciente = recuperaDadosDaConsultaDoPaciente;
             EstrategiasQuandoPacienteEstaEmMovimento = new List<IPrioridadeStrategy>
             {
-                new CheckInAppPrioridadeStrategy(),
                 new ProximidadePrioridadeStrategy(),
                 new HorarioPrioridadeStrategy(),
                 new TempoEsperaPrioridadeStrategy()
@@ -73,11 +73,48 @@ namespace CSCore.ClinicTime.Motor.Prioridade
                 ? EstrategiasQuandoPacienteEstaEmMovimento
                 : GetEstrategiasQuandoIniciaAFila(dict);
 
+            bool pacienteChegouAoLocal = false;
+
             foreach (var strategy in estrategiasASeremUsadas)
-            {   
-                /*dentro da estratégia de proximidade existe um evento que dispara quando o paciente chega ao local da consulta*/
+            {
                 var prioridade = strategy.CalcularPrioridade(dict, dto);
                 prioridadeTotal += prioridade;
+
+                // Detecta se o paciente chegou ao local
+                if (strategy is ProximidadePrioridadeStrategy proximidade && proximidade.PacienteChegouAoLocal)
+                {
+                    pacienteChegouAoLocal = true;
+                }
+            }
+
+            // 🎯 PROCESSA CHECK-IN LOCAL ATOMICAMENTE
+            if (pacienteChegouAoLocal)
+            {
+                this._logger?.LogInformation("Paciente {PacienteId} chegou ao local! Aplicando bonificação de check-in", dto.PacienteId);
+
+                var keyPaciente = ConfigRedis.GetKeyDadosPacientePorAgendaMedica(dto.AgendaData, dto.AgendaID, dto.EstabelecimentoId, dto.ProfissionalId, dto.PacienteId);
+
+                // Marca check-in no local
+                await _dbRedis.HashSetAsync(keyPaciente, "checkInNoLocal", "true");
+                await _dbRedis.HashSetAsync(keyPaciente, "hora_paciente_checkin_local", DateTime.UtcNow.AddHours(-3).ToString("t"));
+
+                // Aplica bonificação de check-in local (10000 pontos)
+                prioridadeTotal += 1000m;
+
+                // Incrementa com tempo de espera desde check-in no app (se existir)
+                prioridadeTotal = await IncrementaPrioridadeComTempoDeEspera(keyPaciente, prioridadeTotal);
+
+                // Adiciona ao job de background para monitoramento
+                await _dbRedis.SetAddAsync(
+                    ConfigRedis.GetKeyJobsBackgroundPacienteAguardando(DateOnly.FromDateTime(DateTime.UtcNow.Date)),
+                    System.Text.Json.JsonSerializer.Serialize(new
+                    {
+                        AgendaData = dto.AgendaData,
+                        ProfissionalId = dto.ProfissionalId,
+                        AgendaID = dto.AgendaID,
+                        EstabID = dto.EstabelecimentoId,
+                        PacienteID = dto.PacienteId
+                    }));
             }
 
             this._logger?.LogInformation("Prioridade recalculada para paciente {PacienteId} na agenda {AgendaID} do dia {AgendaData}. Nova prioridade: {PrioridadeTotal}", dto.PacienteId, dto.AgendaID, dto.AgendaData, prioridadeTotal);
@@ -90,6 +127,47 @@ namespace CSCore.ClinicTime.Motor.Prioridade
 
 
         #region Métodos Privados
+        private async Task<decimal> IncrementaPrioridadeComTempoDeEspera(string keyPaciente, decimal prioridade)
+        {
+
+            // Calcula tempo desde check-in local
+            RedisValue horaPacienteChekinLocal = await _dbRedis.HashGetAsync(keyPaciente, "hora_paciente_checkin_local");
+            if (!horaPacienteChekinLocal.IsNullOrEmpty)
+            {
+                var horaChekinLocal = DateTime.Parse((string)horaPacienteChekinLocal!, CultureInfo.InvariantCulture);
+                double minutosEsperando = DateTime.UtcNow.AddHours(-3).Subtract(horaChekinLocal).TotalMinutes;
+                prioridade += (decimal)minutosEsperando;
+            }
+
+            // Recupera check-in no app
+            RedisValue horaPacienteChekinApp = await _dbRedis.HashGetAsync(keyPaciente, "hora_paciente_chekin_app");
+            if (horaPacienteChekinApp.IsNullOrEmpty || horaPacienteChekinApp == "0")
+                return prioridade;
+
+            var horaChekinApp = DateTime.Parse((string)horaPacienteChekinApp!, CultureInfo.InvariantCulture);
+            double minutosDesdeCheckinApp = DateTime.UtcNow.AddHours(-3).Subtract(horaChekinApp).TotalMinutes;
+
+            // Verifica se é paciente especial
+            RedisValue pacienteEspecial = await _dbRedis.HashGetAsync(keyPaciente, "pacienteEspecial");
+            if (pacienteEspecial != "1")
+            {
+                prioridade += (decimal)minutosDesdeCheckinApp;
+                return prioridade;
+            }
+
+            // Aplica peso para paciente especial
+            RedisValue pesoPacienteEspecial = await _dbRedis.HashGetAsync(keyPaciente, "pesoPacienteEspecial");
+            if (pesoPacienteEspecial != "-1" && int.TryParse((string)pesoPacienteEspecial!, out int peso))
+            {
+                prioridade += (decimal)minutosDesdeCheckinApp * peso;
+            }
+            else
+            {
+                prioridade += (decimal)minutosDesdeCheckinApp;
+            }
+
+            return prioridade;
+        }
 
         private IList<IPrioridadeStrategy> GetEstrategiasQuandoIniciaAFila(Dictionary<string, string> dict)
         {
@@ -110,6 +188,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade
         /*ISSO DEVE ACONTECER DEPOIS DE INSERIR TODOS*/
         private async Task CriaOuAtualizaFilaDosPacientesEmUmaAgenda(DtoDadosPrincipaisPaciente dto, decimal prioridadeTotal, Dictionary<string, string> dadosPacienteConsulta)
         {
+            this._logger?.LogInformation("Criando ou atualizando posição do paciente {PacienteId} na fila da agenda {AgendaID} do dia {AgendaData} com prioridade {PrioridadeTotal}", dto.PacienteId, dto.AgendaID, dto.AgendaData, prioridadeTotal);
             await _dbRedis.SortedSetAddAsync(
                 ConfigRedis.GetKeyFila(dto.AgendaID, dto.AgendaData, dto.EstabelecimentoId, dto.ProfissionalId),
                 dto.PacienteId,

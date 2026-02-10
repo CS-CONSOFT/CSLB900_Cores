@@ -137,6 +137,15 @@ namespace CSCore.RabbitMQ
         public const string FilaProcessaRegistroPesoAnimalRebanho = "fila_processa_registro_peso_animal_rebanho";
 
         public const string ActionProcessaRegistroPesoAnimal = "action_processa_registro_peso_animal";
+
+
+        //CLINIC_TIME
+
+        public const string ExchangeClinicTime_AtualizaPosicaoPaciente = "exchange_clinic_time_atualiza_posicao_paciente";
+
+        public const string FilaClinicTime_AtualizaPosicaoPaciente = "fila_clinic_time_atualiza_posicao_paciente";
+
+        public const string ActionClinicTime_AtualizaPosicaoPaciente = "action_clinic_time_atualiza_posicao_paciente";
     }
 }
 

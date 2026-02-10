@@ -5,6 +5,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade.Strategies
     /// <summary>
     /// Estratégia de prioridade para check-in realizado pelo aplicativo
     /// </summary>
+    [Obsolete("Não é usado mais")]
     public class CheckInAppPrioridadeStrategy : IPrioridadeStrategy
     {
         public string Nome => "CheckIn App";

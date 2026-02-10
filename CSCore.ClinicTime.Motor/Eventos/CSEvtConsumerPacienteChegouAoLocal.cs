@@ -43,14 +43,21 @@ namespace CSCore.ClinicTime.Motor.Eventos
                     );
 
             RedisValue redisValue = await dbRedis.HashGetAsync(keyPaciente, "prioridadeEfetiva");
-            var prioridade = decimal.Parse((string)redisValue, CultureInfo.InvariantCulture);
-
+            var prioridade = decimal.Parse((string)redisValue!, CultureInfo.InvariantCulture);
             prioridade += _chekinLocalPrioriedadeStrategy.CalcularPrioridade(e.DictConsulta, dto: DtoDadosPrincipaisPaciente.DtoVazioPorFaltaDeUsoNesseMetodo());
+
+            await dbRedis.HashSetAsync(
+               keyPaciente,
+               "hora_paciente_checkin_local",
+               DateTime.UtcNow.AddHours(-3).ToString("t"));
+
+            prioridade = await IncrementaPrioridadeBaseadoNoHorarioDoChekin(dbRedis, keyPaciente, prioridade);
 
             await dbRedis.HashSetAsync(
             keyPaciente,
             "prioridadeEfetiva",
             prioridade.ToString("F2"));
+
 
 
             await dbRedis.SetAddAsync(ConfigRedis.GetKeyJobsBackgroundPacienteAguardando(DateOnly.FromDateTime(DateTime.UtcNow.Date)), JsonSerializer.Serialize(new
@@ -61,6 +68,55 @@ namespace CSCore.ClinicTime.Motor.Eventos
                 EstabID = e.EstabelecimentoId,
                 PacienteID = e.PacienteId
             }));
+        }
+
+        private static async Task<decimal> IncrementaPrioridadeBaseadoNoHorarioDoChekin(IDatabase dbRedis, string keyPaciente, decimal prioridade)
+        {
+            RedisValue horaPacienteChekinLocal = await dbRedis.HashGetAsync(keyPaciente, "hora_paciente_checkin_local");
+            var horaChekinLocal = DateTime.Parse((string)horaPacienteChekinLocal!, CultureInfo.InvariantCulture);
+            double diferencaMinutosHoraAtualComHoraChekinLocal = DateTime.UtcNow.AddHours(-3).Subtract(horaChekinLocal).TotalMinutes;
+            prioridade += (decimal)diferencaMinutosHoraAtualComHoraChekinLocal;
+
+            /*recupera a hora que o paciente fez o check-in*/
+            RedisValue horaPacienteChekinApp = await dbRedis.HashGetAsync(keyPaciente, "hora_paciente_chekin_app");
+
+            if (!PacienteFezChekinNoApp(horaPacienteChekinApp)) return prioridade;
+
+            var horaChekinApp = DateTime.Parse((string)horaPacienteChekinApp!, CultureInfo.InvariantCulture);
+
+            double diferencaMinutosHoraAtualComHoraChekin = DateTime.UtcNow.AddHours(-3).Subtract(horaChekinApp).TotalMinutes;
+
+            RedisValue pacienteEspecial = await dbRedis.HashGetAsync(keyPaciente, "pacienteEspecial");
+
+            if (!IsPacienteEspecial(pacienteEspecial)) prioridade += (decimal)diferencaMinutosHoraAtualComHoraChekin;
+
+            RedisValue pesoPacienteEspecial = await dbRedis.HashGetAsync(keyPaciente, "pesoPacienteEspecial");
+
+            if (!PacienteEspecialTemPesoValido(pesoPacienteEspecial)) return prioridade;
+
+            /*variavel criada para ser controle do peso, quando tiver que fazer multiplicacao pra somar na prioridade*/
+            var _pesoPacienteEspecial = 1;
+
+            _pesoPacienteEspecial = int.Parse((string)pesoPacienteEspecial!, CultureInfo.InvariantCulture);
+
+            prioridade += (decimal)diferencaMinutosHoraAtualComHoraChekin * _pesoPacienteEspecial;
+
+            return prioridade;
+        }
+
+        private static bool PacienteEspecialTemPesoValido(RedisValue pesoPacienteEspecial)
+        {
+            return pesoPacienteEspecial != "-1";
+        }
+
+        private static bool IsPacienteEspecial(RedisValue pacienteEspecial)
+        {
+            return pacienteEspecial == "1";
+        }
+
+        private static bool PacienteFezChekinNoApp(RedisValue horaPacienteChekinApp)
+        {
+            return horaPacienteChekinApp != "0";
         }
     }
 }
