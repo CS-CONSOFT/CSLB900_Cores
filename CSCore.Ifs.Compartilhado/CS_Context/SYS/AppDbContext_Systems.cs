@@ -408,7 +408,7 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnName("DESCRIPTION");
                 entity.Property(e => e.Operator)
                     .HasMaxLength(20)
-                    .HasColumnName("OPERATOR");
+                    .HasColumnName("OPERATOR_CODE");
             });
 
             modelBuilder.Entity<ABAC_CSSPH_FILTERSOPERADORES>(entity =>
