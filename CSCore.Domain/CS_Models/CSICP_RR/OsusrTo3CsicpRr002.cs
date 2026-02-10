@@ -33,7 +33,6 @@ public partial class OsusrTo3CsicpRr002
     [ForeignKey("NavAA027UF")]
     public string? Rr002Ufid { get; set; }
 
-    //public virtual ICollection<OsusrTo3CsicpRr001> OsusrTo3CsicpRr001s { get; set; } = new List<OsusrTo3CsicpRr001>();
     
     public CSICP_Aa028? NavAA028Cidade { get; set; }
     public CSICP_Aa027? NavAA027UF { get; set; }
