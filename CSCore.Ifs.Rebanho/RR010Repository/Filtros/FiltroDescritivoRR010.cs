@@ -15,9 +15,10 @@ namespace CSCore.Ifs.Rebanho.RR010Repository.Filtros
 
         public IQueryable<OsusrTo3CsicpRr010> Apply(IQueryable<OsusrTo3CsicpRr010> query)
         {
-            if (!string.IsNullOrEmpty(_descritivo))
+            if (!string.IsNullOrWhiteSpace(_descritivo))
             {
-                query = query.Where(e => e.Rr010Descritivo != null && e.Rr010Descritivo == _descritivo);
+                query = query.Where(e => e.Rr010Descritivo != null && 
+                                        e.Rr010Descritivo.Contains(_descritivo));
             }
             return query;
         }

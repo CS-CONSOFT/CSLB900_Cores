@@ -9,7 +9,7 @@ public partial class OsusrTo3CsicpRr010
 
     public long Id { get; set; }
 
-    public string? Rr010Condcriacao { get; set; }
+    public string Rr010Condcriacao { get; set; } = string.Empty;
 
-    public string? Rr010Descritivo { get; set; }
+    public string Rr010Descritivo { get; set; } = string.Empty;
 }
