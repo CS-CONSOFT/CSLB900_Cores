@@ -288,8 +288,6 @@ namespace CSCore.Ifs.Repository.Combo
             return await novaQuery.ToListAsync();
         }
 
-
-
         public async Task<IEnumerable<object>> GetCommonListForComboRR(int tenant, ComboTypeRR comboType)
         {
             IQueryable<object> query = comboType switch
@@ -328,6 +326,16 @@ namespace CSCore.Ifs.Repository.Combo
                 .Where(c => c.TenantId == tenant)
                 .OrderBy(c => c.Rr008Regalimentar)
                 .Select(c => new { Title = c.Rr008Regalimentar, c.Id }),
+
+                ComboTypeRR.Csicp_RR010 => _appDbContext.OsusrTo3CsicpRr010s
+                .Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Rr010Descritivo)
+                .Select(c => new { Title = c.Rr010Descritivo ?? "---", c.Id }),
+
+                ComboTypeRR.Csicp_RR011 => _appDbContext.OsusrTo3CsicpRr011s
+                .Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Rr011Serie)
+                .Select(c => new { Title = c.Rr011Serie ?? "---", c.Id }),
 
                 ComboTypeRR.Csicp_RR020 => _appDbContext.OsusrTo3CsicpRr020s
                 .Where(c => c.TenantId == tenant)

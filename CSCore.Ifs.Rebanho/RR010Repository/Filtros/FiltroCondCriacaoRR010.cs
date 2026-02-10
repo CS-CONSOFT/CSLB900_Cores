@@ -17,7 +17,8 @@ namespace CSCore.Ifs.Rebanho.RR010Repository.Filtros
         {
             if (!string.IsNullOrEmpty(_condCriacao))
             {
-                query = query.Where(e => e.Rr010Condcriacao != null && e.Rr010Condcriacao == _condCriacao);
+                query = query.Where(e => e.Rr010Condcriacao != null &&
+                         e.Rr010Condcriacao.Contains(_condCriacao));
             }
             return query;
         }

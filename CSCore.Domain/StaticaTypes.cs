@@ -388,6 +388,9 @@
             Csicp_RR006,
             Csicp_RR007,
             Csicp_RR008,
+            Csicp_RR009,
+            Csicp_RR010,
+            Csicp_RR011,
             Csicp_RR020,
 
             Csicp_RR030,

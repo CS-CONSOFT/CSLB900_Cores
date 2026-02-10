@@ -14,8 +14,8 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR010
             {
                 TenantId = entity.TenantId,
                 Id = entity.Id,
-                Rr010Condcriacao = entity.Rr010Condcriacao ?? string.Empty,
-                Rr010Descritivo = entity.Rr010Descritivo ?? string.Empty
+                Rr010Condcriacao = entity.Rr010Condcriacao,
+                Rr010Descritivo = entity.Rr010Descritivo
             };
         }
     }
