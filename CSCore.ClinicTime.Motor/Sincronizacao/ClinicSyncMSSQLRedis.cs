@@ -1,7 +1,5 @@
 ﻿using CLT200APIClinicTime.Controllers.Motor;
 using CLT900DbCore.CSCore.Domain.ModelDBClinicTime;
-using CSCore.ClinicTime.Motor.EntidadesMock;
-using CSCore.ClinicTime.Motor.Eventos;
 using CSCore.ClinicTime.Motor.Paciente;
 using CSCore.ClinicTime.Motor.Paciente.dto;
 using CSCore.ClinicTime.Motor.Prioridade;

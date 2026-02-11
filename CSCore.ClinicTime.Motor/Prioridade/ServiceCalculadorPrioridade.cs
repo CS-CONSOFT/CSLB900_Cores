@@ -1,11 +1,8 @@
-using CSCore.ClinicTime.Motor.Eventos;
 using CSCore.ClinicTime.Motor.Paciente;
 using CSCore.ClinicTime.Motor.Paciente.dto;
 using CSCore.ClinicTime.Motor.Prioridade.Strategies;
-using CSCore.ClinicTime.Motor.Prioridade.Strategies.Novas;
 using CSCore.ClinicTime.Motor.Util;
 using Microsoft.Extensions.Logging;
-using Pipelines.Sockets.Unofficial.Arenas;
 using StackExchange.Redis;
 using System.Globalization;
 
@@ -28,7 +25,6 @@ namespace CSCore.ClinicTime.Motor.Prioridade
     public class ServiceCalculadorPrioridade
     {
         private readonly List<IPrioridadeStrategy> EstrategiasQuandoPacienteEstaEmMovimento;
-        private readonly List<IPrioridadeStrategy> EstrategiaBaseQuandoPacienteEntraNaFilaConsiderandoPrioridades;
         private readonly IDatabase _dbRedis;
         private readonly ILogger? _logger;
         private readonly IRecuperaDadosDaConsultaDoPacienteDoRedis _recuperaDadosDaConsultaDoPaciente;
@@ -42,9 +38,9 @@ namespace CSCore.ClinicTime.Motor.Prioridade
             _recuperaDadosDaConsultaDoPaciente = recuperaDadosDaConsultaDoPaciente;
             EstrategiasQuandoPacienteEstaEmMovimento = new List<IPrioridadeStrategy>
             {
-                new ProximidadePrioridadeStrategy()
+                new ProximidadePrioridadeStrategy(),
+                new TempoEsperaPrioridadeStrategy()
             };
-            EstrategiaBaseQuandoPacienteEntraNaFilaConsiderandoPrioridades = [];
             //this._logger?.LogInformation("ServiceCalculadorPrioridade inicializado com {CountEstrategiasMovimento} estratégias para movimento e {CountEstrategiasBase} estratégias base", EstrategiasQuandoPacienteEstaEmMovimento.Count, EstrategiaBaseQuandoPacienteEntraNaFilaConsiderandoPrioridades.Count);
         }
 
@@ -107,14 +103,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade
                 // Adiciona ao job de background para monitoramento
                 await _dbRedis.SetAddAsync(
                     ConfigRedis.GetKeyJobsBackgroundPacienteAguardando(DateOnly.FromDateTime(DateTime.UtcNow.Date)),
-                    System.Text.Json.JsonSerializer.Serialize(new
-                    {
-                        AgendaData = dto.AgendaData,
-                        ProfissionalId = dto.ProfissionalId,
-                        AgendaID = dto.AgendaID,
-                        EstabID = dto.EstabelecimentoId,
-                        PacienteID = dto.PacienteId
-                    }));
+                    System.Text.Json.JsonSerializer.Serialize(dto));
             }
 
             this._logger?.LogInformation("Prioridade recalculada para paciente {PacienteId} na agenda {AgendaID} do dia {AgendaData}. Nova prioridade: {PrioridadeTotal}", dto.PacienteId, dto.AgendaID, dto.AgendaData, prioridadeTotal);

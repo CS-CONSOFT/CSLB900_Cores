@@ -27,7 +27,7 @@ namespace CSCore.ClinicTime.Motor.Paciente
         /// <returns></returns>
         Task<(int, double)> RetornaPosicaoPacienteNaFila(DtoDadosPrincipaisPaciente dtoAtualizaLocPaciente);
 
-        Task<(bool, string)> PacienteEstaNoLocalMasAindaNaoFoiAtendido_AumetandoOTempoNoLocalParaDefinirANovaPrioridade(DateOnly AgendaData, string ProfissionalId, string AgendaID, string EstabID, string PacienteID);
+        Task<(bool, string)> PacienteEstaNoLocalMasAindaNaoFoiAtendido_AumetandoOTempoNoLocalParaDefinirANovaPrioridade(DtoDadosPrincipaisPaciente dto);
 
     }
     #endregion
@@ -41,6 +41,7 @@ namespace CSCore.ClinicTime.Motor.Paciente
         private IRecuperaDadosDaConsultaDoPacienteDoRedis recuperaDadosDaConsultaDoPaciente;
         private ISetarHorarioPacienteNaFila setarHorarioPacienteNaFila;
 
+
         public ClinicTimeMotorPaciente(IRedisConnection redisConnection, IRecuperaDadosDaConsultaDoPacienteDoRedis recuperaDadosDaConsultaDoPaciente, ILogger<ClinicTimeMotorPaciente>? logger = null, ISetarHorarioPacienteNaFila setarHorarioPacienteNaFila = null)
         {
             this.recuperaDadosDaConsultaDoPaciente = recuperaDadosDaConsultaDoPaciente;
@@ -50,22 +51,51 @@ namespace CSCore.ClinicTime.Motor.Paciente
         }
 
 
-        public async Task<(bool, string)> PacienteEstaNoLocalMasAindaNaoFoiAtendido_AumetandoOTempoNoLocalParaDefinirANovaPrioridade(DateOnly AgendaData, string ProfissionalId, string AgendaID, string EstabID, string PacienteID)
+        public async Task<(bool, string)> PacienteEstaNoLocalMasAindaNaoFoiAtendido_AumetandoOTempoNoLocalParaDefinirANovaPrioridade(DtoDadosPrincipaisPaciente dto)
         {
-            this.logger?.LogInformation($"[ClinicTimeMotorPaciente - PacienteEstaNoLocalMasAindaNaoFoiAtendido_AumetandoOTempoNoLocalParaDefinirANovaPrioridade] Verificando se o paciente {PacienteID} está no local e ainda não foi atendido para aumentar o tempo no local e definir nova prioridade.");
-            var dadosPacienteConsulta = await recuperaDadosDaConsultaDoPaciente.RetornaDadosConsultaPaciente(PacienteID, AgendaData, AgendaID, EstabID, ProfissionalId);
+            this.logger?.LogInformation($"[ClinicTimeMotorPaciente - PacienteEstaNoLocalMasAindaNaoFoiAtendido_AumetandoOTempoNoLocalParaDefinirANovaPrioridade] Verificando se o paciente {dto.PacienteId} está no local e ainda não foi atendido para aumentar o tempo no local e definir nova prioridade.");
+            var dadosPacienteConsulta = await recuperaDadosDaConsultaDoPaciente.RetornaDadosConsultaPaciente(dto.PacienteId, dto.AgendaData, dto.AgendaID, dto.EstabelecimentoId,dto.ProfissionalId);
 
             if (dadosPacienteConsulta.Count == 0)
-                return (false, $"Paciente sem dados de consulta pra esses parametros: Dia: {AgendaData} - Clinica: {EstabID} - Medico: {ProfissionalId}");
+                return (false, $"Paciente sem dados de consulta pra esses parametros: Dia: {dto.AgendaData} - Clinica: {dto.EstabelecimentoId} - Medico: {dto.ProfissionalId}");
+            dadosPacienteConsulta.TryGetValue("checkInNoLocal", out var checkInNoLocal);
+            var tryParseChekinLocal = bool.TryParse(checkInNoLocal, out bool _pacienteEstaNoLocal);
+            if (!tryParseChekinLocal) return (false, "Falha ao passar checkInNoLocal para bool");
+
+            if (!_pacienteEstaNoLocal) return (false, "Paciente não está no local ainda!");
 
             dadosPacienteConsulta.TryGetValue("tempoEmMinutosQueUsuarioEstaNoLocal", out var tempoEmMinutosQueUsuarioEstaNoLocal);
             var conseguiuParsear = double.TryParse(tempoEmMinutosQueUsuarioEstaNoLocal, out double tempoEmMinutos);
 
             if (!conseguiuParsear) return (false, "Falha ao passar tempoEmMinutosQueUsuarioEstaNoLocal para double");
 
-            tempoEmMinutos += 1; // Incrementa 1 minuto a cada chamada desse método, que é chamado a cada 1 minuto pelo sistema de background job
+            tempoEmMinutos += 1;
 
-            return (true, $"Tempo no local atualizado para {tempoEmMinutos} minutos para o paciente {PacienteID} na consulta {AgendaID} do dia {AgendaData}.");
+            var db = redisConnection.GetDatabase();
+            await db.HashSetAsync(ConfigRedis.GetKeyDadosPacientePorAgendaMedica(
+                dto.AgendaData,
+                dto.AgendaID,
+                dto.EstabelecimentoId,
+                dto.ProfissionalId,
+                dto.PacienteId
+            ),
+            [
+                new HashEntry("tempoEmMinutosQueUsuarioEstaNoLocal", tempoEmMinutos)
+            ]);
+
+            await CalcularPrioridadeDaFila.RecalcularPrioridadeConsultaAtualizandoNoRedis(this.recuperaDadosDaConsultaDoPaciente, db, dto, this.logger);
+
+            await this.setarHorarioPacienteNaFila.AtribuirHorariosParaTodosPacientesDaFila(
+              dto.AgendaID,
+              dto.AgendaData,
+              dto.EstabelecimentoId,
+              dto.ProfissionalId,
+              dto.AgendaHorarioInicio,
+              dto.AgendaHorarioFim
+          );
+
+
+            return (true, $"Tempo no local atualizado para {tempoEmMinutos} minutos para o paciente {dto.PacienteId} na consulta {dto.AgendaID} do dia {dto.AgendaData}.");
         }
 
 
@@ -82,20 +112,20 @@ namespace CSCore.ClinicTime.Motor.Paciente
                 if (dictionary == null || dictionary.Count == 0) return 0;
                 await AtualizaLocalizacaoPacienteNaEstruturaDeGeolocalizacaoRedis(dto, dbRedis);
 
-                //this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Localização do paciente {dto.PacienteId} atualizada com sucesso no Redis.");
+                this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Localização do paciente {dto.PacienteId} atualizada com sucesso no Redis.");
 
 
                 double? distanciaAteClinicaEmMetros = await CalculaDistanciaEntreLocalPacienteEClinica(dto, dbRedis);
 
-                //this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Distância do paciente {dto.PacienteId} até o estabelecimento {dto.EstabelecimentoId} é de {distanciaAteClinicaEmMetros} metros.");
+                this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Distância do paciente {dto.PacienteId} até o estabelecimento {dto.EstabelecimentoId} é de {distanciaAteClinicaEmMetros} metros.");
 
                 var tempoAteClinica = CalcularTempoAteLocal.Calcular((distanciaAteClinicaEmMetros ?? 0), dto.VelocidadeAtualPaciente);
 
-                //this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Tempo do paciente {dto.PacienteId} até o estabelecimento {dto.EstabelecimentoId} é de {tempoAteClinica} metros.");
+                this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Tempo do paciente {dto.PacienteId} até o estabelecimento {dto.EstabelecimentoId} é de {tempoAteClinica} metros.");
 
                 await AtualizaDicionarioDadosDaConsultaAtual(dto, dbRedis, distanciaAteClinicaEmMetros, tempoAteClinica);
 
-                //this.logger?.LogInformation("Recalculando prioridade da fila para o paciente {PacienteId}", dto.PacienteId);
+                this.logger?.LogInformation("Recalculando prioridade da fila para o paciente {PacienteId}", dto.PacienteId);
 
                 await CalcularPrioridadeDaFila.RecalcularPrioridadeConsultaAtualizandoNoRedis(this.recuperaDadosDaConsultaDoPaciente, dbRedis, dto, this.logger);
 

@@ -1,4 +1,3 @@
-using CSCore.ClinicTime.Motor.Eventos;
 using CSCore.ClinicTime.Motor.Paciente.dto;
 
 namespace CSCore.ClinicTime.Motor.Prioridade.Strategies

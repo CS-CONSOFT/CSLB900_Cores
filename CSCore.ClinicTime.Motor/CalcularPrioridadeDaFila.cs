@@ -1,12 +1,8 @@
-﻿using CSCore.ClinicTime.Motor;
-using CSCore.ClinicTime.Motor.EntidadesMock;
-using CSCore.ClinicTime.Motor.Eventos;
-using CSCore.ClinicTime.Motor.Paciente;
+﻿using CSCore.ClinicTime.Motor.Paciente;
 using CSCore.ClinicTime.Motor.Paciente.dto;
 using CSCore.ClinicTime.Motor.Prioridade;
 using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
-using System.Runtime.CompilerServices;
 
 namespace CLT200APIClinicTime.Controllers.Motor
 {

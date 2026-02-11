@@ -15,11 +15,10 @@ namespace CSCore.ClinicTime.Motor.Prioridade.Strategies
             if (consulta.TryGetValue("tempoEmMinutosQueUsuarioEstaNoLocal", out var tempoEmMinutosString))
             {
                 var tempoEmMinutos = int.Parse(tempoEmMinutosString);
-                if(tempoEmMinutos == 0) return Peso * 0.0m;
+                if(tempoEmMinutos == 0) return 0m;
                 if (tempoEmMinutos >= 30) return Peso * 1.0m;   // 30+ minutos
                 if (tempoEmMinutos >= 15) return Peso * 0.8m;   // 15-29 minutos
                 if (tempoEmMinutos >= 5) return Peso * 0.5m;    // 5-14 minutos
-                return Peso * 0.2m;                             // <5 minutos
             }
 
             return 0m;
