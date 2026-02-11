@@ -10,5 +10,6 @@ namespace CSCore.Domain.Interfaces.RR._00X.IRR010
     public interface IRR010Repository : IRepositorioBaseV2<OsusrTo3CsicpRr010>
     {
         Task<OsusrTo3CsicpRr010?> GetByIdAsync(int tenantId, long id);
+        Task<(List<OsusrTo3CsicpRr010>, int)> GetListAsync(int tenantId, PrmFiltrosRR010 prm);
     }
 }
