@@ -49,6 +49,7 @@ namespace CSCore.ClinicTime.Motor.Paciente.dto
             this.VelocidadeAtualPaciente = VelocidadeAtualPaciente;
         }
 
+  
         public static DtoDadosPrincipaisPaciente FromRbtMessage(Rbt_CS_AtualizaPosicaoPaciente rbt_CS_Atualiza)
         {
             return new DtoDadosPrincipaisPaciente(

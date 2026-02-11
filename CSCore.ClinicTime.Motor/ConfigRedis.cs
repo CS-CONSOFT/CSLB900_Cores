@@ -104,9 +104,9 @@ namespace CSCore.ClinicTime.Motor
                 };
         }
 
-        internal static RedisKey GetKeyJobsBackgroundPacienteAguardando(DateOnly AgendaData)
+        internal static RedisKey GetKeyJobsBackgroundPacienteAguardando(DateOnly AgendaData, string AgendaID, string EstabID, string ProfissionalID)
         {
-            return $"dotnet-background-jobs:pacientes-aguardando-atendimento:{AgendaData}";
+            return $"background-jobs:pacientes-aguardando-atendimento:{AgendaData}:{AgendaID}:{EstabID}:{ProfissionalID}";
         }
 
         internal static RedisKey GetKeyPacientesQueNaoPuderamSerAtendidosNoHorario(string AgendaID, DateOnly AgendaData, string EstabID, string ProfissionalID)

@@ -102,7 +102,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade
 
                 // Adiciona ao job de background para monitoramento
                 await _dbRedis.SetAddAsync(
-                    ConfigRedis.GetKeyJobsBackgroundPacienteAguardando(DateOnly.FromDateTime(DateTime.UtcNow.Date)),
+                    ConfigRedis.GetKeyJobsBackgroundPacienteAguardando(DateOnly.FromDateTime(DateTime.UtcNow.Date), dto.AgendaID, dto.EstabelecimentoId, dto.ProfissionalId),
                     System.Text.Json.JsonSerializer.Serialize(dto));
             }
 
@@ -129,37 +129,79 @@ namespace CSCore.ClinicTime.Motor.Prioridade
                 prioridade += ((decimal)minutosEntreHorarioDeChekinEHorarioAtual * 2);
             }
 
-            
 
             // Recupera check-in no app
             RedisValue horaPacienteChekinApp = await _dbRedis.HashGetAsync(keyPaciente, "hora_paciente_chekin_app");
-            if (horaPacienteChekinApp.IsNullOrEmpty || horaPacienteChekinApp == "0")
+            RedisValue pacienteEspecial = await _dbRedis.HashGetAsync(keyPaciente, "pacienteEspecial"); ;
+            DateTime horaChekinApp;
+            double minutosDesdeCheckinApp = 0;
+
+            if (IsHoraPacienteCheckinAppNullOrZero(horaPacienteChekinApp) && IsNotPacienteEspecial(pacienteEspecial))
                 return prioridade;
 
-            var horaChekinApp = DateTime.Parse((string)horaPacienteChekinApp!, CultureInfo.InvariantCulture);
-            double minutosDesdeCheckinApp = horaChekinApp.Subtract(DateTime.UtcNow.AddHours(-3)).TotalMinutes;
-            if (minutosDesdeCheckinApp < 0) minutosDesdeCheckinApp = minutosDesdeCheckinApp * -1;
-            // Verifica se é paciente especial
-            RedisValue pacienteEspecial = await _dbRedis.HashGetAsync(keyPaciente, "pacienteEspecial");
-            if (pacienteEspecial != "1")
+            if (IsHoraPacienteCheckinAppNullOrZero(horaPacienteChekinApp) && IsPacienteEspecial(pacienteEspecial))
             {
-                prioridade += (decimal)minutosDesdeCheckinApp;
+                prioridade = await IncrementaPrioridadeComPesoPacienteEspecial(keyPaciente, prioridade, minutosDesdeCheckinApp: null);
+                return prioridade;
+            }
+               
+
+            if (IsHoraPacienteCheckinAppValido(horaPacienteChekinApp) && IsPacienteEspecial(pacienteEspecial))
+            {
+                CalculaMinutosDesdeCheckinApp(horaPacienteChekinApp, out horaChekinApp, out minutosDesdeCheckinApp);
+                prioridade = await IncrementaPrioridadeComPesoPacienteEspecial(keyPaciente, prioridade, minutosDesdeCheckinApp);
                 return prioridade;
             }
 
-            // Aplica peso para paciente especial
+            if (IsHoraPacienteCheckinAppValido(horaPacienteChekinApp) && IsNotPacienteEspecial(pacienteEspecial))
+            {
+                CalculaMinutosDesdeCheckinApp(horaPacienteChekinApp, out horaChekinApp, out minutosDesdeCheckinApp);
+                prioridade += (decimal)minutosDesdeCheckinApp;
+                return prioridade;
+            }
+            return prioridade;
+        }
+
+        private async Task<decimal> IncrementaPrioridadeComPesoPacienteEspecial(string keyPaciente, decimal prioridade, double? minutosDesdeCheckinApp)
+        {
             RedisValue pesoPacienteEspecial = await _dbRedis.HashGetAsync(keyPaciente, "pesoPacienteEspecial");
-            if (pesoPacienteEspecial != "-1" && int.TryParse((string)pesoPacienteEspecial!, out int peso))
-            {
+            bool isPesoValido = int.TryParse((string)pesoPacienteEspecial!, out int peso);
+            if (isPesoValido && minutosDesdeCheckinApp.HasValue)
                 prioridade += (decimal)minutosDesdeCheckinApp * peso;
-            }
             else
-            {
-                prioridade += (decimal)minutosDesdeCheckinApp;
-            }
+                prioridade += 30 * peso; // Bonificação fixa para pacientes especiais sem check-in no app
+
 
             return prioridade;
         }
+
+        private static void CalculaMinutosDesdeCheckinApp(RedisValue horaPacienteChekinApp, out DateTime horaChekinApp, out double minutosDesdeCheckinApp)
+        {
+            horaChekinApp = DateTime.Parse((string)horaPacienteChekinApp!, CultureInfo.InvariantCulture);
+            minutosDesdeCheckinApp = horaChekinApp.Subtract(DateTime.UtcNow.AddHours(-3)).TotalMinutes;
+            if (minutosDesdeCheckinApp < 0) minutosDesdeCheckinApp = minutosDesdeCheckinApp * -1;
+        }
+
+        private static bool IsNotPacienteEspecial(RedisValue pacienteEspecial)
+        {
+            return pacienteEspecial != "1";
+        }
+
+        private static bool IsPacienteEspecial(RedisValue pacienteEspecial)
+        {
+            return pacienteEspecial == "1";
+        }
+
+        private static bool IsHoraPacienteCheckinAppNullOrZero(RedisValue horaPacienteChekinApp)
+        {
+            return horaPacienteChekinApp.IsNullOrEmpty || horaPacienteChekinApp == "0";
+        }
+
+        private static bool IsHoraPacienteCheckinAppValido(RedisValue horaPacienteChekinApp)
+        {
+            return !horaPacienteChekinApp.IsNullOrEmpty && horaPacienteChekinApp != "0";
+        }
+
 
         private IList<IPrioridadeStrategy> GetEstrategiasQuandoIniciaAFila(Dictionary<string, string> dict)
         {

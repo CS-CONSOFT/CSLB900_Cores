@@ -1,4 +1,5 @@
 ﻿using CSCore.ClinicTime.Motor.Paciente;
+using CSCore.ClinicTime.Motor.Paciente.dto;
 using CSCore.ClinicTime.Motor.Prioridade;
 using CSCore.Redis;
 using Microsoft.Extensions.Logging;
@@ -44,8 +45,17 @@ namespace CSCore.ClinicTime.Motor.Medico
                   [
                     new HashEntry("paciente_em_consulta", false),
                     new HashEntry("paciente_atendido", true),
-                    new HashEntry("horario_saida_consulta", DateTime.UtcNow.ToString("t")),
+                    new HashEntry("horario_saida_consulta", DateTime.UtcNow.AddHours(-3).ToString("t")),
               ]);
+
+                var keyFila = ConfigRedis.GetKeyFila(AgendaID, AgendaData, EstabelecimentoID, ProfissionalID);
+                long pacientesAguardandoConsultaNaFila = await dbRedis.SortedSetLengthAsync(keyFila);
+                if(pacientesAguardandoConsultaNaFila == 0)
+                {
+                    var keyBackgroundPacienteAguardandoAtendimento = ConfigRedis.GetKeyJobsBackgroundPacienteAguardando (AgendaData, AgendaID, EstabelecimentoID, ProfissionalID);
+                    await dbRedis.KeyDeleteAsync(keyBackgroundPacienteAguardandoAtendimento);
+                    return ("Agenda finalizada com sucesso. Não há mais pacientes aguardando atendimento para esta agenda.", true);
+                }
 
                 await AdicionaPacienteNaListaPacienteAtendidos(AgendaID, AgendaData, EstabelecimentoID, ProfissionalID, PacienteID, dbRedis);
 
@@ -109,11 +119,13 @@ namespace CSCore.ClinicTime.Motor.Medico
 
         private static async Task AdicionaPacienteNaListaPacienteAtendidos(string AgendaID, DateOnly AgendaData, string EstabelecimentoID, string ProfissionalID, string PacienteID, IDatabase dbRedis)
         {
+            await dbRedis.ListRemoveAsync(ConfigRedis.GetKeyPacientesAtendidos(AgendaData, AgendaID, EstabelecimentoID, ProfissionalID), PacienteID);
             await dbRedis.ListLeftPushAsync(ConfigRedis.GetKeyPacientesAtendidos(AgendaData, AgendaID, EstabelecimentoID, ProfissionalID), PacienteID);
         }
 
 
-        private static async Task RemoverPacienteDaFilaDeAguardoDeAtendimento(string AgendaID, DateOnly AgendaData, string EstabelecimentoID, string ProfissionalID, string PacienteID, IDatabase dbRedis)
+        private static async Task RemoverPacienteDaFilaDeAguardoDeAtendimento(
+            string AgendaID, DateOnly AgendaData, string EstabelecimentoID, string ProfissionalID, string PacienteID, IDatabase dbRedis)
         {
             var keyFila = ConfigRedis.GetKeyFila(AgendaID, AgendaData, EstabelecimentoID, ProfissionalID);
             await dbRedis.SortedSetRemoveAsync(keyFila, PacienteID);

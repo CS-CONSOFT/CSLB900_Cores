@@ -87,7 +87,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade
                     segundo paciente = 1 * 30 = 30 minutos de espera
                     terceiro paciente = 2 * 30 = 60 minutos de espera
                  */
-                var dataHoraAtendimento = DateTime.UtcNow.AddMinutes(i * 30);
+                var dataHoraAtendimento = DateTime.UtcNow.AddHours(-3).AddMinutes(i * 30);
 
                 var keyPaciente = ConfigRedis.GetKeyDadosPacientePorAgendaMedica(
                     agendaData, agendaId, estabelecimentoId, profissionalId, pacienteId
@@ -95,7 +95,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade
 
                 await _dbRedis.HashSetAsync(keyPaciente,
                     "horario_previsto_atendimento_consulta_paciente",
-                    dataHoraAtendimento.AddHours(-3).ToString("t")
+                    dataHoraAtendimento.ToString("t")
                 );
             }
         }

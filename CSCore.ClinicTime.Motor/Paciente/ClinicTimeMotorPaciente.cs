@@ -54,17 +54,32 @@ namespace CSCore.ClinicTime.Motor.Paciente
         public async Task<(bool, string)> PacienteEstaNoLocalMasAindaNaoFoiAtendido_AumetandoOTempoNoLocalParaDefinirANovaPrioridade(DtoDadosPrincipaisPaciente dto)
         {
             this.logger?.LogInformation($"[ClinicTimeMotorPaciente - PacienteEstaNoLocalMasAindaNaoFoiAtendido_AumetandoOTempoNoLocalParaDefinirANovaPrioridade] Verificando se o paciente {dto.PacienteId} está no local e ainda não foi atendido para aumentar o tempo no local e definir nova prioridade.");
+
             var dadosPacienteConsulta = await recuperaDadosDaConsultaDoPaciente.RetornaDadosConsultaPaciente(dto.PacienteId, dto.AgendaData, dto.AgendaID, dto.EstabelecimentoId,dto.ProfissionalId);
 
             if (dadosPacienteConsulta.Count == 0)
                 return (false, $"Paciente sem dados de consulta pra esses parametros: Dia: {dto.AgendaData} - Clinica: {dto.EstabelecimentoId} - Medico: {dto.ProfissionalId}");
+
+            
+
+            dadosPacienteConsulta.TryGetValue("paciente_atendido", out var paciente_atendido);
+            dadosPacienteConsulta.TryGetValue("paciente_em_consulta", out var paciente_em_consulta);
+            var tryParsePacienteAtendido = bool.TryParse(paciente_atendido, out bool _pacienteAtendido);
+            var tryParsepaciente_em_consulta = bool.TryParse(paciente_em_consulta, out bool _pacienteEmConsulta);
+
+            if(!tryParsePacienteAtendido) return (false, "Falha ao passar paciente_atendido para bool");
+            if(!tryParsepaciente_em_consulta) return (false, "Falha ao passar paciente_em_consulta para bool");
+            if (_pacienteAtendido || _pacienteEmConsulta) return (false, "Paciente está em consulta ou já foi atendido!");
+
             dadosPacienteConsulta.TryGetValue("checkInNoLocal", out var checkInNoLocal);
             var tryParseChekinLocal = bool.TryParse(checkInNoLocal, out bool _pacienteEstaNoLocal);
-            if (!tryParseChekinLocal) return (false, "Falha ao passar checkInNoLocal para bool");
 
+
+            if (!tryParseChekinLocal) return (false, "Falha ao passar checkInNoLocal para bool");
             if (!_pacienteEstaNoLocal) return (false, "Paciente não está no local ainda!");
 
             dadosPacienteConsulta.TryGetValue("tempoEmMinutosQueUsuarioEstaNoLocal", out var tempoEmMinutosQueUsuarioEstaNoLocal);
+
             var conseguiuParsear = double.TryParse(tempoEmMinutosQueUsuarioEstaNoLocal, out double tempoEmMinutos);
 
             if (!conseguiuParsear) return (false, "Falha ao passar tempoEmMinutosQueUsuarioEstaNoLocal para double");
