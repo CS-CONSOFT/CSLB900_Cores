@@ -82,20 +82,20 @@ namespace CSCore.ClinicTime.Motor.Paciente
                 if (dictionary == null || dictionary.Count == 0) return 0;
                 await AtualizaLocalizacaoPacienteNaEstruturaDeGeolocalizacaoRedis(dto, dbRedis);
 
-                this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Localização do paciente {dto.PacienteId} atualizada com sucesso no Redis.");
+                //this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Localização do paciente {dto.PacienteId} atualizada com sucesso no Redis.");
 
 
                 double? distanciaAteClinicaEmMetros = await CalculaDistanciaEntreLocalPacienteEClinica(dto, dbRedis);
 
-                this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Distância do paciente {dto.PacienteId} até o estabelecimento {dto.EstabelecimentoId} é de {distanciaAteClinicaEmMetros} metros.");
+                //this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Distância do paciente {dto.PacienteId} até o estabelecimento {dto.EstabelecimentoId} é de {distanciaAteClinicaEmMetros} metros.");
 
                 var tempoAteClinica = CalcularTempoAteLocal.Calcular((distanciaAteClinicaEmMetros ?? 0), dto.VelocidadeAtualPaciente);
 
-                this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Tempo do paciente {dto.PacienteId} até o estabelecimento {dto.EstabelecimentoId} é de {tempoAteClinica} metros.");
+                //this.logger?.LogInformation($"[ClinicMotorPaciente - AtualizaPosicaoDoPacienteAoSeMovimentar] Tempo do paciente {dto.PacienteId} até o estabelecimento {dto.EstabelecimentoId} é de {tempoAteClinica} metros.");
 
                 await AtualizaDicionarioDadosDaConsultaAtual(dto, dbRedis, distanciaAteClinicaEmMetros, tempoAteClinica);
 
-                this.logger?.LogInformation("Recalculando prioridade da fila para o paciente {PacienteId}", dto.PacienteId);
+                //this.logger?.LogInformation("Recalculando prioridade da fila para o paciente {PacienteId}", dto.PacienteId);
 
                 await CalcularPrioridadeDaFila.RecalcularPrioridadeConsultaAtualizandoNoRedis(this.recuperaDadosDaConsultaDoPaciente, dbRedis, dto, this.logger);
 

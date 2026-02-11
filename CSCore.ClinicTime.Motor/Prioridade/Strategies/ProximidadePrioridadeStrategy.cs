@@ -36,7 +36,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade.Strategies
                 PacienteChegouAoLocal = true;
                 consulta["checkInNoLocal"] = "true";
 
-                return Peso * 1.1m;
+                return Peso * 1m;
             }
 
             return Peso * scoreProximidade;

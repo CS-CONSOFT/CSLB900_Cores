@@ -25,7 +25,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade
     /// <summary>
     /// Calculador de prioridade da fila usando o padrão Strategy
     /// </summary>
-    public class CalculadorPrioridade
+    public class ServiceCalculadorPrioridade
     {
         private readonly List<IPrioridadeStrategy> EstrategiasQuandoPacienteEstaEmMovimento;
         private readonly List<IPrioridadeStrategy> EstrategiaBaseQuandoPacienteEntraNaFilaConsiderandoPrioridades;
@@ -34,7 +34,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade
         private readonly IRecuperaDadosDaConsultaDoPacienteDoRedis _recuperaDadosDaConsultaDoPaciente;
 
 
-        public CalculadorPrioridade(IDatabase dbRedis, IRecuperaDadosDaConsultaDoPacienteDoRedis recuperaDadosDaConsultaDoPaciente, ILogger? logger = null)
+        public ServiceCalculadorPrioridade(IDatabase dbRedis, IRecuperaDadosDaConsultaDoPacienteDoRedis recuperaDadosDaConsultaDoPaciente, ILogger? logger = null)
         {
 
             _dbRedis = dbRedis;
@@ -42,12 +42,10 @@ namespace CSCore.ClinicTime.Motor.Prioridade
             _recuperaDadosDaConsultaDoPaciente = recuperaDadosDaConsultaDoPaciente;
             EstrategiasQuandoPacienteEstaEmMovimento = new List<IPrioridadeStrategy>
             {
-                new ProximidadePrioridadeStrategy(),
-                new HorarioPrioridadeStrategy(),
-                new TempoEsperaPrioridadeStrategy()
+                new ProximidadePrioridadeStrategy()
             };
             EstrategiaBaseQuandoPacienteEntraNaFilaConsiderandoPrioridades = [];
-            this._logger?.LogInformation("CalculadorPrioridade inicializado com {CountEstrategiasMovimento} estratégias para movimento e {CountEstrategiasBase} estratégias base", EstrategiasQuandoPacienteEstaEmMovimento.Count, EstrategiaBaseQuandoPacienteEntraNaFilaConsiderandoPrioridades.Count);
+            //this._logger?.LogInformation("ServiceCalculadorPrioridade inicializado com {CountEstrategiasMovimento} estratégias para movimento e {CountEstrategiasBase} estratégias base", EstrategiasQuandoPacienteEstaEmMovimento.Count, EstrategiaBaseQuandoPacienteEntraNaFilaConsiderandoPrioridades.Count);
         }
 
 
@@ -98,11 +96,13 @@ namespace CSCore.ClinicTime.Motor.Prioridade
                 await _dbRedis.HashSetAsync(keyPaciente, "checkInNoLocal", "true");
                 await _dbRedis.HashSetAsync(keyPaciente, "hora_paciente_checkin_local", DateTime.UtcNow.AddHours(-3).ToString("t"));
 
-                // Aplica bonificação de check-in local (10000 pontos)
+                // Aplica bonificação de check-in local
                 prioridadeTotal += 1000m;
 
                 // Incrementa com tempo de espera desde check-in no app (se existir)
-                prioridadeTotal = await IncrementaPrioridadeComTempoDeEspera(keyPaciente, prioridadeTotal);
+                prioridadeTotal = await IncrementaPrioridadeComTempoDeChegadaNoLocal(keyPaciente, prioridadeTotal);
+
+                this._logger?.LogInformation("Bonificação aplicada para paciente {PacienteId} por check-in local. Nova prioridade: {PrioridadeTotal}", dto.PacienteId, prioridadeTotal);
 
                 // Adiciona ao job de background para monitoramento
                 await _dbRedis.SetAddAsync(
@@ -127,7 +127,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade
 
 
         #region Métodos Privados
-        private async Task<decimal> IncrementaPrioridadeComTempoDeEspera(string keyPaciente, decimal prioridade)
+        private async Task<decimal> IncrementaPrioridadeComTempoDeChegadaNoLocal(string keyPaciente, decimal prioridade)
         {
 
             // Calcula tempo desde check-in local
@@ -135,9 +135,12 @@ namespace CSCore.ClinicTime.Motor.Prioridade
             if (!horaPacienteChekinLocal.IsNullOrEmpty)
             {
                 var horaChekinLocal = DateTime.Parse((string)horaPacienteChekinLocal!, CultureInfo.InvariantCulture);
-                double minutosEsperando = DateTime.UtcNow.AddHours(-3).Subtract(horaChekinLocal).TotalMinutes;
-                prioridade += (decimal)minutosEsperando;
+                double minutosEntreHorarioDeChekinEHorarioAtual = horaChekinLocal.Subtract(DateTime.UtcNow.AddHours(-3)).TotalMinutes;
+                if (minutosEntreHorarioDeChekinEHorarioAtual < 0) minutosEntreHorarioDeChekinEHorarioAtual = minutosEntreHorarioDeChekinEHorarioAtual * -1;
+                prioridade += ((decimal)minutosEntreHorarioDeChekinEHorarioAtual * 2);
             }
+
+            
 
             // Recupera check-in no app
             RedisValue horaPacienteChekinApp = await _dbRedis.HashGetAsync(keyPaciente, "hora_paciente_chekin_app");
@@ -145,8 +148,8 @@ namespace CSCore.ClinicTime.Motor.Prioridade
                 return prioridade;
 
             var horaChekinApp = DateTime.Parse((string)horaPacienteChekinApp!, CultureInfo.InvariantCulture);
-            double minutosDesdeCheckinApp = DateTime.UtcNow.AddHours(-3).Subtract(horaChekinApp).TotalMinutes;
-
+            double minutosDesdeCheckinApp = horaChekinApp.Subtract(DateTime.UtcNow.AddHours(-3)).TotalMinutes;
+            if (minutosDesdeCheckinApp < 0) minutosDesdeCheckinApp = minutosDesdeCheckinApp * -1;
             // Verifica se é paciente especial
             RedisValue pacienteEspecial = await _dbRedis.HashGetAsync(keyPaciente, "pacienteEspecial");
             if (pacienteEspecial != "1")
@@ -173,12 +176,12 @@ namespace CSCore.ClinicTime.Motor.Prioridade
         {
             dict.TryGetValue("pacienteEspecial", out var pacienteEspecialStr);
 
-            this._logger?.LogInformation("Verificando se o paciente é especial para aplicar estratégias iniciais. Valor encontrado: {PacienteEspecialStr}", pacienteEspecialStr);
+            //this._logger?.LogInformation("Verificando se o paciente é especial para aplicar estratégias iniciais. Valor encontrado: {PacienteEspecialStr}", pacienteEspecialStr);
 
             bool isOk = bool.TryParse(pacienteEspecialStr, out bool isPacienteEspecial);
             bool _isPacienteEspecial = isOk ? isPacienteEspecial : false;
 
-            this._logger?.LogInformation("Paciente é especial? {IsPacienteEspecial}", _isPacienteEspecial);
+            //this._logger?.LogInformation("Paciente é especial? {IsPacienteEspecial}", _isPacienteEspecial);
 
             dict.TryGetValue("tipoPacienteEspecial", out var tipoPacienteEspecial);
             return VerificaTipoPacienteEspecial.ConverteTipoPacienteEspecialParaIPriority(tipoPacienteEspecial);
@@ -188,7 +191,7 @@ namespace CSCore.ClinicTime.Motor.Prioridade
         /*ISSO DEVE ACONTECER DEPOIS DE INSERIR TODOS*/
         private async Task CriaOuAtualizaFilaDosPacientesEmUmaAgenda(DtoDadosPrincipaisPaciente dto, decimal prioridadeTotal, Dictionary<string, string> dadosPacienteConsulta)
         {
-            this._logger?.LogInformation("Criando ou atualizando posição do paciente {PacienteId} na fila da agenda {AgendaID} do dia {AgendaData} com prioridade {PrioridadeTotal}", dto.PacienteId, dto.AgendaID, dto.AgendaData, prioridadeTotal);
+            //this._logger?.LogInformation("Criando ou atualizando posição do paciente {PacienteId} na fila da agenda {AgendaID} do dia {AgendaData} com prioridade {PrioridadeTotal}", dto.PacienteId, dto.AgendaID, dto.AgendaData, prioridadeTotal);
             await _dbRedis.SortedSetAddAsync(
                 ConfigRedis.GetKeyFila(dto.AgendaID, dto.AgendaData, dto.EstabelecimentoId, dto.ProfissionalId),
                 dto.PacienteId,

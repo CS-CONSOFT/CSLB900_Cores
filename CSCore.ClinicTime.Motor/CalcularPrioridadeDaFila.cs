@@ -12,7 +12,7 @@ namespace CLT200APIClinicTime.Controllers.Motor
 {
     /// <summary>
     /// Classe de compatibilidade que mantém a API estática original
-    /// Internamente utiliza o padrão Strategy através de CalculadorPrioridade
+    /// Internamente utiliza o padrão Strategy através de ServiceCalculadorPrioridade
     /// </summary>
     public static class CalcularPrioridadeDaFila
     {
@@ -22,7 +22,7 @@ namespace CLT200APIClinicTime.Controllers.Motor
         /// <param name="DbRedis">Instância do banco Redis</param>
         public static async Task RecalcularPrioridadeConsultaAtualizandoNoRedis(IRecuperaDadosDaConsultaDoPacienteDoRedis recuperaDadosDaConsultaDoPaciente,IDatabase DbRedis, DtoDadosPrincipaisPaciente dto, ILogger? logger = null)
         {
-            var calculador = new CalculadorPrioridade(DbRedis, recuperaDadosDaConsultaDoPaciente, logger);
+            var calculador = new ServiceCalculadorPrioridade(DbRedis, recuperaDadosDaConsultaDoPaciente, logger);
             await calculador.RecalcularPrioridadeConsultaESalvaNoRedis(dto, EnumTipoEstrategiaCalculoPrioridade.MOVIMENTO);
         }
 
@@ -32,7 +32,7 @@ namespace CLT200APIClinicTime.Controllers.Motor
         /// <param name="DbRedis">Instância do banco Redis</param>
         public static async Task InserePacienteNaFilaNoRedis(IRecuperaDadosDaConsultaDoPacienteDoRedis recuperaDadosDaConsultaDoPaciente,IDatabase DbRedis, DtoDadosPrincipaisPaciente dto)
         {
-            var calculador = new CalculadorPrioridade( DbRedis, recuperaDadosDaConsultaDoPaciente);
+            var calculador = new ServiceCalculadorPrioridade( DbRedis, recuperaDadosDaConsultaDoPaciente);
             await calculador.RecalcularPrioridadeConsultaESalvaNoRedis(dto, EnumTipoEstrategiaCalculoPrioridade.INICIAL);
         }
 
