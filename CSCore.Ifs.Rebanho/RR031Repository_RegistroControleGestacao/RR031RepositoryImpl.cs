@@ -65,6 +65,7 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
 
             return [
                 new FiltroIATFRR030IdRR031(filtros.In_IATFRR030ID),
+                new FiltroTiporegRR031(filtros.In_Tiporeg),
             ];
         }
 
