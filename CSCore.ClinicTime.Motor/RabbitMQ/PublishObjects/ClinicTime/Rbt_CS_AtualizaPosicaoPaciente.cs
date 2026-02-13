@@ -7,6 +7,7 @@ namespace CSCore.ClinicTime.Motor.RabbitMQ.PublishObjects.ClinicTime
     public record Rbt_CS_AtualizaPosicaoPaciente
     {
         public string AgendaID { get; init; } = null!;
+        public int PosicaoQuePacienteFoiInseridoNaFila { get; init; } = -1;
         public DateOnly AgendaData { get; init; }
         public TimeOnly AgendaHorarioInicio { get; set; }
         public TimeOnly AgendaHorarioFim { get; set; }

@@ -10,6 +10,9 @@ namespace CSCore.ClinicTime.Motor.Paciente.dto
     {
 
         public string AgendaID { get; init; } = null!;
+        public int NumeroPacientesTotalDessaAgenda { get; init; } = 0;
+
+        public int PosicaoQuePacienteFoiInseridoNaFila { get; init; } = -1;
         public DateOnly AgendaData { get; init; }
         public TimeOnly AgendaHorarioInicio { get; set; }
         public TimeOnly AgendaHorarioFim { get; set; }
@@ -24,9 +27,10 @@ namespace CSCore.ClinicTime.Motor.Paciente.dto
         public double DistanciaPacienteEstabelecimentoMetros { get; init; } = 0.0;
 
 
-
         public DtoDadosPrincipaisPaciente(
             string AGENDAID,
+            int PosicaoQuePacienteFoiInseridoNaFila,
+            int NumeroPacientesTotalDessaAgenda,
             DateOnly AgendaData,
             TimeOnly AgendaHorarioInicio,
             TimeOnly AgendaHorarioFim,
@@ -37,6 +41,8 @@ namespace CSCore.ClinicTime.Motor.Paciente.dto
             double longitude,
             double VelocidadeAtualPaciente)
         {
+            this.NumeroPacientesTotalDessaAgenda = NumeroPacientesTotalDessaAgenda;
+            this.PosicaoQuePacienteFoiInseridoNaFila = PosicaoQuePacienteFoiInseridoNaFila;
             this.AgendaHorarioInicio = AgendaHorarioInicio;
             this.AgendaHorarioFim = AgendaHorarioFim;
             this.AgendaData = AgendaData;
@@ -50,53 +56,6 @@ namespace CSCore.ClinicTime.Motor.Paciente.dto
         }
 
   
-        public static DtoDadosPrincipaisPaciente FromRbtMessage(Rbt_CS_AtualizaPosicaoPaciente rbt_CS_Atualiza)
-        {
-            return new DtoDadosPrincipaisPaciente(
-                AGENDAID: rbt_CS_Atualiza.AgendaID,
-                AgendaData: rbt_CS_Atualiza.AgendaData,
-                AgendaHorarioInicio: rbt_CS_Atualiza.AgendaHorarioInicio,
-                AgendaHorarioFim: rbt_CS_Atualiza.AgendaHorarioFim,
-                PacienteId: rbt_CS_Atualiza.PacienteId,
-                ProfissionalId: rbt_CS_Atualiza.ProfissionalId,
-                EstabelecimentoId: rbt_CS_Atualiza.EstabelecimentoId,
-                latitude: rbt_CS_Atualiza.Latitude,
-                longitude: rbt_CS_Atualiza.Longitude,
-                VelocidadeAtualPaciente: rbt_CS_Atualiza.VelocidadeAtualPaciente
-            );
-        }
-
-        public static Rbt_CS_AtualizaPosicaoPaciente FromDto(DtoDadosPrincipaisPaciente _this)
-        {
-            return new Rbt_CS_AtualizaPosicaoPaciente
-            {
-                AgendaID = _this.AgendaID,
-                AgendaData = _this.AgendaData,
-                AgendaHorarioInicio = _this.AgendaHorarioInicio,
-                AgendaHorarioFim = _this.AgendaHorarioFim,
-                PacienteId = _this.PacienteId,
-                ProfissionalId = _this.ProfissionalId,
-                EstabelecimentoId = _this.EstabelecimentoId,
-                Latitude = _this.Latitude,
-                Longitude = _this.Longitude,
-                VelocidadeAtualPaciente = _this.VelocidadeAtualPaciente,
-                PacienteIsChekinLocal = _this.PacienteIsChekinLocal,
-                DistanciaPacienteEstabelecimentoMetros = _this.DistanciaPacienteEstabelecimentoMetros
-            };
-
-        }
-
-        public static DtoDadosPrincipaisPaciente DtoVazioPorFaltaDeUsoNesseMetodo() => new DtoDadosPrincipaisPaciente(
-            AGENDAID: string.Empty,
-            AgendaData: DateOnly.MinValue,
-            AgendaHorarioInicio: TimeOnly.MinValue,
-            AgendaHorarioFim: TimeOnly.MinValue,
-            PacienteId: string.Empty,
-            ProfissionalId: string.Empty,
-            EstabelecimentoId: string.Empty,
-            latitude: 0.0,
-            longitude: 0.0,
-            VelocidadeAtualPaciente: 0.0
-        );
+       
     }
 }

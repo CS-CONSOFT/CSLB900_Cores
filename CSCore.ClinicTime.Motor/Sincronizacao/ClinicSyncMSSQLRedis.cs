@@ -43,6 +43,7 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
         public async Task SincronizarMSSQL_Redis()
         {
             var redisDb = this.redisConnection.GetDatabase();
+
             var query = from agenda in appDbContext.Sph015Agendas
                         where agenda.Data == DateOnly.FromDateTime(DateTime.UtcNow)
 
@@ -72,6 +73,7 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
                                              {
                                                  paciente.PacienteId,
                                                  paciente.Nome,
+                                                 posicaoDeInsercaoNaFila = consulta.NroFila,
                                                  pacienteEspecial = pacienteEspecial != null ? new
                                                  {
                                                      pacienteEspecial.Id,
@@ -81,6 +83,7 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
                                              }
                                          }).ToList()
 
+          
                         let horarioFuncionamentoEstab = (from estabHorarios in appDbContext.Sph020HorariosFuncionamentos
                                                     where estabHorarios.EstabelecimentoId == estabelecimento.EstabelecimentoId
                                                     
@@ -98,7 +101,8 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
                             EstabelecimentoHorariosFuncionamento = horarioFuncionamentoEstab,
                             agenda.ProfissionalId,
                             ProfissionalNome = profissional != null ? profissional.Nome : null,
-                            Consultas = consultas
+                            Consultas = consultas,
+                            NumerosConsultaDaAgenda = consultas.Count()
                         };
 
             query = query.AsNoTracking();
@@ -111,6 +115,7 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
                         (agenda, consulta) => new
                         {
                             agenda.AgendaId,
+                            agenda.NumerosConsultaDaAgenda,
                             agenda.Data,
                             agenda.EstabelecimentoId,
                             agenda.EstabelecimentoNome,
@@ -155,13 +160,15 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
 
                 if(agenda.Paciente.pacienteEspecial != null)
                 {
-                    TipoPacienteEspecial? tipoPacienteEspecial = VerificaTipoPacienteEspecial.ObterTipoPacienteEspecial(agenda.Paciente.pacienteEspecial.Label);
+                    TipoPacienteEspecial? tipoPacienteEspecial 
+                    = VerificaTipoPacienteEspecial.ObterTipoPacienteEspecial(agenda.Paciente.pacienteEspecial.Label);
                 }
 
                 await redisDb.HashSetAsync(
                     key,
                     ConfigRedis.CriaEstruturaDeDadosDoPacienteDeUmaConsulta(
                         nomePaciente: agenda.Paciente.Nome,
+                        posicaoInsercaoPacienteNaFila: agenda.Paciente.posicaoDeInsercaoNaFila ?? -1,
                         consultaID: agenda.ConsultaId,
                         isPacienteEspecial: agenda.Paciente.pacienteEspecial != null,
                         tipoPacienteEspecial: agenda.Paciente.pacienteEspecial?.Label ?? "", 
@@ -187,12 +194,13 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
 
                 var dto = new DtoDadosPrincipaisPaciente(
                     agenda.AgendaId,
+                    PosicaoQuePacienteFoiInseridoNaFila: agenda.Paciente.posicaoDeInsercaoNaFila ?? -1,
+                    NumeroPacientesTotalDessaAgenda: agenda.NumerosConsultaDaAgenda,
                     agenda.Data,
                     agenda.HoraInicio,
                     agenda.HoraFim,
                     agenda.Paciente.PacienteId,
                     agenda.ProfissionalId,
-                    //agenda.ConsultaId,
                     agenda.EstabelecimentoId,
                     latitude: 0,
                     longitude: 0,
@@ -200,7 +208,6 @@ namespace CSCore.ClinicTime.Motor.Sincronizacao
 
                 await CalcularPrioridadeDaFila.InserePacienteNaFilaNoRedis(recuperaDadosDaConsultaDoPaciente, redisDb, dto);
                 await AtualizaLocalizacaoPacienteNaEstruturaDeGeolocalizacaoRedis(dto, redisDb);
-
             });
 
 

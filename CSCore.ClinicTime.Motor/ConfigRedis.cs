@@ -69,6 +69,7 @@ namespace CSCore.ClinicTime.Motor
         public static HashEntry[] CriaEstruturaDeDadosDoPacienteDeUmaConsulta(
                 string nomePaciente,
                 string consultaID,
+                int posicaoInsercaoPacienteNaFila,
                 int pesoPacienteEspecial,
                 bool isPacienteEspecial,
                 string tipoPacienteEspecial,
@@ -82,6 +83,7 @@ namespace CSCore.ClinicTime.Motor
             return new HashEntry[]
                 {
             new("pacienteNome", nomePaciente),
+            new("posicaoInsercaoPacienteNaFila", posicaoInsercaoPacienteNaFila),
             new("consultaID", consultaID),
             new("pacienteEspecial", isPacienteEspecial),
             new("tipoPacienteEspecial", tipoPacienteEspecial),
