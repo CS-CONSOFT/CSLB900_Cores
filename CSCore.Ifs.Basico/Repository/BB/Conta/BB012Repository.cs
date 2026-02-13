@@ -153,26 +153,29 @@ namespace CSCore.Ifs.Repository.BB.Conta
                 .ToListAsync();
         }
 
+
         public async Task<List<CSICP_BB012j>> GetOutrosEnderecos(string id, int tenant)
         {
             return await _appDbContext.OsusrE9aCsicpBb012js
                 .AsSplitQuery()
                 .AsNoTracking()
-                .Include(e => e.NavTipoEndereco)
-
-                .Include(e => e.NavBB1206_Endereco)
-                .ThenInclude(e => e.AA025_Pais)
-
-                .Include(e => e.NavBB1206_Endereco)
-                .ThenInclude(e => e.AA028_Cidade)
-
-
-                .Include(e => e.NavBB1206_Endereco)
-                .ThenInclude(e => e.AA027_UF)
-
-
-                .Include(e => e.NavTipoEndereco)
                 .Where(e => e.Bb012Id == id && e.TenantId == tenant)
+                .Where(e => e.NavBB1206_Endereco != null) // Filtra registros sem endereço
+                .Include(e => e.NavTipoEndereco)
+
+                .Include(e => e.NavBB1206_Endereco)
+                    .ThenInclude(e => e.AA025_Pais)
+
+                .Include(e => e.NavBB1206_Endereco)
+                    .ThenInclude(e => e.AA028_Cidade)
+
+
+                .Include(e => e.NavBB1206_Endereco)
+                    .ThenInclude(e => e.AA027_UF)
+
+
+
+
                 .ToListAsync();
         }
         public async Task<List<CSICP_BB01208>> GetContatos(string id, int tenant)
