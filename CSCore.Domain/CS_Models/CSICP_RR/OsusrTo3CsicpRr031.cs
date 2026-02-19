@@ -41,4 +41,6 @@ public partial class OsusrTo3CsicpRr031
     public OsusrTo3CsicpRr001? NavRR001MontaAnimal_RR031 { get; set; }
 
     public OsusrTo3CsicpRr035? NavRR035Semen_RR031 { get; set; }
+
+    public OsusrTo3CsicpRr021? NavRR021Lote_RR031 { get; set; }
 }

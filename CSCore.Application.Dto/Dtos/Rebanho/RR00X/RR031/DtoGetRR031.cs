@@ -1,4 +1,5 @@
 using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR001;
+using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR021;
 using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR030;
 using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR035;
 
@@ -31,5 +32,7 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR031
         public DtoGetRR030? NavRR030Iatf { get; set; }
         public DtoGetRR001Padrao? NavRR001MontaAnimal { get; set; }
         public DtoGetRR035Padrao? NavRR035Semen { get; set; }
+
+        public DtoGetRR021_ComRR020? NavRR021LoteID_ComRR020 { get; set; }
     }
 }

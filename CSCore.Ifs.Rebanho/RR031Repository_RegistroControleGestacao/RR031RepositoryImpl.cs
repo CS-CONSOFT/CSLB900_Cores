@@ -27,7 +27,9 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
                 .Include(e => e.NavRR001Animal_RR031)
                 .Include(e => e.NavRR030Iatf_RR031)
                 .Include(e => e.NavRR001MontaAnimal_RR031)
-                .Include(e => e.NavRR035Semen_RR031);
+                .Include(e => e.NavRR035Semen_RR031)
+                .Include(e => e.NavRR021Lote_RR031)
+                    .ThenInclude(rr021 => rr021!.NavRR020RegLote_RR021);
 
             OsusrTo3CsicpRr031? CSICP_RR031 = await query
                 .FirstOrDefaultAsync(e => e.Id == In_IDRR031);
@@ -43,7 +45,9 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
                 .Include(e => e.NavRR001Animal_RR031)
                 .Include(e => e.NavRR030Iatf_RR031)
                 .Include(e => e.NavRR001MontaAnimal_RR031)
-                .Include(e => e.NavRR035Semen_RR031);
+                .Include(e => e.NavRR035Semen_RR031)
+                .Include(e => e.NavRR021Lote_RR031)
+                    .ThenInclude(rr021 => rr021!.NavRR020RegLote_RR021);
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));

@@ -626,6 +626,14 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Rr031Tiporeg).HasColumnName("RR031_TIPOREG");
                 entity.Property(e => e.Rr031Isabsorveu).HasColumnName("RR031_ISABSORVEU");
 
+                // Configuração de chave composta: RR031 usa (TenantId + Rr031Animalid) 
+                // para buscar em RR021 (TenantId + Rr021Animalid)
+                entity.HasOne(d => d.NavRR021Lote_RR031)
+                    .WithMany()
+                    .HasPrincipalKey(p => new { p.TenantId, p.Rr021Animalid })
+                    .HasForeignKey(d => new { d.TenantId, d.Rr031Animalid })
+                    .HasConstraintName("FK_RR031_RR021_Animal")
+                    .OnDelete(DeleteBehavior.NoAction);
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr035>(entity =>
