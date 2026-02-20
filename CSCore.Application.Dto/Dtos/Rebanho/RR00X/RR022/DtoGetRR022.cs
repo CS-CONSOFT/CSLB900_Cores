@@ -1,5 +1,7 @@
 using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR001;
+using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR010;
 using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR021;
+using CSCore.Domain.CS_Models.CSICP_RR;
 
 namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
 {
@@ -44,5 +46,8 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
         public DtoGetRR021Padrao? NavRR021LoteXAnimal { get; set; }
 
         public List<DtoGetRR022Historico>? NavUltimos5Registros { get; set; }
+
+        public DtoGetRR010? NavRR010CondCriacao_RR022 { get; set; }
+
     }
 }

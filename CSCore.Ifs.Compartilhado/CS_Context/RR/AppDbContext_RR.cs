@@ -535,6 +535,9 @@ namespace CSCore.Ifs.CS_Context
                     .HasColumnType("decimal(5, 0)")
                     .HasColumnName("RR022_CIRCEXCROTAL");
 
+                entity.Property(e => e.Rr022Condcriacaid)
+                    .HasColumnName("RR022_CONDCRIACAID");
+
 
             });
 

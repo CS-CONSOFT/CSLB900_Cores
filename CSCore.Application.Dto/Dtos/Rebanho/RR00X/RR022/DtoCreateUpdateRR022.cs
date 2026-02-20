@@ -59,7 +59,8 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
                 Rr022Dthrregistro = Rr022Dthrregistro,*/
 
                 Rr022Observacao = Rr022Observacao,
-                Rr022Circexcrotal = Rr022Circexcrotal
+                Rr022Circexcrotal = Rr022Circexcrotal,
+                Rr022Condcriacaid = Rr022Condcriacaid
             };
         }
     }

@@ -45,14 +45,14 @@ public partial class OsusrTo3CsicpRr022
     [ForeignKey("NavRR010CondCriacao_RR022")]
     public long? Rr022Condcriacaid { get; set; }
 
-    public OsusrTo3CsicpRr001? NavRR001Animal_RR022 { get; set; } = null;
+    public OsusrTo3CsicpRr001? NavRR001Animal_RR022 { get; set; }
 
-    public OsusrTo3CsicpRr021? NavRR021LoteXAnimal_RR022 { get; set; } = null;
+    public OsusrTo3CsicpRr021? NavRR021LoteXAnimal_RR022 { get; set; }
 
     [NotMapped]
     public List<OsusrTo3CsicpRr022>? NavUltimos5Registros { get; set; }
 
-    public OsusrTo3CsicpRr010? NavRR010CondCriacao_RR022 { get; set; } = null;
+    public OsusrTo3CsicpRr010? NavRR010CondCriacao_RR022 { get; set; }
 
     public CSResult<string> CalcularIdadeDiasAtual()
     {

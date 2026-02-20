@@ -1,5 +1,6 @@
 using CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022;
 using CSCore.Application.Dto.Mapper.Rebanho.RR001;
+using CSCore.Application.Dto.Mapper.Rebanho.RR010;
 using CSCore.Application.Dto.Mapper.Rebanho.RR021;
 using CSCore.Domain.CS_Models.CSICP_RR;
 
@@ -36,6 +37,7 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR022
                 NavUltimos5Registros = entity.NavUltimos5Registros?
                     .Select(x => x.ToDtoGetRR022Historico())
                     .ToList(),
+                NavRR010CondCriacao_RR022 = entity.NavRR010CondCriacao_RR022?.ToDtoGetRR010()
             };
         }
 
