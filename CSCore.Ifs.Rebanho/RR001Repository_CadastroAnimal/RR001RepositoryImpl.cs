@@ -129,5 +129,31 @@ namespace CSCore.Ifs.Rebanho.RR001Repository_CadastroAnimal
             return await _appDbContext.OsusrTo3CsicpRr001s
                 .AnyAsync(x => x.TenantId == In_TenantID && x.Id == In_Rr001Id);
         }
+
+        /// <summary>
+        /// Busca múltiplos animais por lista de IDs (para ancestrais)
+        /// </summary>
+        public async Task<List<OsusrTo3CsicpRr001>> GetManyByIdsAsync(int tenantId, List<string> animalIds)
+        {
+            if (animalIds == null || !animalIds.Any())
+                return new List<OsusrTo3CsicpRr001>();
+
+            return await _appDbContext.OsusrTo3CsicpRr001s
+                .AsNoTracking()
+                .Where(a => a.TenantId == tenantId && animalIds.Contains(a.Id))
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Busca todos os filhos de um animal (descendentes diretos)
+        /// </summary>
+        public async Task<List<OsusrTo3CsicpRr001>> GetFilhosAsync(int tenantId, string animalId)
+        {
+            return await _appDbContext.OsusrTo3CsicpRr001s
+                .AsNoTracking()
+                .Where(a => a.TenantId == tenantId && 
+                           (a.Rr001PaiId == animalId || a.Rr001MaeId == animalId))
+                .ToListAsync();
+        }
     }
 }

@@ -538,7 +538,6 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Rr022Condcriacaid)
                     .HasColumnName("RR022_CONDCRIACAID");
 
-
             });
 
             modelBuilder.Entity<OsusrTo3CsicpRr030>(entity =>
