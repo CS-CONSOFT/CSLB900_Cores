@@ -626,8 +626,7 @@ namespace CSCore.Ifs.CS_Context
                 entity.Property(e => e.Rr031Tiporeg).HasColumnName("RR031_TIPOREG");
                 entity.Property(e => e.Rr031Isabsorveu).HasColumnName("RR031_ISABSORVEU");
 
-                // Configuração de chave composta: RR031 usa (TenantId + Rr031Animalid) 
-                // para buscar em RR021 (TenantId + Rr021Animalid)
+                // Configuração de chave para buscar em RR021 (TenantId + Rr021Animalid)
                 entity.HasOne(d => d.NavRR021Lote_RR031)
                     .WithMany()
                     .HasPrincipalKey(p => new { p.TenantId, p.Rr021Animalid })

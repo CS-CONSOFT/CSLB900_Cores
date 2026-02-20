@@ -18,5 +18,7 @@ namespace CSCore.Domain.Interfaces.RR._00X.IRR011
         /// Obtém lista paginada de Série/RGN com filtros
         /// </summary>
         Task<(List<OsusrTo3CsicpRr011>, int)> GetListAsync(int tenantId, PrmFiltrosRR011 prm);
+
+        Task<OsusrTo3CsicpRr011?> GetByIdSerieAsync(int tenantId, string serie);
     }
 }

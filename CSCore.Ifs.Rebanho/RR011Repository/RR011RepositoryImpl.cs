@@ -54,5 +54,12 @@ namespace CSCore.Ifs.Rebanho.RR011Repository
                 new FiltroUltRgnRR011(filtros.Rr011Ultrgn)
             ];
         }
+
+        public async Task<OsusrTo3CsicpRr011?> GetByIdSerieAsync(int tenantId, string serie)
+        {
+            return await _appDbContext.OsusrTo3CsicpRr011s
+                .Where(e => e.TenantId == tenantId && e.Rr011Serie == serie)
+                .FirstOrDefaultAsync();
+        }
     }
 }
