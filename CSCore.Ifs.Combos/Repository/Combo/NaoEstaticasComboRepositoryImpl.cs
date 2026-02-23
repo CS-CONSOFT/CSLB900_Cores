@@ -6,6 +6,7 @@ using CSCore.Domain.Interfaces.Combo;
 using CSCore.Ifs.CS_Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using static CSCore.Domain.ComboTypes;
 
 namespace CSCore.Ifs.Repository.Combo
@@ -99,10 +100,17 @@ namespace CSCore.Ifs.Repository.Combo
         public async Task<IEnumerable<object>> GetCommonListForComboBB008(int tenant, string FormaPagamentoID)
         {
             var query = _appDbContext.OsusrE9aCsicpBb017s
-                .Where(e => e.TenantId == tenant && e.Bb017Fpagtoid == FormaPagamentoID)
-                .Include(e => e.NavBb008Condicao);
-
-            return await query.Select(e => new { Id = e.Bb017Condicaoid, Title = e.NavBb008Condicao!.Bb008CondicaoPagto }).ToListAsync();
+                 .Where(e => e.TenantId == tenant && e.Bb017Fpagtoid == FormaPagamentoID)
+                 .LeftJoin(
+                     _appDbContext.OsusrE9aCsicpBb008s,
+                     bb017 => bb017.Bb017Condicaoid,
+                     bb008 => bb008.Id,
+                     (bb017, bb008) => new {
+                         Id = bb017.Bb017Condicaoid,
+                         Title = bb008 != null ? bb008.Bb008CondicaoPagto : "---"
+                     }
+                 );
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<object>> GetCommonListForComboFF(int tenant, ComboTypeFF comboType)
