@@ -48,6 +48,7 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
                 Rr022Peso = Rr022Peso,
                 Rr022Usuarioid = Rr022Usuarioid,
                 Rr022IsProcessado = Rr022IsProcessado,
+
                 /*
                 Rr022Dtpeso = Rr022Dtpeso,
                 Rr022Idadediasatual = Rr022Idadediasatual,
