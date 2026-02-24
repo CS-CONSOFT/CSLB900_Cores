@@ -84,5 +84,27 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
                 .FirstOrDefaultAsync(e => e.Id == In_IDRR031);
             return CSICP_RR031;
         }
+
+        public async Task<List<OsusrTo3CsicpRr031>> GetHistoricoTimelineAsync(int In_TenantID, string In_AnimalID)
+        {
+            // Includes simplificados - apenas o necessário para DTOs Padrao
+            var query = _appDbContext.OsusrTo3CsicpRr031s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.TenantId == In_TenantID && e.Rr031Animalid == In_AnimalID)
+                // Header (RR030) - simples, sem navegações
+                .Include(e => e.NavRR030Iatf_RR031)
+                // Animal (RR001) - sem navegações aninhadas
+                .Include(e => e.NavRR001Animal_RR031)
+                // Animal da Monta (RR001) - sem navegações aninhadas
+                .Include(e => e.NavRR001MontaAnimal_RR031)
+                // Sêmen (RR035) - sem navegações aninhadas
+                .Include(e => e.NavRR035Semen_RR031)
+                .OrderByDescending(e => e.Rr031Dtregistro)
+                .Take(24);
+
+            var listItems = await query.ToListAsync();
+            return listItems;
+        }
     }
 }
