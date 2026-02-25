@@ -22,9 +22,9 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR031
         public bool? Rr031Isabsorveu { get; set; }
 
         // Usando DTOs Padrao para evitar ciclos infinitos
-        public DtoGetRR030? RR030Header { get; set; }
-        public DtoGetRR001Padrao? Animal { get; set; }
-        public DtoGetRR001Padrao? AnimalMonta { get; set; }
-        public DtoGetRR035Padrao? Semen { get; set; }
+        public DtoGetRR030? RR030IATF { get; set; }
+        public DtoGetRR001Padrao? RR001Animal { get; set; }
+        public DtoGetRR001Padrao? RR001AnimalMonta { get; set; }
+        public DtoGetRR035Padrao? RR031Semen { get; set; }
     }
 }

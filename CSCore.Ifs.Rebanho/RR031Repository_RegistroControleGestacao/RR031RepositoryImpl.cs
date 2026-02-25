@@ -92,13 +92,9 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
                 .AsNoTracking()
                 .AsSplitQuery()
                 .Where(e => e.TenantId == In_TenantID && e.Rr031Animalid == In_AnimalID)
-                // Header (RR030) - simples, sem navegações
                 .Include(e => e.NavRR030Iatf_RR031)
-                // Animal (RR001) - sem navegações aninhadas
                 .Include(e => e.NavRR001Animal_RR031)
-                // Animal da Monta (RR001) - sem navegações aninhadas
                 .Include(e => e.NavRR001MontaAnimal_RR031)
-                // Sêmen (RR035) - sem navegações aninhadas
                 .Include(e => e.NavRR035Semen_RR031)
                 .OrderByDescending(e => e.Rr031Dtregistro)
                 .Take(24);

@@ -25,10 +25,10 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR031
                 Rr031Isabsorveu = entity.Rr031Isabsorveu,
                 
                 // Usando mappers Padrao para evitar ciclos infinitos
-                RR030Header = entity.NavRR030Iatf_RR031?.ToDtoGetRR030(),
-                Animal = entity.NavRR001Animal_RR031?.ToDtoGetRR001Padrao(),
-                AnimalMonta = entity.NavRR001MontaAnimal_RR031?.ToDtoGetRR001Padrao(),
-                Semen = entity.NavRR035Semen_RR031?.ToDtoGetRR035Padrao()
+                RR030IATF = entity.NavRR030Iatf_RR031?.ToDtoGetRR030(),
+                RR001Animal = entity.NavRR001Animal_RR031?.ToDtoGetRR001Padrao(),
+                RR001AnimalMonta = entity.NavRR001MontaAnimal_RR031?.ToDtoGetRR001Padrao(),
+                RR031Semen = entity.NavRR035Semen_RR031?.ToDtoGetRR035Padrao()
             };
         }
 
