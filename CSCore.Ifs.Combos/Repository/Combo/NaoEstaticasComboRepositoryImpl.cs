@@ -99,17 +99,17 @@ namespace CSCore.Ifs.Repository.Combo
 
         public async Task<IEnumerable<object>> GetCommonListForComboBB008(int tenant, string FormaPagamentoID)
         {
-            var query = _appDbContext.OsusrE9aCsicpBb017s
-                 .Where(e => e.TenantId == tenant && e.Bb017Fpagtoid == FormaPagamentoID)
-                 .LeftJoin(
-                     _appDbContext.OsusrE9aCsicpBb008s,
-                     bb017 => bb017.Bb017Condicaoid,
-                     bb008 => bb008.Id,
-                     (bb017, bb008) => new {
-                         Id = bb017.Bb017Condicaoid,
-                         Title = bb008 != null ? bb008.Bb008CondicaoPagto : "---"
-                     }
-                 );
+            var query = from bb017 in _appDbContext.OsusrE9aCsicpBb017s
+                        join bb008 in _appDbContext.OsusrE9aCsicpBb008s
+                            on bb017.Bb017Condicaoid equals bb008.Id into gj
+                        from bb008 in gj.DefaultIfEmpty()
+                        where bb017.TenantId == tenant && bb017.Bb017Fpagtoid == FormaPagamentoID
+                        select new
+                        {
+                            Id = bb017.Bb017Condicaoid,
+                            Title = bb008 != null ? bb008.Bb008CondicaoPagto : "---"
+                        };
+
             return await query.ToListAsync();
         }
 
