@@ -9,6 +9,7 @@ public partial class ABAC_CSSPH_OPERADORES
 {
     public string Id { get; set; } = null!;
 
+    [Column("OPERATOR_CODE")]
     public string? Operator { get; set; }
 
     public string? Description { get; set; }

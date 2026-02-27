@@ -15,6 +15,12 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY035
         public bool? Isactive { get; init; }
         public string? Parentid { get; init; }
 
+        public int CountResourceActions { get; init; }
+        public int CountResourceAttributes { get; init; }
+
+        public ICollection<ABAC_CSSPH_RESOURCEACTIONS>? NavResourceActions { get; init; }
+        public ICollection<ABAC_CSSPH_RESOURCEATRIB>? NavResourceAttributes { get; init; }
+
         public static Dto_GetListSy035 FromEntity(ABAC_CSSPH_RESOURCE entity)
         {
             return new Dto_GetListSy035
@@ -27,7 +33,11 @@ namespace CSCore.Application.Dto.Dtos.Sistema.ABAC.SY035
                 Module = entity.Module,
                 Path = entity.Path,
                 Isactive = entity.Isactive,
-                Parentid = entity.Parentid
+                Parentid = entity.Parentid,
+                NavResourceActions = entity.NavResourceActions,
+                NavResourceAttributes = entity.NavResourceAttributes,
+                CountResourceActions = entity.NavResourceActions.Count,
+                CountResourceAttributes = entity.NavResourceAttributes.Count
             };
         }
     }

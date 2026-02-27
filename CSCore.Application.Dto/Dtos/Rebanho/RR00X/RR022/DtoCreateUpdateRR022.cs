@@ -32,6 +32,10 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
         public string? Rr022Usuarioid { get; set; }
         public bool? Rr022IsProcessado { get; set; }
 
+        public string? Rr022Observacao { get; set; }
+        public decimal? Rr022Circexcrotal { get; set; }
+        public long? Rr022Condcriacaid { get; set; }
+
 
         public OsusrTo3CsicpRr022 ToEntity(int tenant, string? id)
         {
@@ -44,6 +48,7 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
                 Rr022Peso = Rr022Peso,
                 Rr022Usuarioid = Rr022Usuarioid,
                 Rr022IsProcessado = Rr022IsProcessado,
+
                 /*
                 Rr022Dtpeso = Rr022Dtpeso,
                 Rr022Idadediasatual = Rr022Idadediasatual,
@@ -53,6 +58,10 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR022
                 Rr022Gmd = Rr022Gmd,
                 Rr022Gpd = Rr022Gpd,
                 Rr022Dthrregistro = Rr022Dthrregistro,*/
+
+                Rr022Observacao = Rr022Observacao,
+                Rr022Circexcrotal = Rr022Circexcrotal,
+                Rr022Condcriacaid = Rr022Condcriacaid
             };
         }
     }

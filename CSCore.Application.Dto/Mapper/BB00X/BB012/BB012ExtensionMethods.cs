@@ -507,7 +507,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
                 Bb012jEmail = entity.Bb012jEmail,
                 Bb012jTipoendereco = entity.Bb012jTipoendereco,
                 NavTipoEndereco = entity.NavTipoEndereco,
-                NavBB1206_Enderecos = (entity.NavBB1206_Endereco ?? new CSICP_BB01206()).ToDtoBB01206(),
+                NavBB1206_Enderecos = entity.NavBB1206_Endereco != null ? entity.NavBB1206_Endereco.ToDtoBB01206() : null,
             };
         }
 

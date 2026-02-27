@@ -27,7 +27,7 @@ namespace EnviaNFeHercules.C82Application.Service.CalculoRegimeGeral
 {
     public interface IMontaXmlCalculoRegimeGeral
     {
-        Task<string> CSRF01_Calculadora_OffLine_MontaDD040(string InNotaID_DD040, int TenantID);
+        Task<DtoResponse_PostRegimeGeral> CSRF01_Calculadora_OffLine_MontaDD040(string InNotaID_DD040, int TenantID);
     }
     public sealed class MontaXmlCalculoRegimeGeral : IMontaXmlCalculoRegimeGeral
     {
@@ -45,7 +45,7 @@ namespace EnviaNFeHercules.C82Application.Service.CalculoRegimeGeral
             this._consumirAPIExterna = consumirAPIExterna;
         }
 
-        public async Task<string> CSRF01_Calculadora_OffLine_MontaDD040(string InNotaID_DD040, int TenantID)
+        public async Task<DtoResponse_PostRegimeGeral> CSRF01_Calculadora_OffLine_MontaDD040(string InNotaID_DD040, int TenantID)
         {
             var nota = await this.GetNota(InNotaID_DD040, TenantID) ?? throw new KeyNotFoundException("Nota não encontrada.");
             var produtos = await this.GetProds_DD060(InNotaID_DD040, nota.Bb012_RFEspecial_ID, TenantID);
@@ -66,10 +66,12 @@ namespace EnviaNFeHercules.C82Application.Service.CalculoRegimeGeral
 
             var request = new DtoRequest_Postregimegeral(nota.ID!, "0.0.1", nota.DD040_Data_Emissao, nota.Municipio, nota.UF, listDtoWorkItensRecord);
 
+            var stringReq = JsonSerializer.Serialize(request);
+
             var response = await ConsumindoAPI_CalculoRegimeGeral(request);
             var jsonResponse = JsonSerializer.Serialize(response);
             var xmlOfflineGerado = await ConsumindoAPI_GerarXML_OffLine(nota, NFCe, response);
-            return xmlOfflineGerado is null ? throw new Exception("Erro ao gerar XML OffLine.") : xmlOfflineGerado;
+            return response is null ? throw new Exception("Erro ao gerar XML OffLine.") : response;
         }
 
 

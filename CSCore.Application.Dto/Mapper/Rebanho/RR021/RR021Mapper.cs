@@ -51,5 +51,20 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR021
                 NavRR022ControlePeso = entity.NavRR022ControlePeso_RR021?.ToDtoGetRR022Padrao()
             };
         }
+
+        public static DtoGetRR021_ComRR020 ToDtoGetRR021ComRR020(this OsusrTo3CsicpRr021 entity)
+        {
+            return new DtoGetRR021_ComRR020
+            {
+                TenantId = entity.TenantId,
+                Id = entity.Id,
+                Rr021Loteid = entity.Rr021Loteid,
+                Rr021Animalid = entity.Rr021Animalid,
+                Rr021Dtregistro = entity.Rr021Dtregistro,
+
+                // Navegações
+                NavRR020RegLote = entity.NavRR020RegLote_RR021?.ToDtoGetRR020Padrao()
+            };
+        }
     }
 }

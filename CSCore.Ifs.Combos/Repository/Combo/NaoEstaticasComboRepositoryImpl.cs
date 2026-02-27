@@ -6,6 +6,7 @@ using CSCore.Domain.Interfaces.Combo;
 using CSCore.Ifs.CS_Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using static CSCore.Domain.ComboTypes;
 
 namespace CSCore.Ifs.Repository.Combo
@@ -32,7 +33,7 @@ namespace CSCore.Ifs.Repository.Combo
                     .Select(c => new { Title = c.Aa029Descricao + " - " + c.Aa029Cnae ?? "---", Id = c.Aa029Id }),
 
                 ComboTypeAA.Csicp_aa143 => _appDbContext.CSICP_AA143
-  
+
                 .OrderBy(c => c.Aa043Artigo)
                 .Select(c => new { Title = c.Aa043Artigo + " - " + c.Aa043LcRedacao ?? "---", Id = c.Id }),
 
@@ -81,7 +82,7 @@ namespace CSCore.Ifs.Repository.Combo
 
             }
             query = query.Where(e => e.Bb026Tipoespecie == idCorrent);
-            return await query.Select(e => new {Id = e.Id, Title = e.Bb026Formapagamento }).ToListAsync();
+            return await query.Select(e => new { Id = e.Id, Title = e.Bb026Formapagamento }).ToListAsync();
         }
 
         public async Task<IEnumerable<object>> GetComboFF003_TP_ESPECIE_ID(int tenant, int InTpEspecieID)
@@ -98,11 +99,18 @@ namespace CSCore.Ifs.Repository.Combo
 
         public async Task<IEnumerable<object>> GetCommonListForComboBB008(int tenant, string FormaPagamentoID)
         {
-            var query = _appDbContext.OsusrE9aCsicpBb017s
-                .Where(e => e.TenantId == tenant && e.Bb017Fpagtoid == FormaPagamentoID)
-                .Include(e => e.NavBb008Condicao);
-            
-            return await query.Select(e => new { Id = e.Bb017Condicaoid, Title = e.NavBb008Condicao!.Bb008CondicaoPagto }).ToListAsync();
+            var query = from bb017 in _appDbContext.OsusrE9aCsicpBb017s
+                        join bb008 in _appDbContext.OsusrE9aCsicpBb008s
+                            on bb017.Bb017Condicaoid equals bb008.Id into gj
+                        from bb008 in gj.DefaultIfEmpty()
+                        where bb017.TenantId == tenant && bb017.Bb017Fpagtoid == FormaPagamentoID
+                        select new
+                        {
+                            Id = bb017.Bb017Condicaoid,
+                            Title = bb008 != null ? bb008.Bb008CondicaoPagto : "---"
+                        };
+
+            return await query.ToListAsync();
         }
 
         public async Task<IEnumerable<object>> GetCommonListForComboFF(int tenant, ComboTypeFF comboType)
@@ -124,17 +132,17 @@ namespace CSCore.Ifs.Repository.Combo
                  .OrderBy(c => c.Ff014Descricao)
                  .Select(c => new { Title = c.Ff014Descricao ?? "---", c.Id }),
 
-                 ComboTypeFF.Csicp_ff012 => _appDbContext.OsusrE9aCsicpFf012s
-                   .Where(c => c.TenantId == tenant)
-                   .OrderBy(c => c.Ff012DescricaoGrupo)
-                   .Select(c => new { Title = c.Ff012DescricaoGrupo ?? "---", c.Id }),
+                ComboTypeFF.Csicp_ff012 => _appDbContext.OsusrE9aCsicpFf012s
+                  .Where(c => c.TenantId == tenant)
+                  .OrderBy(c => c.Ff012DescricaoGrupo)
+                  .Select(c => new { Title = c.Ff012DescricaoGrupo ?? "---", c.Id }),
 
 
-                   ComboTypeFF.Csicp_ff019 => _appDbContext.OsusrE9aCsicpFf019s
-                   .Where(c => c.TenantId == tenant)
-                   .Include(c => c.NavCondicaoPgto)
-                   .OrderBy(c => c.Ff019Condicaoid)
-                   .Select(c => new { Title = c.NavCondicaoPgto != null ? c.NavCondicaoPgto.Bb008CondicaoPagto : "---", Id =  c.NavCondicaoPgto.Id }),
+                ComboTypeFF.Csicp_ff019 => _appDbContext.OsusrE9aCsicpFf019s
+                .Where(c => c.TenantId == tenant)
+                .Include(c => c.NavCondicaoPgto)
+                .OrderBy(c => c.Ff019Condicaoid)
+                .Select(c => new { Title = c.NavCondicaoPgto != null ? c.NavCondicaoPgto.Bb008CondicaoPagto : "---", Id = c.NavCondicaoPgto.Id }),
 
 
 
@@ -220,10 +228,10 @@ namespace CSCore.Ifs.Repository.Combo
                 .Select(c => c.Id)
                 .FirstAsync();
 
-                var SistemaID = await _appDbContext.OsusrE9aCsicpGg019Cgbars
-                .Where(c => c.Label == "Sistema")
-                .Select(c => c.Id)
-                .FirstAsync();
+            var SistemaID = await _appDbContext.OsusrE9aCsicpGg019Cgbars
+            .Where(c => c.Label == "Sistema")
+            .Select(c => c.Id)
+            .FirstAsync();
 
             IQueryable<CSICP_GG019> query = _appDbContext.OsusrE9aCsicpGg019s
                 .Where(c => c.TenantId == tenant
@@ -245,14 +253,14 @@ namespace CSCore.Ifs.Repository.Combo
 
         public async Task<IEnumerable<object>> GG016fGradeLinha(int tenant, GG016F_IS_GRADE_LINHA gG016F_IS_GRADE_LINHA)
         {
-         
+
             var query = _appDbContext.OsusrE9aCsicpGg016fs
                 .Where(e => e.TenantId == tenant).AsQueryable();
             if (gG016F_IS_GRADE_LINHA == GG016F_IS_GRADE_LINHA.GG016F_LINHA)
             {
                 query = query.Include(e => e.NavGg016fGradelinha)
                      .Where(e => e.NavGg016fGradelinha != null);
-            } 
+            }
             if (gG016F_IS_GRADE_LINHA == GG016F_IS_GRADE_LINHA.GG016F_COLUNA)
             {
                 query = query.Include(e => e.NavGg016fGradecoluna)
@@ -277,7 +285,7 @@ namespace CSCore.Ifs.Repository.Combo
 
             var query = _appDbContext.OsusrE9aCsicpGg016s
                 .Where(e => e.TenantId == tenant && e.Gg016Lincolid == int.Parse(ID_csicp_gg016b)).AsQueryable();
-      
+
             query = query.OrderBy(c => c.Gg016Descricao);
             IQueryable<object> novaQuery = query.Select(c =>
                     new
@@ -287,8 +295,6 @@ namespace CSCore.Ifs.Repository.Combo
                     });
             return await novaQuery.ToListAsync();
         }
-
-
 
         public async Task<IEnumerable<object>> GetCommonListForComboRR(int tenant, ComboTypeRR comboType)
         {
@@ -328,6 +334,16 @@ namespace CSCore.Ifs.Repository.Combo
                 .Where(c => c.TenantId == tenant)
                 .OrderBy(c => c.Rr008Regalimentar)
                 .Select(c => new { Title = c.Rr008Regalimentar, c.Id }),
+
+                ComboTypeRR.Csicp_RR010 => _appDbContext.OsusrTo3CsicpRr010s
+                .Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Rr010Descritivo)
+                .Select(c => new { Title = c.Rr010Descritivo ?? "---", c.Id }),
+
+                ComboTypeRR.Csicp_RR011 => _appDbContext.OsusrTo3CsicpRr011s
+                .Where(c => c.TenantId == tenant)
+                .OrderBy(c => c.Rr011Serie)
+                .Select(c => new { Title = c.Rr011Serie ?? "---", c.Id }),
 
                 ComboTypeRR.Csicp_RR020 => _appDbContext.OsusrTo3CsicpRr020s
                 .Where(c => c.TenantId == tenant)
@@ -643,7 +659,7 @@ namespace CSCore.Ifs.Repository.Combo
             IQueryable<object> query = comboType switch
             {
                 ComboTypeCG.csicp_cg003 => _appDbContext.Osusr8dwCsicpCg003s.Where(c => c.TenantId == tenant && c.Cg003Isactive == true)
-                .OrderBy(c => c.Cg003Descricao).Select(c => new { Title = c.Cg003Descricao ?? "---", Id= c.Cg003Id }),
+                .OrderBy(c => c.Cg003Descricao).Select(c => new { Title = c.Cg003Descricao ?? "---", Id = c.Cg003Id }),
                 ComboTypeCG.csicp_cg004 => _appDbContext.Osusr8dwCsicpCg004s.Where(c => c.TenantId == tenant && c.Cg004Isactive == true)
                 .OrderBy(c => c.Cg004Descricao).Select(c => new { Title = c.Cg004Descricao ?? "---", Id = c.Cg004Id }),
                 ComboTypeCG.csicp_cg005 => _appDbContext.Osusr8dwCsicpCg005s.Where(c => c.TenantId == tenant && c.Cg005Isactive == true)
@@ -667,6 +683,17 @@ namespace CSCore.Ifs.Repository.Combo
 
                 _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
             };
+
+            return await query.ToListAsync();
+        }
+
+
+        public async Task<IEnumerable<object>> GetAbacResourceTipoResource(EnumResourceType ResourceType)
+        {
+            var query = _appDbContext.ABAC_CSSPH_RESOURCE
+                    .Where(e => e.Resourcetype == ResourceType.ToString())
+                    .OrderBy(c => c.Name)
+                    .Select(c => new { Title = c.Name ?? c.Displayname ?? "---", Id = c.Id });
 
             return await query.ToListAsync();
         }
@@ -703,6 +730,7 @@ namespace CSCore.Ifs.Repository.Combo
                     .Select(c => new { Title = c.Rulename ?? "---", Id = c.Id }),
 
                 ComboABAC.CssphResource => _appDbContext.ABAC_CSSPH_RESOURCE
+                    .Where(e => e.Parentid == null)
                     .OrderBy(c => c.Name)
                     .Select(c => new { Title = c.Name ?? c.Displayname ?? "---", Id = c.Id }),
 
@@ -730,19 +758,29 @@ namespace CSCore.Ifs.Repository.Combo
                     .OrderBy(c => c.Id)
                     .Select(c => new { Title = "---", Id = c.Id }),
 
-                ComboABAC.CssphAbacResourceAttributes => _appDbContext.ABAC_CSSPH_ABACRESOURCEATTRIBUTES
-                    .OrderBy(c => c.Attributename)
-                    .Select(c => new { Title = c.Attributename ?? c.Label ?? c.Description ?? "---", Id = c.Id }),
-
-                ComboABAC.CssphAbacUserAttributes => _appDbContext.ABAC_CSSPH_ABACUSERATTRIBUTES
-                    .OrderBy(c => c.Attributename)
-                    .Select(c => new { Title = c.Attributename ?? c.Label ?? c.Description ?? "---", Id = c.Id }),
+                ComboABAC.CssphAbac_User_ResourceAttributes => GetUserResourceAttributes(tenant),
 
                 _ => throw new ArgumentOutOfRangeException(nameof(comboType), "Tipo de combo inválido")
             };
 
             return await query.ToListAsync();
         }
+
+        private IQueryable<object> GetUserResourceAttributes(int tenant)
+        {
+            var listaResource = _appDbContext.ABAC_CSSPH_ABACRESOURCEATTRIBUTES
+                    .OrderBy(c => c.Attributename)
+                    .Select(c => new { Title = c.Attributename ?? c.Label ?? c.Description ?? "---", Id = c.Id });
+
+            var listaUser = _appDbContext.ABAC_CSSPH_ABACUSERATTRIBUTES
+                    .OrderBy(c => c.Attributename)
+                    .Select(c => new { Title = c.Attributename ?? c.Label ?? c.Description ?? "---", Id = c.Id });
+
+            var combined = listaResource.Concat(listaUser);
+            return combined;
+        }
     }
+
+   
     }
 

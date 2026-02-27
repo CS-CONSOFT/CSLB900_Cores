@@ -104,7 +104,7 @@ namespace CSCore.Ifs.FF.Repository.Processos.CS_MovtoTituloBaixar_Kernel
                     //caso a situacao id nao seja nula, verifica se é uma das situações que não permitem baixa
                     //criando uma lista auxiliar de situações que não permitem baixa e chegando se a situação do título está nessa lista
                     WorkBaixa.NavFF102?.Ff102Situacaoid is not null &&
-                    new[]
+                    new int?[]
                     {
                         InPrmMovtoTituloBaixarKernel.InSTIDff102SitLiquidado,
                         InPrmMovtoTituloBaixarKernel.InSTIDff102SitCancelado,

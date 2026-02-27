@@ -60,6 +60,10 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR001
 
         public long? Rr001Proprietarioid { get; set; }
 
+        public long? Rr001Proprietario2id { get; set; }
+
+        public long? Rr001Criadorid { get; set; }
+
         public OsusrTo3CsicpRr001 ToEntity(int tenant, string? id)
         {
             return new OsusrTo3CsicpRr001
@@ -90,7 +94,10 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR001
                 Rr001Dtultpeso = Rr001Dtultpeso,
                 Rr001Ultpeso = Rr001Ultpeso,
                 Rr001Ultidadediaspeso = Rr001Ultidadediaspeso,
-                Rr001Proprietarioid = Rr001Proprietarioid
+                Rr001Proprietarioid = Rr001Proprietarioid,
+                Rr001Proprietario2id = Rr001Proprietario2id,
+                Rr001Criadorid = Rr001Criadorid
+
             };
         }
     }

@@ -26,7 +26,8 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
                 .AsSplitQuery()
                 .Where(e => e.TenantId == In_TenantID)
                 .Include(e => e.NavRR001Animal_RR022)
-                .Include(e => e.NavRR021LoteXAnimal_RR022);
+                .Include(e => e.NavRR021LoteXAnimal_RR022)
+                .Include(e => e.NavRR010CondCriacao_RR022);
 
             OsusrTo3CsicpRr022? CSICP_RR022 = await query
                 .FirstOrDefaultAsync(e => e.Id == In_IDRR022);
@@ -39,7 +40,9 @@ namespace CSCore.Ifs.Rebanho.RR022Repository_ControlePeso
                 .AsNoTracking()
                 .AsSplitQuery()
                 .Include(e => e.NavRR001Animal_RR022)
-                .Include(e => e.NavRR021LoteXAnimal_RR022);
+                .Include(e => e.NavRR021LoteXAnimal_RR022)
+                .Include(e => e.NavRR010CondCriacao_RR022);
+
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));

@@ -20,7 +20,10 @@ namespace CSCore.Application.Dto.Mapper.Rebanho.RR030
                 Rr030Datamontafinal = entity.Rr030Datamontafinal,
                 Rr030Montafinaldias = entity.Rr030Montafinaldias,
                 Rr030Dataprovontainicial = entity.Rr030Dataprovontainicial,
-                Rr030Dataprovontafinal = entity.Rr030Dataprovontafinal
+                Rr030Dataprovontafinal = entity.Rr030Dataprovontafinal,
+                Rr030Iadatafinal = entity.Rr030Iadatafinal,
+                Rr030IaNrodiasfinal = entity.Rr030IaNrodiasfinal,
+                RR030Iadatadgfinal = entity.RR030Iadatadgfinal
             };
         }
     }
