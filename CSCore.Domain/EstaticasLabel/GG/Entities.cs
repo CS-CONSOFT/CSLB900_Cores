@@ -261,6 +261,12 @@ namespace CSCore.Domain.EstaticasLabel.GG
             public const string Credito = "Credito";
         }
 
+        public static class Csicp_CG992_SituacaoLote
+        {
+            public const string Aberto = "Aberto";
+            public const string Fechado = "Fechado";
+        }
+
         public static class GG019_CgBar
         {
             public const string Sistema = "Sistema";
