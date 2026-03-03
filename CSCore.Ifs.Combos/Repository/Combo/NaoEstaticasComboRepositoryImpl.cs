@@ -664,8 +664,17 @@ namespace CSCore.Ifs.Repository.Combo
                 .OrderBy(c => c.Cg004Descricao).Select(c => new { Title = c.Cg004Descricao ?? "---", Id = c.Cg004Id }),
                 ComboTypeCG.csicp_cg005 => _appDbContext.Osusr8dwCsicpCg005s.Where(c => c.TenantId == tenant && c.Cg005Isactive == true)
                 .OrderBy(c => c.Cg005Historicoresumido).Select(c => new { Title = c.Cg005Historicoresumido ?? "---", Id = c.Cg005Id }),
-                ComboTypeCG.csicp_cg006 => _appDbContext.Osusr8dwCsicpCg006s.Where(c => c.TenantId == tenant && c.Cg006Isactive == true)
-                .OrderBy(c => c.Cg006Descricao).Select(c => new { Title = c.Cg006Descricao ?? "---", Id = c.Cg006Id }),
+
+
+                ComboTypeCG.csicp_cg006 => (from cg006 in _appDbContext.Osusr8dwCsicpCg006s
+                                            join cg997 in _appDbContext.Osusr8dwCsicpCg997s
+                                            on cg006.Cg006ClassificacaoId equals cg997.Id
+                                            where cg006.TenantId == tenant
+                                                && cg006.Cg006Isactive == true
+                                                && cg997.Label == "Analítica"
+                                            orderby cg006.Cg006Codigoplano
+                                            select new { Title = cg006.Cg006Codigoplano + "-" + cg006.Cg006Descricao ?? "---", Id = cg006.Cg006Id }),
+
                 ComboTypeCG.csicp_cg008 => _appDbContext.Osusr8dwCsicpCg008s.Where(c => c.TenantId == tenant && c.Cg008Isactive == true)
                 .OrderBy(c => c.Cg008Descricao).Select(c => new { Title = c.Cg008Descricao ?? "---", Id = c.Cg008Id }),
                 ComboTypeCG.csicp_cg052 => _appDbContext.Osusr8dwCsicpCg052s.Where(c => c.TenantId == tenant)
