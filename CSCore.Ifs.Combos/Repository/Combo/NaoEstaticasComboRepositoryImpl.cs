@@ -671,7 +671,7 @@ namespace CSCore.Ifs.Repository.Combo
                                             on cg006.Cg006ClassificacaoId equals cg997.Id
                                             where cg006.TenantId == tenant
                                                 && cg006.Cg006Isactive == true
-                                                && cg997.Label == "Analítica"
+                                                && cg997.Label == "Analitica"
                                             orderby cg006.Cg006Codigoplano
                                             select new { Title = cg006.Cg006Codigoplano + "-" + cg006.Cg006Descricao ?? "---", Id = cg006.Cg006Id }),
 
