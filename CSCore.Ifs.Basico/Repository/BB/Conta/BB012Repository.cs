@@ -162,20 +162,12 @@ namespace CSCore.Ifs.Repository.BB.Conta
                 .Where(e => e.Bb012Id == id && e.TenantId == tenant)
                 .Where(e => e.NavBB1206_Endereco != null) // Filtra registros sem endereço
                 .Include(e => e.NavTipoEndereco)
-
                 .Include(e => e.NavBB1206_Endereco)
                     .ThenInclude(e => e.AA025_Pais)
-
                 .Include(e => e.NavBB1206_Endereco)
                     .ThenInclude(e => e.AA028_Cidade)
-
-
                 .Include(e => e.NavBB1206_Endereco)
                     .ThenInclude(e => e.AA027_UF)
-
-
-
-
                 .ToListAsync();
         }
         public async Task<List<CSICP_BB01208>> GetContatos(string id, int tenant)
