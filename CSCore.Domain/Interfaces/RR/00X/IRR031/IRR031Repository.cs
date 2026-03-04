@@ -8,5 +8,6 @@ namespace CSCore.Domain.Interfaces.RR._00X.IRR031
         Task<OsusrTo3CsicpRr031?> GetByIdAsync(int In_TenantID, string In_IDRR031);
         Task<(List<OsusrTo3CsicpRr031>, int)> GetListAsync(int In_TenantID, PrmFiltrosRR031 prm);
         Task<OsusrTo3CsicpRr031?> GetByIdSimplesAsync(int In_TenantID, string In_IDRR031);
+        Task<List<OsusrTo3CsicpRr031>> GetHistoricoTimelineAsync(int In_TenantID, string In_AnimalID);
     }
 }

@@ -13,7 +13,7 @@ namespace CSCore.Ifs.LB900.ABAC
         SY038RepositoryImpl GetSY038Repository { get; }
         SY031RepositoryImpl GetSY031Repository { get; }
         IRepositorioBaseV2ComGets<OsusrE9aCsicpSy032> GetSY032Repository { get; }
-        IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCE> GetABAC_CSSPH_RESOURCERepository { get; }
+        ResourceRepository GetABAC_CSSPH_RESOURCERepository { get; }
         IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEACTIONS> GetABAC_CSSPH_RESOURCEACTIONSRepository { get; }
         IRepositorioBaseV2ComGets<ABAC_CSSPH_RESOURCEATRIB> GetABAC_CSSPH_RESOURCEATRIB_Repository { get; }
        

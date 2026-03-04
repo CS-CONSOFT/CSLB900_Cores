@@ -50,6 +50,9 @@ namespace CSCore.Ifs.CG.Repository.CG00X.CG005
             return
             [
                 new FiltroEstabIDCG005(prm.EstabID),
+                new FiltroCodigoCG005(prm.Codigo),
+                new FiltroHistoricoCG005(prm.Historico),
+                new FiltroHistoricoResumidoCG005(prm.HistoricoResumido),
             ];
         }
     }

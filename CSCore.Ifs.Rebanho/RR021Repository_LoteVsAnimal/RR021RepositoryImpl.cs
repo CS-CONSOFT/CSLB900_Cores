@@ -66,5 +66,14 @@ namespace CSCore.Ifs.Rebanho.RR021Repository_LoteVsAnimal
             return listRR021Items;
         }
 
+        public async Task<OsusrTo3CsicpRr021?> GetByIdParaAlterarLoteAsync(int In_TenantID, string In_IDRR021)
+        {
+            var registro = await _appDbContext.OsusrTo3CsicpRr021s
+                .AsNoTracking()
+                .Where(e => e.TenantId == In_TenantID && e.Id == In_IDRR021)
+                .FirstOrDefaultAsync();
+
+            return registro;
+        }
     }
 }

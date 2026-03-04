@@ -75,6 +75,14 @@ public partial class OsusrTo3CsicpRr001
     [ForeignKey("NavRR007Proprietario_RR001")]
     public long? Rr001Proprietarioid { get; set; }
 
+    // Novos campos adicionados posteriormente
+
+    [ForeignKey("NavRR007Proprietario2id_RR001")]
+    public long? Rr001Proprietario2id { get; set; }
+
+    [ForeignKey("NavRR001Criadorid_RR001")]
+    public long? Rr001Criadorid { get; set; }
+
     // Navegação
     public OsusrTo3CsicpRr001? NavRR001Pai { get; set; }
     public OsusrTo3CsicpRr001? NavRR001Mae { get; set; }
@@ -88,6 +96,13 @@ public partial class OsusrTo3CsicpRr001
     public OsusrTo3CsicpRr001Cat? NavRR001Categoria_RR001 { get; set; }
     public OsusrTo3CsicpRr001Sexo? NavRR001Sexo_RR001 { get; set; }
     public Csicp_Sy001? NavSy001_RR001 { get; set; }
+
+    // Novos navs adicionados posteriormente
+    public OsusrTo3CsicpRr007? NavRR007Proprietario2id_RR001 { get; set; }
+
+    public OsusrTo3CsicpRr007? NavRR001Criadorid_RR001 { get; set; }
+
+    //-----//
 
     // ===== VALUE OBJECT - NÃO MAPEADO NO BANCO =====
     /// <summary>

@@ -14,7 +14,7 @@ namespace CSCore.Ifs.FF.Repository.FF1XX.FF140
     {
         private readonly AppDbContext _appDbContext;
 
-        public FF140RepositoryImpl(AppDbContext appDbContext) : base(appDbContext)
+        public FF140RepositoryImpl(AppDbContext appDbContext) : base(appDbContext, "Ff140Id")
         {
             _appDbContext = appDbContext;
         }

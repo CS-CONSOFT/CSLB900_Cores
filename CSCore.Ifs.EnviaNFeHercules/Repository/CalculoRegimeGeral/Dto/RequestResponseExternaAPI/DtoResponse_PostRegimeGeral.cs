@@ -47,6 +47,7 @@ public record GIBSCBS(
     decimal vBC,
     GIBSCBSUF gIBSUF,
     GIBSCBSMun gIBSMun,
+    decimal vIBS,
     GCBS gCBS,
     GTribRegular gTribRegular,
     GIBSCredPres gIBSCredPres,
@@ -163,6 +164,14 @@ public record GRed(
     decimal pAliqEfet
 );
 
+public record GCBSTot(
+    decimal vDif,
+    decimal vDevTrib,
+    decimal vCBS,
+    decimal vCredPres,
+    decimal vCredPresCondSus
+);
+
 public record Total(
     TotalTribCalc tribCalc
 );
@@ -179,7 +188,7 @@ public record ISTot(
 public record IBSCBSTot(
     decimal vBCIBSCBS,
     GIBS gIBS,
-    GCBS gCBS,
+    GCBSTot gCBS,
     GMono gMono
 );
 

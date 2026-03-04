@@ -27,7 +27,9 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
                 .Include(e => e.NavRR001Animal_RR031)
                 .Include(e => e.NavRR030Iatf_RR031)
                 .Include(e => e.NavRR001MontaAnimal_RR031)
-                .Include(e => e.NavRR035Semen_RR031);
+                .Include(e => e.NavRR035Semen_RR031)
+                .Include(e => e.NavRR021Lote_RR031)
+                    .ThenInclude(rr021 => rr021!.NavRR020RegLote_RR021);
 
             OsusrTo3CsicpRr031? CSICP_RR031 = await query
                 .FirstOrDefaultAsync(e => e.Id == In_IDRR031);
@@ -43,7 +45,9 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
                 .Include(e => e.NavRR001Animal_RR031)
                 .Include(e => e.NavRR030Iatf_RR031)
                 .Include(e => e.NavRR001MontaAnimal_RR031)
-                .Include(e => e.NavRR035Semen_RR031);
+                .Include(e => e.NavRR035Semen_RR031)
+                .Include(e => e.NavRR021Lote_RR031)
+                    .ThenInclude(rr021 => rr021!.NavRR020RegLote_RR021);
 
             // Aplica filtros
             query = AplicaFiltro(query, GetFiltrosParaAplicar(In_TenantID, prm));
@@ -65,6 +69,7 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
 
             return [
                 new FiltroIATFRR030IdRR031(filtros.In_IATFRR030ID),
+                new FiltroTiporegRR031(filtros.In_Tiporeg),
             ];
         }
 
@@ -78,6 +83,24 @@ namespace CSCore.Ifs.Rebanho.RR031Repository_RegistroControleGestacao
             OsusrTo3CsicpRr031? CSICP_RR031 = await query
                 .FirstOrDefaultAsync(e => e.Id == In_IDRR031);
             return CSICP_RR031;
+        }
+
+        public async Task<List<OsusrTo3CsicpRr031>> GetHistoricoTimelineAsync(int In_TenantID, string In_AnimalID)
+        {
+            // Includes simplificados - apenas o necessário para DTOs Padrao
+            var query = _appDbContext.OsusrTo3CsicpRr031s
+                .AsNoTracking()
+                .AsSplitQuery()
+                .Where(e => e.TenantId == In_TenantID && e.Rr031Animalid == In_AnimalID)
+                .Include(e => e.NavRR030Iatf_RR031)
+                .Include(e => e.NavRR001Animal_RR031)
+                .Include(e => e.NavRR001MontaAnimal_RR031)
+                .Include(e => e.NavRR035Semen_RR031)
+                .OrderByDescending(e => e.Rr031Dtregistro)
+                .Take(24);
+
+            var listItems = await query.ToListAsync();
+            return listItems;
         }
     }
 }

@@ -26,6 +26,14 @@ public partial class OsusrTo3CsicpRr031
     [ForeignKey("NavRR035Semen_RR031")]
     public string? Rr031Semenid { get; set; }
 
+    // Novos campos adicionados posteriormente
+
+    public int? Rr031Tiporeg { get; set; }
+
+    public bool? Rr031Isabsorveu { get; set; }
+
+    // ------
+
     public OsusrTo3CsicpRr001? NavRR001Animal_RR031 { get; set; }
 
     public OsusrTo3CsicpRr030? NavRR030Iatf_RR031 { get; set; }
@@ -33,4 +41,6 @@ public partial class OsusrTo3CsicpRr031
     public OsusrTo3CsicpRr001? NavRR001MontaAnimal_RR031 { get; set; }
 
     public OsusrTo3CsicpRr035? NavRR035Semen_RR031 { get; set; }
+
+    public OsusrTo3CsicpRr021? NavRR021Lote_RR031 { get; set; }
 }

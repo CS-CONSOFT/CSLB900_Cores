@@ -30,6 +30,12 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR030
 
         public DateTime? Rr030Dataprovontafinal { get; set; }
 
+        public DateTime? Rr030Iadatafinal { get; set; }
+
+        public int? Rr030IaNrodiasfinal { get; set; }
+
+        public DateTime? RR030Iadatadgfinal { get; set; }
+
         public OsusrTo3CsicpRr030 ToEntity(int tenant, string? id)
         {
             return new OsusrTo3CsicpRr030
@@ -45,7 +51,10 @@ namespace CSCore.Application.Dto.Dtos.Rebanho.RR00X.RR030
                 Rr030Datamontafinal = Rr030Datamontafinal,
                 Rr030Montafinaldias = Rr030Montafinaldias,
                 Rr030Dataprovontainicial = Rr030Dataprovontainicial,
-                Rr030Dataprovontafinal = Rr030Dataprovontafinal
+                Rr030Dataprovontafinal = Rr030Dataprovontafinal,
+                Rr030Iadatafinal = Rr030Iadatafinal,
+                Rr030IaNrodiasfinal = Rr030IaNrodiasfinal,
+                RR030Iadatadgfinal = RR030Iadatadgfinal
             };
         }
     }

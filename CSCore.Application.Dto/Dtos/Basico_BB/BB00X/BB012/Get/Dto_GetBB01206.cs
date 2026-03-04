@@ -7,7 +7,6 @@ namespace CSBS101._82Application.Dto.BB00X.BB012.Get
         public int TenantId { get; set; }
 
         public string? Id { get; set; } = string.Empty;
-
         public string? Bb012Id { get; set; }
 
         public string? Bb012jEnderecoid { get; set; }

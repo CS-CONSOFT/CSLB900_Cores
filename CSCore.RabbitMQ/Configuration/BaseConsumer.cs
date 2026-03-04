@@ -2,6 +2,7 @@
 using CSCore.RabbitMQ.Hub;
 using MassTransit;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using System.Net.Http.Json;
 
@@ -209,6 +210,122 @@ namespace CSCore.RabbitMQ.Configuration
         }
 
         private void LogMessage(ConsumeContext<T> context, int tenant = -1, string usuario ="-")
+        {
+            Log.Information(
+                "\n====================[RabbitMQ - Consumer Recebeu Mensagem]====================\n" +
+                "Consumer     : {Consumer}\n" +
+                "TipoMensagem : {MessageType}\n" +
+                "TenantID     : {TenantID}\n" +
+                "UsuarioID    : {UsuarioID}\n" +
+                "Timestamp    : {Ti mestamp}\n" +
+                "Ambiente     : {Environment}\n" +
+                "===============================================================================",
+                this.GetType().Name,
+                context.Message.GetType().Name,
+               tenant,
+                usuario,
+                DateTime.UtcNow.ToLocalTime(),
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
+        }
+
+        protected async Task NotificarSucessoProcessamento(
+            string InUsuarioID,
+            int TenantID,
+            ConsumeContext<T> context,
+            string Message,
+            string Group,
+            string Method,
+            string JsonParametrosParaServiceCenter,
+            string? IdReferencia = null)
+        {
+            LogMessage(context, TenantID, InUsuarioID);
+            var finalMessage = $"Sucesso ao processar {Group} - {Method}";
+            var msg = new MessageDto
+            {
+                Content = finalMessage,
+                GroupName = Group + "-" + InUsuarioID,
+                MethodName = Method,
+                Message = Message,
+                Success = true,
+                IDReferente = IdReferencia
+            };
+            var result = await client.PostAsJsonAsync(
+                "https://apidsv17.sophiaerp.cloud/signalR", msg);
+            if (!result.IsSuccessStatusCode)
+            {
+                Log.Information($"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}");
+                finalMessage = finalMessage + " || ERRO AO NOTIFICAR VIA SIGNAL - " + $"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}";
+            }
+
+            await SaveLogServiceCenter(
+             TenantID,
+             finalMessage,
+             JsonParametrosParaServiceCenter);
+        }
+
+        protected async Task NotificarFalhaProcessamento(
+              string InUsuarioID,
+            int TenantID,
+                 ConsumeContext<T> context,
+                 string Message,
+                 string Group,
+                 string Method,
+                 string JsonParametrosParaServiceCenter,
+                 string? IdReferencia = null)
+        {
+            LogMessage(context, TenantID, InUsuarioID);
+
+            var finalMessage = $"Falha ao processar {Group} - {Method}";
+            var msg = new MessageDto
+            {
+                Content = finalMessage,
+                GroupName = Group + "-" + InUsuarioID,
+                MethodName = Method,
+                Message = Message,
+                Success = false,
+                IDReferente = IdReferencia
+            };
+            var result = await client.PostAsJsonAsync(
+                    "https://apidsv17.sophiaerp.cloud/signalR", msg);
+            if (!result.IsSuccessStatusCode)
+            {
+                Log.Information($"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}");
+                finalMessage = finalMessage + " || ERRO AO NOTIFICAR VIA SIGNAL - " + $"Erro ao notificar API externa: {result.StatusCode} - {await result.Content.ReadAsStringAsync()}";
+            }
+
+            await SaveLogServiceCenter(
+             TenantID,
+             finalMessage,
+             JsonParametrosParaServiceCenter);
+        }
+
+    }
+
+
+    /*NOVA CLASSE 3 -- NAO DEVE USAR ESSE PARA NOVOS CONSUMIDORES, ELA FOI CRIADA APENAS PARA DIMINUIR
+     O PESO DE REFATORAR OS ANTIGOS, USAR SEMPRE A V3 PARA NOVOS*/
+    public abstract class BaseConsumeRefactorSemSalvarLogsNoServiceCenter<T> : IConsumer<T> where T : class
+    {
+        private readonly Microsoft.Extensions.Logging.ILogger? _logger;
+        private static readonly HttpClient client = new();
+
+        protected BaseConsumeRefactorSemSalvarLogsNoServiceCenter(Microsoft.Extensions.Logging.ILogger? logger = null)
+        {
+            _logger = logger;
+        }
+
+        public virtual Task Consume(ConsumeContext<T> context)
+        {
+            LogMessage(context);
+            return Task.CompletedTask;
+        }
+
+        private async Task SaveLogServiceCenter(int TenantID, string mensagem, string jsonParametros)
+        {
+           this._logger?.LogInformation("Salvando log no Service Center: TenantID={TenantID}, Mensagem={mensagem}, JsonParametros={jsonParametros}", TenantID, mensagem, jsonParametros);
+        }
+
+        private void LogMessage(ConsumeContext<T> context, int tenant = -1, string usuario = "-")
         {
             Log.Information(
                 "\n====================[RabbitMQ - Consumer Recebeu Mensagem]====================\n" +

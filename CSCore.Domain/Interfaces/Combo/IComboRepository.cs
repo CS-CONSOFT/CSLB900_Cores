@@ -8,6 +8,12 @@ namespace CSCore.Domain.Interfaces.Combo
     {
         GG016F_COLUNA, GG016F_LINHA
     }
+
+    public enum EnumResourceType
+    {
+        module,
+        program
+    }
     public interface IComboRepository
     {
         Task<IEnumerable<object>> GetComboFF003_TP_ESPECIE_ID(int tenant, int InTpEspecieID);
@@ -23,6 +29,7 @@ namespace CSCore.Domain.Interfaces.Combo
         Task<IEnumerable<object>> GetCommonListForComboSYS(int tenant, ComboTypeSYS comboType);
         Task<IEnumerable<object>> GetCommonListForComboPais(int tenant);
         Task<IEnumerable<object>> GetComboABAC(int tenant, ComboABAC comboType);
+        Task<IEnumerable<object>> GetAbacResourceTipoResource(EnumResourceType ResourceType);
         Task<IEnumerable<object>> GetCommonListForComboUF(int tenant, string? paisId);
         Task<IEnumerable<object>> GetCommonListForComboCidade(string? ufId, string? search, int tenant);
         Task<IEnumerable<object>> GetComboGG001(int tenant, string estabelecimentoId, bool? trasVirtual = false);

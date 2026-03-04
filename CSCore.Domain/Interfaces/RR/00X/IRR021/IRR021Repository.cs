@@ -7,5 +7,6 @@ namespace CSCore.Domain.Interfaces.RR._00X.IRR021
     {
         Task<(List<OsusrTo3CsicpRr021>, int)> GetListRR021LoteIdAsync(int In_TenantID, PrmFiltrosRR021 prm);
         Task<List<OsusrTo3CsicpRr021>> GetListRR021ParaPopular(int In_TenantID, string In_LoteID);
+        Task<OsusrTo3CsicpRr021?> GetByIdParaAlterarLoteAsync(int In_TenantID, string In_IDRR021);
     }
 }

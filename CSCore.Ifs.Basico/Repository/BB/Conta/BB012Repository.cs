@@ -153,6 +153,7 @@ namespace CSCore.Ifs.Repository.BB.Conta
                 .ToListAsync();
         }
 
+
         public async Task<List<CSICP_BB012j>> GetOutrosEnderecos(string id, int tenant)
         {
             return await _appDbContext.OsusrE9aCsicpBb012js
