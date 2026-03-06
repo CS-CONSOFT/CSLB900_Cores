@@ -53,5 +53,10 @@ namespace CSLB900.MSTools.Util
             }
             return true;
         }
+
+        public static bool VerifyEqualityV2(this string senhaDigitada, string senhaDoBanco)
+        {
+            return VerifyEquality(senhaDigitada, senhaDoBanco);
+        }
     }
 }
