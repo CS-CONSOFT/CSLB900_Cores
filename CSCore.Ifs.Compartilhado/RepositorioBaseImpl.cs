@@ -69,22 +69,23 @@ namespace CSCore.Ifs.Repository
             if (entity == null) throw new ArgumentNullException(nameof(entity));
             var existingEntity = await GetEntityForUpdateAsync(id, tenant);
 
-            var entry = _appDbContext.Entry(existingEntity);
             var entityType = typeof(TEntity);
 
             foreach (var property in entityType.GetProperties())
             {
-                // Ignora a chave primária
-                if (property.Name == IdIdentifierName)
+                // Ignora a chave primária e o TenantId
+                if (property.Name == IdIdentifierName || property.Name == TenantIdentifierName)
                     continue;
 
                 var newValue = property.GetValue(entity);
                 property.SetValue(existingEntity, newValue);
             }
 
+            // Marca explicitamente a entidade como modificada
+            _appDbContext.Entry(existingEntity).State = EntityState.Modified;
+
             return existingEntity;
         }
-
 
 
         public virtual async Task<TEntity?> UpdateAsync(long id, int tenant, TEntity entity)
