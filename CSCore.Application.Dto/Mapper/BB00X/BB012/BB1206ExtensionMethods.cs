@@ -11,6 +11,7 @@ namespace CSCore.Application.Dto.Mapper.BB00X.BB012
             {
                 Id = IdEndereco,
                 Bb012jEnderecoid = bb012J_id,
+                Bb012Id = null,
                 Bb012Logradouro = dto.Bb012Logradouro,
                 Bb012Numero = dto.Bb012Numero,
                 Bb012Complemento = dto.Bb012Complemento,

@@ -515,7 +515,7 @@ namespace CSBS101._82Application.Mapper.BB00X.BB012
         {
             return new CSICP_BB012j
             {
-                Bb012Id = null,
+                Bb012Id = dto.UsuarioID,
                 Bb012jTelefone = dto.Bb012jTelefone,
                 Bb012jFax = dto.Bb012jFax,
                 Bb012jEmail = dto.Bb012jEmail,
