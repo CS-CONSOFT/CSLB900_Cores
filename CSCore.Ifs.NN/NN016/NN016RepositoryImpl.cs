@@ -15,7 +15,7 @@ namespace CSCore.Ifs.NN.NN016
         private readonly AppDbContext _appDbContext;
 
         public NN016RepositoryImpl(AppDbContext appDbContext)
-            : base(appDbContext)
+            : base(appDbContext, "Nn016Id")
         {
             _appDbContext = appDbContext;
         }
@@ -65,23 +65,16 @@ namespace CSCore.Ifs.NN.NN016
 
         public async Task<IEnumerable<CSICP_NN016>> GetListAsyncPorNN015ParaBaixaContasaReceberPagar(int tenant, string InNN015)
         {
-            var idAberto = await _appDbContext.OsusrE9aCsicpFf102Sits
-                .Where(e => e.Label!.Equals(Entities.FF102_Sit.Aberto))
-                .Select(e => e.Id).FirstOrDefaultAsync();
+            var query = from nn016 in _appDbContext.OsusrE9aCsicpNn016s
+                        where nn016.TenantId == tenant
+                        where nn016.Nn016CrcpId == InNN015
 
-            var idBxParcial = await _appDbContext.OsusrE9aCsicpFf102Sits
-                .Where(e => e.Label!.Equals(Entities.FF102_Sit.BxParcial))
-                .Select(e => e.Id).FirstOrDefaultAsync();
+                        join ff102 in _appDbContext.OsusrE9aCsicpFf102s
+                        on nn016.Nn016TituloId equals ff102.Id
+                        orderby nn016.Nn016CrcpId
+                        select nn016;
 
-            var query = _appDbContext.OsusrE9aCsicpNn016s
-                .Where(e => e.TenantId == tenant)
-                .Where(e => e.Nn016CrcpId == InNN015)
-                .Where(e => e.Nn016SituacaotitId == idAberto || e.Nn016SituacaotitId == idBxParcial)
-                  .AsNoTracking();
-
-            query = query.OrderBy(e => e.Nn016CrcpId);
-
-            var lista = await query.ToListAsync();
+            var lista = await query.AsNoTracking().ToListAsync();
             return lista;
         }
     }

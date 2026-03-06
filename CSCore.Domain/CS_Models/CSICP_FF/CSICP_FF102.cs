@@ -160,7 +160,7 @@ public partial class CSICP_FF102
 
     public string? Ff102Situacao { get; set; }
 
-    public int Ff102Situacaoid { get; set; }
+    public int? Ff102Situacaoid { get; set; }
 
     public int? Ff102SequenciaLog { get; set; }
 

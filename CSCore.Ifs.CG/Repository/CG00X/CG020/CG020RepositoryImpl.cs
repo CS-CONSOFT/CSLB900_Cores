@@ -60,5 +60,12 @@ namespace CSCore.Ifs.CG.Repository.CG00X.CG020
                 new FiltroMesCG020(filtros.Mes)
             ];
         }
+
+        public async Task<CSICP_CG020?> GetByIdSituacaoLoteAsync(int InTenant, string InIDCG020)
+        {
+            return await _appDbContext.Osusr8dwCsicpCg020s
+                .Include(c => c.NavCG992Situacao_CG020)
+                .FirstOrDefaultAsync(c => c.TenantId == InTenant && c.Cg020Id == InIDCG020);
+        }
     }
 }
