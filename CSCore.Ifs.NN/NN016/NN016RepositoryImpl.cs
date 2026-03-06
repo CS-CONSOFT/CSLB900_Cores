@@ -15,7 +15,7 @@ namespace CSCore.Ifs.NN.NN016
         private readonly AppDbContext _appDbContext;
 
         public NN016RepositoryImpl(AppDbContext appDbContext)
-            : base(appDbContext)
+            : base(appDbContext, "Nn016Id")
         {
             _appDbContext = appDbContext;
         }
